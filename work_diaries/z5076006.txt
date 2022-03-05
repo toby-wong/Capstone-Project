@@ -1,1 +1,8 @@
-Paste diary here 
+Week 1
+  Formed a group, decided on the car space rental project. Discussed possible novel functionalities.
+
+Week 2
+  Worked on writing epic and user stories. I worked on consumer relevant stories and completed writing them on the shared Google Doc.
+
+Week 3
+  Working on finalising the epic and user stories. Going to use Figma to make storyboards. Going to upload the user stories onto Jira and finish writing the propsal.
