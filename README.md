@@ -1,6 +1,7 @@
 # Blue Man Group (BMG) 
 # W14B 2-4pm 
 <img src="assets/Park%20it%20Logo.png">
+
 Team Members
 | Name              | zID      | Email                   | Position         |
 |-------------------|----------|-------------------------|------------------|
