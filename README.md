@@ -1,7 +1,7 @@
 # Blue Man Group (BMG) 
 # W14B 2-4pm 
 <img src="assets/Park%20it%20Logo.png">
-# Team Members
+Team Members
 |        Name       	|    zID   	|           Email           	|   Position   	|
 |:-----------------:	|:--------:	|:-------------------------:	|:------------:	|
 |    Tobias Wong    	| z5255663 	|  z5255663@ad.unsw.edu.au  	| **Scrum Master** 	|
