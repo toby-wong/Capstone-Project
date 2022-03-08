@@ -5,12 +5,13 @@ import sys
 from pprint import pprint
 from pymongo import MongoClient
 
-
+# Initialise MongoDB instance
 def initDB():
-    client = MongoClient('localhost', 27017)
+    client = pymongo.MongoClient("mongodb+srv://admin:admin@parkit.wnpku.mongodb.net/parkIT?retryWrites=true&w=majority")
     db = client.parkIT
     return db
 
+# Check if email exists in database
 def emailExists(db, email):
     user = db.users.find_one({"email": email})
     if user is None:
@@ -18,21 +19,20 @@ def emailExists(db, email):
     else:
         return True
 
-def newUser(db, email, firstName, lastName, password, phoneNumber, username):
-    user = db.users.find_one({"email": email})
-    if user is None:
+# Create new user in database 
+def newUser(db, user):
+    if not emailExists(db, user["email"]):
         db.users.insert_one({
-            "email": email, 
-            "firstName": firstName,
-            "lastName": lastName,
-            "password": password,
-            "phoneNumber": phoneNumber,
-            "username": username
+            "email": user["email"], 
+            "firstName": user["firstName"],
+            "lastName": user["lastName"],
+            "password": user["password"],
+            "phoneNumber": user["phoneNumber"],
+            "username": user["username"]
         })
         return True
     else:
         return False
-
 
 if __name__ == "__main__":
     db = initDB()
