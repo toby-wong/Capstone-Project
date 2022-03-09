@@ -1,4 +1,50 @@
 .header {
+  display: flex;
+  padding: 10px 30px 10px;
+  height: 5vh;
+  min-height: 70px;
+  max-height: 108px;
   background-color: var(--light);
-  color: black;
+  color: var(--dark);
+}
+
+.header__left {
+  flex: 1;
+  display: flex;
+}
+
+.brandname {
+  font-family: "Bungee", cursive;
+  align-self: center;
+  margin-left: 5px;
+  font-size: 2rem;
+}
+
+.header__right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.header__tabs {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 330px;
+  font-size: 1.2rem;
+}
+
+.header__tabs a {
+  color: var(--dark);
+  text-decoration: none;
+}
+
+.active {
+  font-weight: bold;
+}
+
+.login-button {
+  margin-left: 40px;
+  font-size: 1.2rem;
 }
