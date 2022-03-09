@@ -493,7 +493,7 @@ paths:
           
   /user/auth/code:
     post:
-      summary: Send verification code for reset of password
+      summary: Check verification code
       tags:
         - User Auth
       parameters:
@@ -538,7 +538,7 @@ paths:
           
           
   
-  /user/update:
+  /user/{userid}:
     post:
       summary: Update the users details
       security:
@@ -548,6 +548,20 @@ paths:
       parameters:
         - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/UserDetailsBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/200/Empty'
+        '403':
+          $ref: '#/components/responses/403'
+          
+    delete:
+      summary: Delete the user
+      security:
+        - bearerAuth: []
+      tags:
+        - User Management
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
       responses:
         '200':
           $ref: '#/components/responses/200/Empty'
