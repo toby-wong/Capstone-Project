@@ -1,4 +1,5 @@
 from cgi import print_arguments
+import email
 from ipaddress import collapse_addresses
 import pymongo
 import sys
@@ -18,6 +19,17 @@ def emailExists(db, email):
         return False
     else:
         return True
+
+def phoneExists(db, phone):
+    user = db.users.find_one({"phoneNumber": phone})
+    if user is None:
+        return False
+    else:
+        return True
+
+# route for update email/phone number
+# frontend->request to update email->backend->query email if exists -> twilio verifciation if new email
+# user input -> verification code -> backend update details if code correct
 
 # Create new user in database 
 def newUser(db, user):
@@ -48,13 +60,13 @@ def changePassword(db, email, newPassword):
         return False
 
 # need to update function to include verification for new email/phone
-# def updateDetails(db, email, newDetails):
-#     if emailExists(db, email):
-#         for key in newDetails:
-#             db.users.update_one({"email": email}, {"$set": {key: newDetails[key]}})
-#         return True
-#     else:
-#         return False
+def updateDetails(db, email, newDetails):
+    if emailExists(db, email):
+        for key in newDetails:
+            db.users.update_one({"email": email}, {"$set": {key: newDetails[key]}})
+        return True
+    else:
+        return False
 
 # Delete user from database
 def deleteUser(db, email):
