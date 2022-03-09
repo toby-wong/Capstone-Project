@@ -36,8 +36,7 @@ def newUser(db, user):
     if not emailExists(db, user["email"]):
         db.users.insert_one({
             "email": user["email"], 
-            "firstName": user["firstName"],
-            "lastName": user["lastName"],
+            "name": user["name"],
             "password": user["password"],
             "phoneNumber": user["phoneNumber"],
             "username": user["username"],
