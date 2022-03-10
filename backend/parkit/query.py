@@ -1,4 +1,5 @@
 from cgi import print_arguments
+import email
 from ipaddress import collapse_addresses
 import pymongo
 import sys
@@ -26,6 +27,17 @@ def phoneExists(db, phone):
         return False
     else:
         return user["_id"]
+
+def phoneExists(db, phone):
+    user = db.users.find_one({"phoneNumber": phone})
+    if user is None:
+        return False
+    else:
+        return True
+
+# route for update email/phone number
+# frontend->request to update email->backend->query email if exists -> twilio verifciation if new email
+# user input -> verification code -> backend update details if code correct
 
 # Create new user in database 
 def newUser(db, user):
