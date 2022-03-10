@@ -17,7 +17,7 @@ def emailExists(db, email):
     if user is None:
         return False
     else:
-        return user.OjectId()
+        return user.ObjectId()
 
 # Create new user in database 
 def newUser(db, user):
