@@ -17,7 +17,7 @@ def emailExists(db, email):
     if user is None:
         return False
     else:
-        return user.ObjectId()
+        return user["_id"]
 
 # Check if phone exists in database
 def phoneExists(db, phone):
@@ -25,15 +25,14 @@ def phoneExists(db, phone):
     if user is None:
         return False
     else:
-        return user.ObjectId()
+        return user["_id"]
 
 # Create new user in database 
 def newUser(db, user):
     if not emailExists(db, user["email"]):
         db.users.insert_one({
             "email": user["email"], 
-            "firstName": user["firstName"],
-            "lastName": user["lastName"],
+            "name": user["name"],
             "password": user["password"],
             "phoneNumber": user["phoneNumber"],
             "username": user["username"],
@@ -98,9 +97,14 @@ if __name__ == "__main__":
     else:
         print('db initialized')
     
-    collection = db.users
-    pprint(collection)
-    pprint(collection.find_one())
-    pprint(collection.find_one({"email": "y0unggil0919@gmail.com"}))
-    pprint(collection.find_one({"email": "toby@wong.com.au"}))
+    testUser = {
+            "email": "tobywong@gmail.com",
+            "name": "Toby Wong",
+            "password": "12345678",
+            "phoneNumber": "0467891234",
+            "username": "tobywong"
+    }
+    newUser(db, testUser)
+    print(emailExists(db, testUser["email"]))
+    print(deleteUser(db, testUser["email"]))
 
