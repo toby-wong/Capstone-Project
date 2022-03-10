@@ -19,6 +19,14 @@ def emailExists(db, email):
     else:
         return user.ObjectId()
 
+# Check if phone exists in database
+def phoneExists(db, phone):
+    user = db.users.find_one({"phoneNumber": phone})
+    if user is None:
+        return False
+    else:
+        return user.ObjectId()
+
 # Create new user in database 
 def newUser(db, user):
     if not emailExists(db, user["email"]):
@@ -37,46 +45,47 @@ def newUser(db, user):
         })
         return True
     else:
-        return False
+        return False # existing user
 
 # Change password for user
 def changePassword(db, email, newPassword):
-    if emailExists(db, email):
-        db.users.update_one({"email": email}, {"$set": {"password": newPassword}})
+    if userID := emailExists(db, email):
+        db.users.update_one({"_id": userID}, {"$set": {"password": newPassword}})
         return True
     else:
         return False
 
 # TODO: test if function works when updating email
+# Update details for user
 def updateDetails(db, email, newDetails):
-    if emailExists(db, email):
+    if userID := emailExists(db, email):
         for key in newDetails:
-            db.users.update_one({"email": email}, {"$set": {key: newDetails[key]}})
+            db.users.update_one({"_id": userID}, {"$set": {key: newDetails[key]}})
         return True
     else:
         return False
 
 # Delete user from database
 def deleteUser(db, email):
-    if emailExists(db, email):
-        db.users.delete_one({"email": email})
+    if userID := emailExists(db, email):
+        db.users.delete_one({"_id": userID})
         return True
     else:
         return False
 
 # Get permissions for user
 def getPermissions(db, email):
-    if emailExists(db, email):
-        user = db.users.find_one({"email": email})
+    if userID := emailExists(db, email):
+        user = db.users.find_one({"_id": userID})   
         return user["permissions"]
     else:
         return False
 
 # Update permissions for user
 def updatePermissions(db, email, permissions):
-    if emailExists(db, email):
+    if userID := emailExists(db, email):
         for key in permissions:
-            db.users.update_one({"email": email}, {"$set": {"permissions"[key]: permissions[key]}})
+            db.users.update_one({"_id": userID}, {"$set": {"permissions"[key]: permissions[key]}})
         return True
     else:
         return False
