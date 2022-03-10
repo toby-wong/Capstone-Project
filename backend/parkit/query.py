@@ -17,7 +17,7 @@ def emailExists(db, email):
     if user is None:
         return False
     else:
-        return True
+        return user.OjectId()
 
 # Create new user in database 
 def newUser(db, user):
@@ -47,14 +47,14 @@ def changePassword(db, email, newPassword):
     else:
         return False
 
-# need to update function to include verification for new email/phone
-# def updateDetails(db, email, newDetails):
-#     if emailExists(db, email):
-#         for key in newDetails:
-#             db.users.update_one({"email": email}, {"$set": {key: newDetails[key]}})
-#         return True
-#     else:
-#         return False
+# TODO: test if function works when updating email
+def updateDetails(db, email, newDetails):
+    if emailExists(db, email):
+        for key in newDetails:
+            db.users.update_one({"email": email}, {"$set": {key: newDetails[key]}})
+        return True
+    else:
+        return False
 
 # Delete user from database
 def deleteUser(db, email):
