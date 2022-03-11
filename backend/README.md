@@ -7,7 +7,7 @@
 
 1. Pull the git repo using the clone button on the top right of this page (either SSH or HTML would do)
 2. `cd` into the repository
-3. run `pipenv install` to install all the depedencies
+3. run `pipenv install` to install all the dependencies
 4. run `pipenv shell` to activate the virtual environment
 
 ### Prerequisites
