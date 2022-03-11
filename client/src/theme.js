@@ -45,6 +45,9 @@ export const theme = createTheme({
       lineHeight: 1,
       marginLeft: 7,
     },
+    title: {
+      fontSize: "40px",
+    },
   },
   components: {
     MuiButton: {
@@ -52,6 +55,41 @@ export const theme = createTheme({
         root: {
           textTransform: "none",
           color: colors.light,
+          borderRadius: 20,
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundColor: colors.light,
+          borderRadius: 15,
+          padding: "30px 40px",
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          border: "none",
+          borderRadius: 25,
+          backgroundColor: colors.background,
+          boxShadow: "10px #ef6461",
+          color: colors.dark,
+        },
+      },
+    },
+    MuiModal: {
+      styleOverrides: {
+        root: {
+          border: "none",
+        },
+      },
+    },
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          display: "block",
         },
       },
     },

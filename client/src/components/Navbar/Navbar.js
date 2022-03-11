@@ -5,7 +5,7 @@ import logo from "../../assets/logo.svg";
 import { AppBar, Button, Tabs, Toolbar, Typography } from "@mui/material";
 import LinkTab from "../UI/LinkTab/LinkTab";
 
-const Navbar = (props) => {
+const Navbar = ({ onLoginButtonClick }) => {
   return (
     <AppBar className={classes.appbar} color="container" elevation={0}>
       <Toolbar className={classes.toolbar}>
@@ -16,16 +16,17 @@ const Navbar = (props) => {
           </Typography>
         </div>
         <div className={classes.right}>
-          <Tabs
-            className={classes.tabs}
-            value={"home"}
-            indicatorColor="inherit"
-          >
+          <Tabs className={classes.tabs} value={"home"}>
             <LinkTab value="home" label="Home" href="/" />
             <LinkTab value="consumer" label="Consumer" href="/Consumer" />
             <LinkTab value="provider" label="Provider" href="/Provider" />
           </Tabs>
-          <Button variant="contained" color="primary" size="large">
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            onClick={onLoginButtonClick}
+          >
             Log In / Sign Up
           </Button>
         </div>
