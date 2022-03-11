@@ -45,8 +45,11 @@ export const theme = createTheme({
       lineHeight: 1,
       marginLeft: 7,
     },
-    title: {
-      fontSize: "40px",
+    modalTitle: {
+      fontSize: "30px",
+    },
+    modalSubtitle: {
+      marginLeft: "15px",
     },
   },
   components: {
@@ -65,6 +68,7 @@ export const theme = createTheme({
           backgroundColor: colors.light,
           borderRadius: 15,
           padding: "30px 40px",
+          display: "flex",
         },
       },
     },
@@ -82,6 +86,9 @@ export const theme = createTheme({
     MuiModal: {
       styleOverrides: {
         root: {
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
           border: "none",
         },
       },
@@ -90,6 +97,14 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           display: "block",
+        },
+      },
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          marginTop: "10px",
+          paddingLeft: "15px",
         },
       },
     },

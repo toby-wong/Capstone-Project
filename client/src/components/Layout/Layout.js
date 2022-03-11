@@ -1,25 +1,39 @@
 import { useState } from "react";
-import LoginModal from "../Login/LoginModal";
-import Navbar from "../Navbar/Navbar";
+import LoginSignupModal from "../Login/LoginSignupModal/LoginSignupModal";
+import MainHeader from "../MainHeader/MainHeader";
+import AuthContext from "../store/auth-context";
 import classes from "./Layout.module.css";
 
 const Layout = ({ children }) => {
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(true);
+  const [isLoginSignupModalOpen, setIsLoginSignupModalOpen] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const openLoginModal = () => {
-    setIsLoginModalOpen(true);
+  const openLoginSignupModal = () => {
+    setIsLoginSignupModalOpen(true);
   };
 
-  const closeLoginModal = () => {
-    setIsLoginModalOpen(false);
+  const closeLoginSignupModal = () => {
+    setIsLoginSignupModalOpen(false);
+  };
+
+  const loginHandler = () => {
+    setIsLoggedIn(true);
+    setIsLoginSignupModalOpen(false);
   };
 
   return (
-    <div className={classes.root}>
-      <LoginModal open={isLoginModalOpen} onClose={closeLoginModal} />
-      <Navbar onLoginButtonClick={openLoginModal} />
-      {children}
-    </div>
+    <AuthContext.Provider
+      value={{ isLoggedIn: isLoggedIn, onLogin: loginHandler }}
+    >
+      <div className={classes.root}>
+        <LoginSignupModal
+          open={isLoginSignupModalOpen}
+          onClose={closeLoginSignupModal}
+        />
+        <MainHeader onLoginClick={openLoginSignupModal} />
+        {children}
+      </div>
+    </AuthContext.Provider>
   );
 };
 
