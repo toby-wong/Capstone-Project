@@ -66,7 +66,7 @@ class Transaction(models.Model):
 
 # REVIEW MODELS
 class Review(models.Model):
-    parkingSpace = models.ForeignKey('Provider', on_delete=models.CASCADE)
+    parkingSpace = models.ForeignKey('ParkingSpace', on_delete=models.CASCADE)
     consumer = models.ForeignKey('Consumer', on_delete=models.CASCADE)
     rating = models.DecimalField(max_digits=2, decimal_places=1)
     comment = models.TextField()
