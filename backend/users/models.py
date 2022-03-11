@@ -7,7 +7,7 @@ class CustomUser(AbstractUser):
     # blank = False means that the field cannot be left blank
     # null = True sets NULL on column in DB
     email = models.EmailField(unique=True, blank=False)
-    phone_number = models.CharField(max_length=10, unique=True, blank=False)
+    phoneNumber = models.CharField(max_length=10, unique=True, blank=False)
     username = models.CharField(max_length=24, unique=True)
 
     def __str__(self) -> str:
