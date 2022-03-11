@@ -6,7 +6,7 @@ import LoginSignupModalForm from "../LoginSignupModal/LoginSignupModalForm";
 
 import classes from "./SignupForm.module.css";
 
-const SignupForm = ({ onSubmit }) => {
+const SignupForm = ({ onSubmit, onClose }) => {
   return (
     <LoginSignupModalForm onSubmit={onSubmit}>
       <LoginSignupModalContent>Content</LoginSignupModalContent>
@@ -14,7 +14,7 @@ const SignupForm = ({ onSubmit }) => {
         <Button variant="contained" size="large" type="submit">
           Sign up
         </Button>
-        <Button variant="contained" size="large">
+        <Button variant="contained" size="large" onClick={onClose}>
           Cancel
         </Button>
       </LoginSignupModalActions>

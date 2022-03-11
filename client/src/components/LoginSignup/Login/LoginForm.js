@@ -13,8 +13,8 @@ const LoginForm = ({
   passwordInputRef,
   error,
   onSubmit,
-  onSignupClick,
-  onForgetPasswordClick,
+  onClickSignup,
+  onClickForgotPassword,
 }) => {
   return (
     <LoginSignupModalForm onSubmit={onSubmit}>
@@ -42,13 +42,13 @@ const LoginForm = ({
         </div>
 
         <div className={classes.links}>
-          <Link color="textSecondary" href="/signup" onClick={onSignupClick}>
+          <Link color="textSecondary" href="/signup" onClick={onClickSignup}>
             New user? Sign up here
           </Link>
           <Link
             color="textSecondary"
             href="/forgotPassword"
-            onClick={onForgetPasswordClick}
+            onClick={onClickForgotPassword}
           >
             Forgot Password
           </Link>

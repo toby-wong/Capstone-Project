@@ -1,5 +1,5 @@
 import { useState } from "react";
-import LoginSignupModal from "../Login/LoginSignupModal/LoginSignupModal";
+import LoginSignupModal from "../LoginSignup/LoginSignupModal/LoginSignupModal";
 import MainHeader from "../MainHeader/MainHeader";
 import AuthContext from "../store/auth-context";
 import classes from "./Layout.module.css";

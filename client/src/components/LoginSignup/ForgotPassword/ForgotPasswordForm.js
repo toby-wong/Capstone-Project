@@ -5,9 +5,9 @@ import LoginSignupModalActions from "../LoginSignupModal/LoginSignupModalActions
 import LoginSignupModalContent from "../LoginSignupModal/LoginSignupModalContent";
 import LoginSignupModalForm from "../LoginSignupModal/LoginSignupModalForm";
 
-import classes from "./ForgetPasswordForm.module.css";
+import classes from "./ForgotPasswordForm.module.css";
 
-const ForgetPasswordForm = ({ emailInputRef }) => {
+const ForgotPasswordForm = ({ emailInputRef }) => {
   return (
     <LoginSignupModalForm>
       <LoginSignupModalContent>
@@ -38,4 +38,4 @@ const ForgetPasswordForm = ({ emailInputRef }) => {
   );
 };
 
-export default ForgetPasswordForm;
+export default ForgotPasswordForm;
