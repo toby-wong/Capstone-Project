@@ -22,7 +22,7 @@ class CustomUser(AbstractUser):
 
 # class CardDetails(models.Model):
 #     user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
-#     cardNumber = models.CharField(min_length=16, max_length=16, unique=True)
+#     cardNumber = models.CharField(max_length=16, unique=True)
 #     expiryDate = models.CharField(max_length=5)
 #     cvv = models.CharField(max_length=4)
 
