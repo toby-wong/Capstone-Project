@@ -24,8 +24,23 @@ const SignupForm = ({ onSubmit, onClose }) => {
     signupformInitialState
   );
 
+  const signupFormSubmitHandler = (e) => {
+    e.preventDefault();
+
+    onSubmit({
+      username: formState.username.value,
+      email: formState.email.value,
+      password1: formState.password.passwordValue,
+      password2: formState.password.confirmPasswordValue,
+      phone_number: formState.phone.value,
+      first_name: formState.legalname.firstnameValue,
+      last_name: formState.legalname.lastnameValue,
+      admin_code: formState.adminCode.value,
+    });
+  };
+
   return (
-    <LoginSignupModalForm onSubmit={onSubmit}>
+    <LoginSignupModalForm onSubmit={signupFormSubmitHandler}>
       <LoginSignupModalContent className={classes.signupform}>
         <div className={`${classes["row-container"]}`}>
           <SignupUsernameInput

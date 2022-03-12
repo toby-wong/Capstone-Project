@@ -18,6 +18,8 @@ const LoginSignupModal = ({ open, onClose }) => {
     setPage("forgotPassword");
   };
 
+  const signupFormSubmitHandler = () => {};
+
   const backToLoginFormHandler = (e) => {
     setPage("login");
   };
@@ -37,7 +39,9 @@ const LoginSignupModal = ({ open, onClose }) => {
           onClickForgotPassword={forgotPasswordClickHandler}
         />
       )}
-      {page === "signup" && <Signup onClose={onClose} />}
+      {page === "signup" && (
+        <Signup onSubmit={signupFormSubmitHandler} onClose={onClose} />
+      )}
       {page === "forgotPassword" && (
         <ForgotPassword onClose={onClose} onBack={backToLoginFormHandler} />
       )}
