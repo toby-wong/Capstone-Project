@@ -1,5 +1,4 @@
 # "Queries" for Django database
-from django.shortcuts import render
 from users.forms import *
 from users.models import CustomUser
 from rest_framework.generics import GenericAPIView

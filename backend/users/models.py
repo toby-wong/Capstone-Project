@@ -37,7 +37,7 @@ class ParkingSpace(models.Model):
 
 class Transaction(models.Model):
     provider = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
-    consumer = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+    # consumer = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
     vehicle = models.ForeignKey('Vehicle', on_delete=models.CASCADE)
     parkingSpace = models.ForeignKey('ParkingSpace', on_delete=models.RESTRICT)
     startTime = models.DateTimeField()
