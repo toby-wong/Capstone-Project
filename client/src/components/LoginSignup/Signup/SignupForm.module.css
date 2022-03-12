@@ -1,6 +1,7 @@
-/* Signup Form */
 .signupform {
   padding-right: 20px;
+  padding-bottom: 60px;
+  justify-content: space-between;
 }
 
 .signupform input {
@@ -16,24 +17,11 @@
   margin-left: 30px;
 }
 
-/* Name Container */
-.name-container {
+.row-container-top {
   display: flex;
-  justify-content: space-between;
 }
 
-/* Contact Container */
-.contact-container {
+.row-container-bottom {
   display: flex;
   margin-top: 120px;
-}
-
-/* Admin Container */
-.admin-container {
-  display: flex;
-  margin-top: 45px;
-}
-
-.admin-container input {
-  width: 250px;
 }

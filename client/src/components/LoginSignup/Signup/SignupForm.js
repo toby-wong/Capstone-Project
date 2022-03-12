@@ -1,58 +1,66 @@
 import { Button } from "@mui/material";
-import { useRef } from "react";
-import InputField from "../../UI/InputField/InputField";
+import { useReducer } from "react";
 
 import LoginSignupModalActions from "../LoginSignupModal/LoginSignupModalActions";
 import LoginSignupModalContent from "../LoginSignupModal/LoginSignupModalContent";
 import LoginSignupModalForm from "../LoginSignupModal/LoginSignupModalForm";
-import SignupEmailForm from "./SignupEmailForm";
+import SignupEmailInput from "./SignupEmailInput";
 
 import classes from "./SignupForm.module.css";
 import SignupLegalnameInput from "./SignupLegalnameInput";
 import SignupPasswordInput from "./SignupPasswordInput";
-import SignupPhoneForm from "./SignupPhoneForm";
-import SignupUsernameForm from "./SignupUsernameForm";
+import SignupUsernameInput from "./SignupUsernameInput";
+
+import SignupAdminCodeInput from "./SignupAdminCodeInput";
+import {
+  signupformInitialState,
+  signupformStateReducer,
+} from "./signupform-reducer";
 
 const SignupForm = ({ onSubmit, onClose }) => {
-  const usernameInputRef = useRef();
-  const firstnameInputRef = useRef();
-  const lastnameInputRef = useRef();
-  const passwordInputRef = useRef();
-  const phoneInputRef = useRef();
-  const emailInputRef = useRef();
-  const adminCodeInputRef = useRef();
+  const [formState, dispatchFormState] = useReducer(
+    signupformStateReducer,
+    signupformInitialState
+  );
 
   return (
     <LoginSignupModalForm onSubmit={onSubmit}>
       <LoginSignupModalContent className={classes.signupform}>
-        <div className={classes["name-container"]}>
-          <SignupUsernameForm usernameInputRef={usernameInputRef} />
+        <div className={classes["row-container-top"]}>
+          <SignupUsernameInput
+            state={formState.username}
+            onChange={dispatchFormState}
+          />
           <SignupLegalnameInput
-            firstnameInputRef={firstnameInputRef}
-            lastnameInputRef={lastnameInputRef}
+            state={formState.legalname}
+            onChange={dispatchFormState}
           />
         </div>
 
-        <SignupPasswordInput passwordInputRef={passwordInputRef} />
+        <SignupPasswordInput
+          state={formState.password}
+          onChange={dispatchFormState}
+        />
 
-        <div className={classes["contact-container"]}>
-          <SignupPhoneForm phoneInputRef={phoneInputRef} />
-          <SignupEmailForm emailInputRef={emailInputRef} />
-        </div>
-
-        <div className={classes["admin-container"]}>
-          <InputField
-            id="input-signup-adminCode"
-            label="Admin Code"
-            type="text"
-            size="small"
-            inputRef={adminCodeInputRef}
+        <div className={classes["row-container-bottom"]}>
+          <SignupEmailInput
+            state={formState.email}
+            onChange={dispatchFormState}
+          />
+          <SignupAdminCodeInput
+            state={formState.adminCode}
+            onChange={dispatchFormState}
           />
         </div>
       </LoginSignupModalContent>
 
       <LoginSignupModalActions>
-        <Button variant="contained" size="large" type="submit">
+        <Button
+          variant="contained"
+          size="large"
+          type="submit"
+          disabled={!formState.isFormValid}
+        >
           Sign up
         </Button>
         <Button

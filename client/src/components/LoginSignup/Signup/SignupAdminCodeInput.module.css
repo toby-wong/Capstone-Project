@@ -1,0 +1,7 @@
+.signup-admincode-input {
+  flex: 1;
+}
+
+.signup-admincode-input input {
+  width: 200px;
+}

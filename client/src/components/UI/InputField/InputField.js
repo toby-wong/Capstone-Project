@@ -7,6 +7,7 @@ const InputField = ({
   value,
   inputRef,
   onChange,
+  onBlur,
   size = "large",
   error = false,
   disabled = false,
@@ -29,6 +30,7 @@ const InputField = ({
         type={type}
         value={value}
         onChange={onChange}
+        onBlur={onBlur}
         inputRef={inputRef}
       />
     </FormControl>

@@ -1,15 +1,25 @@
 import InputField from "../../UI/InputField/InputField";
 import classes from "./SignupLegalnameInput.module.css";
 
-const SignupLegalnameInput = ({ firstnameInputRef, lastnameInputRef }) => {
+const SignupLegalnameInput = ({ state, onChange }) => {
+  const firstnameChangeHandler = (e) => {
+    onChange({ type: "FIRSTNAME_INPUT", value: e.target.value });
+  };
+  const lastnameChangeHandler = (e) => {
+    onChange({ type: "LASTNAME_INPUT", value: e.target.value });
+  };
+
   return (
-    <div className={classes.legalnameInput}>
+    <div className={classes["legalname-input"]}>
       <InputField
         id="input-signup-firstname"
         label="First name"
         type="text"
         size="small"
-        inputRef={firstnameInputRef}
+        value={state.firstnameValue}
+        onBlur={firstnameChangeHandler}
+        onChange={firstnameChangeHandler}
+        error={!state.isFirstnameValid}
         required={true}
       />
       <InputField
@@ -17,7 +27,10 @@ const SignupLegalnameInput = ({ firstnameInputRef, lastnameInputRef }) => {
         label="Last name"
         type="text"
         size="small"
-        inputRef={lastnameInputRef}
+        value={state.lastnameValue}
+        onBlur={lastnameChangeHandler}
+        onChange={lastnameChangeHandler}
+        error={!state.isLastnameValid}
         required={true}
       />
     </div>
