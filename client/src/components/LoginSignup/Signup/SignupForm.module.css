@@ -12,11 +12,6 @@
   width: 80px;
 }
 
-.form-helper-text {
-  position: absolute;
-  bottom: -30px;
-}
-
 .btn-cancel {
   margin-left: 30px;
 }
@@ -27,64 +22,16 @@
   justify-content: space-between;
 }
 
-.name-container__username {
-  flex: 1;
-  display: flex;
-  position: relative;
-}
-
-.name-container__legalname {
-  flex: 1;
-  display: flex;
-  justify-content: space-between;
-}
-
-/* Password Container */
-.password-container {
-  display: flex;
-  margin-top: 50px;
-}
-
-.password-container input {
-  width: 200px;
-}
-
-.password-container__password {
-  flex: 1;
-  position: relative;
-}
-
-.password-helper-text {
-  bottom: -90px;
-}
-
-.password-container__confirmPassword {
-  flex: 1;
-}
-
 /* Contact Container */
 .contact-container {
   display: flex;
-  margin-top: 115px;
-}
-
-.contact-container__phone {
-  flex: 1;
-}
-
-.contact-container__email {
-  flex: 1;
-}
-
-.contact-container__email input {
-  width: 270px;
+  margin-top: 120px;
 }
 
 /* Admin Container */
-
 .admin-container {
   display: flex;
-  margin-top: 40px;
+  margin-top: 45px;
 }
 
 .admin-container input {
