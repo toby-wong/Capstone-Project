@@ -16,6 +16,7 @@ import {
   signupformInitialState,
   signupformStateReducer,
 } from "./signupform-reducer";
+import SignupPhoneinput from "./SignupPhoneinput";
 
 const SignupForm = ({ onSubmit, onClose }) => {
   const [formState, dispatchFormState] = useReducer(
@@ -26,7 +27,7 @@ const SignupForm = ({ onSubmit, onClose }) => {
   return (
     <LoginSignupModalForm onSubmit={onSubmit}>
       <LoginSignupModalContent className={classes.signupform}>
-        <div className={classes["row-container-top"]}>
+        <div className={`${classes["row-container"]}`}>
           <SignupUsernameInput
             state={formState.username}
             onChange={dispatchFormState}
@@ -42,16 +43,22 @@ const SignupForm = ({ onSubmit, onClose }) => {
           onChange={dispatchFormState}
         />
 
-        <div className={classes["row-container-bottom"]}>
+        <div
+          className={`${classes["row-container"]} ${classes["contact-container"]}`}
+        >
           <SignupEmailInput
             state={formState.email}
             onChange={dispatchFormState}
           />
-          <SignupAdminCodeInput
-            state={formState.adminCode}
+          <SignupPhoneinput
+            state={formState.phone}
             onChange={dispatchFormState}
           />
         </div>
+        <SignupAdminCodeInput
+          state={formState.adminCode}
+          onChange={dispatchFormState}
+        />
       </LoginSignupModalContent>
 
       <LoginSignupModalActions>

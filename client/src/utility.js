@@ -9,3 +9,7 @@ export const containsUpper = (str) => {
 export const containsDigit = (str) => {
   return /[0-9]/.test(str);
 };
+
+export const containsOnlyDigis = (str) => {
+  return /^[0-9]+$/.test(str);
+};

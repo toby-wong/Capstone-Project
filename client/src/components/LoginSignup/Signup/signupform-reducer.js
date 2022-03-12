@@ -62,6 +62,12 @@ export const signupformStateReducer = (state, action) => {
     newState.email.isValid = action.value.includes("@");
   }
 
+  if (action.type === "PHONE_INPUT") {
+    newState.phone.value = action.value;
+    newState.phone.isValid =
+      utility.containsOnlyDigis(action.value) && action.value.length === 10;
+  }
+
   if (action.type === "ADMINCODE_INPUT") {
     newState.adminCode.value = action.value;
   }
@@ -70,7 +76,8 @@ export const signupformStateReducer = (state, action) => {
     newState.username.isValid &&
     newState.legalname.isValid &&
     newState.password.isValid &&
-    newState.email.isValid;
+    newState.email.isValid &&
+    newState.phone.isValid;
 
   return newState;
 };
@@ -99,6 +106,10 @@ export const signupformInitialState = {
     isValid: false,
   },
   email: {
+    value: "",
+    isValid: false,
+  },
+  phone: {
     value: "",
     isValid: false,
   },
