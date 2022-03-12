@@ -51,4 +51,3 @@ class CustomRegisterSerializer(RegisterSerializer):
         user.save()
         # profit???
         return user
-
