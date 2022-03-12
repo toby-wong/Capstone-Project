@@ -9,12 +9,12 @@ class TestQueryDB(unittest.TestCase):
     def testEmailExists(self):
         db = initDB()
         user = emailExists(db, "y0unggil10919@gmail.com")
-        assert user is not None, "Email should exist"
+        assert user, "Email should exist"
 
     def testPhoneExists(self):
         db = initDB()
-        user = emailExists(db, "y0unggil10919@gmail.com")
-        assert user is not None, "Phone should exist"
+        user = phoneExists(db, "0404111222")
+        assert user, "Phone should exist"
 
     def testGetPermissions(self):
         return
@@ -31,7 +31,7 @@ class TestUpdateDB(unittest.TestCase):
         }
         newUser(db, testUser)
         user = db.users.find_one(testUser)
-        assert user is not None, "User should exist"
+        assert user, "User should exist"
 
     def testChangePassword(self):
         db = initDB()
