@@ -1,4 +1,4 @@
-const LoginSignupModalContent = ({ children }) => {
+const LoginSignupModalContent = ({ children, className }) => {
   return (
     <div
       style={{
@@ -7,6 +7,7 @@ const LoginSignupModalContent = ({ children }) => {
         display: "flex",
         flexDirection: "column",
       }}
+      className={className}
     >
       {children}
     </div>

@@ -26,8 +26,8 @@ const LoginSignupModal = ({ open, onClose }) => {
     <GeneralModal
       open={open}
       onClose={onClose}
-      height={page === "signup" ? "500px" : "500px"}
-      width={page === "signup" ? "800px" : "500px"}
+      height={page === "signup" ? "580px" : "500px"}
+      width={page === "signup" ? "900px" : "500px"}
       flexDirection="column"
     >
       {page === "login" && (

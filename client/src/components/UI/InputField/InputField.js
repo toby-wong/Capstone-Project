@@ -7,8 +7,10 @@ const InputField = ({
   value,
   inputRef,
   onChange,
+  size = "large",
   error = false,
   disabled = false,
+  required = false,
   className,
 }) => {
   return (
@@ -17,6 +19,8 @@ const InputField = ({
       error={error}
       disabled={disabled}
       className={className}
+      required={required}
+      size={size}
     >
       <InputLabel htmlFor={id}>{label}</InputLabel>
       <OutlinedInput
