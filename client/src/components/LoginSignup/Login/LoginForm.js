@@ -1,35 +1,44 @@
-import { Button, FormHelperText, Link } from "@mui/material";
+import { useContext, useRef, useState } from "react";
 
-import InputField from "../../UI/InputField/InputField";
+import { Button, CircularProgress, FormHelperText, Link } from "@mui/material";
 
 import classes from "./LoginForm.module.css";
 
 import LoginSignupModalForm from "../LoginSignupModal/LoginSignupModalForm";
 import LoginSignupModalActions from "../LoginSignupModal/LoginSignupModalActions";
 import LoginSignupModalContent from "../LoginSignupModal/LoginSignupModalContent";
-import { useContext, useRef, useState } from "react";
 import AuthContext from "../../../contexts/auth-context";
 import LoginSignupModalHeader from "../LoginSignupModal/LoginSignupModalHeader";
-
-const user = {
-  email: "y0unggil0919@gmail.com",
-  password: "abcd1234",
-};
+import InputField from "../../UI/InputField/InputField";
+import useHttp from "../../../hooks/use-http";
+import * as config from "../../../config";
 
 const LoginForm = ({ onClose, onClickSignup, onClickForgotPassword }) => {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
   const authContext = useContext(AuthContext);
   const [error, setError] = useState(false);
-
-  const loginFormSubmitHandler = (e) => {
+  const [isLoading, sendRequest] = useHttp();
+  const loginFormSubmitHandler = async (e) => {
     e.preventDefault();
 
-    const enteredEmail = emailInputRef.current.value;
-    const enteredPassword = passwordInputRef.current.value;
+    const email = emailInputRef.current.value;
+    const password = passwordInputRef.current.value;
 
-    if (enteredEmail !== user.email || enteredPassword !== user.password)
+    const requestConfig = {
+      url: `${config.SERVER_URL}/api/auth/login/`,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: { email, password },
+    };
+
+    const response = await sendRequest(requestConfig);
+
+    if (response.status >= 300) {
       return setError(true);
+    }
 
     setError(false);
 
@@ -83,7 +92,8 @@ const LoginForm = ({ onClose, onClickSignup, onClickForgotPassword }) => {
             size="large"
             type="submit"
           >
-            Continue
+            {isLoading && <CircularProgress size={26} />}
+            {!isLoading && "Continue"}
           </Button>
         </LoginSignupModalActions>
       </LoginSignupModalForm>
