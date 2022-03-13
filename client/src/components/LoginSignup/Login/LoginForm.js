@@ -42,7 +42,7 @@ const LoginForm = ({ onClose, onClickSignup, onClickForgotPassword }) => {
 
     setError(false);
 
-    authContext.onLogin();
+    authContext.login(response.data.key);
   };
 
   return (

@@ -7,12 +7,15 @@ import reportWebVitals from "./reportWebVitals";
 import { StyledEngineProvider } from "@mui/material/styles";
 import { ThemeProvider } from "@emotion/react";
 import { theme } from "./theme";
+import { AuthContextProvider } from "./contexts/auth-context";
 
 ReactDOM.render(
   <React.StrictMode>
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
-        <App />
+        <AuthContextProvider>
+          <App />
+        </AuthContextProvider>
       </ThemeProvider>
     </StyledEngineProvider>
   </React.StrictMode>,
