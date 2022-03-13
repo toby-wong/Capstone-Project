@@ -19,7 +19,7 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
 
-# Bank and Card details are redundan
+# Bank and Card details are redundant
 # class CardDetails(models.Model):
 #     user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
 #     cardNumber = models.CharField(max_length=16, unique=True)
