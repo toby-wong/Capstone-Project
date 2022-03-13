@@ -1,5 +1,6 @@
 import { useContext, useRef, useState } from "react";
-import AuthContext from "../../store/auth-context";
+
+import AuthContext from "../../../contexts/auth-context";
 import LoginSignupModalHeader from "../LoginSignupModal/LoginSignupModalHeader";
 import LoginForm from "./LoginForm";
 

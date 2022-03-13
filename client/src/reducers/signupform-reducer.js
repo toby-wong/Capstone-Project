@@ -1,7 +1,11 @@
-import * as utility from "../../../utility";
+import * as utility from "../utility";
 
 export const signupformStateReducer = (state, action) => {
   const newState = { ...state };
+
+  if (action.tyep === "RESET") {
+    return getSignupformInitialState();
+  }
 
   if (action.type === "USERNAME_INPUT") {
     newState.username.value = action.value;
@@ -82,36 +86,38 @@ export const signupformStateReducer = (state, action) => {
   return newState;
 };
 
-export const signupformInitialState = {
-  isFormValid: false,
-  username: { value: "", isValid: false },
-  legalname: {
-    firstnameValue: "",
-    lastnameValue: "",
-    isFirstnameValid: true,
-    isLastnameValid: true,
-    isValid: false,
-  },
-  password: {
-    value: "",
-    passwordValue: "",
-    confirmPasswordValue: "",
-    isPasswordValid: true,
-    containsDigit: true,
-    containsLower: true,
-    containsUpper: true,
-    isValidLength: true,
-    isConfirmPasswordValid: true,
-    isMatching: true,
-    isValid: false,
-  },
-  email: {
-    value: "",
-    isValid: false,
-  },
-  phone: {
-    value: "",
-    isValid: false,
-  },
-  adminCode: { value: "" },
+export const getSignupformInitialState = () => {
+  return {
+    isFormValid: false,
+    username: { value: "", isValid: false },
+    legalname: {
+      firstnameValue: "",
+      lastnameValue: "",
+      isFirstnameValid: true,
+      isLastnameValid: true,
+      isValid: false,
+    },
+    password: {
+      value: "",
+      passwordValue: "",
+      confirmPasswordValue: "",
+      isPasswordValid: true,
+      containsDigit: true,
+      containsLower: true,
+      containsUpper: true,
+      isValidLength: true,
+      isConfirmPasswordValid: true,
+      isMatching: true,
+      isValid: false,
+    },
+    email: {
+      value: "",
+      isValid: false,
+    },
+    phone: {
+      value: "",
+      isValid: false,
+    },
+    adminCode: { value: "" },
+  };
 };

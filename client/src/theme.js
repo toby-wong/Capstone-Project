@@ -108,5 +108,12 @@ export const theme = createTheme({
         },
       },
     },
+    MuiCircularProgress: {
+      styleOverrides: {
+        root: {
+          color: colors.light,
+        },
+      },
+    },
   },
 });

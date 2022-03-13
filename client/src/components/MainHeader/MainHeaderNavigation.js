@@ -3,9 +3,9 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 import { useContext } from "react";
 
-import AuthContext from "../store/auth-context";
 import LinkTab from "../UI/LinkTab/LinkTab";
 import classes from "./MainHeaderNavigation.module.css";
+import AuthContext from "../../contexts/auth-context";
 
 const LoginSignupButton = ({ onClick }) => {
   return (

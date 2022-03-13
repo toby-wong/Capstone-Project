@@ -1,7 +1,9 @@
 import { useState } from "react";
+
+import AuthContext from "../../contexts/auth-context";
+
 import LoginSignupModal from "../LoginSignup/LoginSignupModal/LoginSignupModal";
 import MainHeader from "../MainHeader/MainHeader";
-import AuthContext from "../store/auth-context";
 import classes from "./Layout.module.css";
 
 const Layout = ({ children }) => {
