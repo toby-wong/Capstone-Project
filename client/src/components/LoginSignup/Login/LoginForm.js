@@ -13,36 +13,46 @@ import InputField from "../../UI/InputField/InputField";
 import useHttp from "../../../hooks/use-http";
 import * as config from "../../../config";
 
-const LoginForm = ({ onClose, onClickSignup, onClickForgotPassword }) => {
+const LoginForm = ({
+  onSubmit,
+  onClose,
+  onClickSignup,
+  onClickForgotPassword,
+}) => {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
   const authContext = useContext(AuthContext);
   const [error, setError] = useState(false);
   const [isLoading, sendRequest] = useHttp();
+
   const loginFormSubmitHandler = async (e) => {
     e.preventDefault();
 
-    const email = emailInputRef.current.value;
-    const password = passwordInputRef.current.value;
+    const loginResponse = await sendRequest(
+      `${config.SERVER_URL}/api/auth/login/`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: {
+          email: emailInputRef.current.value,
+          password: passwordInputRef.current.value,
+        },
+      }
+    );
 
-    const requestConfig = {
-      url: `${config.SERVER_URL}/api/auth/login/`,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: { email, password },
-    };
-
-    const response = await sendRequest(requestConfig);
-
-    if (response.status >= 300) {
+    if (loginResponse.status >= 300) {
       return setError(true);
     }
 
+    const authToken = loginResponse.data.key;
+
     setError(false);
 
-    authContext.login(response.data.key);
+    authContext.login(authToken);
+
+    onClose();
   };
 
   return (

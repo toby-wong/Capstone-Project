@@ -1,14 +1,24 @@
 import { Button, Typography } from "@mui/material";
+import { useRef } from "react";
 
 import InputField from "../../UI/InputField/InputField";
 import LoginSignupModalActions from "../LoginSignupModal/LoginSignupModalActions";
 import LoginSignupModalContent from "../LoginSignupModal/LoginSignupModalContent";
 import LoginSignupModalForm from "../LoginSignupModal/LoginSignupModalForm";
 import LoginSignupModalHeader from "../LoginSignupModal/LoginSignupModalHeader";
+import useHttp from "../../../hooks/use-http";
 
 import classes from "./ForgotPasswordForm.module.css";
 
+// /user/auth/forgot
 const ForgotPasswordForm = ({ onClose, onBack }) => {
+  const emailInputRef = useRef();
+  const [isLoading, sendRequest] = useHttp();
+
+  const forgotPasswordFormSubmitHandler = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <>
       <LoginSignupModalHeader
@@ -16,7 +26,7 @@ const ForgotPasswordForm = ({ onClose, onBack }) => {
         onBack={onBack}
         onClose={onClose}
       />
-      <LoginSignupModalForm>
+      <LoginSignupModalForm onSubmit={forgotPasswordFormSubmitHandler}>
         <LoginSignupModalContent>
           <Typography variant="modalSubtitle" color="textSecondary">
             Enter your email address and
@@ -27,7 +37,7 @@ const ForgotPasswordForm = ({ onClose, onBack }) => {
             id={"input-forgetPassword-email"}
             label="Email Address"
             type="email"
-            // inputRef={emailInputRef}
+            inputRef={emailInputRef}
             className={classes.inputField}
           />
         </LoginSignupModalContent>

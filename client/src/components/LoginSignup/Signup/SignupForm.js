@@ -44,8 +44,8 @@ const SignupForm = ({ onSubmit, onClose }) => {
       admin_code: formState.adminCode.value,
     };
 
-    const requestConfig = {
-      url: `${config.SERVER_URL}/api/auth/register/`,
+    const url = `${config.SERVER_URL}/api/auth/register/`;
+    const options = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -53,7 +53,7 @@ const SignupForm = ({ onSubmit, onClose }) => {
       body: formData,
     };
 
-    const response = await sendRequest(requestConfig);
+    const response = await sendRequest(url, options);
 
     if (response.status >= 300) {
       let messages = [];

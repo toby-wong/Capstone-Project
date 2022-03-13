@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+import useHttp from "../hooks/use-http";
+import * as config from "../config";
 
 const AuthContext = React.createContext({
   token: "",
@@ -8,8 +11,32 @@ const AuthContext = React.createContext({
 });
 
 export const AuthContextProvider = (props) => {
-  const initialToken = localStorage.getItem("parkItAuthToken");
+  let initialToken = localStorage.getItem("parkItAuthToken");
   const [token, setToken] = useState(initialToken);
+  const sendRequest = useHttp()[1];
+
+  useEffect(() => {
+    const setInitialToken = async () => {
+      if (!initialToken) return;
+
+      const response = await sendRequest(
+        `${config.SERVER_URL}/api/auth/user/`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Token " + initialToken,
+          },
+        }
+      );
+
+      if (response.status >= 300) {
+        setToken(null);
+        localStorage.removeItem("parkItAuthToken");
+      }
+    };
+
+    setInitialToken();
+  });
 
   const isLoggedIn = !!token;
 
