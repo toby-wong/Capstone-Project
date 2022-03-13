@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import GeneralModal from "../../UI/GeneralModal/GeneralModal";
-import ForgotPassword from "../ForgotPassword/ForgotPassword";
+import ForgotPasswordForm from "../ForgotPassword/ForgotPasswordForm";
 import LoginForm from "../Login/LoginForm";
 import SignupForm from "../Signup/SignupForm";
 import SignupSuccess from "../SignupSuccess/SignupSuccess";
@@ -57,7 +57,7 @@ const LoginSignupModal = ({ open, onClose }) => {
         <SignupSuccess onClose={modalCloseHandler} />
       )}
       {page === "forgotPassword" && (
-        <ForgotPassword
+        <ForgotPasswordForm
           onClose={modalCloseHandler}
           onBack={backToLoginFormHandler}
         />
