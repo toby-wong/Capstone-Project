@@ -1,6 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Bungee&family=Montserrat:wght@300;400;500;700&display=swap");
+
 * {
   box-sizing: border-box;
-  font-family: "Montserrat", sans-serif;
 }
 
 body {
@@ -10,6 +11,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background);
 }
 
 code {
@@ -24,6 +26,7 @@ code {
   --light: #f7f7f7;
   --purple: #7e78d2;
   --red: #ef6461;
+  --background: #ffffff;
 }
 
 /* 
