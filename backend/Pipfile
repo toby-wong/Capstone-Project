@@ -10,6 +10,7 @@ dj-rest-auth = "*"
 django-allauth = "*"
 django-cors-headers = "*"
 drf-spectacular = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 
