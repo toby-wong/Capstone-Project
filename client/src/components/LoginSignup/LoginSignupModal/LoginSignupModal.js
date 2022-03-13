@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
 import GeneralModal from "../../UI/GeneralModal/GeneralModal";
