@@ -1,6 +1,12 @@
 import { useContext, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
-import { Button, CircularProgress, FormHelperText, Link } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  FormHelperText,
+  Link as MuiLink,
+} from "@mui/material";
 
 import classes from "./LoginForm.module.css";
 
@@ -83,16 +89,20 @@ const LoginForm = ({
           </div>
 
           <div className={classes.links}>
-            <Link color="textSecondary" href="/signup" onClick={onClickSignup}>
+            <MuiLink
+              color="textSecondary"
+              href="/signup"
+              onClick={onClickSignup}
+            >
               New user? Sign up here
-            </Link>
-            <Link
+            </MuiLink>
+            <MuiLink
               color="textSecondary"
               href="/forgotPassword"
               onClick={onClickForgotPassword}
             >
               Forgot Password
-            </Link>
+            </MuiLink>
           </div>
         </LoginSignupModalContent>
         <LoginSignupModalActions>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
 import GeneralModal from "../../UI/GeneralModal/GeneralModal";
 import ForgotPasswordForm from "../ForgotPassword/ForgotPasswordForm";
@@ -7,61 +8,73 @@ import SignupForm from "../Signup/SignupForm";
 import SignupSuccess from "../SignupSuccess/SignupSuccess";
 
 const LoginSignupModal = ({ open, onClose }) => {
-  const [page, setPage] = useState("login");
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const signupClickHandler = (e) => {
     e.preventDefault();
-    setPage("signup");
+    navigate("/signup");
   };
 
   const forgotPasswordClickHandler = (e) => {
     e.preventDefault();
-    setPage("forgotPassword");
+    navigate("/forgotPassword");
   };
 
   const signupFormSubmitHandler = () => {
-    setPage("signupSuccess");
+    navigate("/signupSuccess");
   };
 
   const modalCloseHandler = () => {
-    setPage("login");
     onClose();
   };
 
   const backToLoginFormHandler = (e) => {
-    setPage("login");
+    navigate("/login");
   };
 
   return (
     <GeneralModal
       open={open}
       onClose={modalCloseHandler}
-      height={page === "signup" ? "580px" : "500px"}
-      width={page === "signup" ? "900px" : "500px"}
+      height={location.pathname === "/signup" ? "580px" : "500px"}
+      width={location.pathname === "/signup" ? "900px" : "500px"}
       flexDirection="column"
     >
-      {page === "login" && (
-        <LoginForm
-          onClose={onClose}
-          onClickSignup={signupClickHandler}
-          onClickForgotPassword={forgotPasswordClickHandler}
+      <Routes>
+        <Route
+          path="login"
+          element={
+            <LoginForm
+              onClose={onClose}
+              onClickSignup={signupClickHandler}
+              onClickForgotPassword={forgotPasswordClickHandler}
+            />
+          }
         />
-      )}
-      {page === "signup" && (
-        <SignupForm
-          onSubmit={signupFormSubmitHandler}
-          onClose={modalCloseHandler}
+        <Route
+          path="signup"
+          element={
+            <SignupForm
+              onSubmit={signupFormSubmitHandler}
+              onClose={modalCloseHandler}
+            />
+          }
         />
-      )}
-      {page === "signupSuccess" && (
-        <SignupSuccess onClose={modalCloseHandler} />
-      )}
-      {page === "forgotPassword" && (
-        <ForgotPasswordForm
-          onClose={modalCloseHandler}
-          onBack={backToLoginFormHandler}
+        <Route
+          path="signupSuccess"
+          element={<SignupSuccess onClose={modalCloseHandler} />}
         />
-      )}
+        <Route
+          path="forgotPassword"
+          element={
+            <ForgotPasswordForm
+              onClose={modalCloseHandler}
+              onBack={backToLoginFormHandler}
+            />
+          }
+        />
+      </Routes>
     </GeneralModal>
   );
 };

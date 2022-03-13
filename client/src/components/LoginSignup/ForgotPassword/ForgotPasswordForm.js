@@ -16,7 +16,6 @@ import * as config from "../../../config";
 
 import classes from "./ForgotPasswordForm.module.css";
 
-// /user/auth/forgot
 const ForgotPasswordForm = ({ onClose, onBack }) => {
   const emailInputRef = useRef();
   const [isLoading, sendRequest] = useHttp();
