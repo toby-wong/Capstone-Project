@@ -3,3 +3,4 @@ _*
 Scripts/
 pyenv.cfg
 Lib/
+backend/.venv
