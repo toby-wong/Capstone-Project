@@ -22,6 +22,7 @@ class UserSerializer(ModelSerializer):
             'bsb',
             'account_number',
             'account_name',
+            'is_staff',
             'pk'
         )
         
