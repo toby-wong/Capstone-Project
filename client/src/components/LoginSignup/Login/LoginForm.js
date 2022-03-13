@@ -46,7 +46,7 @@ const LoginForm = ({
       return setError(true);
     }
 
-    const authToken = loginResponse.data.key;
+    const authToken = loginResponse.data.access_token;
 
     setError(false);
 

@@ -26,7 +26,7 @@ const ForgotPasswordForm = ({ onClose, onBack }) => {
     e.preventDefault();
     console.log(emailInputRef.current.value);
     const response = await sendRequest(
-      `${config.SERVER_URL}/user/auth/forgot`,
+      `${config.SERVER_URL}/api/auth/password/reset/`,
       {
         method: "POST",
         headers: {

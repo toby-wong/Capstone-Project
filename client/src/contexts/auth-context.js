@@ -24,7 +24,7 @@ export const AuthContextProvider = (props) => {
         {
           method: "GET",
           headers: {
-            Authorization: "Token " + initialToken,
+            Authorization: "Bearer " + initialToken,
           },
         }
       );
@@ -36,13 +36,13 @@ export const AuthContextProvider = (props) => {
     };
 
     setInitialToken();
-  });
+  }, []);
 
   const isLoggedIn = !!token;
 
   const loginHandler = (token) => {
     setToken(token);
-    // localStorage.setItem("parkItAuthToken", token);
+    localStorage.setItem("parkItAuthToken", token);
   };
 
   const logoutHandler = () => {
