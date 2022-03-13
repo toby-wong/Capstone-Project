@@ -2,12 +2,12 @@ import { useState } from "react";
 
 import GeneralModal from "../../UI/GeneralModal/GeneralModal";
 import ForgotPassword from "../ForgotPassword/ForgotPassword";
-import Login from "../Login/Login";
+import LoginForm from "../Login/LoginForm";
 import SignupForm from "../Signup/SignupForm";
 import SignupSuccess from "../SignupSuccess/SignupSuccess";
 
 const LoginSignupModal = ({ open, onClose }) => {
-  const [page, setPage] = useState("signupSuccess");
+  const [page, setPage] = useState("login");
 
   const signupClickHandler = (e) => {
     e.preventDefault();
@@ -41,7 +41,7 @@ const LoginSignupModal = ({ open, onClose }) => {
       flexDirection="column"
     >
       {page === "login" && (
-        <Login
+        <LoginForm
           onClose={onClose}
           onClickSignup={signupClickHandler}
           onClickForgotPassword={forgotPasswordClickHandler}
