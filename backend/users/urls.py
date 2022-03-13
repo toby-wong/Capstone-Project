@@ -1,6 +1,6 @@
 from django.urls import include, path
 from dj_rest_auth.registration.views import VerifyEmailView, ConfirmEmailView
-from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
+from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView, UserDetailsView
 from users.views import *
 
 urlpatterns = [
