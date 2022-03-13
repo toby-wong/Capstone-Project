@@ -17,7 +17,7 @@ class CustomUser(AbstractUser):
 
 
     def __str__(self):
-        return self.name
+        return self.username
 
 # Bank and Card details are redundan
 # class CardDetails(models.Model):
