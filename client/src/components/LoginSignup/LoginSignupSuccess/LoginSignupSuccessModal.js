@@ -2,22 +2,19 @@ import { Button } from "@mui/material";
 import LoginSignupModalActions from "../LoginSignupModal/LoginSignupModalActions";
 import LoginSignupModalContent from "../LoginSignupModal/LoginSignupModalContent";
 import LoginSignupModalHeader from "../LoginSignupModal/LoginSignupModalHeader";
-import classes from "./SignupSuccess.module.css";
+import classes from "./LoginSignupSuccessModal.module.css";
 
-const SignupSuccess = ({ onClose }) => {
+const LoginSignupSuccessModal = ({
+  title,
+  children,
+  buttonContent,
+  onClose,
+}) => {
   return (
     <>
-      <LoginSignupModalHeader title="Thank you" onClose={onClose} />
+      <LoginSignupModalHeader title={title} onClose={onClose} />
       <LoginSignupModalContent className={classes.content}>
-        <p>
-          Your signup request has been successfully sent to our server. Please
-          check a verification email sent to the email you registered for the
-          account.
-        </p>
-        <p>
-          It normally take 3 ~ 5 business days until the account registration
-          after the date you've verify your account.
-        </p>
+        {children}
       </LoginSignupModalContent>
       <LoginSignupModalActions>
         <Button
@@ -26,11 +23,11 @@ const SignupSuccess = ({ onClose }) => {
           className={classes["confirm-btn"]}
           onClick={onClose}
         >
-          OK
+          {buttonContent}
         </Button>
       </LoginSignupModalActions>
     </>
   );
 };
 
-export default SignupSuccess;
+export default LoginSignupSuccessModal;

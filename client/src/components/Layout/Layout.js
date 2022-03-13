@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import LoginSignupModal from "../LoginSignup/LoginSignupModal/LoginSignupModal";
 import MainHeader from "../MainHeader/MainHeader";
+
 import classes from "./Layout.module.css";
 
 const Layout = ({ children }) => {

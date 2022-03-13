@@ -45,7 +45,7 @@ const LoginForm = ({
     if (loginResponse.status >= 300 || !loginResponse.status) {
       return setError(true);
     }
-
+    console.log(loginResponse);
     const authToken = loginResponse.data.access_token;
 
     setError(false);

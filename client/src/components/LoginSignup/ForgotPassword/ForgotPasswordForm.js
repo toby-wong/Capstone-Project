@@ -16,14 +16,13 @@ import * as config from "../../../config";
 
 import classes from "./ForgotPasswordForm.module.css";
 
-const ForgotPasswordForm = ({ onClose, onBack }) => {
+const ForgotPasswordForm = ({ onSubmit, onClose, onBack }) => {
   const emailInputRef = useRef();
   const [isLoading, sendRequest] = useHttp();
   const [error, setError] = useState(false);
 
   const forgotPasswordFormSubmitHandler = async (e) => {
     e.preventDefault();
-    console.log(emailInputRef.current.value);
     const response = await sendRequest(
       `${config.SERVER_URL}/api/auth/password/reset/`,
       {
@@ -37,8 +36,8 @@ const ForgotPasswordForm = ({ onClose, onBack }) => {
 
     if (response.status >= 300) return setError(true);
 
-    setError(true);
-    console.log(response);
+    setError(false);
+    onSubmit();
   };
 
   return (

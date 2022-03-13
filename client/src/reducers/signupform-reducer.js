@@ -3,7 +3,7 @@ import * as utility from "../utility";
 export const signupformStateReducer = (state, action) => {
   const newState = { ...state };
 
-  if (action.tyep === "RESET") {
+  if (action.type === "RESET") {
     return getSignupformInitialState();
   }
 
