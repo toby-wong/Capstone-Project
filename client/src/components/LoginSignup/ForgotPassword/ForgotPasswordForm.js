@@ -1,5 +1,10 @@
-import { Button, Typography } from "@mui/material";
-import { useRef } from "react";
+import {
+  Button,
+  CircularProgress,
+  FormHelperText,
+  Typography,
+} from "@mui/material";
+import { useRef, useState } from "react";
 
 import InputField from "../../UI/InputField/InputField";
 import LoginSignupModalActions from "../LoginSignupModal/LoginSignupModalActions";
@@ -7,6 +12,7 @@ import LoginSignupModalContent from "../LoginSignupModal/LoginSignupModalContent
 import LoginSignupModalForm from "../LoginSignupModal/LoginSignupModalForm";
 import LoginSignupModalHeader from "../LoginSignupModal/LoginSignupModalHeader";
 import useHttp from "../../../hooks/use-http";
+import * as config from "../../../config";
 
 import classes from "./ForgotPasswordForm.module.css";
 
@@ -14,9 +20,26 @@ import classes from "./ForgotPasswordForm.module.css";
 const ForgotPasswordForm = ({ onClose, onBack }) => {
   const emailInputRef = useRef();
   const [isLoading, sendRequest] = useHttp();
+  const [error, setError] = useState(false);
 
-  const forgotPasswordFormSubmitHandler = (e) => {
+  const forgotPasswordFormSubmitHandler = async (e) => {
     e.preventDefault();
+    console.log(emailInputRef.current.value);
+    const response = await sendRequest(
+      `${config.SERVER_URL}/user/auth/forgot`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: { email: emailInputRef.current.value },
+      }
+    );
+
+    if (response.status >= 300) return setError(true);
+
+    setError(true);
+    console.log(response);
   };
 
   return (
@@ -40,6 +63,12 @@ const ForgotPasswordForm = ({ onClose, onBack }) => {
             inputRef={emailInputRef}
             className={classes.inputField}
           />
+          <FormHelperText
+            style={{ visibility: `${error ? "visible" : "hidden"}` }}
+            error
+          >
+            There is no account in the system with the given email address.
+          </FormHelperText>
         </LoginSignupModalContent>
         <LoginSignupModalActions>
           <Button
@@ -48,7 +77,8 @@ const ForgotPasswordForm = ({ onClose, onBack }) => {
             size="large"
             type="submit"
           >
-            Continue
+            {isLoading && <CircularProgress size={26} />}
+            {!isLoading && "Continue"}
           </Button>
         </LoginSignupModalActions>
       </LoginSignupModalForm>

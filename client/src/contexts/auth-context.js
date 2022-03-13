@@ -42,7 +42,7 @@ export const AuthContextProvider = (props) => {
 
   const loginHandler = (token) => {
     setToken(token);
-    localStorage.setItem("parkItAuthToken", token);
+    // localStorage.setItem("parkItAuthToken", token);
   };
 
   const logoutHandler = () => {
