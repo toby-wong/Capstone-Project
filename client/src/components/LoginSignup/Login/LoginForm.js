@@ -1,12 +1,6 @@
 import { useContext, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 
-import {
-  Button,
-  CircularProgress,
-  FormHelperText,
-  Link as MuiLink,
-} from "@mui/material";
+import { Button, CircularProgress, FormHelperText, Link } from "@mui/material";
 
 import classes from "./LoginForm.module.css";
 
@@ -48,7 +42,7 @@ const LoginForm = ({
       }
     );
 
-    if (loginResponse.status >= 300) {
+    if (loginResponse.status >= 300 || !loginResponse.status) {
       return setError(true);
     }
 
@@ -89,20 +83,16 @@ const LoginForm = ({
           </div>
 
           <div className={classes.links}>
-            <MuiLink
-              color="textSecondary"
-              href="/signup"
-              onClick={onClickSignup}
-            >
+            <Link color="textSecondary" href="/signup" onClick={onClickSignup}>
               New user? Sign up here
-            </MuiLink>
-            <MuiLink
+            </Link>
+            <Link
               color="textSecondary"
               href="/forgotPassword"
               onClick={onClickForgotPassword}
             >
               Forgot Password
-            </MuiLink>
+            </Link>
           </div>
         </LoginSignupModalContent>
         <LoginSignupModalActions>
