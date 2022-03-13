@@ -22,6 +22,7 @@ class UserSerializer(ModelSerializer):
             'bsb',
             'account_number',
             'account_name',
+            'is_staff',
             'pk'
         )
         
@@ -51,4 +52,3 @@ class CustomRegisterSerializer(RegisterSerializer):
         user.save()
         # profit???
         return user
-

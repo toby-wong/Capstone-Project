@@ -15,16 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from dj_rest_auth.registration.views import VerifyEmailView, ConfirmEmailView
+from .views import AddAdminView, RemoveAdminView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('users.urls')),
-    path(
-        'dj-rest-auth/registration/account-confirm-email/<str:key>/',
-        ConfirmEmailView.as_view(),
-    ), # Needs to be defined before the registration path
-    path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
-    path('dj-rest-auth/account-confirm-email/', VerifyEmailView.as_view(), name='account_email_verification_sent')
-
+    path('admin/users/customuser/<id>/change', AddAdminView.as_view(), name='add_admin'), # issue is to do with CSRF verification failing
+    
+    # path('admin/remove_user/', RemoveAdminView.as_view(), name='remove_admin'), # may have to do with current url being admin/
 ]
+    # moved within users.urls
+    # path('dj-rest-auth/registration/account-confirm-email/<str:key>/', ConfirmEmailView.as_view(),), # Needs to be defined before the registration path
+    # path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
+    # path('dj-rest-auth/account-confirm-email/', VerifyEmailView.as_view(), name='account_email_verification_sent'),
+    # path('dj-rest-auth/password/reset/', PasswordResetView.as_view(), name='password_reset'),
+    # path('dj-rest-auth/password/reset/confirm/<str:uidb64>/<str:token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),

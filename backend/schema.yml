@@ -3,9 +3,37 @@ info:
   title: ''
   version: 0.0.0
 paths:
+  /api/account-confirm-email/:
+    post:
+      operationId: account_confirm_email_create
+      tags:
+      - account-confirm-email
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
   /api/auth/login/:
     post:
-      operationId: login_create
+      operationId: auth_login_create
       description: |-
         Check the credentials and return the REST Token
         if the credentials are valid and authenticated.
@@ -15,7 +43,7 @@ paths:
         Accept the following POST parameters: username, password
         Return the REST Framework Token Object's key.
       tags:
-      - login
+      - auth
       requestBody:
         content:
           application/json:
@@ -29,27 +57,29 @@ paths:
               $ref: '#/components/schemas/Login'
         required: true
       security:
-      - tokenAuth: []
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
       - {}
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Token'
+                $ref: '#/components/schemas/JWT'
           description: ''
   /api/auth/logout/:
     post:
-      operationId: logout_create
+      operationId: auth_logout_create
       description: |-
         Calls Django logout method and delete the Token object
         assigned to the current User object.
 
         Accepts/Returns nothing.
       tags:
-      - logout
+      - auth
       security:
-      - tokenAuth: []
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
       - {}
       responses:
         '200':
@@ -60,14 +90,14 @@ paths:
           description: ''
   /api/auth/password/change/:
     post:
-      operationId: password_change_create
+      operationId: auth_password_change_create
       description: |-
         Calls Django Auth SetPasswordForm save method.
 
         Accepts the following POST parameters: new_password1, new_password2
         Returns the success/fail message.
       tags:
-      - password
+      - auth
       requestBody:
         content:
           application/json:
@@ -81,7 +111,8 @@ paths:
               $ref: '#/components/schemas/PasswordChange'
         required: true
       security:
-      - tokenAuth: []
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
       responses:
         '200':
           content:
@@ -90,6 +121,305 @@ paths:
                 $ref: '#/components/schemas/RestAuthDetail'
           description: ''
   /api/auth/password/reset/:
+    post:
+      operationId: auth_password_reset_create
+      description: |-
+        Calls Django Auth PasswordResetForm save method.
+
+        Accepts the following POST parameters: email
+        Returns the success/fail message.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /api/auth/password/reset/confirm/:
+    post:
+      operationId: auth_password_reset_confirm_create
+      description: |-
+        Password reset e-mail link is confirmed, therefore
+        this resets the user's password.
+
+        Accepts the following POST parameters: token, uid,
+            new_password1, new_password2
+        Returns the success/fail message.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /api/auth/register/:
+    post:
+      operationId: auth_register_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomRegister'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomRegister'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomRegister'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /api/auth/register/resend-email/:
+    post:
+      operationId: auth_register_resend_email_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResendEmailVerification'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ResendEmailVerification'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResendEmailVerification'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /api/auth/register/verify-email/:
+    post:
+      operationId: auth_register_verify_email_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /api/auth/token/refresh/:
+    post:
+      operationId: auth_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/auth/token/verify/:
+    post:
+      operationId: auth_token_verify_create
+      description: |-
+        Takes a token and indicates if it is valid.  This view provides no
+        information about a token's fitness for a particular use.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenVerify'
+          description: ''
+  /api/auth/user/:
+    get:
+      operationId: auth_user_retrieve
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+      - auth
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: auth_user_update
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: auth_user_partial_update
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/password/reset/:
     post:
       operationId: password_reset_create
       description: |-
@@ -112,7 +442,8 @@ paths:
               $ref: '#/components/schemas/PasswordReset'
         required: true
       security:
-      - tokenAuth: []
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
       - {}
       responses:
         '200':
@@ -121,7 +452,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/RestAuthDetail'
           description: ''
-  /api/auth/password/reset/confirm/:
+  /api/password/reset/confirm/{uidb64}/{token}/:
     post:
       operationId: password_reset_confirm_create
       description: |-
@@ -131,6 +462,17 @@ paths:
         Accepts the following POST parameters: token, uid,
             new_password1, new_password2
         Returns the success/fail message.
+      parameters:
+      - in: path
+        name: token
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uidb64
+        schema:
+          type: string
+        required: true
       tags:
       - password
       requestBody:
@@ -146,7 +488,8 @@ paths:
               $ref: '#/components/schemas/PasswordResetConfirm'
         required: true
       security:
-      - tokenAuth: []
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
       - {}
       responses:
         '200':
@@ -155,11 +498,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/RestAuthDetail'
           description: ''
-  /api/auth/register/:
+  /api/registration/:
     post:
-      operationId: register_create
+      operationId: registration_create
       tags:
-      - register
+      - registration
       requestBody:
         content:
           application/json:
@@ -173,34 +516,8 @@ paths:
               $ref: '#/components/schemas/CustomRegister'
         required: true
       security:
-      - tokenAuth: []
-      - {}
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Token'
-          description: ''
-  /api/auth/register/resend-email/:
-    post:
-      operationId: register_resend_email_create
-      tags:
-      - register
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ResendEmailVerification'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/ResendEmailVerification'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/ResendEmailVerification'
-        required: true
-      security:
-      - tokenAuth: []
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
       - {}
       responses:
         '201':
@@ -209,11 +526,39 @@ paths:
               schema:
                 $ref: '#/components/schemas/RestAuthDetail'
           description: ''
-  /api/auth/register/verify-email/:
+  /api/registration/resend-email/:
     post:
-      operationId: register_verify_email_create
+      operationId: registration_resend_email_create
       tags:
-      - register
+      - registration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResendEmailVerification'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ResendEmailVerification'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResendEmailVerification'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /api/registration/verify-email/:
+    post:
+      operationId: registration_verify_email_create
+      tags:
+      - registration
       requestBody:
         content:
           application/json:
@@ -227,7 +572,8 @@ paths:
               $ref: '#/components/schemas/VerifyEmail'
         required: true
       security:
-      - tokenAuth: []
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
       - {}
       responses:
         '200':
@@ -235,96 +581,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RestAuthDetail'
-          description: ''
-  /api/auth/user/:
-    get:
-      operationId: user_retrieve
-      description: |-
-        Reads and updates UserModel fields
-        Accepts GET, PUT, PATCH methods.
-
-        Default accepted fields: username, first_name, last_name
-        Default display fields: pk, username, email, first_name, last_name
-        Read-only fields: pk, email
-
-        Returns UserModel fields.
-      tags:
-      - user
-      security:
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-          description: ''
-    put:
-      operationId: user_update
-      description: |-
-        Reads and updates UserModel fields
-        Accepts GET, PUT, PATCH methods.
-
-        Default accepted fields: username, first_name, last_name
-        Default display fields: pk, username, email, first_name, last_name
-        Read-only fields: pk, email
-
-        Returns UserModel fields.
-      tags:
-      - user
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/User'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/User'
-        required: true
-      security:
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-          description: ''
-    patch:
-      operationId: user_partial_update
-      description: |-
-        Reads and updates UserModel fields
-        Accepts GET, PUT, PATCH methods.
-
-        Default accepted fields: username, first_name, last_name
-        Default display fields: pk, username, email, first_name, last_name
-        Read-only fields: pk, email
-
-        Returns UserModel fields.
-      tags:
-      - user
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchedUser'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedUser'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PatchedUser'
-      security:
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
           description: ''
 components:
   schemas:
@@ -361,6 +617,20 @@ components:
       - password2
       - phone_number
       - username
+    JWT:
+      type: object
+      description: Serializer for JWT authentication.
+      properties:
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+      required:
+      - access_token
+      - refresh_token
+      - user
     Login:
       type: object
       properties:
@@ -473,15 +743,26 @@ components:
           readOnly: true
       required:
       - detail
-    Token:
+    TokenRefresh:
       type: object
-      description: Serializer for Token model.
       properties:
-        key:
+        access:
           type: string
-          maxLength: 40
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
       required:
-      - key
+      - access
+      - refresh
+    TokenVerify:
+      type: object
+      properties:
+        token:
+          type: string
+          writeOnly: true
+      required:
+      - token
     User:
       type: object
       properties:
@@ -522,6 +803,8 @@ components:
         account_name:
           type: string
           maxLength: 100
+        is_staff:
+          type: boolean
         pk:
           type: integer
           readOnly: true
@@ -538,6 +821,7 @@ components:
       - phone_number
       - pk
       - username
+      - is_staff
     VerifyEmail:
       type: object
       properties:
@@ -546,8 +830,11 @@ components:
       required:
       - key
   securitySchemes:
-    tokenAuth:
+    jwtCookieAuth:
       type: apiKey
-      in: header
-      name: Authorization
-      description: Token-based authentication with required prefix "Token"
+      in: cookie
+      name: my-app-auth
+    jwtHeaderAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
