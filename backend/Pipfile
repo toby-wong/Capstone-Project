@@ -10,11 +10,8 @@ dj-rest-auth = "*"
 django-allauth = "*"
 django-cors-headers = "*"
 drf-spectacular = "*"
-<<<<<<< HEAD
 djangorestframework-simplejwt = "*"
-=======
 tzdata = "*"
->>>>>>> b9dbc457985e4a3e702dbecef756ebc16a88a96b
 
 [dev-packages]
 
