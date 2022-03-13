@@ -522,6 +522,8 @@ components:
         account_name:
           type: string
           maxLength: 100
+        is_staff:
+          type: boolean
         pk:
           type: integer
           readOnly: true
@@ -538,6 +540,7 @@ components:
       - phone_number
       - pk
       - username
+      - is_staff
     VerifyEmail:
       type: object
       properties:

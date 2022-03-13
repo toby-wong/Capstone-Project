@@ -1,2 +1,5 @@
 .autogit
 _*
+Scripts/
+pyenv.cfg
+Lib/

@@ -23,3 +23,6 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta:        
         model = CustomUser        
         fields = UserChangeForm.Meta.fields
+
+class RemoveUser(forms.Form):
+    username = forms.CharField()
