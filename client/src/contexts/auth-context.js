@@ -5,6 +5,7 @@ import * as config from "../config";
 
 const AuthContext = React.createContext({
   token: "",
+  isAdmin: false,
   isLoggedIn: false,
   login: () => {},
   logout: () => {},
@@ -13,6 +14,7 @@ const AuthContext = React.createContext({
 export const AuthContextProvider = (props) => {
   let initialToken = localStorage.getItem("parkItAuthToken");
   const [token, setToken] = useState(initialToken);
+  const [isAdmin, setIsAdmin] = useState(false);
   const sendRequest = useHttp()[1];
 
   useEffect(() => {
@@ -33,6 +35,8 @@ export const AuthContextProvider = (props) => {
         setToken(null);
         localStorage.removeItem("parkItAuthToken");
       }
+
+      setIsAdmin(response.data.is_staff);
     };
 
     setInitialToken();
@@ -40,8 +44,9 @@ export const AuthContextProvider = (props) => {
 
   const isLoggedIn = !!token;
 
-  const loginHandler = (token) => {
+  const loginHandler = (token, admin) => {
     setToken(token);
+    setIsAdmin(admin);
     localStorage.setItem("parkItAuthToken", token);
   };
 
@@ -52,6 +57,7 @@ export const AuthContextProvider = (props) => {
 
   const contextValue = {
     token: token,
+    isAdmin: isAdmin,
     isLoggedIn: isLoggedIn,
     login: loginHandler,
     logout: logoutHandler,

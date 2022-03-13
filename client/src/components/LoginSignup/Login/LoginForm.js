@@ -45,12 +45,13 @@ const LoginForm = ({
     if (loginResponse.status >= 300 || !loginResponse.status) {
       return setError(true);
     }
-    console.log(loginResponse);
+
     const authToken = loginResponse.data.access_token;
+    const admin = loginResponse.data.is_staff;
 
     setError(false);
 
-    authContext.login(authToken);
+    authContext.login(authToken, admin);
 
     onClose();
   };

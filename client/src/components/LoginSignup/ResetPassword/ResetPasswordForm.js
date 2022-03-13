@@ -16,7 +16,6 @@ import useHttp from "../../../hooks/use-http";
 import * as config from "../../../config";
 
 import classes from "./ResetPasswordForm.module.css";
-import { ContentPasteSearchOutlined } from "@mui/icons-material";
 
 const ResetPasswordForm = ({ onSubmit, onClose }) => {
   const [formState, dispatchFormState] = useReducer(

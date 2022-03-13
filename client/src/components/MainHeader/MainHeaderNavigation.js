@@ -36,6 +36,9 @@ const MainHeaderNavigation = ({ onLoginClick }) => {
         {authContext.isLoggedIn && (
           <LinkTab value="provider" label="Provider" href="/Provider" />
         )}
+        {authContext.isAdmin && (
+          <LinkTab value="admin" label="Admin" href="/Admin" />
+        )}
       </Tabs>
 
       {!authContext.isLoggedIn ? (
