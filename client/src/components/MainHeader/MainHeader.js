@@ -5,7 +5,7 @@ import { AppBar, Toolbar } from "@mui/material";
 import MainHeaderBrand from "./MainHeaderBrand";
 import MainHeaderNavigation from "./MainHeaderNavigation";
 
-const MainHeader = ({ onLoginClick }) => {
+const MainHeader = () => {
   return (
     <AppBar
       className={classes.appbar}
@@ -15,7 +15,7 @@ const MainHeader = ({ onLoginClick }) => {
     >
       <Toolbar className={classes.toolbar}>
         <MainHeaderBrand />
-        <MainHeaderNavigation onLoginClick={onLoginClick} />
+        <MainHeaderNavigation />
       </Toolbar>
     </AppBar>
   );

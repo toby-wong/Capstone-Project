@@ -6,6 +6,7 @@ import { useContext } from "react";
 import classes from "./MainHeaderNavigation.module.css";
 import AuthContext from "../../contexts/auth-context";
 import { Link } from "react-router-dom";
+import LoginSignupModalContext from "../../contexts/login-signup-modal-context";
 
 const LoginSignupButton = ({ onClick }) => {
   return (
@@ -23,8 +24,9 @@ const UserAccountButton = () => {
   );
 };
 
-const MainHeaderNavigation = ({ onLoginClick }) => {
+const MainHeaderNavigation = () => {
   const authContext = useContext(AuthContext);
+  const loginSignupModalContext = useContext(LoginSignupModalContext);
 
   return (
     <div className={classes.headerNavigation}>
@@ -52,7 +54,7 @@ const MainHeaderNavigation = ({ onLoginClick }) => {
       </Tabs>
 
       {!authContext.isLoggedIn ? (
-        <LoginSignupButton onClick={onLoginClick} />
+        <LoginSignupButton onClick={loginSignupModalContext.openModal} />
       ) : (
         <UserAccountButton />
       )}

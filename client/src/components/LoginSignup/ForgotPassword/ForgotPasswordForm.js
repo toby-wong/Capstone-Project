@@ -1,10 +1,12 @@
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import {
   Button,
   CircularProgress,
   FormHelperText,
   Typography,
 } from "@mui/material";
-import { useRef, useState } from "react";
 
 import InputField from "../../UI/InputField/InputField";
 import LoginSignupModalActions from "../LoginSignupModal/LoginSignupModalActions";
@@ -16,7 +18,8 @@ import * as config from "../../../config";
 
 import classes from "./ForgotPasswordForm.module.css";
 
-const ForgotPasswordForm = ({ onSubmit, onClose, onBack }) => {
+const ForgotPasswordForm = ({ onClose }) => {
+  const navigate = useNavigate();
   const emailInputRef = useRef();
   const [isLoading, sendRequest] = useHttp();
   const [error, setError] = useState(false);
@@ -37,14 +40,18 @@ const ForgotPasswordForm = ({ onSubmit, onClose, onBack }) => {
     if (response.status >= 300) return setError(true);
 
     setError(false);
-    onSubmit();
+    navigate("/passwordResetEmailSent");
+  };
+
+  const backHandler = (e) => {
+    navigate("/login");
   };
 
   return (
     <>
       <LoginSignupModalHeader
         title="Forget Password"
-        onBack={onBack}
+        onBack={backHandler}
         onClose={onClose}
       />
       <LoginSignupModalForm onSubmit={forgotPasswordFormSubmitHandler}>

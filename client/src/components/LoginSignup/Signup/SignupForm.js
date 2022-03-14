@@ -1,5 +1,7 @@
 import { Button, CircularProgress } from "@mui/material";
+
 import { useReducer, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import LoginSignupModalActions from "../LoginSignupModal/LoginSignupModalActions";
 import LoginSignupModalContent from "../LoginSignupModal/LoginSignupModalContent";
@@ -22,7 +24,8 @@ import useHttp from "../../../hooks/use-http";
 import * as config from "../../../config";
 import SignupErrorModal from "./SignupErrorModal";
 
-const SignupForm = ({ onSubmit, onClose }) => {
+const SignupForm = ({ onClose }) => {
+  const navigate = useNavigate();
   const [isLoading, sendRequest] = useHttp();
   const [error, setError] = useState({ value: false, messages: [] });
   const [formState, dispatchFormState] = useReducer(
@@ -65,7 +68,7 @@ const SignupForm = ({ onSubmit, onClose }) => {
     }
 
     dispatchFormState({ type: "RESET" });
-    onSubmit();
+    navigate("/signupSuccess");
   };
 
   const signupErrorModalCloseHandler = () => {

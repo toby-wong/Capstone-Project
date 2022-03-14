@@ -1,6 +1,6 @@
 import { Button, FormHelperText, CircularProgress } from "@mui/material";
 import { useReducer } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import {
   getResetPasswordformInitialState,
@@ -17,7 +17,8 @@ import * as config from "../../../config";
 
 import classes from "./ResetPasswordForm.module.css";
 
-const ResetPasswordForm = ({ onSubmit, onClose }) => {
+const ResetPasswordForm = ({ onClose }) => {
+  const navigate = useNavigate();
   const [formState, dispatchFormState] = useReducer(
     resetPasswordFormReducer,
     getResetPasswordformInitialState()
@@ -39,8 +40,6 @@ const ResetPasswordForm = ({ onSubmit, onClose }) => {
   const resetPasswordFormSubmitHandler = async (e) => {
     e.preventDefault();
 
-    console.log(uid, token, formState.password.passwordValue);
-
     const response = await sendRequest(
       `${config.SERVER_URL}/api/auth/password/reset/confirm/`,
       {
@@ -58,11 +57,10 @@ const ResetPasswordForm = ({ onSubmit, onClose }) => {
     );
 
     if (response.status >= 300 || !response.status) {
-      console.log(response.data);
       return alert(response.data);
     }
 
-    onSubmit();
+    navigate("/resetPasswordSuccess");
   };
 
   return (

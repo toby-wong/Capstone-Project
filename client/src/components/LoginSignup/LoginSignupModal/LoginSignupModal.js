@@ -1,4 +1,6 @@
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
+import LoginSignupModalContext from "../../../contexts/login-signup-modal-context";
 
 import GeneralModal from "../../UI/GeneralModal/GeneralModal";
 import ForgotPasswordForm from "../ForgotPassword/ForgotPasswordForm";
@@ -8,94 +10,37 @@ import ResetPasswordForm from "../ResetPassword/ResetPasswordForm";
 import SignupForm from "../Signup/SignupForm";
 import SignupSuccess from "../Signup/SignupSuccess";
 
-const LoginSignupModal = ({ open, onClose }) => {
+const LoginSignupModal = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-
-  const signupClickHandler = (e) => {
-    e.preventDefault();
-    navigate("/signup");
-  };
-
-  const forgotPasswordClickHandler = (e) => {
-    e.preventDefault();
-    navigate("/forgotPassword");
-  };
-
-  const signupFormSubmitHandler = () => {
-    navigate("/signupSuccess");
-  };
-
-  const forgotPasswordFormSubmitHandler = () => {
-    navigate("/passwordResetEmailSent");
-  };
-
-  const resetPasswordFormSubmitHandler = () => {
-    navigate("/resetPasswordSuccess");
-  };
-
-  const modalCloseHandler = () => {
-    onClose();
-  };
-
-  const backToLoginFormHandler = (e) => {
-    navigate("/login");
-  };
+  const loginSignupModalContext = useContext(LoginSignupModalContext);
+  const onClose = loginSignupModalContext.closeModal;
 
   return (
     <GeneralModal
-      open={open || location.pathname.includes("api/password/reset/confirm")}
-      onClose={modalCloseHandler}
+      open={loginSignupModalContext.isOpen}
+      onClose={loginSignupModalContext.closeModal}
       height={location.pathname === "/signup" ? "580px" : "500px"}
       width={location.pathname === "/signup" ? "900px" : "500px"}
       flexDirection="column"
     >
       <Routes>
-        <Route
-          path="login"
-          element={
-            <LoginForm
-              onClose={onClose}
-              onClickSignup={signupClickHandler}
-              onClickForgotPassword={forgotPasswordClickHandler}
-            />
-          }
-        />
-        <Route
-          path="signup"
-          element={
-            <SignupForm
-              onSubmit={signupFormSubmitHandler}
-              onClose={modalCloseHandler}
-            />
-          }
-        />
+        <Route path="login" element={<LoginForm onClose={onClose} />} />
+        <Route path="signup" element={<SignupForm onClose={onClose} />} />
         <Route
           path="signupSuccess"
-          element={<SignupSuccess onClose={modalCloseHandler} />}
+          element={<SignupSuccess onClose={onClose} />}
         />
         <Route
           path="forgotPassword"
-          element={
-            <ForgotPasswordForm
-              onSubmit={forgotPasswordFormSubmitHandler}
-              onClose={modalCloseHandler}
-              onBack={backToLoginFormHandler}
-            />
-          }
+          element={<ForgotPasswordForm onClose={onClose} />}
         />
         <Route
           path="passwordResetEmailSent"
-          element={<ForgotPasswordFormSuccess onClose={modalCloseHandler} />}
+          element={<ForgotPasswordFormSuccess onClose={onClose} />}
         />
         <Route
           path="api/password/reset/confirm/:uid/:token"
-          element={
-            <ResetPasswordForm
-              onSubmit={resetPasswordFormSubmitHandler}
-              onClose={modalCloseHandler}
-            />
-          }
+          element={<ResetPasswordForm onClose={onClose} />}
         />
       </Routes>
     </GeneralModal>

@@ -1,6 +1,13 @@
 import { useContext, useRef, useState } from "react";
 
-import { Button, CircularProgress, FormHelperText, Link } from "@mui/material";
+import { Link } from "react-router-dom";
+
+import {
+  Button,
+  CircularProgress,
+  FormHelperText,
+  Link as MuiLink,
+} from "@mui/material";
 
 import classes from "./LoginForm.module.css";
 
@@ -13,12 +20,7 @@ import InputField from "../../UI/InputField/InputField";
 import useHttp from "../../../hooks/use-http";
 import * as config from "../../../config";
 
-const LoginForm = ({
-  onSubmit,
-  onClose,
-  onClickSignup,
-  onClickForgotPassword,
-}) => {
+const LoginForm = ({ onClose }) => {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
   const authContext = useContext(AuthContext);
@@ -84,16 +86,16 @@ const LoginForm = ({
           </div>
 
           <div className={classes.links}>
-            <Link color="textSecondary" href="/signup" onClick={onClickSignup}>
+            <MuiLink color="textSecondary" component={Link} to="/signup">
               New user? Sign up here
-            </Link>
-            <Link
+            </MuiLink>
+            <MuiLink
               color="textSecondary"
-              href="/forgotPassword"
-              onClick={onClickForgotPassword}
+              component={Link}
+              to="/forgotPassword"
             >
               Forgot Password
-            </Link>
+            </MuiLink>
           </div>
         </LoginSignupModalContent>
         <LoginSignupModalActions>
