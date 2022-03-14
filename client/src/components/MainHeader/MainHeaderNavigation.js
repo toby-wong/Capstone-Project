@@ -1,11 +1,11 @@
-import { Button, IconButton, Tabs } from "@mui/material";
+import { Button, IconButton, Tab, Tabs } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 import { useContext } from "react";
 
-import LinkTab from "../UI/LinkTab/LinkTab";
 import classes from "./MainHeaderNavigation.module.css";
 import AuthContext from "../../contexts/auth-context";
+import { Link } from "react-router-dom";
 
 const LoginSignupButton = ({ onClick }) => {
   return (
@@ -29,15 +29,25 @@ const MainHeaderNavigation = ({ onLoginClick }) => {
   return (
     <div className={classes.headerNavigation}>
       <Tabs className={classes.tabs} value={"home"}>
-        <LinkTab value="home" label="Home" href="/" />
+        <Tab component={Link} to="/" value="home" label="Home" />
         {authContext.isLoggedIn && (
-          <LinkTab value="consumer" label="Consumer" href="/Consumer" />
+          <Tab
+            component={Link}
+            to="/consumer"
+            value="consumer"
+            label="Consumer"
+          />
         )}
         {authContext.isLoggedIn && (
-          <LinkTab value="provider" label="Provider" href="/Provider" />
+          <Tab
+            component={Link}
+            to="/provider"
+            value="provider"
+            label="Provider"
+          />
         )}
         {authContext.isAdmin && (
-          <LinkTab value="admin" label="Admin" href="/Admin" />
+          <Tab component={Link} to="/admin" value="admin" label="Admin" />
         )}
       </Tabs>
 

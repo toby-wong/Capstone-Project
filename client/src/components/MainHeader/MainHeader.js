@@ -7,7 +7,12 @@ import MainHeaderNavigation from "./MainHeaderNavigation";
 
 const MainHeader = ({ onLoginClick }) => {
   return (
-    <AppBar className={classes.appbar} color="container" elevation={0}>
+    <AppBar
+      className={classes.appbar}
+      position="static"
+      color="container"
+      elevation={0}
+    >
       <Toolbar className={classes.toolbar}>
         <MainHeaderBrand />
         <MainHeaderNavigation onLoginClick={onLoginClick} />
