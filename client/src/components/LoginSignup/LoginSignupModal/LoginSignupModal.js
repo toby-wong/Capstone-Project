@@ -7,6 +7,7 @@ import ForgotPasswordForm from "../ForgotPassword/ForgotPasswordForm";
 import ForgotPasswordFormSuccess from "../ForgotPassword/ForgotPasswordFormSuccess";
 import LoginForm from "../Login/LoginForm";
 import ResetPasswordForm from "../ResetPassword/ResetPasswordForm";
+import ResetPasswordSuccess from "../ResetPassword/ResetPasswordSuccess";
 import SignupForm from "../Signup/SignupForm";
 import SignupSuccess from "../Signup/SignupSuccess";
 
@@ -41,6 +42,10 @@ const LoginSignupModal = () => {
         <Route
           path="api/password/reset/confirm/:uid/:token"
           element={<ResetPasswordForm onClose={onClose} />}
+        />
+        <Route
+          path="resetPasswordSuccess"
+          element={<ResetPasswordSuccess onClose={onClose} />}
         />
       </Routes>
     </GeneralModal>
