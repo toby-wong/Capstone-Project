@@ -5,7 +5,7 @@ import { useContext } from "react";
 
 import classes from "./MainHeaderNavigation.module.css";
 import AuthContext from "../../contexts/auth-context";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import LoginSignupModalContext from "../../contexts/login-signup-modal-context";
 
 const LoginSignupButton = ({ onClick }) => {
@@ -25,18 +25,19 @@ const UserAccountButton = () => {
 };
 
 const MainHeaderNavigation = () => {
+  const location = useLocation();
   const authContext = useContext(AuthContext);
   const loginSignupModalContext = useContext(LoginSignupModalContext);
 
   return (
     <div className={classes.headerNavigation}>
-      <Tabs className={classes.tabs} value={"home"}>
-        <Tab component={Link} to="/" value="home" label="Home" />
+      <Tabs className={classes.tabs} value={location.pathname}>
+        <Tab component={Link} to="/" value="/" label="Home" />
         {authContext.isLoggedIn && (
           <Tab
             component={Link}
             to="/consumer"
-            value="consumer"
+            value="/consumer"
             label="Consumer"
           />
         )}
@@ -44,12 +45,12 @@ const MainHeaderNavigation = () => {
           <Tab
             component={Link}
             to="/provider"
-            value="provider"
+            value="/provider"
             label="Provider"
           />
         )}
         {authContext.isAdmin && (
-          <Tab component={Link} to="/admin" value="admin" label="Admin" />
+          <Tab component={Link} to="/admin" value="/admin" label="Admin" />
         )}
       </Tabs>
 
