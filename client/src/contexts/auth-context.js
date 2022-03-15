@@ -35,7 +35,7 @@ export const AuthContextProvider = (props) => {
         setToken(null);
         localStorage.removeItem("parkItAuthToken");
       }
-      setIsAdmin(response.data.user.is_staff);
+      setIsAdmin(response.data.is_staff);
     };
 
     setInitialToken();
