@@ -20,7 +20,7 @@ from .views import AddAdminView, RemoveAdminView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('users.urls')),
-    path('admin/users/customuser/<id>/change', AddAdminView.as_view(), name='add_admin'), # issue is to do with CSRF verification failing
+    path('admin/add_admin', AddAdminView.as_view(), name='add_admin'), # issue is to do with CSRF verification failing
     
     # path('admin/remove_user/', RemoveAdminView.as_view(), name='remove_admin'), # may have to do with current url being admin/
 ]
