@@ -1,5 +1,6 @@
 .signupform {
   padding-right: 20px;
+  padding-bottom: 40px;
   justify-content: space-between;
 }
 
@@ -21,5 +22,5 @@
 }
 
 .contact-container {
-  margin-top: 120px;
+  margin-top: 100px;
 }

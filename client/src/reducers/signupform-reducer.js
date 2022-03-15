@@ -72,10 +72,6 @@ export const signupformStateReducer = (state, action) => {
       utility.containsOnlyDigis(action.value) && action.value.length === 10;
   }
 
-  if (action.type === "ADMINCODE_INPUT") {
-    newState.adminCode.value = action.value;
-  }
-
   newState.isFormValid =
     newState.username.isValid &&
     newState.legalname.isValid &&
@@ -118,6 +114,5 @@ export const getSignupformInitialState = () => {
       value: "",
       isValid: false,
     },
-    adminCode: { value: "" },
   };
 };

@@ -10,7 +10,6 @@ import SignupEmailInput from "./SignupEmailInput";
 import SignupLegalnameInput from "./SignupLegalnameInput";
 import SignupPasswordInput from "./SignupPasswordInput";
 import SignupUsernameInput from "./SignupUsernameInput";
-import SignupAdminCodeInput from "./SignupAdminCodeInput";
 import {
   getSignupformInitialState,
   signupformStateReducer,
@@ -44,7 +43,6 @@ const SignupForm = ({ onClose }) => {
       phone_number: formState.phone.value,
       first_name: formState.legalname.firstnameValue,
       last_name: formState.legalname.lastnameValue,
-      admin_code: formState.adminCode.value,
     };
 
     const url = `${config.SERVER_URL}/api/auth/register/`;
@@ -113,10 +111,6 @@ const SignupForm = ({ onClose }) => {
               onChange={dispatchFormState}
             />
           </div>
-          <SignupAdminCodeInput
-            state={formState.adminCode}
-            onChange={dispatchFormState}
-          />
         </LoginSignupModalContent>
 
         <LoginSignupModalActions>
