@@ -1,12 +1,13 @@
-import { Button, IconButton, Tab, Tabs } from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-
-import { useContext } from "react";
+import { Button, IconButton, Tab, Tabs} from "@mui/material";
+import { useContext, useState } from "react";
 
 import classes from "./MainHeaderNavigation.module.css";
 import AuthContext from "../../contexts/auth-context";
 import { Link, useLocation } from "react-router-dom";
 import LoginSignupModalContext from "../../contexts/login-signup-modal-context";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import MainHeaderProfileMenu from "./MainHeaderProfileMenu";
+
 
 const LoginSignupButton = ({ onClick }) => {
   return (
@@ -18,10 +19,8 @@ const LoginSignupButton = ({ onClick }) => {
 
 const UserAccountButton = () => {
   return (
-    <IconButton size="large" color="primary">
-      <AccountCircleIcon fontSize="large" />
-    </IconButton>
-  );
+    <MainHeaderProfileMenu />
+  )
 };
 
 const MainHeaderNavigation = () => {
