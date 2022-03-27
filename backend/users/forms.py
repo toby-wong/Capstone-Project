@@ -38,6 +38,7 @@ class ParkingCreation(forms.Form):
             'postcode',
             'price',
             'image',
+            'notes',
             'approved',      
         )
     

@@ -37,6 +37,7 @@ class ParkingSpace(models.Model):
     postcode = models.CharField(max_length=4)
     price = models.IntegerField()
     image = models.ImageField(upload_to='media/parking_spaces')
+    notes = models.TextField(max_length=500)
     approved = models.BooleanField(default=False)
 
 class Transaction(models.Model):
