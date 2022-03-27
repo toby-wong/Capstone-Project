@@ -12,6 +12,8 @@ django-cors-headers = "*"
 drf-spectacular = "*"
 djangorestframework-simplejwt = "*"
 tzdata = "*"
+django-booking = "*"
+Pillow = "*"
 
 [dev-packages]
 

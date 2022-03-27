@@ -113,8 +113,10 @@ INSTALLED_APPS = [
     'dj_rest_auth.registration',
     'corsheaders',
     'drf_spectacular',
+    # 'booking',
     # Local Apps
     'users',
+    'parking'
 ]
 
 MIDDLEWARE = [

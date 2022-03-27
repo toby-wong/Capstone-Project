@@ -24,7 +24,8 @@ urlpatterns = [
     path('api/', include('users.urls')),
     path('admin/users/customuser/<id>/change', AddAdminView.as_view(), name='add_admin'), # issue is to do with CSRF verification failing
     # path('admin/remove_user/', RemoveAdminView.as_view(), name='remove_admin'), # may have to do with current url being admin/
-] + static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT),
+    # path('booking/', include('booking.urls')),
+]
     # moved within users.urls
     # path('dj-rest-auth/registration/account-confirm-email/<str:key>/', ConfirmEmailView.as_view(),), # Needs to be defined before the registration path
     # path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
