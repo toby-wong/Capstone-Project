@@ -42,7 +42,7 @@ class ParkingCreation(forms.Form):
         )
     
     def clean(self):
-        clean_data = super(ParkingCreation, self).clean() # need to strip address details from parking space fields
+        clean_data = super(f'{ParkingCreation.streetAddress} {ParkingCreation.city} {ParkingCreation.state} {ParkingCreation.postcode} AU', self).clean() # stripped address details from form
         validation_rules = get_validation_rules(clean_data)
         try:
             valid_address = normalize_address(clean_data)
