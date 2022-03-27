@@ -41,9 +41,14 @@ const MainHeaderNavigation = () => {
     setAnchorEl(null);
   };
 
+  const markingPaths = ["/", "/consumer", "/provider", "/admin"];
+  const activeTab = markingPaths.includes(location.pathname)
+    ? location.pathname
+    : false;
+
   return (
     <div className={classes.headerNavigation}>
-      <Tabs className={classes.tabs} value={location.pathname}>
+      <Tabs className={classes.tabs} value={activeTab}>
         <Tab component={Link} to="/" value="/" label="Home" />
         {authContext.isLoggedIn && (
           <Tab

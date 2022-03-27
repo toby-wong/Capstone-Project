@@ -29,7 +29,7 @@ const AccountMenu = ({ open, anchorEl, onClose, anchorOrigin }) => {
         paper: classes.accountMenu,
       }}
     >
-      <MenuItem onClick={onClose} component={Link} to="/account" disableRipple>
+      <MenuItem onClick={onClose} component={Link} to="/account/details">
         <ManageAccountsOutlinedIcon className={classes.menuItemIcon} />
         <Typography className={classes.menuItemText}>
           Account Details
@@ -38,26 +38,34 @@ const AccountMenu = ({ open, anchorEl, onClose, anchorOrigin }) => {
 
       <Divider sx={{ my: 3 }} />
 
-      <MenuItem onClick={onClose} component={Link} to="/account" disableRipple>
+      <MenuItem
+        onClick={onClose}
+        component={Link}
+        to="/account/history/consumer"
+      >
         <ManageSearchOutlinedIcon className={classes.menuItemIcon} />
         <Typography className={classes.menuItemText}>
           Consumer History
         </Typography>
       </MenuItem>
-      <MenuItem onClick={onClose} component={Link} to="/account" disableRipple>
+      <MenuItem
+        onClick={onClose}
+        component={Link}
+        to="/account/history/provider"
+      >
         <ManageSearchOutlinedIcon className={classes.menuItemIcon} />
         <Typography className={classes.menuItemText}>
           Provider History
         </Typography>
       </MenuItem>
-      <MenuItem onClick={onClose} component={Link} to="/account" disableRipple>
+      <MenuItem onClick={onClose} component={Link} to="/account/favourites">
         <FavoriteBorderOutlinedIcon className={classes.menuItemIcon} />
         <Typography className={classes.menuItemText}>Favourites</Typography>
       </MenuItem>
 
       <Divider sx={{ my: 3 }} />
 
-      <MenuItem onClick={logoutHandler}>
+      <MenuItem onClick={logoutHandler} component={Link} to="/">
         <LogoutOutlinedIcon className={classes.menuItemIcon} />
         <Typography className={classes.menuItemText}>Logout</Typography>
       </MenuItem>
