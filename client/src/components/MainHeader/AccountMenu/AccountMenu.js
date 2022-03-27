@@ -6,7 +6,19 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 
 import classes from "./AccountMenu.module.css";
 
+import { Link } from "react-router-dom";
+import { useContext } from "react";
+
+import AuthContext from "../../../contexts/auth-context";
+
 const AccountMenu = ({ open, anchorEl, onClose, anchorOrigin }) => {
+  const authContext = useContext(AuthContext);
+
+  const logoutHandler = () => {
+    onClose();
+    authContext.logout();
+  };
+
   return (
     <Menu
       open={open}
@@ -17,7 +29,7 @@ const AccountMenu = ({ open, anchorEl, onClose, anchorOrigin }) => {
         paper: classes.accountMenu,
       }}
     >
-      <MenuItem onClick={onClose} disableRipple>
+      <MenuItem onClick={onClose} component={Link} to="/account" disableRipple>
         <ManageAccountsOutlinedIcon className={classes.menuItemIcon} />
         <Typography className={classes.menuItemText}>
           Account Details
@@ -26,26 +38,26 @@ const AccountMenu = ({ open, anchorEl, onClose, anchorOrigin }) => {
 
       <Divider sx={{ my: 3 }} />
 
-      <MenuItem onClick={onClose} disableRipple>
+      <MenuItem onClick={onClose} component={Link} to="/account" disableRipple>
         <ManageSearchOutlinedIcon className={classes.menuItemIcon} />
         <Typography className={classes.menuItemText}>
           Consumer History
         </Typography>
       </MenuItem>
-      <MenuItem onClick={onClose} disableRipple>
+      <MenuItem onClick={onClose} component={Link} to="/account" disableRipple>
         <ManageSearchOutlinedIcon className={classes.menuItemIcon} />
         <Typography className={classes.menuItemText}>
           Provider History
         </Typography>
       </MenuItem>
-      <MenuItem onClick={onClose} disableRipple>
+      <MenuItem onClick={onClose} component={Link} to="/account" disableRipple>
         <FavoriteBorderOutlinedIcon className={classes.menuItemIcon} />
         <Typography className={classes.menuItemText}>Favourites</Typography>
       </MenuItem>
 
       <Divider sx={{ my: 3 }} />
 
-      <MenuItem onClick={onClose} disableRipple>
+      <MenuItem onClick={logoutHandler}>
         <LogoutOutlinedIcon className={classes.menuItemIcon} />
         <Typography className={classes.menuItemText}>Logout</Typography>
       </MenuItem>
