@@ -51,6 +51,11 @@ export const theme = createTheme({
     modalSubtitle: {
       marginLeft: "15px",
     },
+    sectionTitle: {
+      fontSize: "30px",
+      fontWeight: "bold",
+      color: colors.dark,
+    },
   },
   components: {
     MuiButton: {

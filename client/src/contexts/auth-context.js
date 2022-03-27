@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import useHttp from "../hooks/use-http";
 import * as config from "../config";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = React.createContext({
   token: "",
@@ -16,11 +17,13 @@ export const AuthContextProvider = (props) => {
   const [token, setToken] = useState(initialToken);
   const [isAdmin, setIsAdmin] = useState(false);
   const sendRequest = useHttp()[1];
+  const navigate = useNavigate();
 
   useEffect(() => {
     const setInitialToken = async () => {
-      if (!initialToken) return;
-
+      if (!initialToken) {
+        return navigate("/");
+      }
       const response = await sendRequest(
         `${config.SERVER_URL}/api/auth/user/`,
         {
@@ -34,6 +37,7 @@ export const AuthContextProvider = (props) => {
       if (response.status >= 300) {
         setToken(null);
         localStorage.removeItem("parkItAuthToken");
+        return navigate("/");
       }
       setIsAdmin(response.data.is_staff);
     };

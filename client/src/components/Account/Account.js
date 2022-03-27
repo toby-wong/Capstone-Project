@@ -6,7 +6,8 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 
 import classes from "./Account.module.css";
 
-import { Link, useLocation } from "react-router-dom";
+import { Link, Route, Routes, useLocation } from "react-router-dom";
+import AccountDetails from "./AccountDetails";
 
 const Account = (props) => {
   const location = useLocation();
@@ -58,7 +59,20 @@ const Account = (props) => {
           iconPosition="start"
         />
       </Tabs>
-      <div className={classes.content}>Account Content</div>
+      <div className={classes.content}>
+        <Routes>
+          <Route path="details" element={<AccountDetails />} />
+          <Route
+            path="history/consumer"
+            element={<div>Consumer History</div>}
+          />
+          <Route
+            path="history/provider"
+            element={<div>Provider History</div>}
+          />
+          <Route path="favourites" element={<div>Favourites</div>} />
+        </Routes>
+      </div>
     </Paper>
   );
 };
