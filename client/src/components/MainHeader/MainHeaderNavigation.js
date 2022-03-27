@@ -1,12 +1,14 @@
 import { Button, IconButton, Tab, Tabs } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 import classes from "./MainHeaderNavigation.module.css";
+
 import AuthContext from "../../contexts/auth-context";
-import { Link, useLocation } from "react-router-dom";
 import LoginSignupModalContext from "../../contexts/login-signup-modal-context";
+import AccountMenu from "./AccountMenu/AccountMenu";
 
 const LoginSignupButton = ({ onClick }) => {
   return (
@@ -16,9 +18,9 @@ const LoginSignupButton = ({ onClick }) => {
   );
 };
 
-const UserAccountButton = () => {
+const UserAccountButton = ({ onClick }) => {
   return (
-    <IconButton size="large" color="primary">
+    <IconButton size="large" color="primary" onClick={onClick}>
       <AccountCircleIcon fontSize="large" />
     </IconButton>
   );
@@ -28,6 +30,16 @@ const MainHeaderNavigation = () => {
   const location = useLocation();
   const authContext = useContext(AuthContext);
   const loginSignupModalContext = useContext(LoginSignupModalContext);
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const openAccountMenuHandler = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const closeAccountMenuHandler = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <div className={classes.headerNavigation}>
@@ -57,8 +69,18 @@ const MainHeaderNavigation = () => {
       {!authContext.isLoggedIn ? (
         <LoginSignupButton onClick={loginSignupModalContext.openModal} />
       ) : (
-        <UserAccountButton />
+        <UserAccountButton onClick={openAccountMenuHandler} />
       )}
+
+      <AccountMenu
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={closeAccountMenuHandler}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+      />
     </div>
   );
 };
