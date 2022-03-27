@@ -116,7 +116,6 @@ INSTALLED_APPS = [
     # 'booking',
     # Local Apps
     'users',
-    'parking'
 ]
 
 MIDDLEWARE = [

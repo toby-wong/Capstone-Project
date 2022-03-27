@@ -26,3 +26,19 @@ class CustomUserChangeForm(UserChangeForm):
 
 class RemoveUser(forms.Form):
     username = forms.CharField()
+
+
+class ParkingCreation(forms.Form):
+    
+    class Meta:
+        model = ParkingSpace
+        fields = (
+            'provider',
+            'streetAddress',
+            'city',
+            'state',
+            'postcode',
+            'price',
+            'image',
+            'approved',      
+        )
