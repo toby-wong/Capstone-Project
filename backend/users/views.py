@@ -25,9 +25,9 @@ class AddParkingSpaceView(GenericAPIView):
     serializer_class = ParkingCreationSerializer
 
     def post(self,request):
-        serializer = ParkingCreationSerializer(request.data)
+        serializer = ParkingCreationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        serializer.save(request)
         if serializer.errors is None:
             return Response({'message': 'Parking space added'}, status=status.HTTP_201_CREATED)
         else:

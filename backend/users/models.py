@@ -36,7 +36,7 @@ class ParkingSpace(models.Model):
     state = models.CharField(max_length=3)
     postcode = models.CharField(max_length=4)
     price = models.IntegerField()
-    image = models.ImageField(upload_to='media/parking_spaces')
+    # image = models.ImageField(upload_to='media/parking_spaces')
     notes = models.TextField(max_length=500)
     is_active = models.BooleanField(default=False)
 

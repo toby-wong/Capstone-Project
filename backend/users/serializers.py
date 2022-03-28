@@ -75,15 +75,14 @@ class ParkingCreationSerializer(ModelSerializer):
             'state',
             'postcode',
             'price',
-            'image',
+            # 'image',
             'notes',
             'is_active',      
         )
 
     def save(self, request):
-        parking = super().save(request)
-        AddressValidationForm(request.data)
-        cleanAddress = AddressValidationForm.clean()
+        cleanAddress = AddressValidationForm(request.data)
+        cleanAddress.clean()
         if cleanAddress.errors:
             raise cleanAddress.errors
         parking.streetAddress = cleanAddress.get('streetAddress')
@@ -93,7 +92,7 @@ class ParkingCreationSerializer(ModelSerializer):
 
         parking.provider = self.data.get('provider')
         parking.price = self.data.get('price')
-        parking.image = self.data.get('image')
+        # parking.image = self.data.get('image')
         parking.notes = self.data.get('notes')
         parking.is_active = self.data.get('is_active')
         parking.save()
