@@ -134,5 +134,12 @@ export const theme = createTheme({
         },
       },
     },
+    MuiInput: {
+      styleOverrides: {
+        root: {
+          color: colors.dark,
+        },
+      },
+    },
   },
 });
