@@ -33,18 +33,12 @@ class RemoveUserForm(forms.Form):
 
 class AddressValidationForm(forms.Form):
     
-    street_address = forms.CharField(max_length=200)
-    city = forms.CharField(max_length=200)
-    country_code = ('AU', 'Australia')
-    country_area = forms.CharField(max_length=200)
-    postal_code = forms.CharField(max_length=200)
-
     def __init__(self, data):
-        street_address = data.pop('streetAddress')
-        city = data.pop('city')
-        country_area = data.pop('state')
-        postal_code = data.pop('postcode')
-        
+        self.street_address = data.pop('streetAddress')
+        self.city = data.pop('city')
+        self.country_area = data.pop('state')
+        self.postal_code = data.pop('postcode')
+        self.country_code = ('AU', 'Australia')
         
     def clean(self):
         clean_data = self.data
