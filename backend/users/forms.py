@@ -27,7 +27,7 @@ class CustomUserChangeForm(UserChangeForm):
 class RemoveUser(forms.Form):
     username = forms.CharField()
 
-class ParkingCreation(forms.Form):
+class ParkingCreationForm(forms.Form):
     class Meta:
         model = ParkingSpace
         fields = (
@@ -39,11 +39,11 @@ class ParkingCreation(forms.Form):
             'price',
             'image',
             'notes',
-            'approved',      
+            'is_active',      
         )
     
     def clean(self):
-        clean_data = super(f'{ParkingCreation.streetAddress} {ParkingCreation.city} {ParkingCreation.state} {ParkingCreation.postcode} AU', self).clean() # stripped address details from form
+        clean_data = super(f'{ParkingCreationForm.streetAddress} {ParkingCreationForm.city} {ParkingCreationForm.state} {ParkingCreationForm.postcode} AU', self).clean() # stripped address details from form
         validation_rules = get_validation_rules(clean_data)
         try:
             valid_address = normalize_address(clean_data)
@@ -53,8 +53,8 @@ class ParkingCreation(forms.Form):
             for field, error_code in errors.items():
                 if field == 'postal_code':
                     examples = validation_rules.postal_code_examples
-                    msg = 'Invalid value, use format like %s' % examples
+                    msg = 'Invalid value, use format like XXXX' % examples
                 else:
-                    msg = ERROR_MESSAGES[error_code]
+                    msg = ERROR_MESSAGES[error_code] # TODO: look into implementation of this
                 self.add_error(field, msg)
         return valid_address or clean_data

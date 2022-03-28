@@ -38,7 +38,7 @@ class ParkingSpace(models.Model):
     price = models.IntegerField()
     image = models.ImageField(upload_to='media/parking_spaces')
     notes = models.TextField(max_length=500)
-    approved = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
 
 class Transaction(models.Model):
     provider = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='provider')
