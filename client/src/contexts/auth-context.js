@@ -22,6 +22,7 @@ export const AuthContextProvider = (props) => {
   useEffect(() => {
     const setInitialToken = async () => {
       if (!initialToken) {
+        if (location.pathname.includes("/password/reset/confirm")) return;
         return navigate("/");
       }
       const response = await sendRequest(
