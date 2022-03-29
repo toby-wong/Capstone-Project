@@ -5,9 +5,9 @@ info:
 paths:
   /api/account-confirm-email/:
     post:
-      operationId: account_confirm_email_create
+      operationId: api_account_confirm_email_create
       tags:
-      - account-confirm-email
+      - api
       requestBody:
         content:
           application/json:
@@ -33,7 +33,7 @@ paths:
           description: ''
   /api/auth/login/:
     post:
-      operationId: auth_login_create
+      operationId: api_auth_login_create
       description: |-
         Check the credentials and return the REST Token
         if the credentials are valid and authenticated.
@@ -43,7 +43,7 @@ paths:
         Accept the following POST parameters: username, password
         Return the REST Framework Token Object's key.
       tags:
-      - auth
+      - api
       requestBody:
         content:
           application/json:
@@ -69,14 +69,14 @@ paths:
           description: ''
   /api/auth/logout/:
     post:
-      operationId: auth_logout_create
+      operationId: api_auth_logout_create
       description: |-
         Calls Django logout method and delete the Token object
         assigned to the current User object.
 
         Accepts/Returns nothing.
       tags:
-      - auth
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -90,14 +90,14 @@ paths:
           description: ''
   /api/auth/password/change/:
     post:
-      operationId: auth_password_change_create
+      operationId: api_auth_password_change_create
       description: |-
         Calls Django Auth SetPasswordForm save method.
 
         Accepts the following POST parameters: new_password1, new_password2
         Returns the success/fail message.
       tags:
-      - auth
+      - api
       requestBody:
         content:
           application/json:
@@ -122,14 +122,14 @@ paths:
           description: ''
   /api/auth/password/reset/:
     post:
-      operationId: auth_password_reset_create
+      operationId: api_auth_password_reset_create
       description: |-
         Calls Django Auth PasswordResetForm save method.
 
         Accepts the following POST parameters: email
         Returns the success/fail message.
       tags:
-      - auth
+      - api
       requestBody:
         content:
           application/json:
@@ -155,7 +155,7 @@ paths:
           description: ''
   /api/auth/password/reset/confirm/:
     post:
-      operationId: auth_password_reset_confirm_create
+      operationId: api_auth_password_reset_confirm_create
       description: |-
         Password reset e-mail link is confirmed, therefore
         this resets the user's password.
@@ -164,7 +164,7 @@ paths:
             new_password1, new_password2
         Returns the success/fail message.
       tags:
-      - auth
+      - api
       requestBody:
         content:
           application/json:
@@ -190,9 +190,9 @@ paths:
           description: ''
   /api/auth/register/:
     post:
-      operationId: auth_register_create
+      operationId: api_auth_register_create
       tags:
-      - auth
+      - api
       requestBody:
         content:
           application/json:
@@ -218,9 +218,9 @@ paths:
           description: ''
   /api/auth/register/verify-email/:
     post:
-      operationId: auth_register_verify_email_create
+      operationId: api_auth_register_verify_email_create
       tags:
-      - auth
+      - api
       requestBody:
         content:
           application/json:
@@ -246,12 +246,12 @@ paths:
           description: ''
   /api/auth/token/refresh/:
     post:
-      operationId: auth_token_refresh_create
+      operationId: api_auth_token_refresh_create
       description: |-
         Takes a refresh type JSON web token and returns an access type JSON web
         token if the refresh token is valid.
       tags:
-      - auth
+      - api
       requestBody:
         content:
           application/json:
@@ -273,12 +273,12 @@ paths:
           description: ''
   /api/auth/token/verify/:
     post:
-      operationId: auth_token_verify_create
+      operationId: api_auth_token_verify_create
       description: |-
         Takes a token and indicates if it is valid.  This view provides no
         information about a token's fitness for a particular use.
       tags:
-      - auth
+      - api
       requestBody:
         content:
           application/json:
@@ -300,7 +300,7 @@ paths:
           description: ''
   /api/auth/user/:
     get:
-      operationId: auth_user_retrieve
+      operationId: api_auth_user_retrieve
       description: |-
         Reads and updates UserModel fields
         Accepts GET, PUT, PATCH methods.
@@ -311,7 +311,7 @@ paths:
 
         Returns UserModel fields.
       tags:
-      - auth
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -323,7 +323,7 @@ paths:
                 $ref: '#/components/schemas/User'
           description: ''
     put:
-      operationId: auth_user_update
+      operationId: api_auth_user_update
       description: |-
         Reads and updates UserModel fields
         Accepts GET, PUT, PATCH methods.
@@ -334,7 +334,7 @@ paths:
 
         Returns UserModel fields.
       tags:
-      - auth
+      - api
       requestBody:
         content:
           application/json:
@@ -358,7 +358,7 @@ paths:
                 $ref: '#/components/schemas/User'
           description: ''
     patch:
-      operationId: auth_user_partial_update
+      operationId: api_auth_user_partial_update
       description: |-
         Reads and updates UserModel fields
         Accepts GET, PUT, PATCH methods.
@@ -369,7 +369,7 @@ paths:
 
         Returns UserModel fields.
       tags:
-      - auth
+      - api
       requestBody:
         content:
           application/json:
@@ -393,9 +393,9 @@ paths:
           description: ''
   /api/delete/user:
     delete:
-      operationId: delete_user_destroy
+      operationId: api_delete_user_destroy
       tags:
-      - delete
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -405,14 +405,14 @@ paths:
           description: No response body
   /api/password/reset/:
     post:
-      operationId: password_reset_create
+      operationId: api_password_reset_create
       description: |-
         Calls Django Auth PasswordResetForm save method.
 
         Accepts the following POST parameters: email
         Returns the success/fail message.
       tags:
-      - password
+      - api
       requestBody:
         content:
           application/json:
@@ -438,7 +438,7 @@ paths:
           description: ''
   /api/password/reset/confirm/{uidb64}/{token}/:
     post:
-      operationId: password_reset_confirm_create
+      operationId: api_password_reset_confirm_create
       description: |-
         Password reset e-mail link is confirmed, therefore
         this resets the user's password.
@@ -458,7 +458,7 @@ paths:
           type: string
         required: true
       tags:
-      - password
+      - api
       requestBody:
         content:
           application/json:
@@ -482,11 +482,39 @@ paths:
               schema:
                 $ref: '#/components/schemas/RestAuthDetail'
           description: ''
+  /api/provider/add/parking:
+    post:
+      operationId: api_provider_add_parking_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParkingCreation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ParkingCreation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ParkingCreation'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParkingCreation'
+          description: ''
   /api/registration/:
     post:
-      operationId: registration_create
+      operationId: api_registration_create
       tags:
-      - registration
+      - api
       requestBody:
         content:
           application/json:
@@ -512,9 +540,9 @@ paths:
           description: ''
   /api/registration/verify-email/:
     post:
-      operationId: registration_verify_email_create
+      operationId: api_registration_verify_email_create
       tags:
-      - registration
+      - api
       requestBody:
         content:
           application/json:
@@ -599,6 +627,42 @@ components:
           type: string
       required:
       - password
+    ParkingCreation:
+      type: object
+      properties:
+        provider:
+          type: integer
+        streetAddress:
+          type: string
+          maxLength: 100
+        city:
+          type: string
+          maxLength: 100
+        state:
+          type: string
+          maxLength: 3
+        postcode:
+          type: string
+          maxLength: 4
+        price:
+          type: integer
+        image:
+          type: string
+          format: uri
+        notes:
+          type: string
+          maxLength: 500
+        is_active:
+          type: boolean
+      required:
+      - city
+      - image
+      - notes
+      - postcode
+      - price
+      - provider
+      - state
+      - streetAddress
     PasswordChange:
       type: object
       properties:

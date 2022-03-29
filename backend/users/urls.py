@@ -11,5 +11,6 @@ urlpatterns = [
     path('account-confirm-email/', VerifyEmailView.as_view(), name='account_email_verification_sent'),
     path('password/reset/', PasswordResetView.as_view(), name='password_reset'),
     path('password/reset/confirm/<str:uidb64>/<str:token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('delete/user', RemoveUserView.as_view(), name='remove_user'),
+    path('delete/user', RemoveUserView.as_view(), name='remove_user'), # redundant if we use HTTP method on /auth/user?
+    path('provider/add/parking', AddParkingSpaceView.as_view(), name='add_parking_space'),
 ]

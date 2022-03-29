@@ -15,14 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.conf import settings
+from django.conf.urls.static import static
 from .views import AddAdminView, RemoveAdminView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('users.urls')),
     path('admin/users/customuser/<id>/change', AddAdminView.as_view(), name='add_admin'), # issue is to do with CSRF verification failing
-    
     # path('admin/remove_user/', RemoveAdminView.as_view(), name='remove_admin'), # may have to do with current url being admin/
+    # path('booking/', include('booking.urls')),
 ]
     # moved within users.urls
     # path('dj-rest-auth/registration/account-confirm-email/<str:key>/', ConfirmEmailView.as_view(),), # Needs to be defined before the registration path
