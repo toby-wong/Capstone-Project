@@ -8,3 +8,7 @@
 .spinner {
   color: var(--green);
 }
+
+.error {
+  color: var(--red);
+}

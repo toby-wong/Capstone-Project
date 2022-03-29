@@ -14,8 +14,7 @@ const AuthContext = React.createContext({
 });
 
 export const AuthContextProvider = (props) => {
-  let initialToken = localStorage.getItem("parkItAuthToken");
-  const [token, setToken] = useState(initialToken);
+  const [token, setToken] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const navigate = useNavigate();
@@ -23,10 +22,12 @@ export const AuthContextProvider = (props) => {
 
   useEffect(() => {
     const setInitialToken = async () => {
+      const initialToken = localStorage.getItem("parkItAuthToken");
       if (!initialToken) {
         if (location.pathname.includes("/password/reset/confirm")) return;
         return navigate("/");
       }
+      setToken(initialToken);
 
       const url = `${config.SERVER_URL}/api/auth/user/`;
       const options = {
@@ -35,6 +36,7 @@ export const AuthContextProvider = (props) => {
           Authorization: "Bearer " + initialToken,
         },
       };
+
       const response = await sendRequest(url, options);
 
       if (response.status >= 300) {
@@ -42,11 +44,14 @@ export const AuthContextProvider = (props) => {
         localStorage.removeItem("parkItAuthToken");
         return navigate("/");
       }
+
+      setToken(initialToken);
       setUserInfo(response.data);
       setIsAdmin(response.data.is_staff);
     };
 
     setInitialToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isLoggedIn = !!token;
