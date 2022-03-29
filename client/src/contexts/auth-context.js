@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import useHttp from "../hooks/use-http";
+import { sendRequest } from "../utility";
 import * as config from "../config";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -18,7 +18,6 @@ export const AuthContextProvider = (props) => {
   const [token, setToken] = useState(initialToken);
   const [isAdmin, setIsAdmin] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
-  const sendRequest = useHttp()[1];
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -29,15 +28,15 @@ export const AuthContextProvider = (props) => {
         return navigate("/");
       }
 
-      const response = await sendRequest(
-        `${config.SERVER_URL}/api/auth/user/`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + initialToken,
-          },
-        }
-      );
+      const url = `${config.SERVER_URL}/api/auth/user/`;
+      const options = {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + initialToken,
+        },
+      };
+      const response = await sendRequest(url, options);
+
       if (response.status >= 300) {
         setToken(null);
         localStorage.removeItem("parkItAuthToken");

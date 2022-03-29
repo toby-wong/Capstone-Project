@@ -1,18 +1,19 @@
 import { CircularProgress, Paper, Typography } from "@mui/material";
 
-import { useContext, useEffect, useState } from "react";
-import useHttp from "../../hooks/use-http";
+import { useEffect, useState } from "react";
+
+import { sendRequest } from "../../utility";
 import * as config from "../../config";
 
 import classes from "./AccountDetails.module.css";
 import AccountDetailsForm from "./AccountDetailsForm";
-import AuthContext from "../../contexts/auth-context";
 /*
+  -1. Fix useHTTP
   0. Error message box showing in case of failing to update or failing to fetch
   1. Create Modal for change password/change email/delete account
 */
 const AccountDetails = () => {
-  const [isLoading, sendRequest] = useHttp();
+  const [isLoading, setIsLoading] = useState(false);
   const [details, setDetails] = useState({
     username: "",
     firstname: "",
@@ -24,15 +25,14 @@ const AccountDetails = () => {
       let initialToken = localStorage.getItem("parkItAuthToken");
       if (!initialToken) return;
 
-      const response = await sendRequest(
-        `${config.SERVER_URL}/api/auth/user/`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + initialToken,
-          },
-        }
-      );
+      const url = `${config.SERVER_URL}/api/auth/user/`;
+      const options = {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + initialToken,
+        },
+      };
+      const response = await sendRequest(url, options, setIsLoading);
 
       if (response.status >= 300) return;
 
@@ -64,7 +64,7 @@ const AccountDetails = () => {
       body: formData,
     };
 
-    const response = await sendRequest(url, options);
+    const response = await sendRequest(url, options, setIsLoading);
 
     if (response.status >= 300) return;
   };
