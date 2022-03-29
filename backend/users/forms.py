@@ -1,3 +1,4 @@
+from operator import itemgetter
 from django import forms
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm 
 from .models import CustomUser, ParkingSpace
@@ -33,6 +34,16 @@ class RemoveUserForm(forms.Form):
 
 class AddressValidationForm(forms.Form):
     
+    class Meta:        
+        model = ParkingSpace        
+        fields = (
+            'streetAddress',
+            'city',
+            'country_area',
+            'postal_code',
+            'country_code',
+        )  
+    
     def __init__(self, data):
         super(AddressValidationForm,self).__init__
         self.street_address = data.pop('streetAddress')
@@ -40,7 +51,7 @@ class AddressValidationForm(forms.Form):
         self.country_area = data.pop('state')
         self.postal_code = data.pop('postcode')
         self.country_code = 'AU'
-        
+
     def clean(self):
         super(AddressValidationForm,self).__init__
         validation_rules = get_validation_rules(self)
@@ -64,3 +75,9 @@ class AddressValidationForm(forms.Form):
         #             msg = 'Address not found' # TODO: look into implementation of this
         #         clean_data.add_error(field, msg)
         return valid_address # or clean_data
+
+    def __get__(self, instance, ownder):
+        return self.value
+# current error when you try to create a parking space
+# country_code = address.get("country_code", "").upper()
+# AttributeError: 'AddressValidationForm' object has no attribute 'get'
