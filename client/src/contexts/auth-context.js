@@ -65,6 +65,7 @@ export const AuthContextProvider = (props) => {
   const logoutHandler = () => {
     setToken(null);
     localStorage.removeItem("parkItAuthToken");
+    navigate("/");
   };
 
   const contextValue = {
