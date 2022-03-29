@@ -13,10 +13,10 @@ class RemoveUserView(GenericAPIView):
     serializer_class = RemoveUserSerializer
 
     def delete(self,request):
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(data={request.data})
         serializer.is_valid()
         if not serializer.errors:
-            serializer.delete()
+            serializer.delete(request)
             return Response({'message': 'User deleted'}, status=status.HTTP_204_NO_CONTENT)
         else:
             return Response({'message': 'User not deleted'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

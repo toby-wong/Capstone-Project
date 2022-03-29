@@ -81,6 +81,7 @@ class ParkingCreationSerializer(ModelSerializer):
         )
 
     def save(self, request):
+        print(request.data)
         cleanAddress = AddressValidationForm(request.data)
         cleanAddress.clean()
         if cleanAddress.errors:

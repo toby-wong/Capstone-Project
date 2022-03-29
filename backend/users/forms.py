@@ -51,6 +51,7 @@ class AddressValidationForm(forms.Form):
         self.country_area = data.pop('state')
         self.postal_code = data.pop('postcode')
         self.country_code = 'AU'
+        self.clean()
 
     def clean(self):
         super(AddressValidationForm,self).__init__
