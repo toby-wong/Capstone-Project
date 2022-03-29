@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
-import useHttp from "../hooks/use-http";
+import { sendRequest } from "../utility";
 import * as config from "../config";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const AuthContext = React.createContext({
   token: "",
@@ -10,35 +10,39 @@ const AuthContext = React.createContext({
   isLoggedIn: false,
   login: () => {},
   logout: () => {},
+  userInfo: null,
 });
 
 export const AuthContextProvider = (props) => {
   let initialToken = localStorage.getItem("parkItAuthToken");
   const [token, setToken] = useState(initialToken);
   const [isAdmin, setIsAdmin] = useState(false);
-  const sendRequest = useHttp()[1];
+  const [userInfo, setUserInfo] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const setInitialToken = async () => {
       if (!initialToken) {
+        if (location.pathname.includes("/password/reset/confirm")) return;
         return navigate("/");
       }
-      const response = await sendRequest(
-        `${config.SERVER_URL}/api/auth/user/`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + initialToken,
-          },
-        }
-      );
+
+      const url = `${config.SERVER_URL}/api/auth/user/`;
+      const options = {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + initialToken,
+        },
+      };
+      const response = await sendRequest(url, options);
 
       if (response.status >= 300) {
         setToken(null);
         localStorage.removeItem("parkItAuthToken");
         return navigate("/");
       }
+      setUserInfo(response.data);
       setIsAdmin(response.data.is_staff);
     };
 
@@ -64,6 +68,7 @@ export const AuthContextProvider = (props) => {
     isLoggedIn: isLoggedIn,
     login: loginHandler,
     logout: logoutHandler,
+    userInfo: userInfo,
   };
 
   return (

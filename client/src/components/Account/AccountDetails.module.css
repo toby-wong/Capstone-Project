@@ -1,39 +1,10 @@
 .body {
   flex: 1;
-  flex-direction: column;
   margin-top: 20px;
+  justify-content: center;
+  align-items: center;
 }
 
-.row {
-  display: flex;
-  height: 80px;
-  margin-top: 20px;
-}
-
-.row:first-of-type {
-  margin-top: 0;
-}
-
-.col {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.col__row {
-  flex: 1;
-}
-
-.col-horizontal {
-  display: flex;
-  flex: 1;
-}
-
-.label {
-  color: var(--dark);
-  font-weight: bold;
-}
-
-.value {
-  color: var(--dark);
+.spinner {
+  color: var(--green);
 }
