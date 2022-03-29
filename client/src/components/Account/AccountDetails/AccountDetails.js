@@ -11,6 +11,7 @@ import AccountDetailsAuthForm from "./AccountDetailsAuthForm/AccountDetailsAuthF
 import ChangePasswordForm from "./ChangePasswordForm/ChangePasswordForm";
 import DeleteAccountForm from "./DeleteAccountForm/DeleteAccountForm";
 import ChangeEmailForm from "./ChangeEmailForm/ChangeEmailForm";
+import EmailUpdateSuccess from "./EmailUpdateSuccess/EmailUpdateSuccess";
 
 const ErrorMessage = () => {
   return (
@@ -22,7 +23,7 @@ const ErrorMessage = () => {
 };
 
 const AccountDetails = () => {
-  const [page, setPage] = useState("auth");
+  const [page, setPage] = useState("emailUpdateSuccess");
   const [isLoading, setIsLoading] = useState(false);
   const [details, setDetails] = useState({
     username: "",
@@ -65,6 +66,7 @@ const AccountDetails = () => {
         {page === "details" && <AccountDetailsForm details={details} setPage={setPage}/>}
         {page === "changePassword" && <ChangePasswordForm setPage={setPage}/>}
         {page === "changeEmail" && <ChangeEmailForm setPage={setPage}/>}
+        {page === "emailUpdateSuccess" && <EmailUpdateSuccess setPage={setPage}/>}
         {page === "deleteAccount" && <DeleteAccountForm setPage={setPage}/>}
       </Paper>
     </>
