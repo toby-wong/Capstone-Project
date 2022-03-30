@@ -7,7 +7,7 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import classes from "./Account.module.css";
 
 import { Link, Route, Routes, useLocation } from "react-router-dom";
-import AccountDetails from "./AccountDetails";
+import AccountDetails from "./AccountDetails/AccountDetails";
 
 const Account = (props) => {
   const location = useLocation();

@@ -1,11 +1,12 @@
 # Controls what fields are packaged together
 
 from django.db import transaction
+from .forms import AddressValidationForm
 
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from dj_rest_auth.registration.serializers import RegisterSerializer
-from .models import CustomUser
+from .models import CustomUser, ParkingSpace
 
 class UserSerializer(ModelSerializer):
     class Meta:
@@ -52,3 +53,48 @@ class CustomRegisterSerializer(RegisterSerializer):
         user.save()
         # profit???
         return user
+
+class RemoveUserSerializer(ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = []
+    
+    def delete(self, request):
+        username = request.data.get('username')
+        user = CustomUser.objects.get(username=username)
+        user.is_active = False
+        user.save()
+
+class ParkingCreationSerializer(ModelSerializer):
+    class Meta:
+        model = ParkingSpace
+        fields = (
+            'provider',
+            'streetAddress',
+            'city',
+            'state',
+            'postcode',
+            'price',
+            # 'image',
+            'notes',
+            'is_active',      
+        )
+
+    def save(self, request):
+        print(request.data)
+        cleanAddress = AddressValidationForm(request.data)
+        cleanAddress.clean()
+        if cleanAddress.errors:
+            raise cleanAddress.errors
+        parking.streetAddress = cleanAddress.get('streetAddress')
+        parking.city = cleanAddress.get('city')
+        parking.state = cleanAddress.get('state')
+        parking.postcode = cleanAddress.get('postcode')
+
+        parking.provider = self.data.get('provider')
+        parking.price = self.data.get('price')
+        # parking.image = self.data.get('image')
+        parking.notes = self.data.get('notes')
+        parking.is_active = self.data.get('is_active')
+        parking.save()
+        return parking

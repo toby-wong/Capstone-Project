@@ -36,13 +36,13 @@ class ParkingSpace(models.Model):
     state = models.CharField(max_length=3)
     postcode = models.CharField(max_length=4)
     price = models.IntegerField()
-    image = models.ImageField(upload_to='media/parking_spaces')
+    # image = models.ImageField(upload_to='media/parking_spaces')
     notes = models.TextField(max_length=500)
-    approved = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
 
 class Transaction(models.Model):
-    provider = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='provider')
-    consumer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='consumer')
+    provider = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='provider_transaction')
+    consumer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='consumer_transaction')
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='vehicle')
     parkingSpace = models.ForeignKey(ParkingSpace, on_delete=models.RESTRICT)
     startTime = models.DateTimeField()
@@ -52,7 +52,7 @@ class Transaction(models.Model):
 # # REVIEW MODELS
 class Review(models.Model):
     parkingSpace = models.ForeignKey('ParkingSpace', on_delete=models.CASCADE)
-    consumer = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='consumer')
+    consumer = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='consumer_review')
     rating = models.DecimalField(max_digits=2, decimal_places=1)
     comment = models.TextField()
     publishDate = models.DateTimeField(auto_now_add=True)

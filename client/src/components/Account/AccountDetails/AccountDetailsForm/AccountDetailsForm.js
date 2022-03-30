@@ -1,14 +1,21 @@
-import { Button, InputLabel } from "@mui/material";
-import { useEffect, useReducer } from "react";
+import { Button, CircularProgress, InputLabel } from "@mui/material";
+import { useEffect, useReducer, useState } from "react";
+
 import {
   detailsformStateReducer,
   getDetailsformInitialState,
-} from "../../reducers/detailsform-reducer";
+} from "../../../../reducers/detailsform-reducer";
+
 import AccountDetailsEntry from "./AccountDetailsEntry";
-import classes from "./AccountDetailsForm.module.css";
 import AccountDetailsFormInput from "./AccountDetailsFormInput";
 
-const AccountDetailsForm = ({ details, onSubmit }) => {
+import classes from "./AccountDetailsForm.module.css";
+
+import { sendRequest } from "../../../../utility";
+import * as config from "../../../../config";
+
+const AccountDetailsForm = ({ details, setPage }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [formState, dispatchForm] = useReducer(
     detailsformStateReducer,
     getDetailsformInitialState()
@@ -18,8 +25,49 @@ const AccountDetailsForm = ({ details, onSubmit }) => {
     dispatchForm({ type: "FETCH", value: details });
   }, [details]);
 
+  const formSubmitHandler = async (e) => {
+    e.preventDefault();
+
+    const form = new FormData(e.target);
+    const formData = {};
+    for (const [key, value] of form.entries()) {
+      if (value === "") continue;
+      formData[key] = value;
+    }
+
+    try {
+      const authToken = localStorage.getItem("parkItAuthToken");
+      const url = `${config.SERVER_URL}/api/auth/user/`;
+      const options = {
+        method: "PATCH",
+        headers: {
+          Authorization: "Bearer " + authToken,
+          "Content-Type": "application/json",
+        },
+        body: formData,
+      };
+
+      const response = await sendRequest(url, options, setIsLoading);
+      if (response.status >= 300 || !response.status) throw Error;
+    } catch (e) {
+      setPage("error");
+    }
+  };
+
+  const changePasswordHandler = () => {
+    setPage("changePassword");
+  };
+
+  const changeEmailHandler = () => {
+    setPage("changeEmail");
+  };
+
+  const deleteAccountHandler = () => {
+    setPage("deleteAccount");
+  };
+
   return (
-    <form className={classes.form} onSubmit={onSubmit}>
+    <form className={classes.form} onSubmit={formSubmitHandler}>
       <div className={classes.row}>
         <div className={classes["col-horizontal"]}>
           <AccountDetailsEntry label={"Username"} value={details.username} />
@@ -29,6 +77,7 @@ const AccountDetailsForm = ({ details, onSubmit }) => {
               color="secondary"
               variant="contained"
               size="small"
+              onClick={changePasswordHandler}
             >
               Change Password
             </Button>
@@ -49,6 +98,7 @@ const AccountDetailsForm = ({ details, onSubmit }) => {
               color="secondary"
               variant="contained"
               size="small"
+              onClick={changeEmailHandler}
             >
               Change Email
             </Button>
@@ -181,6 +231,7 @@ const AccountDetailsForm = ({ details, onSubmit }) => {
           color="error"
           variant="contained"
           size="small"
+          onClick={deleteAccountHandler}
         >
           Delete Account
         </Button>
@@ -192,7 +243,10 @@ const AccountDetailsForm = ({ details, onSubmit }) => {
           type="submit"
           disabled={!formState.isFormValid}
         >
-          Update
+          {isLoading && (
+            <CircularProgress className={classes.spinner} size="1.5rem" />
+          )}
+          {!isLoading && "Update"}
         </Button>
       </div>
     </form>

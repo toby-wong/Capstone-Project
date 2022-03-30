@@ -56,6 +56,10 @@ export const theme = createTheme({
       fontWeight: "bold",
       color: colors.dark,
     },
+    sectionSubTitle: {
+      fontSize: "20px",
+      color: colors.dark,
+    },
   },
   components: {
     MuiButton: {
