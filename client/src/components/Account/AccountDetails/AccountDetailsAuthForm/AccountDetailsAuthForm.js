@@ -18,31 +18,46 @@ const AccountDetailsAuthForm = ({ setPage }) => {
 
   const authFormSubmitHandler = async (e) => {
     e.preventDefault();
-
-    const password = new FormData(e.target).get("password");
-    const formData = {
-      email: "y0unggil0919@gmail.com",
-      password,
-    };
-    // TODO: NEED TO BE FIXED ONCE BACKEND ENDPOINT IS READY
     try {
-      // const authToken = localStorage.getItem("parkItAuthToken");
-      const url = `${config.SERVER_URL}/api/auth/login/`;
-      // const url = `${config.SERVER_URL}/api`;
-      const options = {
+      // Get email
+      const authToken = localStorage.getItem("parkItAuthToken");
+      if (!authToken) return;
+
+      const getUserDataUrl = `${config.SERVER_URL}/api/auth/user/`;
+      const getUserDataoptions = {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + authToken,
+        },
+      };
+
+      setIsLoading(true);
+      const getUserDataResponse = await sendRequest(
+        getUserDataUrl,
+        getUserDataoptions
+      );
+      if (!getUserDataResponse.status || getUserDataResponse.status >= 300)
+        throw Error;
+
+      // Try log in again with email and typed password
+      const loginUrl = `${config.SERVER_URL}/api/auth/login/`;
+      const loginOptions = {
         method: "POST",
         headers: {
-          // Authorization: "Bearer " + authToken,
+          Authorization: "Bearer " + authToken,
           "Content-Type": "application/json",
         },
-        body: formData,
-        // body: {password: new FormData(e.target).get("password")},
+        body: {
+          email: getUserDataResponse.data.email,
+          password: new FormData(e.target).get("password"),
+        },
       };
-      const response = await sendRequest(url, options, setIsLoading);
+      const loginResponse = await sendRequest(loginUrl, loginOptions);
+      setIsLoading(false);
 
-      if (!response.status) throw Error;
+      if (!loginResponse.status) throw Error;
 
-      if (response.status >= 300) setError(true);
+      if (loginResponse.status >= 300) setError(true);
       else setPage("details");
     } catch (e) {
       setPage("error");

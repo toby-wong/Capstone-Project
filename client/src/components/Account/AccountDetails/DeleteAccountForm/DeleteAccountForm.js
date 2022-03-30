@@ -24,18 +24,43 @@ const DeleteAccountForm = ({ setPage }) => {
 
     try {
       const authToken = localStorage.getItem("parkItAuthToken");
-      const url = `${config.SERVER_URL}/api/delete/user`;
-      const options = {
+      if (!authToken) return;
+
+      const getUserDataUrl = `${config.SERVER_URL}/api/auth/user/`;
+      const getUserDataoptions = {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + authToken,
+        },
+      };
+
+      setIsLoading(true);
+      const getUserDataResponse = await sendRequest(
+        getUserDataUrl,
+        getUserDataoptions
+      );
+      if (!getUserDataResponse.status || getUserDataResponse.status >= 300)
+        throw Error;
+
+      const username = getUserDataResponse.data.username;
+      const deleteUserUrl = `${config.SERVER_URL}/api/delete/user`;
+      const deleteUserOptions = {
         method: "DELETE",
         headers: {
           Authorization: "Bearer " + authToken,
           "Content-Type": "application/json",
         },
+        body: { username },
       };
 
-      const response = await sendRequest(url, options, setIsLoading);
+      const deleteUserResponse = await sendRequest(
+        deleteUserUrl,
+        deleteUserOptions
+      );
+      setIsLoading(false);
 
-      if (!response.status || response.status >= 300) throw Error;
+      if (!deleteUserResponse.status || deleteUserResponse.status >= 300)
+        throw Error;
 
       localStorage.removeItem("parkItAuthToken");
       setPage("deleteAccountSuccess");
