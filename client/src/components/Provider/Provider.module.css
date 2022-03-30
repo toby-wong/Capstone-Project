@@ -7,3 +7,93 @@
   font-size: 2rem;
   z-index: 99;
 }
+.mainContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+/* LHS menu*/
+.viewsMenu{
+  width: 10%;
+  height: 30%;
+  margin: 30px;
+  margin-top: 30px;
+  display: flex;
+  background-color: var(--background);
+  flex-direction: column;
+}
+
+/* Listings side */
+.listingsContainer{
+  width: 100%;
+  height: auto;
+  margin-top:25px;
+  margin-left: 100px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Each listing */
+.listing{
+  width: 90%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  margin: 20px;
+  margin-top: 20px;
+}
+
+/* LHS - Description and information */
+.lhs{
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+}
+
+.descriptor{
+  color: var(--green);
+}
+.description{
+  width: 80%;
+  text-align: justify;
+  margin-top: 10px;
+}
+
+.infoBar{
+  width: 80%;
+  height: 20px;
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+}
+
+.distance{
+  width: 50%;
+  color: var(--green);
+  align-items: center;
+  justify-content: center;
+}
+
+.rate{
+  width: 50%;
+  text-align: right;
+  color: var(--green);
+}
+
+.walkIcon{
+  color: var(--green);
+  border-radius: 50%;
+  padding: 4px;
+  font-size: 30px;
+}
+
+.imageSection{
+  width: 10%;
+}
+
+.imageEntry{
+  width: 210px;
+  height: 230px;
+}
