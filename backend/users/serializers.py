@@ -1,7 +1,7 @@
 # Controls what fields are packaged together
 
 from django.db import transaction
-from .forms import AddressValidationForm
+from .utils import AddressValidation
 
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
@@ -81,17 +81,18 @@ class ParkingCreationSerializer(ModelSerializer):
         )
 
     def save(self, request):
-        print(request.data)
-        cleanAddress = AddressValidationForm(request.data)
-        cleanAddress.clean()
+        print(request)
+        cleanAddress = AddressValidation(request.data)
         if cleanAddress.errors:
             raise cleanAddress.errors
+        # print(request)
+        parking = super().save()
         parking.streetAddress = cleanAddress.get('streetAddress')
         parking.city = cleanAddress.get('city')
         parking.state = cleanAddress.get('state')
         parking.postcode = cleanAddress.get('postcode')
-
         parking.provider = self.data.get('provider')
+        print(parking.provider)
         parking.price = self.data.get('price')
         # parking.image = self.data.get('image')
         parking.notes = self.data.get('notes')
