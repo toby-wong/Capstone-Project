@@ -13,7 +13,8 @@ import LoginSignupModalActions from "../LoginSignupModal/LoginSignupModalActions
 import LoginSignupModalContent from "../LoginSignupModal/LoginSignupModalContent";
 import LoginSignupModalForm from "../LoginSignupModal/LoginSignupModalForm";
 import LoginSignupModalHeader from "../LoginSignupModal/LoginSignupModalHeader";
-import useHttp from "../../../hooks/use-http";
+
+import { sendRequest } from "../../../utility";
 import * as config from "../../../config";
 
 import classes from "./ForgotPasswordForm.module.css";
@@ -21,21 +22,21 @@ import classes from "./ForgotPasswordForm.module.css";
 const ForgotPasswordForm = ({ onClose }) => {
   const navigate = useNavigate();
   const emailInputRef = useRef();
-  const [isLoading, sendRequest] = useHttp();
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
   const forgotPasswordFormSubmitHandler = async (e) => {
     e.preventDefault();
-    const response = await sendRequest(
-      `${config.SERVER_URL}/api/auth/password/reset/`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: { email: emailInputRef.current.value },
-      }
-    );
+
+    const url = `${config.SERVER_URL}/api/auth/password/reset/`;
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: { email: emailInputRef.current.value },
+    };
+    const response = await sendRequest(url, options, setIsLoading);
 
     if (response.status >= 300) return setError(true);
 

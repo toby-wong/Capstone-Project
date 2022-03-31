@@ -1,5 +1,4 @@
 import { useContext, useRef, useState } from "react";
-
 import { Link } from "react-router-dom";
 
 import {
@@ -8,6 +7,7 @@ import {
   FormHelperText,
   Link as MuiLink,
 } from "@mui/material";
+import InputField from "../../UI/InputField/InputField";
 
 import classes from "./LoginForm.module.css";
 
@@ -16,8 +16,8 @@ import LoginSignupModalActions from "../LoginSignupModal/LoginSignupModalActions
 import LoginSignupModalContent from "../LoginSignupModal/LoginSignupModalContent";
 import AuthContext from "../../../contexts/auth-context";
 import LoginSignupModalHeader from "../LoginSignupModal/LoginSignupModalHeader";
-import InputField from "../../UI/InputField/InputField";
-import useHttp from "../../../hooks/use-http";
+
+import { sendRequest } from "../../../utility";
 import * as config from "../../../config";
 
 const LoginForm = ({ onClose }) => {
@@ -25,24 +25,23 @@ const LoginForm = ({ onClose }) => {
   const passwordInputRef = useRef();
   const authContext = useContext(AuthContext);
   const [error, setError] = useState(false);
-  const [isLoading, sendRequest] = useHttp();
+  const [isLoading, setIsLoading] = useState(false);
 
   const loginFormSubmitHandler = async (e) => {
     e.preventDefault();
 
-    const loginResponse = await sendRequest(
-      `${config.SERVER_URL}/api/auth/login/`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: {
-          email: emailInputRef.current.value,
-          password: passwordInputRef.current.value,
-        },
-      }
-    );
+    const url = `${config.SERVER_URL}/api/auth/login/`;
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: {
+        email: emailInputRef.current.value,
+        password: passwordInputRef.current.value,
+      },
+    };
+    const loginResponse = await sendRequest(url, options, setIsLoading);
 
     if (loginResponse.status >= 300 || !loginResponse.status) {
       return setError(true);

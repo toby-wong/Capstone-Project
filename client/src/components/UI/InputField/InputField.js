@@ -13,6 +13,7 @@ const InputField = ({
   disabled = false,
   required = false,
   className,
+  name,
 }) => {
   return (
     <FormControl
@@ -26,12 +27,14 @@ const InputField = ({
       <InputLabel htmlFor={id}>{label}</InputLabel>
       <OutlinedInput
         id={id}
+        name={name}
         label={label}
         type={type}
         value={value}
         onChange={onChange}
         onBlur={onBlur}
         inputRef={inputRef}
+        autoComplete="on"
       />
     </FormControl>
   );
