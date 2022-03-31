@@ -1,7 +1,7 @@
 # Controls what fields are packaged together
 
 from django.db import transaction
-from .forms import AddressValidationForm
+from .utils import AddressValidation
 
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
@@ -62,8 +62,9 @@ class RemoveUserSerializer(ModelSerializer):
     def delete(self, request):
         username = request.data.get('username')
         user = CustomUser.objects.get(username=username)
-        user.is_active = False
-        user.save()
+        user.delete()
+        # user.is_active = False
+        # user.save()
 
 class ParkingCreationSerializer(ModelSerializer):
     class Meta:
@@ -81,17 +82,16 @@ class ParkingCreationSerializer(ModelSerializer):
         )
 
     def save(self, request):
-        print(request.data)
-        cleanAddress = AddressValidationForm(request.data)
-        cleanAddress.clean()
+        cleanAddress = AddressValidation(request.data)
         if cleanAddress.errors:
             raise cleanAddress.errors
-        parking.streetAddress = cleanAddress.get('streetAddress')
-        parking.city = cleanAddress.get('city')
-        parking.state = cleanAddress.get('state')
-        parking.postcode = cleanAddress.get('postcode')
+        parking = super().save()
+        parking.streetAddress = cleanAddress['street_address']
+        parking.city = cleanAddress['city']
+        parking.state = cleanAddress['country_area']
+        parking.postcode = cleanAddress['postal_code']
+        parking.provider = self.data.user # provider should be CustomUser instance
 
-        parking.provider = self.data.get('provider')
         parking.price = self.data.get('price')
         # parking.image = self.data.get('image')
         parking.notes = self.data.get('notes')
