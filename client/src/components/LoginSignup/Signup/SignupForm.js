@@ -2,6 +2,10 @@ import { Button, CircularProgress } from "@mui/material";
 
 import { useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  getSignupformInitialState,
+  signupformStateReducer,
+} from "../../../reducers/signupform-reducer";
 
 import LoginSignupModalActions from "../LoginSignupModal/LoginSignupModalActions";
 import LoginSignupModalContent from "../LoginSignupModal/LoginSignupModalContent";
@@ -10,22 +14,18 @@ import SignupEmailInput from "./SignupEmailInput";
 import SignupLegalnameInput from "./SignupLegalnameInput";
 import SignupPasswordInput from "./SignupPasswordInput";
 import SignupUsernameInput from "./SignupUsernameInput";
-import {
-  getSignupformInitialState,
-  signupformStateReducer,
-} from "../../../reducers/signupform-reducer";
 import SignupPhoneinput from "./SignupPhoneinput";
 import LoginSignupModalHeader from "../LoginSignupModal/LoginSignupModalHeader";
+import SignupErrorModal from "./SignupErrorModal";
 
 import classes from "./SignupForm.module.css";
 
-import useHttp from "../../../hooks/use-http";
+import { sendRequest } from "../../../utility";
 import * as config from "../../../config";
-import SignupErrorModal from "./SignupErrorModal";
 
 const SignupForm = ({ onClose }) => {
   const navigate = useNavigate();
-  const [isLoading, sendRequest] = useHttp();
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({ value: false, messages: [] });
   const [formState, dispatchFormState] = useReducer(
     signupformStateReducer,
@@ -54,7 +54,7 @@ const SignupForm = ({ onClose }) => {
       body: formData,
     };
 
-    const response = await sendRequest(url, options);
+    const response = await sendRequest(url, options, setIsLoading);
 
     if (response.status >= 300) {
       let messages = [];

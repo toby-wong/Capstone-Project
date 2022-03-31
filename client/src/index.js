@@ -16,11 +16,11 @@ ReactDOM.render(
   <React.StrictMode>
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
-        <AuthContextProvider>
-          <BrowserRouter>
+        <BrowserRouter>
+          <AuthContextProvider>
             <App />
-          </BrowserRouter>
-        </AuthContextProvider>
+          </AuthContextProvider>
+        </BrowserRouter>
       </ThemeProvider>
     </StyledEngineProvider>
   </React.StrictMode>,

@@ -1,5 +1,5 @@
 import { Button, FormHelperText, CircularProgress } from "@mui/material";
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import {
@@ -12,7 +12,7 @@ import LoginSignupModalContent from "../LoginSignupModal/LoginSignupModalContent
 import LoginSignupModalForm from "../LoginSignupModal/LoginSignupModalForm";
 import LoginSignupModalHeader from "../LoginSignupModal/LoginSignupModalHeader";
 
-import useHttp from "../../../hooks/use-http";
+import { sendRequest } from "../../../utility";
 import * as config from "../../../config";
 
 import classes from "./ResetPasswordForm.module.css";
@@ -23,7 +23,7 @@ const ResetPasswordForm = ({ onClose }) => {
     resetPasswordFormReducer,
     getResetPasswordformInitialState()
   );
-  const [isLoading, sendRequest] = useHttp();
+  const [isLoading, setIsLoading] = useState(false);
   const { uid, token } = useParams();
 
   const passwordChangeHandler = (e) => {
@@ -40,21 +40,20 @@ const ResetPasswordForm = ({ onClose }) => {
   const resetPasswordFormSubmitHandler = async (e) => {
     e.preventDefault();
 
-    const response = await sendRequest(
-      `${config.SERVER_URL}/api/auth/password/reset/confirm/`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: {
-          new_password1: formState.password.passwordValue,
-          new_password2: formState.password.confirmPasswordValue,
-          uid: uid,
-          token: token,
-        },
-      }
-    );
+    const url = `${config.SERVER_URL}/api/auth/password/reset/confirm/`;
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: {
+        new_password1: formState.password.passwordValue,
+        new_password2: formState.password.confirmPasswordValue,
+        uid: uid,
+        token: token,
+      },
+    };
+    const response = await sendRequest(url, options, setIsLoading);
 
     if (response.status >= 300 || !response.status) {
       return alert(response.data);
