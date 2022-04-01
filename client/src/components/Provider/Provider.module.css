@@ -1,11 +1,6 @@
 .body {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: black;
-  font-size: 2rem;
-  z-index: 99;
+  width: 100%;
+  height: 100%;
 }
 .mainContainer {
   width: 100%;
@@ -19,7 +14,7 @@
   width: 10%;
   height: 30%;
   margin: 30px;
-  margin-top: 30px;
+  margin-top: 48px;
   display: flex;
   background-color: var(--background);
   flex-direction: column;
@@ -33,6 +28,29 @@
   margin-left: 100px;
   display: flex;
   flex-direction: column;
+}
+
+/* New space button div */
+.titleDiv{
+  width: 91%;
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title{
+  margin: 50px;
+  margin-left: 47px;
+  margin-top: 30px;
+  font-size: 50px;
+}
+
+.button{
+  margin: 50px;
+  margin-top: 53px;
+  margin-left: 10px;
 }
 
 /* Each listing */
