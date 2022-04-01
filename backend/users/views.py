@@ -35,19 +35,14 @@ class AddParkingSpaceView(GenericAPIView):
         else:
             return Response({'message': 'Parking space not added'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-@api_view(['GET', 'POST'])
-def provider_transaction_list(reqeust):
-    if request.method == 'GET':
-        data = Transaction.objects.filter()
-        serializer = TransactionSerializer(data, context={'request': request}, many=True)
-        return Response(serializer.data)
-    elif request.method == 'POST':
-
 
 class ProviderHistory(ListAPIView):
     serializer_class = TransactionSerializer
-
     def get_queryset(self):
         user = self.request.user
         return Transaction.objects.filter(provider=user)
+
+    
+
+    
     

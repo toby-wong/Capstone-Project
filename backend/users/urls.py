@@ -13,6 +13,5 @@ urlpatterns = [
     path('password/reset/confirm/<str:uidb64>/<str:token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('delete/user', RemoveUserView.as_view(), name='remove_user'), # redundant if we use HTTP method on /auth/user?
     path('provider/add/parking', AddParkingSpaceView.as_view(), name='add_parking_space'),
-    re_path(r'^transaction/$', views.transaction),
-    re_path(r'^transaction/([0-9])$', views.transaction_detail)
+    path('provider/history', ProviderHistory.as_view(), name='provider_history'),
 ]
