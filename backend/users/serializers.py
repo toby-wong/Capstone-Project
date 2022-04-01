@@ -76,8 +76,10 @@ class ParkingCreationSerializer(ModelSerializer):
             'postcode',
             'price',
             'image',
+            'size',
             'notes',
-            'is_active',      
+            'is_active',
+            'pk'  # primary key
         )
 
     def save(self, request):
@@ -95,6 +97,7 @@ class ParkingCreationSerializer(ModelSerializer):
         parking.price = self.data.get('price')
         temp = decodeDesignImage(self.data.get('image'))
         parking.image = InMemoryUploadedFile(temp, None, f'{self.pk}.png', 'image/png', temp.tell(), None)
+        parking.size = self.data.get('size')
         parking.notes = self.data.get('notes')
         parking.is_active = self.data.get('is_active')
         parking.save()
