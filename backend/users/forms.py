@@ -64,3 +64,18 @@ class AddressValidationForm(forms.Form):
         #             msg = 'Address not found' # TODO: look into implementation of this
         #         clean_data.add_error(field, msg)
         return valid_address # or clean_data
+
+
+class TransactionSerializer(forms.Form):
+    class Meta:
+        model = Transaction
+        fields = (
+            'provider',
+            'consumer',
+            'vehicle',
+            'parkingSpace',
+            'startTime',
+            'endTime',
+            'totalCost',
+        )
+        
