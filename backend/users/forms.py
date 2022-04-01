@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm 
-from .models import CustomUser, ParkingSpace
+from .models import CustomUser, ParkingSpace, Transaction
 from i18naddress import InvalidAddress, normalize_address, get_validation_rules
 
 

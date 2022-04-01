@@ -2,11 +2,12 @@
 from urllib import request
 from users.forms import *
 from users.models import CustomUser, ParkingSpace, Transaction
-from rest_framework.generics import GenericAPIView, ListAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from .serializers import *
+import datetime as dt
 from drf_spectacular.utils import extend_schema
 
 # Create your views here.
@@ -36,11 +37,31 @@ class AddParkingSpaceView(GenericAPIView):
             return Response({'message': 'Parking space not added'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+class Booking(RetrieveUpdateDestroyAPIView):
+    serializer_class = TransactionSerializer
+    queryset = Transaction.objects.all()
+    
+
 class ProviderHistory(ListAPIView):
     serializer_class = TransactionSerializer
     def get_queryset(self):
         user = self.request.user
         return Transaction.objects.filter(provider=user)
+
+class ProviderSchedule(ListAPIView):
+    serializer_class = TransactionSerializer
+    def get_queryset(self):
+        user = self.request.user
+        return Transaction.objects.filter(provider=user).filter(startTime__gte=dt.datetime.now())
+
+
+class ConsumerHistory(ListAPIView):
+    serializer_class = TransactionSerializer
+    def get_queryset(self):
+        user = self.request.user
+        return Transaction.objects.filter(consumer=user)
+
+
 
     
 
