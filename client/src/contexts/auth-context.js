@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 
-import useHttp from "../hooks/use-http";
+import { sendRequest } from "../utility";
 import * as config from "../config";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const AuthContext = React.createContext({
   token: "",
@@ -9,36 +10,48 @@ const AuthContext = React.createContext({
   isLoggedIn: false,
   login: () => {},
   logout: () => {},
+  userInfo: null,
 });
 
 export const AuthContextProvider = (props) => {
-  let initialToken = localStorage.getItem("parkItAuthToken");
-  const [token, setToken] = useState(initialToken);
+  const [token, setToken] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
-  const sendRequest = useHttp()[1];
+  const [userInfo, setUserInfo] = useState(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const setInitialToken = async () => {
-      if (!initialToken) return;
+      const initialToken = localStorage.getItem("parkItAuthToken");
+      if (!initialToken) {
+        if (location.pathname.includes("/password/reset/confirm")) return;
+        return navigate("/");
+      }
+      setToken(initialToken);
 
-      const response = await sendRequest(
-        `${config.SERVER_URL}/api/auth/user/`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + initialToken,
-          },
-        }
-      );
+      const url = `${config.SERVER_URL}/api/auth/user/`;
+      const options = {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + initialToken,
+        },
+      };
+
+      const response = await sendRequest(url, options);
 
       if (response.status >= 300) {
         setToken(null);
         localStorage.removeItem("parkItAuthToken");
+        return navigate("/");
       }
+
+      setToken(initialToken);
+      setUserInfo(response.data);
       setIsAdmin(response.data.is_staff);
     };
 
     setInitialToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isLoggedIn = !!token;
@@ -52,6 +65,7 @@ export const AuthContextProvider = (props) => {
   const logoutHandler = () => {
     setToken(null);
     localStorage.removeItem("parkItAuthToken");
+    navigate("/");
   };
 
   const contextValue = {
@@ -60,6 +74,7 @@ export const AuthContextProvider = (props) => {
     isLoggedIn: isLoggedIn,
     login: loginHandler,
     logout: logoutHandler,
+    userInfo: userInfo,
   };
 
   return (

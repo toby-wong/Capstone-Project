@@ -51,6 +51,15 @@ export const theme = createTheme({
     modalSubtitle: {
       marginLeft: "15px",
     },
+    sectionTitle: {
+      fontSize: "30px",
+      fontWeight: "bold",
+      color: colors.dark,
+    },
+    sectionSubTitle: {
+      fontSize: "20px",
+      color: colors.dark,
+    },
   },
   components: {
     MuiButton: {
@@ -112,6 +121,27 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           color: colors.light,
+        },
+      },
+    },
+    MuiTabs: {
+      styleOverrides: {
+        root: {
+          borderRadius: 15,
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          color: colors.dark,
+        },
+      },
+    },
+    MuiInput: {
+      styleOverrides: {
+        root: {
+          color: colors.dark,
         },
       },
     },
