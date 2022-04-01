@@ -75,7 +75,7 @@ class ParkingCreationSerializer(ModelSerializer):
             'state',
             'postcode',
             'price',
-            # 'image',
+            'image',
             'notes',
             'is_active',      
         )
