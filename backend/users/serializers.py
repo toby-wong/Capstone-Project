@@ -1,12 +1,12 @@
 # Controls what fields are packaged together
 
 from django.db import transaction
-from .utils import AddressValidation
-
+from .utils import AddressValidation, decodeDesignImage
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from .models import CustomUser, ParkingSpace
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 class UserSerializer(ModelSerializer):
     class Meta:
@@ -92,9 +92,9 @@ class ParkingCreationSerializer(ModelSerializer):
         parking.state = cleanAddress.get('state')
         parking.postcode = cleanAddress.get('postcode')
         parking.provider = self.data.get('provider')
-        print(parking.provider)
         parking.price = self.data.get('price')
-        # parking.image = self.data.get('image')
+        temp = decodeDesignImage(self.data.get('image'))
+        parking.image = InMemoryUploadedFile(temp, None, f'{self.pk}.png', 'image/png', temp.tell(), None)
         parking.notes = self.data.get('notes')
         parking.is_active = self.data.get('is_active')
         parking.save()

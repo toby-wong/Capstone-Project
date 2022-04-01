@@ -1,5 +1,7 @@
 from i18naddress import InvalidAddress, normalize_address, get_validation_rules
-
+import base64
+import io
+from PIL import Image
 class AddressValidation:
     
     def __init__(self, data):
@@ -39,3 +41,19 @@ class AddressValidation:
 # current error when you try to create a parking space
 # country_code = address.get("country_code", "").upper()
 # AttributeError: 'AddressValidationForm' object has no attribute 'get'
+
+def decodeDesignImage(data):
+    try:
+        data = base64.b64decode(data.encode('UTF-8'))
+        buf = io.BytesIO(data)
+        img = Image.open(buf)
+        img = memoryImage(img)
+        return img
+    except:
+        return None
+
+def memoryImage(data):
+    img = decodeDesignImage(data)
+    img_io = io.BytesIO()
+    img.save(img_io, format='JPEG')
+    return img
