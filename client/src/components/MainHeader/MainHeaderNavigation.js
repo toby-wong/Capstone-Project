@@ -42,9 +42,10 @@ const MainHeaderNavigation = () => {
   };
 
   const markingPaths = ["/", "/consumer", "/provider", "/admin"];
-  const activeTab = markingPaths.includes(location.pathname)
+  let activeTab = markingPaths.includes(location.pathname)
     ? location.pathname
     : false;
+  activeTab = authContext.isLoggedIn ? activeTab : false;
 
   return (
     <div className={classes.headerNavigation}>

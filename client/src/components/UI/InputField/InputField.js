@@ -14,6 +14,12 @@ const InputField = ({
   required = false,
   className,
   name,
+  multiline = false,
+  maxRows = 1,
+  minRows = 1,
+  inputClassName,
+  hidden = false,
+  multiple = false,
 }) => {
   return (
     <FormControl
@@ -35,6 +41,12 @@ const InputField = ({
         onBlur={onBlur}
         inputRef={inputRef}
         autoComplete="on"
+        multiline={multiline}
+        maxRows={maxRows}
+        minRows={minRows}
+        className={inputClassName}
+        hidden={hidden}
+        inputProps={{ multiple, hidden }}
       />
     </FormControl>
   );

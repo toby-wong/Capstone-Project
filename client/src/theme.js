@@ -7,6 +7,7 @@ const colors = {
   purple: "#7e78d2",
   red: "#ef6461",
   background: "#ffffff",
+  yellow: "#FFD233",
 };
 
 export const theme = createTheme({
@@ -21,6 +22,9 @@ export const theme = createTheme({
     },
     container: {
       main: colors.light,
+    },
+    yellow: {
+      main: colors.yellow,
     },
     warning: {
       main: colors.red,
@@ -46,6 +50,7 @@ export const theme = createTheme({
       marginLeft: 7,
     },
     modalTitle: {
+      fontFamily: "Montserrat",
       fontSize: "30px",
     },
     modalSubtitle: {
@@ -58,6 +63,23 @@ export const theme = createTheme({
     },
     sectionSubTitle: {
       fontSize: "20px",
+      color: colors.dark,
+    },
+    carSpaceModalSubTitle: {
+      fontFamily: "Montserrat",
+      fontSize: "20px",
+      fontWeight: "bold",
+      color: colors.dark,
+      marginBottom: "5px",
+    },
+    carSpaceModalContent: {
+      fontFamily: "Montserrat",
+      fontSize: "18px",
+      color: colors.dark,
+    },
+    carSpaceModalSubContent: {
+      fontFamily: "Montserrat",
+      fontSize: "14px",
       color: colors.dark,
     },
   },
