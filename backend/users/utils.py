@@ -2,6 +2,7 @@ from i18naddress import InvalidAddress, normalize_address, get_validation_rules
 import base64
 import io
 from PIL import Image
+from .models import CustomUser
 class AddressValidation:
     
 
@@ -59,3 +60,7 @@ def memoryImage(data):
     img_io = io.BytesIO()
     img.save(img_io, format='JPEG')
     return img
+
+def getUser(username):
+    user_obj = CustomUser.objects.get(username=username)
+    return user_obj

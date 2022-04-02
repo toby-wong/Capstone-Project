@@ -1,7 +1,7 @@
 # Controls what fields are packaged together
 
 from django.db import transaction
-from .utils import AddressValidation, decodeDesignImage
+from .utils import AddressValidation, decodeDesignImage, getUser
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from dj_rest_auth.registration.serializers import RegisterSerializer
@@ -92,7 +92,7 @@ class ParkingCreationSerializer(ModelSerializer):
         parking.city = cleanAddress['city']
         parking.state = cleanAddress['country_area']
         parking.postcode = cleanAddress['postal_code']
-        parking.provider = self.data.user # provider should be CustomUser instance
+        parking.provider = getUser(self.data.get('provider'))
 
         parking.price = self.data.get('price')
         temp = decodeDesignImage(self.data.get('image'))
