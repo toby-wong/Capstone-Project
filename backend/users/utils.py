@@ -41,9 +41,6 @@ class AddressValidation:
 
     def __getitem__(self,key):
         return getattr(self,key)
-# current error when you try to create a parking space
-# country_code = address.get("country_code", "").upper()
-# AttributeError: 'AddressValidationForm' object has no attribute 'get'
 
 def decodeDesignImage(data):
     try:
@@ -62,5 +59,7 @@ def memoryImage(data):
     return img
 
 def getUser(username):
-    user_obj = CustomUser.objects.get(username=username)
+    print(username)
+    print(CustomUser.objects.values())
+    user_obj = CustomUser.objects.get(id=username)
     return user_obj

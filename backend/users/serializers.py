@@ -96,9 +96,10 @@ class ParkingCreationSerializer(ModelSerializer):
 
         parking.price = self.data.get('price')
         temp = decodeDesignImage(self.data.get('image'))
-        parking.image = InMemoryUploadedFile(temp, None, f'{self.pk}.png', 'image/png', temp.tell(), None)
+        # parking.image = InMemoryUploadedFile(temp, None, f'{self.pk}.png', 'image/png', temp.tell(), None)
+        parking.image = self.data.get('image')
         parking.size = self.data.get('size')
         parking.notes = self.data.get('notes')
-        parking.is_active = self.data.get('is_active')
+        parking.is_active = True # need to change to False when we implement the admin panel
         parking.save()
         return parking
