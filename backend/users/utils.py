@@ -2,7 +2,7 @@ from i18naddress import InvalidAddress, normalize_address, get_validation_rules
 import base64
 import io
 from PIL import Image
-from .models import CustomUser
+from .models import CustomUser, ParkingSpace
 class AddressValidation:
     
 
@@ -53,8 +53,12 @@ def getCoords(address):
     print(response[0]["lon"])
     return(response[0]["lat"], response[0]["lon"])
 
-def getUser(username):
-    print(username)
-    print(CustomUser.objects.values())
-    user_obj = CustomUser.objects.get(username=username)
+def getUser(pk):
+    # print(pk)
+    # print(CustomUser.objects.values())
+    user_obj = CustomUser.objects.get(id=pk)
     return user_obj
+
+def getParkingSpace(pk):
+    parking_obj = ParkingSpace.objects.get(id=pk)
+    return parking_obj
