@@ -41,10 +41,15 @@ const MainHeaderNavigation = () => {
     setAnchorEl(null);
   };
 
-  const markingPaths = ["/", "/consumer", "/provider", "/admin"];
+  const markingPaths = ["/", "/consumer", "/admin"];
+  // const activeTab = markingPaths.includes(location.pathname)
+  //   ? location.pathname
+  //   : location.pathname.includes("provider")
+  //     ? "/provider/listView/active"
+  //     : false;
   const activeTab = markingPaths.includes(location.pathname)
     ? location.pathname
-    : false;
+    : false
 
   return (
     <div className={classes.headerNavigation}>
@@ -61,8 +66,8 @@ const MainHeaderNavigation = () => {
         {authContext.isLoggedIn && (
           <Tab
             component={Link}
-            to="/provider"
-            value="/provider"
+            to="/provider/listView/active"
+            value="/provider/listView/active"
             label="Provider"
           />
         )}
