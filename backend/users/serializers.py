@@ -107,31 +107,29 @@ class ParkingSpaceSerializer(ModelSerializer):
         # read_only_fields = ('provider', 'streetAddress','city', 'state', 'postcode')
 
     def save(self, request):
-        cleanAddress = AddressValidation(request.data)
-        if cleanAddress.errors:
-            raise cleanAddress.errors
         parking = super().save()
+        cleanAddress = AddressValidation(request.data)
+        cleanAddress = cleanAddress.validate()
+        print(cleanAddress)
+        if not type(cleanAddress) == dict:
+            raise serializers.ValidationError(cleanAddress.errors)
         parking.streetAddress = cleanAddress['street_address']
         parking.city = cleanAddress['city']
         parking.state = cleanAddress['country_area']
         parking.postcode = cleanAddress['postal_code']
-        address = ''.join(f'{v} ' for i, v in enumerate(cleanAddress.__dict__.values()) if i < 4)
+        address = ''.join(f'{v} ' for i, v in enumerate(cleanAddress.values()) if i < 4)
         coords = getCoords(address)
-        print(coords)
         parking.longitude = coords[0]
         parking.latitude = coords[1]        
-        print(self.data.get('provider'))
         parking.provider = getUser(self.data.get('provider'))
         parking.price = self.data.get('price')
         parking.size = self.data.get('size')
         parking.notes = self.data.get('notes')
         parking.is_active = True # need to change to False when we implement the admin panel
         parking.save()
-        try:
+        if "image" in self.data.keys():
             for i in self.data.get('images'):
                 ImageSerializer(parkingID=parking.id, image=i)
-        except:
-            pass
         return parking
 
     def edit(self, request):

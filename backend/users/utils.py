@@ -4,8 +4,6 @@ import io
 from PIL import Image
 from .models import CustomUser, ParkingSpace
 class AddressValidation:
-    
-
 
     def __init__(self, data):
         self.street_address = data.pop('streetAddress')
@@ -17,30 +15,31 @@ class AddressValidation:
         
 
     def validate(self):
-        validation_rules = get_validation_rules(self)
+        # validation_rules = get_validation_rules(self)
         # valid_address = normalize_address(clean_data)
+        print(self.__dict__)
+        valid_address = {}
         try:
-            valid_address = normalize_address(clean_data.data)
+            valid_address = normalize_address(self.__dict__)
         except InvalidAddress as e:
-            errors = e.errors
-            valid_address = None
-            for field, error_code in errors.items():
-                if field == 'postal_code':
-                    examples = validation_rules.postal_code_examples
-                    msg = 'Invalid value, use format like XXXX' % examples
-                elif field == 'country_area':
-                    examples = validation_rules.country_area_examples
-                    msg = 'Invalid state' % examples
-                elif field == 'city':
-                    examples = validation_rules.city_examples
-                    msg = 'Invalid city' % examples
-                else:
-                    msg = 'Address not found' # TODO: look into implementation of this
-                clean_data.add_error(field, msg)
-        return valid_address # or clean_data
-
-    def __getitem__(self,key):
-        return getattr(self,key)
+            self.errors = e.errors
+        return valid_address or self
+        
+    def get(self,key, default=None):
+        print(f'hello {key}')
+        if key == 'country_code':
+            return self.country_code
+        elif key == 'country_area':
+            return self.country_area
+        elif key == 'city':
+            return self.city
+        elif key == 'postal_code':
+            return self.postal_code
+        else:
+            return default
+    
+    def copy(self):
+        return self.__dict__
 
 def getCoords(address):
     import requests
