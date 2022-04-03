@@ -5,7 +5,7 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { Button, CircularProgress } from "@mui/material";
+import { Button, CircularProgress, FormHelperText } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 
 import CarSpaceErrorModal from "./CarSpaceErrorModal/CarSpaceErrorModal";
@@ -27,9 +27,14 @@ import {
 
 const CarSpaceRegistrationForm = ({ onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState({ value: false, message: [] });
+  // const [error, setError] = useState({ value: false, messages: [] });
+  const [subModal, setSubModal] = useState({
+    isOpen: false,
+    onClose: () => {},
+    title: "",
+    content: [],
+  });
   const [uploadedImages, setUploadedImages] = useState([]);
-  const [uploadedImageUrls, setUploadedImageUrls] = useState([]);
   const [isDeleteIconVisible, setIsDeleteIconVisible] = useState("hidden");
   const [formState, dispatchFormState] = useReducer(
     carSpaceFormReducer,
@@ -41,7 +46,7 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
     uploadedImages.forEach((image) =>
       newUploadedImageUrls.push(URL.createObjectURL(image))
     );
-    setUploadedImageUrls(newUploadedImageUrls);
+    dispatchFormState({ type: "IMAGES_INPUT", value: newUploadedImageUrls });
   }, [uploadedImages]);
 
   // Image Upload Handlers
@@ -99,11 +104,10 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
   // Form Submission
   const formSubmitHandler = async (e) => {
     e.preventDefault();
-
     try {
       // Base64 Encoding for images
       const imagesInBase64 = await utility.convertImagesToBase64(
-        e.target.files
+        uploadedImages
       );
 
       // Get username
@@ -126,12 +130,27 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
       );
 
       if (!getUserDataResponse.status)
-        throw Error(`Network Error: Check your internet connection and try again.
-          If this keeps happening, please contact our office.
-        `);
-      if (getUserDataResponse.status >= 300)
-        throw Error(getUserDataResponse.data);
+        throw Error(config.NETWORK_ERROR_MESSAGE);
 
+      if (getUserDataResponse.status >= 300) {
+        const errorMsgs = [];
+        for (const [key, value] of Object.entries(getUserDataResponse.data)) {
+          errorMsgs.push(` - ${key}: ${value}`);
+        }
+        throw Error(errorMsgs);
+      }
+
+      const formData = {
+        provider: getUserDataResponse.data.pk,
+        streetAddress: formState.streetAddress.value,
+        city: formState.city.value,
+        state: formState.state.value,
+        postcode: formState.postcode.value,
+        price: formState.price.value,
+        size: formState.maxVehicleSize.value,
+        image: imagesInBase64,
+        notes: formState.notes.value,
+      };
       const carSpaceRegistrationUrl = `${config.SERVER_URL}/api/provider/add/parking`;
       const carSpaceRegistrationOptions = {
         method: "POST",
@@ -139,17 +158,7 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
           Authorization: "Bearer " + authToken,
           "Content-Type": "application/json",
         },
-        body: {
-          provider: getUserDataResponse.data.username,
-          streetAddress: formState.streetAddress,
-          city: formState.city,
-          state: formState.state,
-          postcode: formState.postcode,
-          price: formState.price,
-          maxVehicleSize: formState.maxVehicleSize,
-          images: imagesInBase64,
-          notes: formState.notes,
-        },
+        body: formData,
       };
       const carSpaceRegistrationResponse = await utility.sendRequest(
         carSpaceRegistrationUrl,
@@ -158,24 +167,52 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
       setIsLoading(false);
 
       if (!carSpaceRegistrationResponse.status)
-        throw Error(`Network Error: Check your internet connection and try again.
-          If this keeps happening, please contact our office.
-        `);
-      if (carSpaceRegistrationResponse.status >= 300)
-        throw Error(carSpaceRegistrationResponse.data);
+        throw Error(config.NETWORK_ERROR_MESSAGE);
+      if (carSpaceRegistrationResponse.status >= 300) {
+        const errorMsgs = [];
+        for (const key of Object.keys(carSpaceRegistrationResponse.data)) {
+          errorMsgs.push(` - Not a valid ${key}.`);
+        }
+        throw Error(errorMsgs);
+      }
+
+      setSubModal({
+        isOpen: true,
+        onClose: closeAllHandler,
+        title: "Success",
+        content: ["Your space has been successfully registered"],
+      });
     } catch (e) {
-      console.log(e.message);
-      setError({ value: true, message: e.message });
+      setSubModal({
+        isOpen: true,
+        onClose: closeSubModalHandler,
+        title: "Error",
+        content: [e.message],
+      });
     }
   };
 
-  const errorModalCloseHandler = () => {};
+  const closeSubModalHandler = () => {
+    setSubModal((prev) => {
+      const newSubModal = { ...prev, isOpen: false };
+      return newSubModal;
+    });
+  };
+  const closeAllHandler = () => {
+    setSubModal((prev) => {
+      const newSubModal = { ...prev, isOpen: false };
+      return newSubModal;
+    });
+    onClose();
+  };
+
   return (
     <form onSubmit={formSubmitHandler}>
       <CarSpaceErrorModal
-        open={error.value}
-        onClose={errorModalCloseHandler}
-        message={error.message}
+        open={subModal.isOpen}
+        onClose={subModal.onClose}
+        title={subModal.title}
+        content={subModal.content}
       />
       <CarSpaceCardHeader title={"Car space registration"} onClose={onClose} />
       <CarSpaceCardContent>
@@ -187,7 +224,7 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
               animation="slide"
               indicators={false}
             >
-              {uploadedImageUrls.map((imgSrc, idx) => (
+              {formState.images.value.map((imgSrc, idx) => (
                 <div className={classes["image-item"]} key={imgSrc}>
                   <img
                     src={imgSrc}
@@ -205,13 +242,14 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
                 </div>
               ))}
             </Carousel>
-            <InputField
-              className={classes["image-uploader"]}
-              type="file"
-              onChange={imageUploadHandler}
-              multiple={true}
-              hidden={true}
-            />
+            <div className={classes["image-uploader"]}>
+              <InputField
+                type="file"
+                onChange={imageUploadHandler}
+                multiple={false}
+              />
+              <FormHelperText>* Plase upload at least 1 image</FormHelperText>
+            </div>
           </div>
           <div className={classes.actions}>
             <Button
@@ -315,6 +353,7 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
                 minRows={3}
                 value={formState.notes.value}
                 onChange={notesChangeHandler}
+                placeholder={`Please type N/A if nothing to type here.`}
               />
             </div>
           </div>

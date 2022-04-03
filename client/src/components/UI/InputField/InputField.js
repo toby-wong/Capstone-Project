@@ -20,6 +20,7 @@ const InputField = ({
   inputClassName,
   hidden = false,
   multiple = false,
+  placeholder,
 }) => {
   return (
     <FormControl
@@ -47,6 +48,7 @@ const InputField = ({
         className={inputClassName}
         hidden={hidden}
         inputProps={{ multiple, hidden }}
+        placeholder={placeholder}
       />
     </FormControl>
   );

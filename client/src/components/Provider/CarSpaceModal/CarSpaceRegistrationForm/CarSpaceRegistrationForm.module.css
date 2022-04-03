@@ -41,11 +41,13 @@
 }
 
 .image-uploader {
-  min-height: 80px;
+  min-height: 50px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
+  margin-bottom: 20px;
 }
+
 
 .actions {
   flex: 1;

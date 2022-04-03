@@ -7,12 +7,22 @@ import GeneralModalActions from "../../../../UI/GeneralModal/GeneralModalActions
 
 import { Button, Typography } from "@mui/material";
 
-const CarSpaceErrorModal = ({ open, onClose, message }) => {
+const CarSpaceErrorModal = ({ open, onClose, title, content }) => {
   return (
     <GeneralModal open={open} onClose={onClose} className={classes.modal}>
-      <GeneralModalHeader title={"Input Error"} onClose={onClose} />
-      <GeneralModalContent>
-        <Typography variant="modalContent">{message}</Typography>
+      <GeneralModalHeader title={title} onClose={onClose} />
+      <GeneralModalContent className={classes.content}>
+        {content.map((message) => {
+          return (
+            <Typography
+              key={message}
+              variant="modalContent"
+              className={classes["content-item"]}
+            >
+              {message}
+            </Typography>
+          );
+        })}
       </GeneralModalContent>
       <GeneralModalActions>
         <Button

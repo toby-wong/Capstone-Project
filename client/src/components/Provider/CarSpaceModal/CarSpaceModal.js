@@ -4,6 +4,13 @@ import CarSpaceInfo from "./CarSpaceInfo/CarSpaceInfo";
 import classes from "./CarSpaceModal.module.css";
 import CarSpaceRegistrationForm from "./CarSpaceRegistrationForm/CarSpaceRegistrationForm";
 
+/*
+  // 1. CarSpaceRegistrationSuccess Page
+  2. Review List Page
+  3. Booking Details List
+    - allBookings
+*/
+
 const CarSpaceModal = ({ open, onClose, className }) => {
   return (
     <GeneralModal open={open} onClose={onClose} className={classes.modal}>
@@ -20,6 +27,7 @@ const CarSpaceModal = ({ open, onClose, className }) => {
           onClose={onClose}
         /> */}
       <CarSpaceRegistrationForm onClose={onClose} />
+      {/* <CarSpaceRegistrationSuccess onClose={onClose} /> */}
     </GeneralModal>
   );
 };
