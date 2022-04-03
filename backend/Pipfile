@@ -15,6 +15,7 @@ tzdata = "*"
 django-booking = "*"
 Pillow = "*"
 google-i18n-address = "*"
+drf-extra-fields = "*"
 
 [dev-packages]
 

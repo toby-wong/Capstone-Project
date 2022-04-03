@@ -1,12 +1,12 @@
 # Controls what fields are packaged together
 
 from django.db import transaction
-from .forms import AddressValidationForm
-
+from .utils import AddressValidation, decodeDesignImage, getUser
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from .models import CustomUser, ParkingSpace
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 class UserSerializer(ModelSerializer):
     class Meta:
@@ -62,8 +62,9 @@ class RemoveUserSerializer(ModelSerializer):
     def delete(self, request):
         username = request.data.get('username')
         user = CustomUser.objects.get(username=username)
-        user.is_active = False
-        user.save()
+        user.delete()
+        # user.is_active = False
+        # user.save()
 
 class ParkingCreationSerializer(ModelSerializer):
     class Meta:
@@ -75,26 +76,30 @@ class ParkingCreationSerializer(ModelSerializer):
             'state',
             'postcode',
             'price',
-            # 'image',
+            'image',
+            'size',
             'notes',
-            'is_active',      
+            'is_active',
+            'pk'  # primary key
         )
 
     def save(self, request):
-        print(request.data)
-        cleanAddress = AddressValidationForm(request.data)
-        cleanAddress.clean()
+        cleanAddress = AddressValidation(request.data)
         if cleanAddress.errors:
             raise cleanAddress.errors
-        parking.streetAddress = cleanAddress.get('streetAddress')
-        parking.city = cleanAddress.get('city')
-        parking.state = cleanAddress.get('state')
-        parking.postcode = cleanAddress.get('postcode')
+        parking = super().save()
+        parking.streetAddress = cleanAddress['street_address']
+        parking.city = cleanAddress['city']
+        parking.state = cleanAddress['country_area']
+        parking.postcode = cleanAddress['postal_code']
+        parking.provider = getUser(self.data.get('provider'))
 
-        parking.provider = self.data.get('provider')
         parking.price = self.data.get('price')
-        # parking.image = self.data.get('image')
+        temp = decodeDesignImage(self.data.get('image'))
+        # parking.image = InMemoryUploadedFile(temp, None, f'{self.pk}.png', 'image/png', temp.tell(), None)
+        parking.image = self.data.get('image')
+        parking.size = self.data.get('size')
         parking.notes = self.data.get('notes')
-        parking.is_active = self.data.get('is_active')
+        parking.is_active = True # need to change to False when we implement the admin panel
         parking.save()
         return parking
