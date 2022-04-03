@@ -5,9 +5,10 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { Button, Typography } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 
+import CarSpaceErrorModal from "./CarSpaceErrorModal/CarSpaceErrorModal";
 import CarSpaceCardHeader from "../CarSpaceCard/CarSpaceCardHeader";
 import CarSpaceCardContentLeft from "../CarSpaceCard/CarSpaceCardContentLeft";
 import CarSpaceCardContentRight from "../CarSpaceCard/CarSpaceCardContentRight";
@@ -24,15 +25,9 @@ import {
   getCarSpaceFormInitialState,
 } from "../../../../reducers/carSpaceForm-reducer";
 
-/*
-  Implement
-    // 1. Multiple image upload feature
-    // 2. Dropdown fully functional with regards to value upon selecting the menuItem
-    // 3. Make the form working with useReducerHook
-*/
 const CarSpaceRegistrationForm = ({ onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState({ value: false, message: [] });
   const [uploadedImages, setUploadedImages] = useState([]);
   const [uploadedImageUrls, setUploadedImageUrls] = useState([]);
   const [isDeleteIconVisible, setIsDeleteIconVisible] = useState("hidden");
@@ -129,8 +124,13 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
         getUserDataUrl,
         getUserDataoptions
       );
-      if (!getUserDataResponse.status || getUserDataResponse.status >= 300)
-        throw Error;
+
+      if (!getUserDataResponse.status)
+        throw Error(`Network Error: Check your internet connection and try again.
+          If this keeps happening, please contact our office.
+        `);
+      if (getUserDataResponse.status >= 300)
+        throw Error(getUserDataResponse.data);
 
       const carSpaceRegistrationUrl = `${config.SERVER_URL}/api/provider/add/parking`;
       const carSpaceRegistrationOptions = {
@@ -157,13 +157,26 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
       );
       setIsLoading(false);
 
-      if (!carSpaceRegistrationResponse.status) throw Error;
-      if (carSpaceRegistrationResponse.statue >= 300) setError(true);
-    } catch (e) {}
+      if (!carSpaceRegistrationResponse.status)
+        throw Error(`Network Error: Check your internet connection and try again.
+          If this keeps happening, please contact our office.
+        `);
+      if (carSpaceRegistrationResponse.status >= 300)
+        throw Error(carSpaceRegistrationResponse.data);
+    } catch (e) {
+      console.log(e.message);
+      setError({ value: true, message: e.message });
+    }
   };
 
+  const errorModalCloseHandler = () => {};
   return (
     <form onSubmit={formSubmitHandler}>
+      <CarSpaceErrorModal
+        open={error.value}
+        onClose={errorModalCloseHandler}
+        message={error.message}
+      />
       <CarSpaceCardHeader title={"Car space registration"} onClose={onClose} />
       <CarSpaceCardContent>
         <CarSpaceCardContentLeft>
@@ -207,7 +220,7 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
               type="submit"
               disabled={!formState.isFormValid}
             >
-              Register
+              {isLoading ? <CircularProgress size="1.5rem" /> : "Registration"}
             </Button>
           </div>
         </CarSpaceCardContentLeft>

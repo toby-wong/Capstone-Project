@@ -56,6 +56,11 @@ export const theme = createTheme({
     modalSubtitle: {
       marginLeft: "15px",
     },
+    modalContent: {
+      fontFamily: "Montserrat",
+      fontSize: "16px",
+      color: colors.dark,
+    },
     sectionTitle: {
       fontSize: "30px",
       fontWeight: "bold",
