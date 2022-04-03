@@ -58,8 +58,8 @@ def memoryImage(data):
     img.save(img_io, format='JPEG')
     return img
 
-def getUser(username):
-    print(username)
+def getUser(pk):
+    print(pk)
     print(CustomUser.objects.values())
-    user_obj = CustomUser.objects.get(id=username)
+    user_obj = CustomUser.objects.get(id=pk)
     return user_obj

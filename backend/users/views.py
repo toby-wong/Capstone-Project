@@ -28,8 +28,30 @@ class AddParkingSpaceView(GenericAPIView):
         serializer = ParkingCreationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(request)
-        print(serializer.errors)
+        # print(serializer.errors)
         if not serializer.errors:
             return Response({'message': 'Parking space added'}, status=status.HTTP_201_CREATED)
         else:
             return Response({'message': 'Parking space not added'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class UpdateParkingSpaceView(GenericAPIView):
+    serializer_class = ParkingUpdateSerializer
+
+    def patch(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid()
+        if not serializer.errors:
+            serializer.edit(request)
+            return Response({'message': 'Parking space updated'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': 'Parking space not updated'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def delete(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid()
+        if not serializer.errors:
+            serializer.delete(request)
+            return Response({'message': 'Parking space deleted'}, status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response({'message': 'Parking space not deleted'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        

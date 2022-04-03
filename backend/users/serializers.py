@@ -1,5 +1,6 @@
 # Controls what fields are packaged together
 
+from webbrowser import get
 from django.db import transaction
 from .utils import AddressValidation, decodeDesignImage, getUser
 from rest_framework import serializers
@@ -61,7 +62,7 @@ class RemoveUserSerializer(ModelSerializer):
     
     def delete(self, request):
         username = request.data.get('username')
-        user = CustomUser.objects.get(username=username)
+        user = self.Meta.model.objects.get(username=username)
         user.delete()
         # user.is_active = False
         # user.save()
@@ -95,7 +96,7 @@ class ParkingCreationSerializer(ModelSerializer):
         parking.provider = getUser(self.data.get('provider'))
 
         parking.price = self.data.get('price')
-        temp = decodeDesignImage(self.data.get('image'))
+        # temp = decodeDesignImage(self.data.get('image'))
         # parking.image = InMemoryUploadedFile(temp, None, f'{self.pk}.png', 'image/png', temp.tell(), None)
         parking.image = self.data.get('image')
         parking.size = self.data.get('size')
@@ -103,3 +104,23 @@ class ParkingCreationSerializer(ModelSerializer):
         parking.is_active = True # need to change to False when we implement the admin panel
         parking.save()
         return parking
+
+class ParkingUpdateSerializer(ModelSerializer):
+    class Meta:
+        model = ParkingSpace
+        fields = []
+
+    def edit(self, request):
+        parkingInstance = self.Meta.model.objects.get(id=request.data.get('pk'))
+        parkingInstance.__dict__ = {**parkingInstance.__dict__, **request.data}
+        parkingInstance.save()
+        # parkingInstance.price = request.data.get('price')
+        # parkingInstance.image = request.data.get('image')
+        # parkingInstance.size = request.data.get('size')
+        # parkingInstance.notes = request.data.get('notes')
+
+    def delete(self, request):
+        parkingInstance = self.Meta.model.objects.get(id=request.data.get('pk'))
+        # parkingInstance.is_active = False
+        # parkingInstance.save()
+        parkingInstance.delete()
