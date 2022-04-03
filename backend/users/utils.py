@@ -1,5 +1,8 @@
 from i18naddress import InvalidAddress, normalize_address, get_validation_rules
-
+import base64
+import io
+from PIL import Image
+from .models import CustomUser
 class AddressValidation:
     
 
@@ -38,6 +41,25 @@ class AddressValidation:
 
     def __getitem__(self,key):
         return getattr(self,key)
-# current error when you try to create a parking space
-# country_code = address.get("country_code", "").upper()
-# AttributeError: 'AddressValidationForm' object has no attribute 'get'
+
+def decodeDesignImage(data):
+    try:
+        data = base64.b64decode(data.encode('UTF-8'))
+        buf = io.BytesIO(data)
+        img = Image.open(buf)
+        img = memoryImage(img)
+        return img
+    except:
+        return None
+
+def memoryImage(data):
+    img = decodeDesignImage(data)
+    img_io = io.BytesIO()
+    img.save(img_io, format='JPEG')
+    return img
+
+def getUser(username):
+    print(username)
+    print(CustomUser.objects.values())
+    user_obj = CustomUser.objects.get(id=username)
+    return user_obj
