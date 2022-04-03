@@ -1,7 +1,7 @@
 # "Queries" for Django database
 from users.forms import *
 from users.models import CustomUser, ParkingSpace
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import *
@@ -19,23 +19,23 @@ class RemoveUserView(GenericAPIView):
             serializer.delete(request)
             return Response({'message': 'User deleted'}, status=status.HTTP_204_NO_CONTENT)
         else:
-            return Response({'message': 'User not deleted'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'message': 'User not deleted'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)    
 
-class AddParkingSpaceView(GenericAPIView):
-    serializer_class = ParkingCreationSerializer
+class ParkingSpaceView(GenericAPIView):
+    serializer_class = ParkingSpaceSerializer
 
+    # def get(self, request):
+    #     # serializer = self.get_serializer(data=request.data)
+    #     return ParkingSpace.objects.filter(id=request.data.get('pk'))
     def post(self,request):
-        serializer = ParkingCreationSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save(request)
         # print(serializer.errors)
         if not serializer.errors:
+            serializer.save(request)
             return Response({'message': 'Parking space added'}, status=status.HTTP_201_CREATED)
         else:
             return Response({'message': 'Parking space not added'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-class UpdateParkingSpaceView(GenericAPIView):
-    serializer_class = ParkingUpdateSerializer
 
     def patch(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -55,3 +55,18 @@ class UpdateParkingSpaceView(GenericAPIView):
         else:
             return Response({'message': 'Parking space not deleted'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
+class ImageView(GenericAPIView):
+    serializer_class = ImageSerializer
+
+    def get(self, request):
+        # serializer = self.get_serializer(data=request.data)
+        return Image.objects.filter(key=request.data.get('pk'))
+
+    def save(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid()
+        if not serializer.errors:
+            serializer.save(request)
+            return Response({'message': 'Images uploaded'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'message': 'Images not uploaded'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

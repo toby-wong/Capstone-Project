@@ -39,7 +39,7 @@ class ParkingSpace(models.Model):
     price = models.IntegerField()
     # image = models.ImageField(upload_to='media/parking_spaces')
     # image = Base64ImageField(max_length=None, use_url=True)
-    image = models.CharField(max_length=10000000)
+    # image = models.CharField(max_length=10000000, blank=True)
     size = models.CharField(max_length=100)
     notes = models.TextField(max_length=500)
     is_active = models.BooleanField(default=False)
@@ -55,8 +55,12 @@ class Transaction(models.Model):
 
 # # REVIEW MODELS
 class Review(models.Model):
-    parkingSpace = models.ForeignKey('ParkingSpace', on_delete=models.CASCADE)
-    consumer = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='consumer_review')
+    parkingSpace = models.ForeignKey(ParkingSpace, on_delete=models.CASCADE)
+    consumer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='consumer_review')
     rating = models.DecimalField(max_digits=2, decimal_places=1)
     comment = models.TextField()
     publishDate = models.DateTimeField(auto_now_add=True)
+
+class Image(models.Model):
+    key = models.ForeignKey(ParkingSpace, on_delete=models.CASCADE)
+    image = models.TextField()

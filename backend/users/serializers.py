@@ -2,11 +2,11 @@
 
 from webbrowser import get
 from django.db import transaction
-from .utils import AddressValidation, decodeDesignImage, getUser
+from .utils import AddressValidation, decodeDesignImage, getParkingSpace, getUser
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from dj_rest_auth.registration.serializers import RegisterSerializer
-from .models import CustomUser, ParkingSpace
+from .models import CustomUser, ParkingSpace, Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
 class UserSerializer(ModelSerializer):
@@ -67,9 +67,29 @@ class RemoveUserSerializer(ModelSerializer):
         # user.is_active = False
         # user.save()
 
-class ParkingCreationSerializer(ModelSerializer):
+# class ParkingCreationSerializer(ModelSerializer):
+#     class Meta:
+#         model = ParkingSpace
+#         fields = (
+#             'provider',
+#             'streetAddress',
+#             'city',
+#             'state',
+#             'postcode',
+#             'price',
+#             'image',
+#             'size',
+#             'notes',
+#             'is_active',
+#             'pk'  # primary key
+#         )
+
+    
+
+class ParkingSpaceSerializer(ModelSerializer):
     class Meta:
         model = ParkingSpace
+        # fields = []
         fields = (
             'provider',
             'streetAddress',
@@ -77,12 +97,12 @@ class ParkingCreationSerializer(ModelSerializer):
             'state',
             'postcode',
             'price',
-            'image',
             'size',
             'notes',
             'is_active',
-            'pk'  # primary key
+            # 'pk'  # primary key
         )
+        read_only_fields = ('provider', 'streetAddress','city', 'state', 'postcode')
 
     def save(self, request):
         cleanAddress = AddressValidation(request.data)
@@ -96,19 +116,13 @@ class ParkingCreationSerializer(ModelSerializer):
         parking.provider = getUser(self.data.get('provider'))
 
         parking.price = self.data.get('price')
-        # temp = decodeDesignImage(self.data.get('image'))
-        # parking.image = InMemoryUploadedFile(temp, None, f'{self.pk}.png', 'image/png', temp.tell(), None)
-        parking.image = self.data.get('image')
         parking.size = self.data.get('size')
         parking.notes = self.data.get('notes')
         parking.is_active = True # need to change to False when we implement the admin panel
         parking.save()
+        for i in self.data.get('images'):
+            ImageSerializer(parkingID=parking.id, image=i)
         return parking
-
-class ParkingUpdateSerializer(ModelSerializer):
-    class Meta:
-        model = ParkingSpace
-        fields = []
 
     def edit(self, request):
         parkingInstance = self.Meta.model.objects.get(id=request.data.get('pk'))
@@ -124,3 +138,21 @@ class ParkingUpdateSerializer(ModelSerializer):
         # parkingInstance.is_active = False
         # parkingInstance.save()
         parkingInstance.delete()
+
+class ImageSerializer:
+    class Meta:
+        model = Image
+        fields = (
+            'key',
+            'image'
+        )
+
+    def get(self, request):
+        parkingID = request.data.get('pk')
+        return self.Meta.model.objects.filter(key=parkingID)
+
+    def save(self, request):
+        parkImage = super().save(request)
+        parkImage.key = getParkingSpace(self.data.get('pk'))
+        parkImage.image = self.data.get('image')
+    
