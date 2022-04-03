@@ -1,3 +1,4 @@
+from re import M
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from drf_extra_fields.fields import Base64ImageField
@@ -36,6 +37,8 @@ class ParkingSpace(models.Model):
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=3)
     postcode = models.CharField(max_length=4)
+    longitude = models.FloatField()
+    latitude = models.FloatField()
     price = models.IntegerField()
     # image = models.ImageField(upload_to='media/parking_spaces')
     # image = Base64ImageField(max_length=None, use_url=True)

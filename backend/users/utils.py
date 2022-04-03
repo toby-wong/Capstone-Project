@@ -42,24 +42,19 @@ class AddressValidation:
     def __getitem__(self,key):
         return getattr(self,key)
 
-def decodeDesignImage(data):
-    try:
-        data = base64.b64decode(data.encode('UTF-8'))
-        buf = io.BytesIO(data)
-        img = Image.open(buf)
-        img = memoryImage(img)
-        return img
-    except:
-        return None
+def getCoords(address):
+    import requests
+    import urllib.parse
 
-def memoryImage(data):
-    img = decodeDesignImage(data)
-    img_io = io.BytesIO()
-    img.save(img_io, format='JPEG')
-    return img
+    url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(address) +'?format=json'
+
+    response = requests.get(url).json()
+    print(response[0]["lat"])
+    print(response[0]["lon"])
+    return(response[0]["lat"], response[0]["lon"])
 
 def getUser(username):
     print(username)
     print(CustomUser.objects.values())
-    user_obj = CustomUser.objects.get(id=username)
+    user_obj = CustomUser.objects.get(username=username)
     return user_obj
