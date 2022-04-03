@@ -16,4 +16,7 @@ urlpatterns = [
     path('provider/history', ProviderHistory.as_view(), name='provider_history'),
     path('provider/scheduled', ProviderSchedule.as_view(), name='provider_schedule'),
     path('consumer/book', Booking.as_view(), name='booking'),
+    path('provider/<int:pk>/review', ReviewList.as_view(), name='review_list'),
+    path('provider/<int:pk>/schedule', ParkingSpaceSchedule.as_view(), name='parking_space_schedule'),
+
 ]

@@ -6,7 +6,7 @@ from .forms import AddressValidationForm
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from dj_rest_auth.registration.serializers import RegisterSerializer
-from .models import CustomUser, ParkingSpace, Transaction
+from .models import CustomUser, ParkingSpace, Transaction, Review
 
 class UserSerializer(ModelSerializer):
     class Meta:
@@ -111,3 +111,14 @@ class TransactionSerializer(ModelSerializer):
             'totalCost',
         )
         
+
+class ReviewSerializer(ModelSerializer):
+    class Meta:
+        model = Review
+        fields = (
+            'parkingSpace',
+            'consumer',
+            'rating',
+            'comment',
+            'publishDate',
+        )
