@@ -23,7 +23,7 @@ class CustomUser(AbstractUser):
 
 # # CONSUMER MODELS
 class Vehicle(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
     carMake = models.CharField(max_length=100)
     carModel = models.CharField(max_length=100)
     carYear = models.IntegerField()
@@ -48,10 +48,10 @@ class ParkingSpace(models.Model):
     is_active = models.BooleanField(default=False)
 
 class Transaction(models.Model):
-    provider = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='provider_transaction')
-    consumer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='consumer_transaction')
-    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='vehicle')
-    parkingSpace = models.ForeignKey(ParkingSpace, on_delete=models.RESTRICT)
+    provider = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='provider_transaction')
+    consumer = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='consumer_transaction')
+    vehicle = models.ForeignKey('Vehicle', on_delete=models.CASCADE, related_name='vehicle')
+    parkingSpace = models.ForeignKey('ParkingSpace', on_delete=models.RESTRICT)
     startTime = models.DateTimeField()
     endTime = models.DateTimeField()
     totalCost = models.DecimalField(max_digits=6, decimal_places=2)

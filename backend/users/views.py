@@ -1,10 +1,13 @@
 # "Queries" for Django database
+from urllib import request
 from users.forms import *
-from users.models import CustomUser, ParkingSpace
-from rest_framework.generics import GenericAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
+from users.models import CustomUser, ParkingSpace, Transaction
+from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from rest_framework import status
 from .serializers import *
+import datetime as dt
 from drf_spectacular.utils import extend_schema
 
 # Create your views here.
@@ -70,3 +73,44 @@ class ImageView(GenericAPIView):
             return Response({'message': 'Images uploaded'}, status=status.HTTP_201_CREATED)
         else:
             return Response({'message': 'Images not uploaded'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
+class Booking(RetrieveUpdateDestroyAPIView):
+    serializer_class = TransactionSerializer
+    queryset = Transaction.objects.all()
+
+
+class Vehicle(RetrieveUpdateDestroyAPIView):
+    serializer_class = VehicleSerializer
+    queryset = Vehicle.objects.all()
+    
+
+class ProviderHistory(ListAPIView):
+    serializer_class = TransactionSerializer
+    def get_queryset(self):
+        user = self.request.user
+        return Transaction.objects.filter(provider=user)
+
+class ConsumerHistory(ListAPIView):
+    serializer_class = TransactionSerializer
+    def get_queryset(self):
+        user = self.request.user
+        return Transaction.objects.filter(consumer=user)
+
+class ReviewList(ListAPIView):
+    serializer_class = ReviewSerializer
+    def get_queryset(self):
+        # need to fix this so it filters for only a given car space
+        space = self.kwargs['pk']
+        return Review.objects.filter(parkingSpace=space)
+
+class ParkingSpaceSchedule(ListAPIView):
+    serializer_class = TransactionSerializer
+    def get_queryset(self):
+        # need to fix this so it filters for only a given car space
+        space = self.kwargs['pk']
+        return Transaction.objects.filter(parkingSpace=space)
+
+    
+
+    
+    

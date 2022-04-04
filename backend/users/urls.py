@@ -1,4 +1,4 @@
-from django.urls import include, path
+from django.urls import include, path, re_path
 from dj_rest_auth.registration.views import VerifyEmailView, ConfirmEmailView
 from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView, UserDetailsView
 from users.views import *
@@ -14,5 +14,12 @@ urlpatterns = [
     path('delete/user', RemoveUserView.as_view(), name='remove_user'), # redundant if we use HTTP method on /auth/user?
     path('provider/parking', ParkingSpaceView.as_view(), name='parking_space_functions'),
     # path('provider/parking/<int:pk>', ParkingSpaceView.as_view(), name='parking_space_functions'),
-    path('provider/parking/images/', ImageView.as_view(), name='parking_images')
+    path('provider/parking/images/', ImageView.as_view(), name='parking_images'),
+    path('provider/add/parking', AddParkingSpaceView.as_view(), name='add_parking_space'),
+    path('provider/history', ProviderHistory.as_view(), name='provider_history'),
+    path('consumer/book', Booking.as_view(), name='booking'),
+    path('consumer/vehicle', Vehicle.as_view(), name='vehicle'),
+    path('provider/<int:pk>/review', ReviewList.as_view(), name='review_list'),
+    path('provider/<int:pk>/schedule', ParkingSpaceSchedule.as_view(), name='parking_space_schedule'),
+
 ]

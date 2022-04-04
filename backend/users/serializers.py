@@ -4,9 +4,9 @@ from webbrowser import get
 from django.db import transaction
 from .utils import AddressValidation, getCoords, getParkingSpace, getUser
 from rest_framework import serializers
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
 from dj_rest_auth.registration.serializers import RegisterSerializer
-from .models import CustomUser, ParkingSpace, Image
+from .models import CustomUser, ParkingSpace, Image, Transaction, Review, Vehicle
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
 class UserSerializer(ModelSerializer):
@@ -102,9 +102,12 @@ class ParkingSpaceSerializer(ModelSerializer):
             'size',
             'notes',
             'is_active',
-            # 'pk'  # primary key
+            'pk',      
         )
         # read_only_fields = ('provider', 'streetAddress','city', 'state', 'postcode')
+
+        read_only_fields = ['pk']
+
 
     def save(self, request):
         parking = super().save()
@@ -164,3 +167,65 @@ class ImageSerializer:
         parkImage.key = getParkingSpace(self.data.get('pk'))
         parkImage.image = self.data.get('image')
     
+        return parking
+
+
+class VehicleSerializer(ModelSerializer):
+
+    user = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+
+    class Meta:
+        model = Vehicle
+        fields = (
+            'user',
+            'carMake',
+            'carModel',
+            'carYear',
+            'carColour',
+            'carRego',
+            'pk'
+        )
+
+        read_only_fields = ['pk']
+        
+
+class TransactionSerializer(ModelSerializer):
+
+    provider = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+    consumer = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+    vehicle = PrimaryKeyRelatedField(queryset=Vehicle.objects.all())
+    parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
+
+    class Meta:
+        model = Transaction
+        fields = (
+            'provider',
+            'consumer',
+            'vehicle',
+            'parkingSpace',
+            'startTime',
+            'endTime',
+            'totalCost',
+            'pk'
+        )
+
+        read_only_fields = ['pk']
+        
+
+class ReviewSerializer(ModelSerializer):
+
+    consumer = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+    parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
+
+    class Meta:
+        model = Review
+        fields = (
+            'parkingSpace',
+            'consumer',
+            'rating',
+            'comment',
+            'publishDate',
+            'pk'
+        )
+
+        read_only_fields = ['pk']

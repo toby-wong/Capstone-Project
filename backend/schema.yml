@@ -391,6 +391,166 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
           description: ''
+  /api/consumer/book:
+    get:
+      operationId: consumer_book_retrieve
+      tags:
+      - consumer
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+          description: ''
+    put:
+      operationId: consumer_book_update
+      tags:
+      - consumer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+          description: ''
+    patch:
+      operationId: consumer_book_partial_update
+      tags:
+      - consumer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTransaction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTransaction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTransaction'
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+          description: ''
+    delete:
+      operationId: consumer_book_destroy
+      tags:
+      - consumer
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/consumer/vehicle:
+    get:
+      operationId: consumer_vehicle_retrieve
+      tags:
+      - consumer
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+          description: ''
+    put:
+      operationId: consumer_vehicle_update
+      tags:
+      - consumer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vehicle'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Vehicle'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Vehicle'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+          description: ''
+    patch:
+      operationId: consumer_vehicle_partial_update
+      tags:
+      - consumer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedVehicle'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedVehicle'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedVehicle'
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+          description: ''
+    delete:
+      operationId: consumer_vehicle_destroy
+      tags:
+      - consumer
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
   /api/delete/user:
     delete:
       operationId: delete_user_destroy
@@ -482,9 +642,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/RestAuthDetail'
           description: ''
-  /api/provider/parking/{id}:
+  /api/provider/{id}/review:
     get:
-      operationId: provider_parking_retrieve
+      operationId: provider_review_list
       parameters:
       - in: path
         name: id
@@ -502,29 +662,50 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ParkingSpace'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Review'
           description: ''
-    put:
-      operationId: provider_parking_update
+  /api/provider/{id}/schedule:
+    get:
+      operationId: provider_schedule_list
       parameters:
       - in: path
         name: id
         schema:
           type: integer
         required: true
+      tags:
+      - provider
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+          description: ''
+  /api/provider/add/parking:
+    post:
+      operationId: provider_add_parking_create
       tags:
       - provider
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ParkingSpace'
+              $ref: '#/components/schemas/ParkingCreation'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/ParkingSpace'
+              $ref: '#/components/schemas/ParkingCreation'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/ParkingSpace'
+              $ref: '#/components/schemas/ParkingCreation'
         required: true
       security:
       - jwtHeaderAuth: []
@@ -535,60 +716,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ParkingSpace'
+                $ref: '#/components/schemas/ParkingCreation'
           description: ''
-    patch:
-      operationId: provider_parking_partial_update
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - provider
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchedParkingSpace'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedParkingSpace'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PatchedParkingSpace'
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ParkingSpace'
-          description: ''
-    delete:
-      operationId: provider_parking_destroy
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - provider
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      - {}
-      responses:
-        '204':
-          description: No response body
-  /api/provider/parking/images/:
+  /api/provider/history:
     get:
-      operationId: provider_parking_images_retrieve
+      operationId: provider_history_list
       tags:
       - provider
       security:
@@ -600,9 +732,9 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                additionalProperties: {}
-                description: Unspecified response body
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
           description: ''
   /api/registration/:
     post:
@@ -721,41 +853,41 @@ components:
           type: string
       required:
       - password
-    ParkingSpace:
+    ParkingCreation:
       type: object
       properties:
         provider:
           type: integer
-          readOnly: true
         streetAddress:
           type: string
-          readOnly: true
+          maxLength: 100
         city:
           type: string
-          readOnly: true
+          maxLength: 100
         state:
           type: string
-          readOnly: true
+          maxLength: 3
         postcode:
           type: string
-          readOnly: true
+          maxLength: 4
         price:
           type: integer
-        size:
-          type: string
-          maxLength: 100
         notes:
           type: string
           maxLength: 500
         is_active:
           type: boolean
+        pk:
+          type: integer
+          readOnly: true
+          title: ID
       required:
       - city
       - notes
+      - pk
       - postcode
       - price
       - provider
-      - size
       - state
       - streetAddress
     PasswordChange:
@@ -798,34 +930,31 @@ components:
       - new_password2
       - token
       - uid
-    PatchedParkingSpace:
+    PatchedTransaction:
       type: object
       properties:
         provider:
           type: integer
-          readOnly: true
-        streetAddress:
-          type: string
-          readOnly: true
-        city:
-          type: string
-          readOnly: true
-        state:
-          type: string
-          readOnly: true
-        postcode:
-          type: string
-          readOnly: true
-        price:
+        consumer:
           type: integer
-        size:
+        vehicle:
+          type: integer
+        parkingSpace:
+          type: integer
+        startTime:
           type: string
-          maxLength: 100
-        notes:
+          format: date-time
+        endTime:
           type: string
-          maxLength: 500
-        is_active:
-          type: boolean
+          format: date-time
+        totalCost:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        pk:
+          type: integer
+          readOnly: true
+          title: ID
     PatchedUser:
       type: object
       properties:
@@ -872,6 +1001,29 @@ components:
           type: integer
           readOnly: true
           title: ID
+    PatchedVehicle:
+      type: object
+      properties:
+        user:
+          type: integer
+        carMake:
+          type: string
+          maxLength: 100
+        carModel:
+          type: string
+          maxLength: 100
+        carYear:
+          type: integer
+        carColour:
+          type: string
+          maxLength: 100
+        carRego:
+          type: string
+          maxLength: 6
+        pk:
+          type: integer
+          readOnly: true
+          title: ID
     RestAuthDetail:
       type: object
       properties:
@@ -880,6 +1032,34 @@ components:
           readOnly: true
       required:
       - detail
+    Review:
+      type: object
+      properties:
+        parkingSpace:
+          type: integer
+        consumer:
+          type: integer
+        rating:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+        comment:
+          type: string
+        publishDate:
+          type: string
+          format: date-time
+          readOnly: true
+        pk:
+          type: integer
+          readOnly: true
+          title: ID
+      required:
+      - comment
+      - consumer
+      - parkingSpace
+      - pk
+      - publishDate
+      - rating
     TokenRefresh:
       type: object
       properties:
@@ -900,6 +1080,40 @@ components:
           writeOnly: true
       required:
       - token
+    Transaction:
+      type: object
+      properties:
+        provider:
+          type: integer
+        consumer:
+          type: integer
+        vehicle:
+          type: integer
+        parkingSpace:
+          type: integer
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        totalCost:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        pk:
+          type: integer
+          readOnly: true
+          title: ID
+      required:
+      - consumer
+      - endTime
+      - parkingSpace
+      - pk
+      - provider
+      - startTime
+      - totalCost
+      - vehicle
     User:
       type: object
       properties:
@@ -958,6 +1172,37 @@ components:
       - phone_number
       - pk
       - username
+    Vehicle:
+      type: object
+      properties:
+        user:
+          type: integer
+        carMake:
+          type: string
+          maxLength: 100
+        carModel:
+          type: string
+          maxLength: 100
+        carYear:
+          type: integer
+        carColour:
+          type: string
+          maxLength: 100
+        carRego:
+          type: string
+          maxLength: 6
+        pk:
+          type: integer
+          readOnly: true
+          title: ID
+      required:
+      - carColour
+      - carMake
+      - carModel
+      - carRego
+      - carYear
+      - pk
+      - user
     VerifyEmail:
       type: object
       properties:
