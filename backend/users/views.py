@@ -36,10 +36,14 @@ class AddParkingSpaceView(GenericAPIView):
         else:
             return Response({'message': 'Parking space not added'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
 class Booking(RetrieveUpdateDestroyAPIView):
     serializer_class = TransactionSerializer
     queryset = Transaction.objects.all()
+
+
+class Vehicle(RetrieveUpdateDestroyAPIView):
+    serializer_class = VehicleSerializer
+    queryset = Vehicle.objects.all()
     
 
 class ProviderHistory(ListAPIView):
@@ -58,15 +62,15 @@ class ReviewList(ListAPIView):
     serializer_class = ReviewSerializer
     def get_queryset(self):
         # need to fix this so it filters for only a given car space
-        user = self.request.user
-        return Review.objects.filter(consumer=user)
+        space = self.kwargs['pk']
+        return Review.objects.filter(parkingSpace=space)
 
 class ParkingSpaceSchedule(ListAPIView):
     serializer_class = TransactionSerializer
     def get_queryset(self):
         # need to fix this so it filters for only a given car space
-        user = self.request.user
-        return Transaction.objects.filter(provider=user)
+        space = self.kwargs['pk']
+        return Transaction.objects.filter(parkingSpace=space)
 
     
 

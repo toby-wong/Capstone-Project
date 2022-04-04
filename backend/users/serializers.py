@@ -81,7 +81,7 @@ class ParkingCreationSerializer(ModelSerializer):
             'pk',      
         )
 
-        read_only_fields = ('pk')
+        read_only_fields = ['pk']
 
 
     def save(self, request):
@@ -105,25 +105,21 @@ class ParkingCreationSerializer(ModelSerializer):
 
 class VehicleSerializer(ModelSerializer):
 
-    provider = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
-    consumer = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
-    vehicle = PrimaryKeyRelatedField(queryset=Vehicle.objects.all())
-    parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
+    user = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
 
     class Meta:
-        model = Transaction
+        model = Vehicle
         fields = (
-            'provider',
-            'consumer',
-            'vehicle',
-            'parkingSpace',
-            'startTime',
-            'endTime',
-            'totalCost',
+            'user',
+            'carMake',
+            'carModel',
+            'carYear',
+            'carColour',
+            'carRego',
             'pk'
         )
 
-        read_only_fields = ('pk')
+        read_only_fields = ['pk']
         
 
 class TransactionSerializer(ModelSerializer):
@@ -146,13 +142,12 @@ class TransactionSerializer(ModelSerializer):
             'pk'
         )
 
-        read_only_fields = ('pk')
+        read_only_fields = ['pk']
         
 
 class ReviewSerializer(ModelSerializer):
 
     consumer = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
-    vehicle = PrimaryKeyRelatedField(queryset=Vehicle.objects.all())
     parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
 
     class Meta:
@@ -166,4 +161,4 @@ class ReviewSerializer(ModelSerializer):
             'pk'
         )
 
-        read_only_fields = ('pk')
+        read_only_fields = ['pk']
