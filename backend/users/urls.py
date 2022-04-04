@@ -15,7 +15,6 @@ urlpatterns = [
     path('provider/parking', ParkingSpaceView.as_view(), name='parking_space_functions'),
     # path('provider/parking/<int:pk>', ParkingSpaceView.as_view(), name='parking_space_functions'),
     path('provider/parking/images/', ImageView.as_view(), name='parking_images'),
-    path('provider/add/parking', AddParkingSpaceView.as_view(), name='add_parking_space'),
     path('provider/history', ProviderHistory.as_view(), name='provider_history'),
     path('consumer/book', Booking.as_view(), name='booking'),
     path('consumer/vehicle', Vehicle.as_view(), name='vehicle'),

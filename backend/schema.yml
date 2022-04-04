@@ -690,34 +690,6 @@ paths:
                 items:
                   $ref: '#/components/schemas/Transaction'
           description: ''
-  /api/provider/add/parking:
-    post:
-      operationId: provider_add_parking_create
-      tags:
-      - provider
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ParkingCreation'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/ParkingCreation'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/ParkingCreation'
-        required: true
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ParkingCreation'
-          description: ''
   /api/provider/history:
     get:
       operationId: provider_history_list
@@ -735,6 +707,89 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Transaction'
+          description: ''
+  /api/provider/parking:
+    post:
+      operationId: provider_parking_create
+      tags:
+      - provider
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParkingSpace'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ParkingSpace'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ParkingSpace'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParkingSpace'
+          description: ''
+    patch:
+      operationId: provider_parking_partial_update
+      tags:
+      - provider
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedParkingSpace'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedParkingSpace'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedParkingSpace'
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParkingSpace'
+          description: ''
+    delete:
+      operationId: provider_parking_destroy
+      tags:
+      - provider
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/provider/parking/images/:
+    get:
+      operationId: provider_parking_images_retrieve
+      tags:
+      - provider
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
           description: ''
   /api/registration/:
     post:
@@ -853,7 +908,7 @@ components:
           type: string
       required:
       - password
-    ParkingCreation:
+    ParkingSpace:
       type: object
       properties:
         provider:
@@ -870,8 +925,17 @@ components:
         postcode:
           type: string
           maxLength: 4
+        longitude:
+          type: number
+          format: double
+        latitude:
+          type: number
+          format: double
         price:
           type: integer
+        size:
+          type: string
+          maxLength: 100
         notes:
           type: string
           maxLength: 500
@@ -883,11 +947,14 @@ components:
           title: ID
       required:
       - city
+      - latitude
+      - longitude
       - notes
       - pk
       - postcode
       - price
       - provider
+      - size
       - state
       - streetAddress
     PasswordChange:
@@ -930,6 +997,43 @@ components:
       - new_password2
       - token
       - uid
+    PatchedParkingSpace:
+      type: object
+      properties:
+        provider:
+          type: integer
+        streetAddress:
+          type: string
+          maxLength: 100
+        city:
+          type: string
+          maxLength: 100
+        state:
+          type: string
+          maxLength: 3
+        postcode:
+          type: string
+          maxLength: 4
+        longitude:
+          type: number
+          format: double
+        latitude:
+          type: number
+          format: double
+        price:
+          type: integer
+        size:
+          type: string
+          maxLength: 100
+        notes:
+          type: string
+          maxLength: 500
+        is_active:
+          type: boolean
+        pk:
+          type: integer
+          readOnly: true
+          title: ID
     PatchedTransaction:
       type: object
       properties:

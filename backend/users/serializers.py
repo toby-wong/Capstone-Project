@@ -166,8 +166,6 @@ class ImageSerializer:
         parkImage = super().save(request)
         parkImage.key = getParkingSpace(self.data.get('pk'))
         parkImage.image = self.data.get('image')
-    
-        return parking
 
 
 class VehicleSerializer(ModelSerializer):
