@@ -48,19 +48,6 @@ class ProviderHistory(ListAPIView):
         user = self.request.user
         return Transaction.objects.filter(provider=user)
 
-class ProviderSchedule(ListAPIView):
-    serializer_class = TransactionSerializer
-    def get_queryset(self):
-        user = self.request.user
-        return Transaction.objects.filter(provider=user).filter(startTime__gte=dt.datetime.now())
-
-class ParkingSpaceSchedule(ListAPIView):
-    serializer_class = TransactionSerializer
-    def get_queryset(self):
-        user = self.request.user
-        return Transaction.objects.filter(provider=user).filter(startTime__gte=dt.datetime.now())
-
-
 class ConsumerHistory(ListAPIView):
     serializer_class = TransactionSerializer
     def get_queryset(self):
@@ -70,10 +57,16 @@ class ConsumerHistory(ListAPIView):
 class ReviewList(ListAPIView):
     serializer_class = ReviewSerializer
     def get_queryset(self):
-        # need to fix this so it filters for only a given car
+        # need to fix this so it filters for only a given car space
         user = self.request.user
         return Review.objects.filter(consumer=user)
 
+class ParkingSpaceSchedule(ListAPIView):
+    serializer_class = TransactionSerializer
+    def get_queryset(self):
+        # need to fix this so it filters for only a given car space
+        user = self.request.user
+        return Transaction.objects.filter(provider=user)
 
     
 
