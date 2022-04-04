@@ -30,6 +30,10 @@ class Vehicle(models.Model):
     carColour = models.CharField(max_length=100)
     carRego = models.CharField(max_length=6, unique=True)
 
+class Favourite(models.Model):
+    consumer = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='consumer_favourite')
+    parkingSpace = models.ForeignKey('ParkingSpace', on_delete=models.RESTRICT)
+
 # # PROVIDER MODELS
 class ParkingSpace(models.Model):
     provider = models.ForeignKey('CustomUser', on_delete=models.CASCADE)

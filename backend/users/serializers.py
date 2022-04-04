@@ -6,7 +6,7 @@ from .utils import AddressValidation, getCoords, getParkingSpace, getUser
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
 from dj_rest_auth.registration.serializers import RegisterSerializer
-from .models import CustomUser, ParkingSpace, Image, Transaction, Review, Vehicle
+from .models import CustomUser, Favourite, ParkingSpace, Image, Transaction, Review, Vehicle
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
 class UserSerializer(ModelSerializer):
@@ -186,6 +186,21 @@ class VehicleSerializer(ModelSerializer):
 
         read_only_fields = ['pk']
         
+
+class FavouriteSerializer(ModelSerializer):
+
+    consumer = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+    parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
+
+    class Meta:
+        model = Favourite
+        fields = (
+            'consumer',
+            'parkingSpace',
+            'pk'
+        )
+
+        read_only_fields = ['pk']
 
 class TransactionSerializer(ModelSerializer):
 

@@ -78,6 +78,17 @@ class Booking(RetrieveUpdateDestroyAPIView):
     serializer_class = TransactionSerializer
     queryset = Transaction.objects.all()
 
+class Favourite(RetrieveUpdateDestroyAPIView):
+    serializer_class = FavouriteSerializer
+    queryset = Favourite.objects.all()
+
+class FavouriteList(ListAPIView):
+    serializer_class = FavouriteSerializer
+    def get_queryset(self):
+        # need to fix this so it filters for only a given car space
+        user = self.request.user
+        return Favourite.objects.filter(consumer=user)
+
 
 class Vehicle(RetrieveUpdateDestroyAPIView):
     serializer_class = VehicleSerializer
@@ -95,6 +106,10 @@ class ConsumerHistory(ListAPIView):
     def get_queryset(self):
         user = self.request.user
         return Transaction.objects.filter(consumer=user)
+
+class Review(RetrieveUpdateDestroyAPIView):
+    serializer_class = ReviewSerializer
+    queryset = Review.objects.all()
 
 class ReviewList(ListAPIView):
     serializer_class = ReviewSerializer
