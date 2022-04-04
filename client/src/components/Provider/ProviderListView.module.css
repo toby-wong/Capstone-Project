@@ -12,7 +12,7 @@
   flex-direction: row;
 }
 
-/* New space button div */
+/* Title and button div*/
 .titleDiv{
   width: 95%;
   height: 90px;
@@ -38,26 +38,27 @@
 /* LHS menu*/
 .viewsMenu{
   width: 17%;
-  height: 40%;
-  margin-left: 35px;
-  margin-top: 34px;
-  margin-right: 10px;
+  height: 42%;
   display: flex;
+  justify-content: space-around;
   background-color: var(--light);
   flex-direction: column;
+  margin-left: 35px;
+  margin-top: 34px;
+  margin-right: 70px;
   border-radius: 15px;
-  justify-content: space-around;
 }
 
+/* Entry in the menu (eg. list view, active listings, etc.) */
 .menu__tab {
-  width: 100%;
   text-transform: none;
   min-height: 30px;
-  margin: 10px;
-  margin-right: 20px;
+  margin-top: 10px;
+  margin-left: 10px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
+  font-size: 15px;
 }
 
 .tab-icon {
@@ -65,7 +66,7 @@
   background-color: var(--green);
   border-radius: 15px;
   padding: 5px;
-  font-size: 30px;
+  font-size: 35px;
 }
 
 /* Listings side */

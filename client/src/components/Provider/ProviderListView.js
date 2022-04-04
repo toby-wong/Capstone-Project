@@ -1,6 +1,6 @@
 import { Button, Paper, Tab, Tabs, Typography, Divider} from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
-import classes from "./Provider.module.css";
+import classes from "./ProviderListView.module.css";
 
 // Imports for icons used
 import DirectionsWalkIcon from '@mui/icons-material/DirectionsWalk';
@@ -83,7 +83,7 @@ const ProviderListView = () => {
                 <Tab
                     className={classes.menu__tab}
                     component={Link}
-                    to=""
+                    to="pending"
                     value="Pending Listings"
                     label="Pending Listings"
                     icon={<ArchiveIcon className={classes["tab-icon"]} />}
