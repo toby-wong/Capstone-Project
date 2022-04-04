@@ -8,7 +8,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Button, CircularProgress, FormHelperText } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 
-import CarSpaceErrorModal from "./CarSpaceErrorModal/CarSpaceErrorModal";
+import CarSpaceRegistrationSubModal from "./CarSpaceRegistrationSubModal/CarSpaceRegistrationSubModal";
 import CarSpaceCardHeader from "../CarSpaceCard/CarSpaceCardHeader";
 import CarSpaceCardContentLeft from "../CarSpaceCard/CarSpaceCardContentLeft";
 import CarSpaceCardContentRight from "../CarSpaceCard/CarSpaceCardContentRight";
@@ -27,7 +27,6 @@ import {
 
 const CarSpaceRegistrationForm = ({ onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
-  // const [error, setError] = useState({ value: false, messages: [] });
   const [subModal, setSubModal] = useState({
     isOpen: false,
     onClose: () => {},
@@ -148,7 +147,7 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
         postcode: formState.postcode.value,
         price: formState.price.value,
         size: formState.maxVehicleSize.value,
-        image: imagesInBase64,
+        image: imagesInBase64[0],
         notes: formState.notes.value,
       };
       const carSpaceRegistrationUrl = `${config.SERVER_URL}/api/provider/add/parking`;
@@ -208,7 +207,7 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
 
   return (
     <form onSubmit={formSubmitHandler}>
-      <CarSpaceErrorModal
+      <CarSpaceRegistrationSubModal
         open={subModal.isOpen}
         onClose={subModal.onClose}
         title={subModal.title}

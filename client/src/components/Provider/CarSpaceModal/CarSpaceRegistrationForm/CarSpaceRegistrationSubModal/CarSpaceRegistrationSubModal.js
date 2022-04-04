@@ -1,4 +1,4 @@
-import classes from "./CarSpaceErrorModal.module.css";
+import classes from "./CarSpaceRegistrationSubModal.module.css";
 
 import GeneralModal from "../../../../UI/GeneralModal/GeneralModal";
 import GeneralModalHeader from "../../../../UI/GeneralModal/GeneralModalHeader";
@@ -7,7 +7,7 @@ import GeneralModalActions from "../../../../UI/GeneralModal/GeneralModalActions
 
 import { Button, Typography } from "@mui/material";
 
-const CarSpaceErrorModal = ({ open, onClose, title, content }) => {
+const CarSpaceRegistrationSubModal = ({ open, onClose, title, content }) => {
   return (
     <GeneralModal open={open} onClose={onClose} className={classes.modal}>
       <GeneralModalHeader title={title} onClose={onClose} />
@@ -38,4 +38,4 @@ const CarSpaceErrorModal = ({ open, onClose, title, content }) => {
   );
 };
 
-export default CarSpaceErrorModal;
+export default CarSpaceRegistrationSubModal;

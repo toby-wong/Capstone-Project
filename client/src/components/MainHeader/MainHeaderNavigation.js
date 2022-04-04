@@ -41,10 +41,14 @@ const MainHeaderNavigation = () => {
     setAnchorEl(null);
   };
 
-  const markingPaths = ["/", "/consumer", "/provider", "/admin"];
-  let activeTab = markingPaths.includes(location.pathname)
-    ? location.pathname
-    : false;
+  // UPDATE: AFTER MERGE with Andrew's branch
+  const markingPaths = ["/consumer", "/provider", "/admin"];
+  let activeTab = location.pathname === "/" ? "/" : false;
+  markingPaths.forEach((markingPath) => {
+    if (location.pathname.startsWith(markingPath)) {
+      activeTab = markingPath;
+    }
+  });
   activeTab = authContext.isLoggedIn ? activeTab : false;
 
   return (
@@ -62,7 +66,7 @@ const MainHeaderNavigation = () => {
         {authContext.isLoggedIn && (
           <Tab
             component={Link}
-            to="/provider"
+            to="/provider/listView/active"
             value="/provider"
             label="Provider"
           />
