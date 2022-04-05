@@ -1151,23 +1151,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Image'
           description: ''
-    delete:
-      operationId: provider_image_destroy
-      parameters:
-      - in: path
-        name: imgID
-        schema:
-          type: integer
-        required: true
-      tags:
-      - provider
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      - {}
-      responses:
-        '204':
-          description: No response body
   /api/provider/image/{parkingID}:
     post:
       operationId: provider_image_create
@@ -1202,6 +1185,23 @@ paths:
               schema:
                 $ref: '#/components/schemas/Image'
           description: ''
+    delete:
+      operationId: provider_image_destroy
+      parameters:
+      - in: path
+        name: parkingID
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
   /api/provider/parking:
     post:
       operationId: provider_parking_create
@@ -1230,12 +1230,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/ParkingSpace'
           description: ''
-  /api/provider/parking/{parkingID}:
+  /api/provider/parking/{id}:
     get:
       operationId: provider_parking_retrieve
       parameters:
       - in: path
-        name: parkingID
+        name: id
         schema:
           type: integer
         required: true
@@ -1256,7 +1256,7 @@ paths:
       operationId: provider_parking_update
       parameters:
       - in: path
-        name: parkingID
+        name: id
         schema:
           type: integer
         required: true
@@ -1289,7 +1289,7 @@ paths:
       operationId: provider_parking_partial_update
       parameters:
       - in: path
-        name: parkingID
+        name: id
         schema:
           type: integer
         required: true
@@ -1321,7 +1321,7 @@ paths:
       operationId: provider_parking_destroy
       parameters:
       - in: path
-        name: parkingID
+        name: id
         schema:
           type: integer
         required: true
@@ -1612,12 +1612,6 @@ components:
         postcode:
           type: string
           maxLength: 4
-        longitude:
-          type: number
-          format: double
-        latitude:
-          type: number
-          format: double
         price:
           type: integer
         size:
@@ -1628,14 +1622,14 @@ components:
           maxLength: 500
         is_active:
           type: boolean
+          readOnly: true
         pk:
           type: integer
           readOnly: true
           title: ID
       required:
       - city
-      - latitude
-      - longitude
+      - is_active
       - notes
       - pk
       - postcode
@@ -1723,12 +1717,6 @@ components:
         postcode:
           type: string
           maxLength: 4
-        longitude:
-          type: number
-          format: double
-        latitude:
-          type: number
-          format: double
         price:
           type: integer
         size:
@@ -1739,6 +1727,7 @@ components:
           maxLength: 500
         is_active:
           type: boolean
+          readOnly: true
         pk:
           type: integer
           readOnly: true
