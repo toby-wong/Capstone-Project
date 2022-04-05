@@ -1551,7 +1551,7 @@ components:
     Image:
       type: object
       properties:
-        key:
+        parkingSpace:
           type: integer
         image:
           type: string
@@ -1561,7 +1561,7 @@ components:
           title: ID
       required:
       - image
-      - key
+      - parkingSpace
       - pk
     JWT:
       type: object
@@ -1692,7 +1692,7 @@ components:
     PatchedImage:
       type: object
       properties:
-        key:
+        parkingSpace:
           type: integer
         image:
           type: string
