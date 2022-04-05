@@ -36,7 +36,7 @@ urlpatterns = [
 
     # Images 
 
-    path('provider/image', CreateImage.as_view(), name='create_image'),
+    path('provider/image/<int:parkingID>', CreateImage.as_view(), name='create_image'),
     path('provider/image/<int:imgID>', ImageView.as_view(), name='modify_image'),
     
 

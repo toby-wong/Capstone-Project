@@ -54,9 +54,13 @@ class ParkingSpaceList(ListAPIView):
 # IMAGES
        
 # Upload an image
-class CreateImage(CreateAPIView):
+class CreateImage(CreateAPIView):   
     serializer_class = ImageSerializer
-    queryset = Image.objects.all()
+
+    def get_queryset(self):
+        space = self.kwargs['parkingID']
+        Image.objects.filter(parkingSpace=space).delete()
+        return Image.objects.filter(parkingSpace=space)
 
 # Do stuff with an existing image
 
