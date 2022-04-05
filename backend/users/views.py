@@ -73,7 +73,7 @@ class ImageList(ListAPIView):
     serializer_class = ImageSerializer
     def get_queryset(self):
         space = self.kwargs['parkingID']
-        return Image.objects.filter(key=space)
+        return Image.objects.filter(parkingSpace=space)
 
 
 # BOOKINGS
