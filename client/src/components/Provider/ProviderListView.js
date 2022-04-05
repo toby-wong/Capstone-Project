@@ -14,149 +14,119 @@ const ProviderListView = ({ onAdd }) => {
   const activeTab = location.pathname.split("/").slice(2).join("/");
 
   return (
-    <div className={classes.body}>
-      <div className={classes.titleDiv}>
-        <Typography
-          className={classes.title}
-          variant="modalTitle"
-          color="textSecondary"
-          fontWeight="Bold"
-        >
-          Your Car Spaces
-        </Typography>
-        <Button
-          className={classes.button}
-          color="primary"
-          variant="contained"
-          size="large"
-          style={{
-            borderRadius: 15,
-          }}
-          onClick={onAdd}
-        >
-          + Add
-        </Button>
-      </div>
-      <div className={classes.mainContainer}>
-        {/* <Paper className={classes.viewsMenu} elevation={5}>
-          <Tabs value={activeTab} orientation="vertical">
-            <Tab
-              className={classes.menu__tab}
-              component={Link}
-              to="/provider/listView/active"
-              value="listView"
-              label="List View"
-              icon={<ListAltIcon className={classes["tab-icon"]} />}
-              iconPosition="start"
-            />
+    <Paper variant="sectionBody">
+      <Tabs
+        variant="sideMenu"
+        value={activeTab}
+        orientation="vertical"
+        className={classes.navbar}
+      >
+        <Tab
+          variant="sideMenu"
+          component={Link}
+          to="/provider/listView/active"
+          value="listView"
+          label="List View"
+          icon={<ListAltIcon className={classes["tab-icon"]} />}
+          iconPosition="start"
+        />
 
-            <Tab
-              className={classes.menu__tab}
-              component={Link}
-              to="/provider/mapView/active"
-              value="mapView"
-              label="Map View"
-              icon={<MapIcon className={classes["tab-icon"]} />}
-              iconPosition="start"
-            />
-          </Tabs>
-          <Divider sx={{ my: 1 }} />
-          <Tabs value={activeTab} orientation="vertical">
-            <Tab
-              className={classes.menu__tab}
-              component={Link}
-              to="active"
-              value="activeListings"
-              label="Active Listings"
-              icon={<BeenhereIcon className={classes["tab-icon"]} />}
-              iconPosition="start"
-            />
+        <Tab
+          variant="sideMenu"
+          component={Link}
+          to="/provider/mapView/active"
+          value="mapView"
+          label="Map View"
+          icon={<MapIcon className={classes["tab-icon"]} />}
+          iconPosition="start"
+        />
+        <Divider sx={{ my: 1 }} />
+        <Tab
+          variant="sideMenu"
+          component={Link}
+          to="active"
+          value="activeListings"
+          label="Active Listings"
+          icon={<BeenhereIcon className={classes["tab-icon"]} />}
+          iconPosition="start"
+        />
 
-            <Tab
-              className={classes.menu__tab}
-              component={Link}
-              to="pending"
-              value="Pending Listings"
-              label="Pending Listings"
-              icon={<ArchiveIcon className={classes["tab-icon"]} />}
-              iconPosition="start"
+        <Tab
+          variant="sideMenu"
+          component={Link}
+          to="pending"
+          value="Pending Listings"
+          label="Pending Listings"
+          icon={<ArchiveIcon className={classes["tab-icon"]} />}
+          iconPosition="start"
+        />
+      </Tabs>
+      <Paper variant="sectionContent">
+        <div className={classes.sectionContent__title}>
+          <Typography variant="sectionTitle">Your Car Spaces</Typography>
+          <Button
+            color="primary"
+            variant="contained"
+            size="large"
+            onClick={onAdd}
+          >
+            Add Car Space
+          </Button>
+        </div>
+        <Paper
+          variant="sectionContentBody"
+          className={classes.sectionContent__body}
+        >
+          <div className={classes.listItem}>
+            <div className={classes.listItem__content}>
+              <div className={classes.listItem__content__main}>
+                <Typography variant="sectionSubTitle">
+                  <span className={classes.descriptor}>Garage</span> on Wharf
+                  Street
+                </Typography>
+                <Typography
+                  variant="sectionContent"
+                  className={classes.listItem__content__description}
+                >
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
+                  vitae vehicula ante, eu laoreet orci. Cras eu turpis aliquet
+                  dui sodales porta. Mauris lobortis mollis ligula quis
+                  ultrices. Sed a posuere risus. Quisque ultrices mi ut sodales
+                  commodo. Etiam at libero consequat nulla gravida tempus. Sed a
+                  posuere risus.
+                </Typography>
+              </div>
+              <div className={classes.listItem__content__details}>
+                <div className={classes.distance}>
+                  <DirectionsWalkIcon className={classes.walkIcon} />
+                  <Typography variant="sectionSubContent">50km</Typography>
+                </div>
+                <div className={classes.capacity_rate}>
+                  <Typography
+                    variant="sectionContent"
+                    className={classes.capacity}
+                  >
+                    Fits an SUV
+                  </Typography>
+                  <Typography
+                    color="primary"
+                    variant="sectionContent"
+                    className={classes.rate}
+                  >
+                    $25.00
+                  </Typography>
+                </div>
+              </div>
+            </div>
+            <img
+              className={classes.listItem__image}
+              alt="parking at Sydney1"
+              src="https://www.realestate.com.au/blog/images/550x350-fit,progressive/2016/03/space-body.jpg"
             />
-          </Tabs>
+          </div>
         </Paper>
-        <div className={classes.listingsContainer}>
-          <div className={classes.listing}>
-            <div className={classes.lhs}>
-              <Typography variant="sectionTitle">
-                <span className={classes.descriptor}>Garage</span> on Wharf
-                Street
-              </Typography>
-              <div className={classes.description}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
-                vitae vehicula ante, eu laoreet orci. Cras eu turpis aliquet dui
-                sodales porta. Mauris lobortis mollis ligula quis ultrices. Sed
-                a posuere risus. Quisque ultrices mi ut sodales commodo. Etiam
-                at libero consequat nulla gravida tempus. Praesent pulvinar
-                consectetur justo, sed varius lectus facilisis fringilla. Nunc
-                maximus porttitor augue et vulputate. Maecenas hendrerit risus
-                scelerisque est dapibus dictum sed at orci. Sed ligula nunc,
-                pharetra et turpis quis, consectetur fermentum lectus.
-              </div>
-              <div className={classes.infoBar}>
-                <div className={classes.distance}>
-                  <DirectionsWalkIcon className={classes.walkIcon} /> 50km
-                </div>
-                <div className={classes.capacity_rate}>
-                  <div className={classes.capacity}>Fits an SUV</div>
-                  <div className={classes.rate}>$25.00</div>
-                </div>
-              </div>
-            </div>
-            <div className={classes.imageSection}>
-              <img
-                className={classes.imageEntry}
-                alt="parking at Sydney1"
-                src="https://www.realestate.com.au/blog/images/550x350-fit,progressive/2016/03/space-body.jpg"
-              />
-            </div>
-          </div>
-          <div className={classes.listing}>
-            <div className={classes.lhs}>
-              <Typography variant="sectionTitle">
-                <span className={classes.descriptor}>Garage</span> on Wharf
-                Street
-              </Typography>
-              <div className={classes.description}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
-                vitae vehicula ante, eu laoreet orci. Cras eu turpis aliquet dui
-                sodales porta. Mauris lobortis mollis ligula quis ultrices. Sed
-                a posuere risus. Quisque ultrices mi ut sodales commodo. Etiam
-                at libero consequat nulla gravida tempus. Praesent pulvinar
-                consectetur justo, sed varius lectus facilisis fringilla. Nunc
-                maximus porttitor augue et vulputate. Maecenas hendrerit risus
-                scelerisque est dapibus dictum sed at orci. Sed ligula nunc,
-                pharetra et turpis quis, consectetur fermentum lectus.
-              </div>
-              <div className={classes.infoBar}>
-                <div className={classes.distance}>
-                  <DirectionsWalkIcon className={classes.walkIcon} /> 50km
-                </div>
-                <div className={classes.capacity_rate}>
-                  <div className={classes.capacity}>Fits an SUV</div>
-                  <div className={classes.rate}>$25.00</div>
-                </div>
-              </div>
-            </div>
-            <div className={classes.imageSection}>
-              <img
-                className={classes.imageEntry}
-                alt="parking at Sydney1"
-                src="https://www.realestate.com.au/blog/images/550x350-fit,progressive/2016/03/space-body.jpg"
-              />
-            </div>
-          </div>
-        </div> */}
-      </div>
-    </div>
+      </Paper>
+    </Paper>
   );
 };
 

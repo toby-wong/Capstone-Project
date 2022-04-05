@@ -13,7 +13,13 @@ import CarSpaceCardContentLeft from "../CarSpaceCard/CarSpaceCardContentLeft";
 import CarSpaceCardContentRight from "../CarSpaceCard/CarSpaceCardContentRight";
 import CarSpaceCardContent from "../CarSpaceCard/CarSpaceCardContent";
 
-const CarSpaceInfo = ({ carInfo, onClose }) => {
+const CarSpaceInfo = ({
+  carSpaceId,
+  carInfo,
+  onClose,
+  onEdit,
+  onClickReviews,
+}) => {
   return (
     <>
       <CarSpaceCardHeader
@@ -27,6 +33,7 @@ const CarSpaceInfo = ({ carInfo, onClose }) => {
             <Typography
               variant="carSpaceModalSubContent"
               className={classes["review-link"]}
+              onClick={onClickReviews}
             >
               View 21 reviews
             </Typography>
@@ -58,7 +65,7 @@ const CarSpaceInfo = ({ carInfo, onClose }) => {
             <Button variant="contained" size="large">
               View Calendar
             </Button>
-            <Button variant="contained" size="large">
+            <Button variant="contained" size="large" onClick={onEdit}>
               Edit Listing
             </Button>
           </div>

@@ -1,9 +1,9 @@
 .body {
   flex: 1;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  color: black;
+  /* justify-content: center; */
+  /* align-items: center; */
+  /* color: black; */
   font-size: 2rem;
   z-index: 99;
 }

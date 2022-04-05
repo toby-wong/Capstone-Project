@@ -7,6 +7,12 @@ import CarSpaceModal from "./CarSpaceModal/CarSpaceModal";
 import ProviderListView from "./ProviderListView";
 import ProviderMapView from "./ProviderMapView";
 
+/*
+  1. Review Modal - reviews of a parking space
+  2. History Modal - list of parking space usages
+  3. Edit Modal - transition from display to edit
+  4. Link with Backend
+*/
 const Provider = () => {
   const [modalPage, setModalPage] = useState("");
   const [carSpaceModalOpen, setCarSpaceModalOpen] = useState(false);
@@ -16,8 +22,12 @@ const Provider = () => {
   };
 
   const addCarSpaceHandler = () => {
-    // setModalPage("/add");
-    setModalPage("/item");
+    setModalPage("/add");
+    setCarSpaceModalOpen(true);
+  };
+
+  const displayCarSpaceHandler = (carSpaceId) => {
+    setModalPage(`/info/${carSpaceId}`);
     setCarSpaceModalOpen(true);
   };
 
@@ -32,7 +42,13 @@ const Provider = () => {
       <Routes>
         <Route
           path="listView/active"
-          element={<ProviderListView onAdd={addCarSpaceHandler} />}
+          element={
+            <ProviderListView
+              // onAdd={addCarSpaceHandler}
+              onAdd={displayCarSpaceHandler}
+              // onClickItem={displayCarSpaceHandler}
+            />
+          }
         />
         <Route path="mapView/active" element={<ProviderMapView />} />
       </Routes>

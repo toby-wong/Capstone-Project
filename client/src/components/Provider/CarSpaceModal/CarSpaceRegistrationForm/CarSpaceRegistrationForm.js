@@ -25,7 +25,7 @@ import {
   getCarSpaceFormInitialState,
 } from "../../../../reducers/carSpaceForm-reducer";
 
-const CarSpaceRegistrationForm = ({ onClose }) => {
+const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [subModal, setSubModal] = useState({
     isOpen: false,
@@ -47,6 +47,14 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
     );
     dispatchFormState({ type: "IMAGES_INPUT", value: newUploadedImageUrls });
   }, [uploadedImages]);
+
+  useEffect(() => {
+    if (!carSpaceId) return;
+    // TODO:
+    // 1. fetch a space data whose id is carSpaceId
+    // 2. set values for all fields using the fecthed data
+    //   - use Reducer for this.
+  }, [carSpaceId]);
 
   // Image Upload Handlers
   const imageUploadHandler = (e) => {
@@ -190,7 +198,7 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
       });
     }
   };
-
+  // Close handlers
   const closeSubModalHandler = () => {
     setSubModal((prev) => {
       const newSubModal = { ...prev, isOpen: false };
