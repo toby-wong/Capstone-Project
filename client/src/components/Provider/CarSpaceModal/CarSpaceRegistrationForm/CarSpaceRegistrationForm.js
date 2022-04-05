@@ -71,7 +71,28 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
           throw Error;
 
         // 2. set values for all fields using the fecthed data
+        const getImageUrl = `${config.SERVER_URL}/api/provider/parking/images/${carSpaceId}`;
+        const getImageOptions = {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + authToken,
+            "Content-Type": "application/json",
+          },
+        };
+
+        const getImageResponse = await utility.sendRequest(
+          getImageUrl,
+          getImageOptions
+        );
+        if (getImageResponse.status >= 300 || !getImageResponse.status)
+          throw Error;
+
+        const images = getImageResponse.data.map(
+          (el) => "data:image/png;base64, " + el.image
+        );
+
         dispatchFormState({ type: "FETCH", value: getCarInfoResponse.data });
+        dispatchFormState({ type: "IMAGES_INPUT", value: images });
       } catch (e) {
         console.log(e.message);
         setIsLoading(false);

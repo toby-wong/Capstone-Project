@@ -4,7 +4,6 @@ export const carSpaceFormReducer = (state, action) => {
   if (action.type === "FETCH") {
     return {
       isFormValid: true,
-      images: { value: action.image, isValid: true },
       streetAddress: {
         value: action.streetAddress,
         isValid: true,
