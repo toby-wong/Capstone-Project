@@ -154,7 +154,7 @@ class ParkingSpaceSerializer(ModelSerializer):
         parking.notes = self.data.get('notes')
         parking.is_active = True # need to change to False when we implement the admin panel
         parking.save()
-        if "images" in self.data.keys():
+        if "image" in self.data.keys():
             for i in self.data.get('images'):
                 ImageSerializer(parkingID=parking.id, image=i)
         return parking
