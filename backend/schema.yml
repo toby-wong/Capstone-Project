@@ -1064,34 +1064,6 @@ paths:
                 items:
                   $ref: '#/components/schemas/Transaction'
           description: ''
-  /api/provider/image:
-    post:
-      operationId: provider_image_create
-      tags:
-      - provider
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Image'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Image'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/Image'
-        required: true
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      - {}
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Image'
-          description: ''
   /api/provider/image/{imgID}:
     get:
       operationId: provider_image_retrieve
@@ -1196,6 +1168,40 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/provider/image/{parkingID}:
+    post:
+      operationId: provider_image_create
+      parameters:
+      - in: path
+        name: parkingID
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Image'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Image'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Image'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+          description: ''
   /api/provider/parking:
     post:
       operationId: provider_parking_create
