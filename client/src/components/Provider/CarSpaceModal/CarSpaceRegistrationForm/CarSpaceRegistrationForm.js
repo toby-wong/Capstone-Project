@@ -193,6 +193,64 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
         throw Error(errorMsgs);
       }
 
+      if (carSpaceId === null) {
+        // for (const image of imagesInBase64) {
+        //   const carSpaceRegistrationImageUploadUrl = `${config.SERVER_URL}/api/provider/image/${carSpaceId}`;
+        //   const carSpaceRegistrationImageUploadOptions = {
+        //     method: "POST",
+        //     headers: {
+        //       Authorization: "Bearer " + authToken,
+        //       "Content-Type": "application/json",
+        //     },
+        //     body: {
+        //       parkingSpace: carSpaceId,
+        //       image: image,
+        //     },
+        //   };
+        //   const carSpaceRegistrationImageUploadResponse =
+        //     await utility.sendRequest(
+        //       carSpaceRegistrationImageUploadUrl,
+        //       carSpaceRegistrationImageUploadOptions
+        //     );
+        //   if (!carSpaceRegistrationImageUploadResponse.status)
+        //     throw Error(config.NETWORK_ERROR_MESSAGE);
+        //   if (carSpaceRegistrationImageUploadResponse.status >= 300) {
+        //     const errorMsgs = [];
+        //     for (const key of Object.keys(
+        //       carSpaceRegistrationImageUploadResponse.data
+        //     )) {
+        //       errorMsgs.push(` - Not a valid ${key}.`);
+        //     }
+        //     throw Error(errorMsgs);
+        //   }
+        // }
+      } else {
+        const carSpaceUpdateDeleteImagesUrl = `${config.SERVER_URL}/api/provider/image/${carSpaceId}`;
+        const carSpaceUpdateDeleteImagesOptions = {
+          method: "DELETE",
+          headers: {
+            Authorization: "Bearer " + authToken,
+            "Content-Type": "application/json",
+          },
+        };
+
+        const carSpaceUpdateDeleteImagesResponse = await utility.sendRequest(
+          carSpaceUpdateDeleteImagesUrl,
+          carSpaceUpdateDeleteImagesOptions
+        );
+        if (!carSpaceUpdateDeleteImagesResponse.status)
+          throw Error(config.NETWORK_ERROR_MESSAGE);
+        if (carSpaceUpdateDeleteImagesResponse.status >= 300) {
+          const errorMsgs = [];
+          for (const key of Object.keys(
+            carSpaceUpdateDeleteImagesResponse.data
+          )) {
+            errorMsgs.push(` - Not a valid ${key}.`);
+          }
+          throw Error(errorMsgs);
+        }
+      }
+
       const formData = {
         provider: getUserDataResponse.data.pk,
         streetAddress: formState.streetAddress.value,
