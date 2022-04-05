@@ -18,6 +18,7 @@ const DropdownSelect = ({
   selectClassName,
   selectMenuClassName,
   selectItemClassName,
+  disabled = false,
 }) => {
   return (
     <FormControl className={className}>
@@ -34,6 +35,7 @@ const DropdownSelect = ({
             paper: selectMenuClassName,
           },
         }}
+        disabled={disabled}
       >
         {items.map((item) => (
           <MenuItem key={item} value={item} className={selectItemClassName}>

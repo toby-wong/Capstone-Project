@@ -2,20 +2,21 @@ export const carSpaceFormReducer = (state, action) => {
   const newState = { ...state };
 
   if (action.type === "FETCH") {
+    console.log(action.image, action);
     return {
       isFormValid: true,
-      images: { value: action.image, isValid: true },
+      images: { value: [], isValid: true },
       streetAddress: {
-        value: action.streetAddress,
+        value: action.value.streetAddress,
         isValid: true,
         disabled: true,
       },
-      city: { value: action.city, isValid: true, disabled: true },
-      state: { value: action.state, isValid: true, disabled: true },
-      postcode: { value: action.postcode, isValid: true, disabled: true },
-      price: { value: action.price, isValid: true },
-      maxVehicleSize: { value: action.size, isValid: true },
-      notes: { value: action.notes, isValid: true },
+      city: { value: action.value.city, isValid: true, disabled: true },
+      state: { value: action.value.state, isValid: true, disabled: true },
+      postcode: { value: action.value.postcode, isValid: true, disabled: true },
+      price: { value: action.value.price, isValid: true },
+      maxVehicleSize: { value: action.value.size, isValid: true },
+      notes: { value: action.value.notes, isValid: true },
     };
   }
 
