@@ -179,12 +179,12 @@ class ParkingSpaceSerializer(ModelSerializer):
 
 class ImageSerializer(ModelSerializer):
 
-    key = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
+    parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
 
     class Meta:
         model = Image
         fields = (
-            'key',
+            'parkingSpace',
             'image',
             'pk'
         )
