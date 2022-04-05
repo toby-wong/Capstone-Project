@@ -180,12 +180,15 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
         postcode: formState.postcode.value,
         price: formState.price.value,
         size: formState.maxVehicleSize.value,
-        image: imagesInBase64[0],
+        image: imagesInBase64,
         notes: formState.notes.value,
       };
-      const carSpaceRegistrationUrl = `${config.SERVER_URL}/api/provider/parking`;
+      const carSpaceRegistrationUrl = `${
+        config.SERVER_URL
+      }/api/provider/parking${carSpaceId === null ? "" : `/${carSpaceId}`}`;
+
       const carSpaceRegistrationOptions = {
-        method: "POST",
+        method: carSpaceId === null ? "POST" : "PUT",
         headers: {
           Authorization: "Bearer " + authToken,
           "Content-Type": "application/json",
@@ -283,7 +286,7 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
               <InputField
                 type="file"
                 onChange={imageUploadHandler}
-                multiple={false}
+                multiple={true}
               />
               <FormHelperText>* Plase upload at least 1 image</FormHelperText>
             </div>

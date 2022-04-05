@@ -18,20 +18,14 @@ import { useEffect, useState } from "react";
 import * as config from "../../../../config";
 import { sendRequest } from "../../../../utility";
 
-const CarSpaceInfo = ({
-  carInfo,
-  ratingInfo,
-  carSpaceId,
-  onClose,
-  onEdit,
-  onClickReviews,
-}) => {
+const CarSpaceInfo = ({ carSpaceId, onClose, onEdit, onClickReviews }) => {
   const [isLoading, setIsLoading] = useState(false);
-  // const [carInfo, setCarInfo] = useState(null);
-  // const [ratingInfo, setRatingInfo] = useState({
-  //   total: 0,
-  //   average: 0,
-  // });
+  const [carInfo, setCarInfo] = useState({});
+  const [ratingInfo, setRatingInfo] = useState({
+    total: 0,
+    average: 0,
+  });
+  const [image, setImage] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,7 +45,6 @@ const CarSpaceInfo = ({
           getCarInfoUrl,
           getCarInfoOptions
         );
-        console.log(getCarInforesponse);
         if (getCarInforesponse.status >= 300 || !getCarInforesponse.status)
           throw Error;
 
@@ -68,25 +61,36 @@ const CarSpaceInfo = ({
           getRatingsUrl,
           getRatingsOptions
         );
-        console.log(getRatingsResponse);
         if (getRatingsResponse.status >= 300 || !getRatingsResponse.status)
           throw Error;
 
-        /*
-          setCarInfo(getCarInforesponse.data);
-          {`${carInfo.image.map((imgSrc, idx) => {
-            return <img key={idx} src={imgSrc} alt="parking-space" />;
-          })}`}
-          
-          const newRatingInfo = {
-            total: getRatingsResponse.data.length,
-            average:
-              getRatingsResponse.data.reduce((pre, curr) => pre + curr, 0) /
-              getRatingsResponse.data.length,
-          };
-  
-          setRatingInfo(newRatingInfo);
-        */
+        const getImageUrl = `${config.SERVER_URL}/api/provider/parking/images/${carSpaceId}`;
+        const getImageOptions = {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + authToken,
+            "Content-Type": "application/json",
+          },
+        };
+
+        const getImageResponse = await sendRequest(
+          getImageUrl,
+          getImageOptions
+        );
+        if (getImageResponse.status >= 300 || !getImageResponse.status)
+          throw Error;
+
+        setCarInfo(getCarInforesponse.data);
+        const newRatingInfo = {
+          total: getRatingsResponse.data.length,
+          average:
+            getRatingsResponse.data.reduce((pre, curr) => pre + curr, 0) /
+            getRatingsResponse.data.length,
+        };
+
+        setRatingInfo(newRatingInfo);
+        console.log(getImageResponse.data.map((el) => el.image));
+        setImage(getImageResponse.data.map((el) => el.image));
         setIsLoading(false);
       } catch (e) {
         console.log(e.message);
@@ -129,22 +133,19 @@ const CarSpaceInfo = ({
                 animation="slide"
                 indicators={false}
               >
-                <img
-                  src="https://www.sydney.com/sites/sydney/files/styles/open_graph/public/2019-03/croppedtile-121137-BondiBeachSunrise-imgDNSW.jpg?itok=Nw08p7Zp"
-                  alt="parking-space"
-                />
-                <img
-                  src="https://www.darlingharbour.com/getmedia/91d3141e-7cad-4376-9ed0-876213115596/darling-harbour-scenic.jpg"
-                  alt="parking-space"
-                />
-                <img
-                  src="https://www.sydney.com/sites/sydney/files/styles/open_graph/public/2022-02/164142-Sydney%20Harbour%20-%20sunrise%20over%20Circular%20Quay.jpg?itok=AKlqtCiC"
-                  alt="parking-space"
-                />
+                {image.map((imgSrc, idx) => {
+                  return (
+                    <img
+                      key={idx}
+                      src={"data:image/png;base64, " + imgSrc}
+                      alt="parking-space"
+                    />
+                  );
+                })}
               </Carousel>
               <div className={classes.actions}>
                 <Button variant="contained" size="large">
-                  View Calendar
+                  View Bookings
                 </Button>
                 <Button variant="contained" size="large" onClick={onEdit}>
                   Edit Listing

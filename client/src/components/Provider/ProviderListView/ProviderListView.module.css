@@ -40,9 +40,10 @@
 .sectionContent__body {
   background-color: var(--background);
   display: flex;
+  flex-direction: column;
 }
 
-.spinner-container {
+.center-container {
   display: flex;
   justify-content: center;
   align-items: center;

@@ -1,7 +1,6 @@
 import classes from "./ProviderListItem.module.css";
 
 import { Typography } from "@mui/material";
-// import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 
 const ProviderListItem = ({
   streetAddress,
@@ -10,11 +9,13 @@ const ProviderListItem = ({
   price,
   id,
   onClick,
+  image,
 }) => {
   const listItemClickHandler = () => {
     onClick(id);
   };
 
+  // console.log(`data:image/png;base64, ${image[0].image}`);
   return (
     <div className={classes.listItem}>
       <div className={classes.listItem__content}>
@@ -35,10 +36,6 @@ const ProviderListItem = ({
           </Typography>
         </div>
         <div className={classes.listItem__content__details}>
-          {/* <div className={classes.distance}>
-            <DirectionsWalkIcon className={classes.walkIcon} />
-            <Typography variant="sectionSubContent">50km</Typography>
-          </div> */}
           <div className={classes.capacity_rate}>
             <Typography variant="sectionContent" className={classes.capacity}>
               Fits {size}
@@ -56,7 +53,7 @@ const ProviderListItem = ({
       <img
         className={classes.listItem__image}
         alt="parking at Sydney1"
-        src="https://www.realestate.com.au/blog/images/550x350-fit,progressive/2016/03/space-body.jpg"
+        src={`data:image/png;base64, ${image[0]?.image}`}
       />
     </div>
   );

@@ -2,8 +2,6 @@ import classes from "./ProviderListView.module.css";
 import { Link, useLocation } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 
-import AuthContext from "../../../contexts/auth-context";
-
 import {
   Button,
   Paper,
@@ -22,14 +20,10 @@ import { sendRequest } from "../../../utility";
 import * as config from "../../../config";
 import ProviderListItem from "./ProviderListItem";
 
-/*
-  1. Create Seperate Component for ProviderListViewItem
-  2. Get data from backend and redner the above component using the data from backend
-*/
 const ProviderListView = ({ onAdd, onClickItem }) => {
   const location = useLocation();
-  const authContext = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState({ value: false, message: "" });
   const [carSpaces, setCarSpaces] = useState([]);
 
   const activeTabView = location.pathname.split("/")[2] ?? false;
@@ -42,10 +36,8 @@ const ProviderListView = ({ onAdd, onClickItem }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!authContext.userInfo) return;
-
         const authToken = localStorage.getItem("parkItAuthToken");
-        const url = `${config.SERVER_URL}/api/provider/${authContext.userInfo.pk}/parking`;
+        const url = `${config.SERVER_URL}/api/provider/parking/all`;
         const options = {
           method: "GET",
           headers: {
@@ -57,14 +49,37 @@ const ProviderListView = ({ onAdd, onClickItem }) => {
         const response = await sendRequest(url, options, setIsLoading);
         if (response.status >= 300 || !response.status) throw Error;
 
-        setCarSpaces(response.data);
+        const carSpacesObjs = [];
+        for (const space of response.data) {
+          const getImageUrl = `${config.SERVER_URL}/api/provider/parking/images/${space.pk}`;
+          const getImageOptions = {
+            method: "GET",
+            headers: {
+              Authorization: "Bearer " + authToken,
+              "Content-Type": "application/json",
+            },
+          };
+          const getImageResponse = await sendRequest(
+            getImageUrl,
+            getImageOptions
+          );
+          if (getImageResponse.status >= 300 || !getImageResponse.status)
+            throw Error;
+
+          carSpacesObjs.push({ ...space, image: getImageResponse.data });
+        }
+        setCarSpaces(carSpacesObjs);
       } catch (e) {
         console.log(e.message);
+        setError({
+          value: true,
+          message: config.NETWORK_ERROR_MESSAGE,
+        });
       }
     };
 
     fetchData();
-  }, [authContext.userInfo]);
+  }, []);
 
   return (
     <Paper variant="sectionBody">
@@ -142,11 +157,12 @@ const ProviderListView = ({ onAdd, onClickItem }) => {
           className={classes.sectionContent__body}
         >
           {isLoading && (
-            <div className={classes["spinner-container"]}>
+            <div className={classes["center-container"]}>
               <CircularProgress className={classes.spinner} />
             </div>
           )}
           {!isLoading &&
+            !error.value &&
             carSpaces.map((item) => (
               <ProviderListItem
                 key={item.pk}
@@ -156,8 +172,12 @@ const ProviderListView = ({ onAdd, onClickItem }) => {
                 size={item.size}
                 price={item.price}
                 onClick={onClickItem}
+                image={item.image}
               />
             ))}
+          {!isLoading && error.value && (
+            <div className={classes["center-container"]}>{error.message}</div>
+          )}
         </Paper>
       </Paper>
     </Paper>

@@ -5,6 +5,7 @@
   justify-content: space-between;
   height: 200px;
   width: 100%;
+  margin-bottom: 40px;
 }
 
 /* List Item Content */
@@ -13,6 +14,7 @@
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
+  width: 100%;
   margin-right: 100px;
 }
 
@@ -53,6 +55,7 @@
 }
 
 .capacity_rate{
+  width:100%;
   display: flex;
   justify-content: space-between;
   width: 100%;
