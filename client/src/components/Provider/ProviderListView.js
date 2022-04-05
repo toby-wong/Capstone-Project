@@ -11,56 +11,68 @@ import ArchiveIcon from "@mui/icons-material/Archive";
 
 const ProviderListView = ({ onAdd }) => {
   const location = useLocation();
-  const activeTab = location.pathname.split("/").slice(2).join("/");
+  const activeTabView = location.pathname.split("/")[2] ?? false;
+  const activeTabListings = location.pathname.split("/")[3] ?? false;
+  // prettier-ignore
+  const pendingUrl = `${location.pathname.split("/").slice(0, 3).join("/")}/pending`;
+  // prettier-ignore
+  const activeUrl = `${location.pathname.split("/").slice(0, 3).join("/")}/active`;
 
   return (
     <Paper variant="sectionBody">
-      <Tabs
-        variant="sideMenu"
-        value={activeTab}
-        orientation="vertical"
-        className={classes.navbar}
-      >
-        <Tab
-          variant="sideMenu"
-          component={Link}
-          to="/provider/listView/active"
-          value="listView"
-          label="List View"
-          icon={<ListAltIcon className={classes["tab-icon"]} />}
-          iconPosition="start"
-        />
+      <div className={classes["navbar-container"]}>
+        <Tabs
+          value={activeTabView}
+          orientation="vertical"
+          className={classes.navbar}
+        >
+          <Tab
+            variant="sideMenu"
+            component={Link}
+            to="/provider/listView/active"
+            value="listView"
+            label="List View"
+            icon={<ListAltIcon className={classes["tab-icon"]} />}
+            iconPosition="start"
+          />
 
-        <Tab
-          variant="sideMenu"
-          component={Link}
-          to="/provider/mapView/active"
-          value="mapView"
-          label="Map View"
-          icon={<MapIcon className={classes["tab-icon"]} />}
-          iconPosition="start"
-        />
-        <Divider sx={{ my: 1 }} />
-        <Tab
-          variant="sideMenu"
-          component={Link}
-          to="active"
-          value="activeListings"
-          label="Active Listings"
-          icon={<BeenhereIcon className={classes["tab-icon"]} />}
-          iconPosition="start"
-        />
+          <Tab
+            variant="sideMenu"
+            component={Link}
+            to="/provider/mapView/active"
+            value="mapView"
+            label="Map View"
+            icon={<MapIcon className={classes["tab-icon"]} />}
+            iconPosition="start"
+          />
+        </Tabs>
+        <Divider sx={{ my: 1 }} className={classes["navbar-divider"]} />
+        <Tabs
+          value={activeTabListings}
+          orientation="vertical"
+          className={classes.navbar}
+        >
+          <Tab
+            variant="sideMenu"
+            component={Link}
+            to={activeUrl}
+            value="active"
+            label="Active Listings"
+            icon={<BeenhereIcon className={classes["tab-icon"]} />}
+            iconPosition="start"
+          />
 
-        <Tab
-          variant="sideMenu"
-          component={Link}
-          to="pending"
-          value="Pending Listings"
-          label="Pending Listings"
-          icon={<ArchiveIcon className={classes["tab-icon"]} />}
-          iconPosition="start"
-        />
-      </Tabs>
+          <Tab
+            variant="sideMenu"
+            component={Link}
+            to={pendingUrl}
+            value="pending"
+            label="Pending Listings"
+            icon={<ArchiveIcon className={classes["tab-icon"]} />}
+            iconPosition="start"
+          />
+        </Tabs>
+      </div>
       <Paper variant="sectionContent">
         <div className={classes.sectionContent__title}>
           <Typography variant="sectionTitle">Your Car Spaces</Typography>

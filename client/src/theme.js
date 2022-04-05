@@ -207,7 +207,6 @@ export const theme = createTheme({
           style: {
             display: "flex",
             flexDirection: "column",
-            marginRight: "70px",
             padding: "10px 5px 10px",
             backgroundColor: colors.light,
           },
