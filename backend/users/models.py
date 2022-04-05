@@ -30,9 +30,17 @@ class Vehicle(models.Model):
     carColour = models.CharField(max_length=100)
     carRego = models.CharField(max_length=6, unique=True)
 
+    def __str__(self):
+        return f"{self.user.username}'s {self.carColour} {self.carMake} {self.carModel} ({self.carYear})"
+
+
 class Favourite(models.Model):
     consumer = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='consumer_favourite')
     parkingSpace = models.ForeignKey('ParkingSpace', on_delete=models.RESTRICT)
+
+    def __str__(self):
+        return f"{self.consumer.username} favourited {self.parkingSpace}"
+
 
 # # PROVIDER MODELS
 class ParkingSpace(models.Model):
@@ -51,6 +59,9 @@ class ParkingSpace(models.Model):
     notes = models.TextField(max_length=500)
     is_active = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f"{self.provider.username}'s car space at {self.streetAddress}, {self.city} {self.postcode}"
+
 class Transaction(models.Model):
     provider = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='provider_transaction')
     consumer = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='consumer_transaction')
@@ -60,6 +71,10 @@ class Transaction(models.Model):
     endTime = models.DateTimeField()
     totalCost = models.DecimalField(max_digits=6, decimal_places=2)
 
+    def __str__(self):
+        return f"{self.consumer.username} booked {self.parkingSpace} between {self.startTime} and {self.endTime}"
+
+
 # # REVIEW MODELS
 class Review(models.Model):
     parkingSpace = models.ForeignKey('ParkingSpace', on_delete=models.CASCADE)
@@ -67,6 +82,10 @@ class Review(models.Model):
     rating = models.DecimalField(max_digits=2, decimal_places=1)
     comment = models.TextField()
     publishDate = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.consumer.username} reviewed {self.parkingSpace}"
+    
 
 class Image(models.Model):
     key = models.ForeignKey('ParkingSpace', on_delete=models.CASCADE)
