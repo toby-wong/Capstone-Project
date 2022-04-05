@@ -17,16 +17,14 @@ class AddressValidation:
     def validate(self):
         # validation_rules = get_validation_rules(self)
         # valid_address = normalize_address(clean_data)
-        print(self.__dict__)
         valid_address = {}
         try:
             valid_address = normalize_address(self.__dict__)
         except InvalidAddress as e:
             self.errors = e.errors
         return valid_address or self
-        
+
     def get(self,key, default=None):
-        print(f'hello {key}')
         if key == 'country_code':
             return self.country_code
         elif key == 'country_area':

@@ -67,25 +67,6 @@ class RemoveUserSerializer(ModelSerializer):
         # user.is_active = False
         # user.save()
 
-# class ParkingCreationSerializer(ModelSerializer):
-#     class Meta:
-#         model = ParkingSpace
-#         fields = (
-#             'provider',
-#             'streetAddress',
-#             'city',
-#             'state',
-#             'postcode',
-#             'price',
-#             'image',
-#             'size',
-#             'notes',
-#             'is_active',
-#             'pk'  # primary key
-#         )
-
-    
-
 class ParkingSpaceSerializer(ModelSerializer):
     class Meta:
         model = ParkingSpace
@@ -113,14 +94,14 @@ class ParkingSpaceSerializer(ModelSerializer):
         parking = super().save()
         cleanAddress = AddressValidation(request.data)
         cleanAddress = cleanAddress.validate()
-        print(cleanAddress)
+
         if not type(cleanAddress) == dict:
             raise serializers.ValidationError(cleanAddress.errors)
         parking.streetAddress = cleanAddress['street_address']
         parking.city = cleanAddress['city']
         parking.state = cleanAddress['country_area']
         parking.postcode = cleanAddress['postal_code']
-        address = ''.join(f'{v} ' for i, v in enumerate(cleanAddress.values()) if i < 4)
+        address = ' '.join(list(cleanAddress.values())[:4])
         coords = getCoords(address)
         parking.longitude = coords[0]
         parking.latitude = coords[1]        
