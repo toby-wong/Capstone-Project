@@ -28,7 +28,7 @@ class ProviderParkingSpace(ListAPIView):
     serializer_class = ProviderParkingSerializer
 
     def get_queryset(self):
-        provider = self.kwargs['provider']
+        provider = self.request.provider
         return ParkingSpace.objects.filter(provider=provider)
 
 class ParkingSpaceView(GenericAPIView):

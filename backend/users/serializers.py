@@ -94,6 +94,7 @@ class ParkingDetailsSerializer(ModelSerializer):
 
     # provider = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
     pk = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
+    images = PrimaryKeyRelatedField(queryset=Image.objects.all())
     class Meta:
         model = ParkingSpace
         fields = (
@@ -108,7 +109,7 @@ class ParkingDetailsSerializer(ModelSerializer):
             'size',
             'notes',
             'is_active',
-            'pk', 
+            'pk'
         )
 
         read_only_fields = [
@@ -127,8 +128,8 @@ class ParkingDetailsSerializer(ModelSerializer):
 
     def get(self, request):
         parkingID = request.data.get('pk')
-        return self.Meta.model.objects.get(pk=parkingID).__dict__
-
+        details = self.Meta.model.objects.get(pk=parkingID).__dict__
+        return details
 class ParkingSpaceSerializer(ModelSerializer):
     class Meta:
         model = ParkingSpace
