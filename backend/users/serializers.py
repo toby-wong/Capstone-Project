@@ -2,6 +2,7 @@
 
 from webbrowser import get
 from django.db import transaction
+import pkg_resources
 from .utils import AddressValidation, getCoords, getParkingSpace, getUser
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
@@ -66,6 +67,67 @@ class RemoveUserSerializer(ModelSerializer):
         user.delete()
         # user.is_active = False
         # user.save()
+
+class ProviderParkingSerializer(ModelSerializer):
+
+    provider = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+    class Meta:
+        model = ParkingSpace
+        fields = (
+            'provider',
+            'streetAddress',
+            'city',
+            'state',
+            'postcode',
+            'longitude',
+            'latitude',
+            'price',
+            'size',
+            'notes',
+            'is_active',
+            'pk', 
+        )
+
+        read_only_fields = ['pk']
+
+class ParkingDetailsSerializer(ModelSerializer):
+
+    # provider = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+    pk = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
+    class Meta:
+        model = ParkingSpace
+        fields = (
+            'provider',
+            'streetAddress',
+            'city',
+            'state',
+            'postcode',
+            'longitude',
+            'latitude',
+            'price',
+            'size',
+            'notes',
+            'is_active',
+            'pk', 
+        )
+
+        read_only_fields = [
+            'provider',
+            'streetAddress',
+            'city',
+            'state',
+            'postcode',
+            'longitude',
+            'latitude',
+            'price',
+            'size',
+            'notes',
+            'is_active'
+        ]
+
+    def get(self, request):
+        parkingID = request.data.get('pk')
+        return self.Meta.model.objects.get(pk=parkingID).__dict__
 
 class ParkingSpaceSerializer(ModelSerializer):
     class Meta:
