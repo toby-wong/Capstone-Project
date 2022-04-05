@@ -22,14 +22,28 @@ class RemoveUserView(GenericAPIView):
             serializer.delete(request)
             return Response({'message': 'User deleted'}, status=status.HTTP_204_NO_CONTENT)
         else:
-            return Response({'message': 'User not deleted'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)    
+            return Response({'message': 'User not deleted'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class ProviderParkingSpace(ListAPIView):
+    serializer_class = ProviderParkingSerializer
+
+    def get_queryset(self):
+        provider = self.request.provider
+        return ParkingSpace.objects.filter(provider=provider)
 
 class ParkingSpaceView(GenericAPIView):
     serializer_class = ParkingSpaceSerializer
 
-    # def get(self, request):
-    #     # serializer = self.get_serializer(data=request.data)
-    #     return ParkingSpace.objects.filter(id=request.data.get('pk'))
+    def get(self, request):
+        serializer = ParkingDetailsSerializer(data=request.data)
+        serializer.is_valid()
+        if not serializer.errors:
+            details = serializer.get(request)
+            del details['_state']
+            return Response(details, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': 'Parking space not found'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
     def post(self,request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -85,7 +99,6 @@ class Favourite(RetrieveUpdateDestroyAPIView):
 class FavouriteList(ListAPIView):
     serializer_class = FavouriteSerializer
     def get_queryset(self):
-        # need to fix this so it filters for only a given car space
         user = self.request.user
         return Favourite.objects.filter(consumer=user)
 

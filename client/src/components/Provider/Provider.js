@@ -41,16 +41,15 @@ const Provider = () => {
       />
       <Routes>
         <Route
-          path="listView/active"
+          path="listView/active/*"
           element={
             <ProviderListView
-              // onAdd={addCarSpaceHandler}
-              onAdd={displayCarSpaceHandler}
+              onAdd={addCarSpaceHandler}
               // onClickItem={displayCarSpaceHandler}
             />
           }
         />
-        <Route path="mapView/active" element={<ProviderMapView />} />
+        <Route path="mapView/active/*" element={<ProviderMapView />} />
       </Routes>
     </div>
   );

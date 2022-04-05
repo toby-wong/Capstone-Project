@@ -5,9 +5,9 @@ info:
 paths:
   /api/account-confirm-email/:
     post:
-      operationId: account_confirm_email_create
+      operationId: api_account_confirm_email_create
       tags:
-      - account-confirm-email
+      - api
       requestBody:
         content:
           application/json:
@@ -33,7 +33,7 @@ paths:
           description: ''
   /api/auth/login/:
     post:
-      operationId: auth_login_create
+      operationId: api_auth_login_create
       description: |-
         Check the credentials and return the REST Token
         if the credentials are valid and authenticated.
@@ -43,7 +43,7 @@ paths:
         Accept the following POST parameters: username, password
         Return the REST Framework Token Object's key.
       tags:
-      - auth
+      - api
       requestBody:
         content:
           application/json:
@@ -69,14 +69,14 @@ paths:
           description: ''
   /api/auth/logout/:
     post:
-      operationId: auth_logout_create
+      operationId: api_auth_logout_create
       description: |-
         Calls Django logout method and delete the Token object
         assigned to the current User object.
 
         Accepts/Returns nothing.
       tags:
-      - auth
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -90,14 +90,14 @@ paths:
           description: ''
   /api/auth/password/change/:
     post:
-      operationId: auth_password_change_create
+      operationId: api_auth_password_change_create
       description: |-
         Calls Django Auth SetPasswordForm save method.
 
         Accepts the following POST parameters: new_password1, new_password2
         Returns the success/fail message.
       tags:
-      - auth
+      - api
       requestBody:
         content:
           application/json:
@@ -122,14 +122,14 @@ paths:
           description: ''
   /api/auth/password/reset/:
     post:
-      operationId: auth_password_reset_create
+      operationId: api_auth_password_reset_create
       description: |-
         Calls Django Auth PasswordResetForm save method.
 
         Accepts the following POST parameters: email
         Returns the success/fail message.
       tags:
-      - auth
+      - api
       requestBody:
         content:
           application/json:
@@ -155,7 +155,7 @@ paths:
           description: ''
   /api/auth/password/reset/confirm/:
     post:
-      operationId: auth_password_reset_confirm_create
+      operationId: api_auth_password_reset_confirm_create
       description: |-
         Password reset e-mail link is confirmed, therefore
         this resets the user's password.
@@ -164,7 +164,7 @@ paths:
             new_password1, new_password2
         Returns the success/fail message.
       tags:
-      - auth
+      - api
       requestBody:
         content:
           application/json:
@@ -190,9 +190,9 @@ paths:
           description: ''
   /api/auth/register/:
     post:
-      operationId: auth_register_create
+      operationId: api_auth_register_create
       tags:
-      - auth
+      - api
       requestBody:
         content:
           application/json:
@@ -218,9 +218,9 @@ paths:
           description: ''
   /api/auth/register/verify-email/:
     post:
-      operationId: auth_register_verify_email_create
+      operationId: api_auth_register_verify_email_create
       tags:
-      - auth
+      - api
       requestBody:
         content:
           application/json:
@@ -246,12 +246,12 @@ paths:
           description: ''
   /api/auth/token/refresh/:
     post:
-      operationId: auth_token_refresh_create
+      operationId: api_auth_token_refresh_create
       description: |-
         Takes a refresh type JSON web token and returns an access type JSON web
         token if the refresh token is valid.
       tags:
-      - auth
+      - api
       requestBody:
         content:
           application/json:
@@ -273,12 +273,12 @@ paths:
           description: ''
   /api/auth/token/verify/:
     post:
-      operationId: auth_token_verify_create
+      operationId: api_auth_token_verify_create
       description: |-
         Takes a token and indicates if it is valid.  This view provides no
         information about a token's fitness for a particular use.
       tags:
-      - auth
+      - api
       requestBody:
         content:
           application/json:
@@ -300,7 +300,7 @@ paths:
           description: ''
   /api/auth/user/:
     get:
-      operationId: auth_user_retrieve
+      operationId: api_auth_user_retrieve
       description: |-
         Reads and updates UserModel fields
         Accepts GET, PUT, PATCH methods.
@@ -311,7 +311,7 @@ paths:
 
         Returns UserModel fields.
       tags:
-      - auth
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -323,7 +323,7 @@ paths:
                 $ref: '#/components/schemas/User'
           description: ''
     put:
-      operationId: auth_user_update
+      operationId: api_auth_user_update
       description: |-
         Reads and updates UserModel fields
         Accepts GET, PUT, PATCH methods.
@@ -334,7 +334,7 @@ paths:
 
         Returns UserModel fields.
       tags:
-      - auth
+      - api
       requestBody:
         content:
           application/json:
@@ -358,7 +358,7 @@ paths:
                 $ref: '#/components/schemas/User'
           description: ''
     patch:
-      operationId: auth_user_partial_update
+      operationId: api_auth_user_partial_update
       description: |-
         Reads and updates UserModel fields
         Accepts GET, PUT, PATCH methods.
@@ -369,7 +369,7 @@ paths:
 
         Returns UserModel fields.
       tags:
-      - auth
+      - api
       requestBody:
         content:
           application/json:
@@ -393,9 +393,9 @@ paths:
           description: ''
   /api/consumer/book:
     get:
-      operationId: consumer_book_retrieve
+      operationId: api_consumer_book_retrieve
       tags:
-      - consumer
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -408,9 +408,9 @@ paths:
                 $ref: '#/components/schemas/Transaction'
           description: ''
     put:
-      operationId: consumer_book_update
+      operationId: api_consumer_book_update
       tags:
-      - consumer
+      - api
       requestBody:
         content:
           application/json:
@@ -435,9 +435,9 @@ paths:
                 $ref: '#/components/schemas/Transaction'
           description: ''
     patch:
-      operationId: consumer_book_partial_update
+      operationId: api_consumer_book_partial_update
       tags:
-      - consumer
+      - api
       requestBody:
         content:
           application/json:
@@ -461,9 +461,9 @@ paths:
                 $ref: '#/components/schemas/Transaction'
           description: ''
     delete:
-      operationId: consumer_book_destroy
+      operationId: api_consumer_book_destroy
       tags:
-      - consumer
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -473,9 +473,9 @@ paths:
           description: No response body
   /api/consumer/favourite:
     get:
-      operationId: consumer_favourite_retrieve
+      operationId: api_consumer_favourite_retrieve
       tags:
-      - consumer
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -488,9 +488,9 @@ paths:
                 $ref: '#/components/schemas/Favourite'
           description: ''
     put:
-      operationId: consumer_favourite_update
+      operationId: api_consumer_favourite_update
       tags:
-      - consumer
+      - api
       requestBody:
         content:
           application/json:
@@ -515,9 +515,9 @@ paths:
                 $ref: '#/components/schemas/Favourite'
           description: ''
     patch:
-      operationId: consumer_favourite_partial_update
+      operationId: api_consumer_favourite_partial_update
       tags:
-      - consumer
+      - api
       requestBody:
         content:
           application/json:
@@ -541,9 +541,9 @@ paths:
                 $ref: '#/components/schemas/Favourite'
           description: ''
     delete:
-      operationId: consumer_favourite_destroy
+      operationId: api_consumer_favourite_destroy
       tags:
-      - consumer
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -553,9 +553,9 @@ paths:
           description: No response body
   /api/consumer/favourite/all:
     get:
-      operationId: consumer_favourite_all_list
+      operationId: api_consumer_favourite_all_list
       tags:
-      - consumer
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -571,9 +571,9 @@ paths:
           description: ''
   /api/consumer/review:
     get:
-      operationId: consumer_review_retrieve
+      operationId: api_consumer_review_retrieve
       tags:
-      - consumer
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -586,9 +586,9 @@ paths:
                 $ref: '#/components/schemas/Review'
           description: ''
     put:
-      operationId: consumer_review_update
+      operationId: api_consumer_review_update
       tags:
-      - consumer
+      - api
       requestBody:
         content:
           application/json:
@@ -613,9 +613,9 @@ paths:
                 $ref: '#/components/schemas/Review'
           description: ''
     patch:
-      operationId: consumer_review_partial_update
+      operationId: api_consumer_review_partial_update
       tags:
-      - consumer
+      - api
       requestBody:
         content:
           application/json:
@@ -639,9 +639,9 @@ paths:
                 $ref: '#/components/schemas/Review'
           description: ''
     delete:
-      operationId: consumer_review_destroy
+      operationId: api_consumer_review_destroy
       tags:
-      - consumer
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -651,9 +651,9 @@ paths:
           description: No response body
   /api/consumer/vehicle:
     get:
-      operationId: consumer_vehicle_retrieve
+      operationId: api_consumer_vehicle_retrieve
       tags:
-      - consumer
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -666,9 +666,9 @@ paths:
                 $ref: '#/components/schemas/Vehicle'
           description: ''
     put:
-      operationId: consumer_vehicle_update
+      operationId: api_consumer_vehicle_update
       tags:
-      - consumer
+      - api
       requestBody:
         content:
           application/json:
@@ -693,9 +693,9 @@ paths:
                 $ref: '#/components/schemas/Vehicle'
           description: ''
     patch:
-      operationId: consumer_vehicle_partial_update
+      operationId: api_consumer_vehicle_partial_update
       tags:
-      - consumer
+      - api
       requestBody:
         content:
           application/json:
@@ -719,9 +719,9 @@ paths:
                 $ref: '#/components/schemas/Vehicle'
           description: ''
     delete:
-      operationId: consumer_vehicle_destroy
+      operationId: api_consumer_vehicle_destroy
       tags:
-      - consumer
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -731,9 +731,9 @@ paths:
           description: No response body
   /api/delete/user:
     delete:
-      operationId: delete_user_destroy
+      operationId: api_delete_user_destroy
       tags:
-      - delete
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -743,14 +743,14 @@ paths:
           description: No response body
   /api/password/reset/:
     post:
-      operationId: password_reset_create
+      operationId: api_password_reset_create
       description: |-
         Calls Django Auth PasswordResetForm save method.
 
         Accepts the following POST parameters: email
         Returns the success/fail message.
       tags:
-      - password
+      - api
       requestBody:
         content:
           application/json:
@@ -776,7 +776,7 @@ paths:
           description: ''
   /api/password/reset/confirm/{uidb64}/{token}/:
     post:
-      operationId: password_reset_confirm_create
+      operationId: api_password_reset_confirm_create
       description: |-
         Password reset e-mail link is confirmed, therefore
         this resets the user's password.
@@ -796,7 +796,7 @@ paths:
           type: string
         required: true
       tags:
-      - password
+      - api
       requestBody:
         content:
           application/json:
@@ -822,7 +822,7 @@ paths:
           description: ''
   /api/provider/{id}/review:
     get:
-      operationId: provider_review_list
+      operationId: api_provider_review_list
       parameters:
       - in: path
         name: id
@@ -830,7 +830,7 @@ paths:
           type: integer
         required: true
       tags:
-      - provider
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -846,7 +846,7 @@ paths:
           description: ''
   /api/provider/{id}/schedule:
     get:
-      operationId: provider_schedule_list
+      operationId: api_provider_schedule_list
       parameters:
       - in: path
         name: id
@@ -854,7 +854,7 @@ paths:
           type: integer
         required: true
       tags:
-      - provider
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -868,11 +868,35 @@ paths:
                 items:
                   $ref: '#/components/schemas/Transaction'
           description: ''
+  /api/provider/{provider}/parking:
+    get:
+      operationId: api_provider_parking_list
+      parameters:
+      - in: path
+        name: provider
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProviderParking'
+          description: ''
   /api/provider/history:
     get:
-      operationId: provider_history_list
+      operationId: api_provider_history_list
       tags:
-      - provider
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -887,10 +911,25 @@ paths:
                   $ref: '#/components/schemas/Transaction'
           description: ''
   /api/provider/parking:
-    post:
-      operationId: provider_parking_create
+    get:
+      operationId: api_provider_parking_retrieve
       tags:
-      - provider
+      - api
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParkingSpace'
+          description: ''
+    post:
+      operationId: api_provider_parking_create
+      tags:
+      - api
       requestBody:
         content:
           application/json:
@@ -915,9 +954,9 @@ paths:
                 $ref: '#/components/schemas/ParkingSpace'
           description: ''
     patch:
-      operationId: provider_parking_partial_update
+      operationId: api_provider_parking_partial_update
       tags:
-      - provider
+      - api
       requestBody:
         content:
           application/json:
@@ -941,9 +980,9 @@ paths:
                 $ref: '#/components/schemas/ParkingSpace'
           description: ''
     delete:
-      operationId: provider_parking_destroy
+      operationId: api_provider_parking_destroy
       tags:
-      - provider
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -953,9 +992,9 @@ paths:
           description: No response body
   /api/provider/parking/images/:
     get:
-      operationId: provider_parking_images_retrieve
+      operationId: api_provider_parking_images_retrieve
       tags:
-      - provider
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -971,9 +1010,9 @@ paths:
           description: ''
   /api/registration/:
     post:
-      operationId: registration_create
+      operationId: api_registration_create
       tags:
-      - registration
+      - api
       requestBody:
         content:
           application/json:
@@ -999,9 +1038,9 @@ paths:
           description: ''
   /api/registration/verify-email/:
     post:
-      operationId: registration_verify_email_create
+      operationId: api_registration_verify_email_create
       tags:
-      - registration
+      - api
       requestBody:
         content:
           application/json:
@@ -1244,7 +1283,8 @@ components:
         parkingSpace:
           type: integer
         consumer:
-          type: integer
+          type: string
+          readOnly: true
         rating:
           type: string
           format: decimal
@@ -1353,6 +1393,55 @@ components:
           type: integer
           readOnly: true
           title: ID
+    ProviderParking:
+      type: object
+      properties:
+        provider:
+          type: integer
+        streetAddress:
+          type: string
+          maxLength: 100
+        city:
+          type: string
+          maxLength: 100
+        state:
+          type: string
+          maxLength: 3
+        postcode:
+          type: string
+          maxLength: 4
+        longitude:
+          type: number
+          format: double
+        latitude:
+          type: number
+          format: double
+        price:
+          type: integer
+        size:
+          type: string
+          maxLength: 100
+        notes:
+          type: string
+          maxLength: 500
+        is_active:
+          type: boolean
+        pk:
+          type: integer
+          readOnly: true
+          title: ID
+      required:
+      - city
+      - latitude
+      - longitude
+      - notes
+      - pk
+      - postcode
+      - price
+      - provider
+      - size
+      - state
+      - streetAddress
     RestAuthDetail:
       type: object
       properties:
@@ -1367,7 +1456,8 @@ components:
         parkingSpace:
           type: integer
         consumer:
-          type: integer
+          type: string
+          readOnly: true
         rating:
           type: string
           format: decimal

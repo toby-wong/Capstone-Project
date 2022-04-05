@@ -19,6 +19,10 @@
   width: 260px;
 }
 
+.navbar__tab:hover {
+  background-color: var(--background);
+}
+
 .tab-icon {
   color: var(--light);
   background-color: var(--green);
@@ -36,7 +40,18 @@
 .sectionContent__body {
   background-color: var(--background);
   display: flex;
-  flex-direction: column;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.spinner {
+  color: var(--green);
 }
 
 /* List Item */
