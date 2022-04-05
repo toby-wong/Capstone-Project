@@ -122,8 +122,6 @@ class ParkingSpaceSerializer(ModelSerializer):
             'city',
             'state',
             'postcode',
-            'longitude',
-            'latitude',
             'price',
             'size',
             'notes',
@@ -132,7 +130,7 @@ class ParkingSpaceSerializer(ModelSerializer):
         )
         # read_only_fields = ('provider', 'streetAddress','city', 'state', 'postcode')
 
-        read_only_fields = ['pk']
+        read_only_fields = ['pk', 'is_active']
 
 
     def save(self, request):
