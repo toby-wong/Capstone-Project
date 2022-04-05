@@ -2,7 +2,7 @@
 from urllib import request
 from users.forms import *
 from users.models import CustomUser, ParkingSpace, Transaction
-from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView, CreateAPIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -79,15 +79,23 @@ class ParkingSpaceList(ListAPIView):
 # Upload an image
 class CreateImage(CreateAPIView):   
     serializer_class = ImageSerializer
+    
+    def delete(self, request, format=None):
+        space = self.kwargs['parkingID']
+        images = Image.objects.filter(parkingSpace=space)
+        if images:
+            images.delete()
+            return Response({"status":"ok"}, status=status.HTTP_200_OK)
+        return Response({'message': 'Image deletion failed'}, status=status.HTTP_400_BAD_REQUEST)
 
     def get_queryset(self):
         space = self.kwargs['parkingID']
-        Image.objects.filter(parkingSpace=space).delete()
+        #Image.objects.filter(parkingSpace=space).delete()
         return Image.objects.filter(parkingSpace=space)
 
 # Do stuff with an existing image
 
-class ImageView(RetrieveUpdateDestroyAPIView):
+class ImageView(RetrieveUpdateAPIView):
     serializer_class = ImageSerializer
     def get_queryset(self):
         image = self.kwargs['imgID']
