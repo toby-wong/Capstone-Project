@@ -5,3 +5,4 @@ pyenv.cfg
 Lib/
 backend/.venv
 capstone-project-3900-w14b-blue-man-group.code-workspace
+backend/db.sqlite3
