@@ -9,11 +9,9 @@ import MapIcon from "@mui/icons-material/Map";
 import BeenhereIcon from "@mui/icons-material/Beenhere";
 import ArchiveIcon from "@mui/icons-material/Archive";
 
-const ProviderListView = () => {
+const ProviderListView = ({ onAdd }) => {
   const location = useLocation();
   const activeTab = location.pathname.split("/").slice(2).join("/");
-  console.log("Here is activeTab");
-  console.log(activeTab);
 
   return (
     <div className={classes.body}>
@@ -34,13 +32,13 @@ const ProviderListView = () => {
           style={{
             borderRadius: 15,
           }}
-          // onClick={addSpaceHandler}
+          onClick={onAdd}
         >
           + Add
         </Button>
       </div>
       <div className={classes.mainContainer}>
-        <Paper className={classes.viewsMenu} elevation={5}>
+        {/* <Paper className={classes.viewsMenu} elevation={5}>
           <Tabs value={activeTab} orientation="vertical">
             <Tab
               className={classes.menu__tab}
@@ -156,7 +154,7 @@ const ProviderListView = () => {
               />
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
