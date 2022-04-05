@@ -40,7 +40,7 @@ class CreateParkingSpace(CreateAPIView):
 class ParkingSpaceView(RetrieveUpdateDestroyAPIView):
     serializer_class = ParkingSpaceSerializer
     def get_queryset(self):
-        space = self.kwargs['parkingID']
+        space = self.kwargs['pk']
         return ParkingSpace.objects.filter(pk=space)
 
 # Get all parking spaces owned by the user

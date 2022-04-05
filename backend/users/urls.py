@@ -17,7 +17,7 @@ urlpatterns = [
     # Parking Spaces
     
     path('provider/parking', CreateParkingSpace.as_view(), name='create_parking_space'),
-    path('provider/parking/<int:parkingID>', ParkingSpaceView.as_view(), name='modify_parking_space'),
+    path('provider/parking/<int:pk>', ParkingSpaceView.as_view(), name='modify_parking_space'),
     path('provider/parking/images/<int:parkingID>', ImageList.as_view(), name='list_images'),
     path('provider/parking/reviews/<int:parkingID>', ReviewList.as_view(), name='list_reviews'),
     path('provider/parking/favourites/<int:parkingID>', FavouriteList.as_view(), name='list_favourites'),
