@@ -34,6 +34,11 @@ class ProviderParkingSpace(ListAPIView):
 class ParkingSpaceView(GenericAPIView):
     serializer_class = ParkingSpaceSerializer
 
+    def get_queryset(self):
+        # need to fix this so it filters for only a given car space
+        space = self.kwargs['pk']
+        return ParkingSpace.objects.filter(parkingSpace=space)
+
     def get(self, request):
         serializer = ParkingDetailsSerializer(data=request.data)
         serializer.is_valid()

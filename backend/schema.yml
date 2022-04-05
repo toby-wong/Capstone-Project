@@ -910,9 +910,15 @@ paths:
                 items:
                   $ref: '#/components/schemas/Transaction'
           description: ''
-  /api/provider/parking:
+  /api/provider/parking/{id}:
     get:
       operationId: provider_parking_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
       tags:
       - provider
       security:
@@ -928,6 +934,12 @@ paths:
           description: ''
     post:
       operationId: provider_parking_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
       tags:
       - provider
       requestBody:
@@ -955,6 +967,12 @@ paths:
           description: ''
     patch:
       operationId: provider_parking_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
       tags:
       - provider
       requestBody:
@@ -981,6 +999,12 @@ paths:
           description: ''
     delete:
       operationId: provider_parking_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
       tags:
       - provider
       security:
