@@ -5,7 +5,7 @@ from django.db import transaction
 import pkg_resources
 from .utils import AddressValidation, getCoords, getParkingSpace, getUser
 from rest_framework import serializers
-from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
+from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField, StringRelatedField
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from .models import CustomUser, Favourite, ParkingSpace, Image, Transaction, Review, Vehicle
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -270,7 +270,7 @@ class TransactionSerializer(ModelSerializer):
 
 class ReviewSerializer(ModelSerializer):
 
-    consumer = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+    consumer = StringRelatedField(queryset=CustomUser.objects.all())
     parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
 
     class Meta:

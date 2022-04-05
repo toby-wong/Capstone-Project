@@ -99,7 +99,6 @@ class Favourite(RetrieveUpdateDestroyAPIView):
 class FavouriteList(ListAPIView):
     serializer_class = FavouriteSerializer
     def get_queryset(self):
-        # need to fix this so it filters for only a given car space
         user = self.request.user
         return Favourite.objects.filter(consumer=user)
 
