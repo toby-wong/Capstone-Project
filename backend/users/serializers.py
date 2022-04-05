@@ -70,7 +70,7 @@ class RemoveUserSerializer(ModelSerializer):
 
 class ProviderParkingSerializer(ModelSerializer):
 
-    provider = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+    provider = PrimaryKeyRelatedField()
     class Meta:
         model = ParkingSpace
         fields = (
@@ -92,8 +92,8 @@ class ProviderParkingSerializer(ModelSerializer):
 
 class ParkingDetailsSerializer(ModelSerializer):
 
-    # provider = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
-    pk = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
+    # provider = PrimaryKeyRelatedField()
+    pk = PrimaryKeyRelatedField()
     class Meta:
         model = ParkingSpace
         fields = (
@@ -213,7 +213,7 @@ class ImageSerializer:
 
 class VehicleSerializer(ModelSerializer):
 
-    user = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+    user = PrimaryKeyRelatedField()
 
     class Meta:
         model = Vehicle
@@ -232,8 +232,8 @@ class VehicleSerializer(ModelSerializer):
 
 class FavouriteSerializer(ModelSerializer):
 
-    consumer = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
-    parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
+    consumer = PrimaryKeyRelatedField()
+    parkingSpace = PrimaryKeyRelatedField()
 
     class Meta:
         model = Favourite
@@ -247,10 +247,10 @@ class FavouriteSerializer(ModelSerializer):
 
 class TransactionSerializer(ModelSerializer):
 
-    provider = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
-    consumer = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
-    vehicle = PrimaryKeyRelatedField(queryset=Vehicle.objects.all())
-    parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
+    provider = PrimaryKeyRelatedField()
+    consumer = PrimaryKeyRelatedField()
+    vehicle = PrimaryKeyRelatedField()
+    parkingSpace = PrimaryKeyRelatedField()
 
     class Meta:
         model = Transaction
@@ -271,7 +271,7 @@ class TransactionSerializer(ModelSerializer):
 class ReviewSerializer(ModelSerializer):
 
     consumer = StringRelatedField()
-    parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
+    parkingSpace = PrimaryKeyRelatedField()
 
     class Meta:
         model = Review
