@@ -80,7 +80,7 @@ class ParkingSpaceList(ListAPIView):
 class CreateImage(CreateAPIView):   
     serializer_class = ImageSerializer
     
-    def delete(self, request, format=None):
+    def delete(self, request, *args, **kwargs):
         space = self.kwargs['parkingID']
         images = Image.objects.filter(parkingSpace=space)
         if images:
