@@ -2,12 +2,12 @@
   width: 100%;
   height: 100%;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .mainContainer {
   width: 95%;
-  height: 100%;
+  height: auto;
   display: flex;
   flex-direction: row;
 }
@@ -38,7 +38,7 @@
 /* LHS menu*/
 .viewsMenu{
   width: 17%;
-  height: 42%;
+  height: 50%;
   display: flex;
   justify-content: space-around;
   background-color: var(--light);
@@ -49,10 +49,15 @@
   border-radius: 15px;
 }
 
+.tabContainer{
+  height: auto;
+  /* overflow-y: scroll; */
+}
+
 /* Entry in the menu (eg. list view, active listings, etc.) */
 .menu__tab {
   text-transform: none;
-  min-height: 30px;
+  min-height: 40px;
   margin-top: 10px;
   margin-left: 10px;
   display: flex;
