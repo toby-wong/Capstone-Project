@@ -1,0 +1,20 @@
+.modal {
+  align-self: center;
+  display: flex;
+  height: 500px;
+  width: 500px;
+  flex-direction: column;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.content-item {
+  margin-bottom: 10px;
+}
+.btn {
+  width: 120px;
+  margin-left: 30px;
+}

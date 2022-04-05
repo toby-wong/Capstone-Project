@@ -7,6 +7,7 @@ const GeneralModal = ({
   width,
   flexDirection,
   children,
+  className,
 }) => {
   return (
     <Modal open={open} onClose={onClose}>
@@ -16,6 +17,7 @@ const GeneralModal = ({
           width: width,
           flexDirection: flexDirection,
         }}
+        className={className}
       >
         {children}
       </Paper>

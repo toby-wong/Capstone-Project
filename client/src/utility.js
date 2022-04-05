@@ -1,3 +1,26 @@
+export const convertImagesToBase64 = async (imageFiles) => {
+  const getBase64 = (imageFile) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = function () {
+        const base64String = reader.result
+          .replace("data:", "")
+          .replace(/^.+,/, "");
+        resolve(base64String);
+      };
+
+      reader.readAsDataURL(imageFile);
+    });
+
+  const promises = [];
+  for (let i = 0; i < imageFiles.length; ++i) {
+    promises.push(getBase64(imageFiles[i]));
+  }
+
+  return await Promise.all(promises);
+};
+
 export const sendRequest = async (
   url,
   options = { method: "GET", headers: {}, body: null },
@@ -11,6 +34,10 @@ export const sendRequest = async (
     if (options.body) options.body = JSON.stringify(options.body);
 
     const response = await fetch(url, options);
+    if (response.status === 204) {
+      setIsLoading(false);
+      return { status: response.status };
+    }
 
     const data = await response.json();
 
