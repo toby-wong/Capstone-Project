@@ -31,11 +31,34 @@ class RemoveUserView(GenericAPIView):
 
 # Create a parking space
 
-class CreateParkingSpace(CreateAPIView):
-    serializer_class = ParkingSpaceSerializer
-    queryset = ParkingSpace.objects.all()
+# class CreateParkingSpace(CreateAPIView):
+# #     serializer_class = ParkingSpaceSerializer
+# #     # # queryset = ParkingSpace.objects.all()
+# #     # instance = serializer_class.save(serializer_class)
 
-# Do stuff with an existing parking space
+# #     serializer = ParkingSpaceSerializer(data=request.data)
+# #     serializer.is_valid(raise_exception=True)
+# #     serializer.save(request)
+class CreateParkingSpace(CreateAPIView):
+    #serializer_class = ParkingSpaceSerializer
+    #queryset = ParkingSpace.objects.all()
+
+    serializer_class = ParkingSpaceSerializer
+
+    # def get(self, request):
+    #     # serializer = self.get_serializer(data=request.data)
+    #     return ParkingSpace.objects.filter(id=request.data.get('pk'))
+    def post(self,request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        # print(serializer.errors)
+        serializer.save(request)
+        if not serializer.errors:
+            return Response({'message': 'Parking space added'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'message': 'Parking space not added'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# # Do stuff with an existing parking space
 
 class ParkingSpaceView(RetrieveUpdateDestroyAPIView):
     serializer_class = ParkingSpaceSerializer
@@ -81,7 +104,7 @@ class ImageList(ListAPIView):
 
 
 # BOOKINGS
-       
+
 # Add a booking
 class CreateBooking(CreateAPIView):
     serializer_class = TransactionSerializer
