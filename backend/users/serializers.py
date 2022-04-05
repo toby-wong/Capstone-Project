@@ -270,7 +270,7 @@ class TransactionSerializer(ModelSerializer):
 
 class ReviewSerializer(ModelSerializer):
 
-    consumer = StringRelatedField(queryset=CustomUser.objects.all())
+    consumer = StringRelatedField()
     parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
 
     class Meta:
