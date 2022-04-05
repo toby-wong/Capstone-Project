@@ -2,7 +2,7 @@
 from urllib import request
 from users.forms import *
 from users.models import CustomUser, ParkingSpace, Transaction
-from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -12,6 +12,9 @@ from drf_spectacular.utils import extend_schema
 
 # Create your views here.
 # @login_required(login_url='http://127.0.0.1:8000/')
+
+# Users
+
 class RemoveUserView(GenericAPIView):
     serializer_class = RemoveUserSerializer
 
@@ -24,124 +27,169 @@ class RemoveUserView(GenericAPIView):
         else:
             return Response({'message': 'User not deleted'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-class ProviderParkingSpace(ListAPIView):
-    serializer_class = ProviderParkingSerializer
+# PARKING SPACES
 
+# Create a parking space
+
+class CreateParkingSpace(CreateAPIView):
+    serializer_class = ParkingSpaceSerializer
+    queryset = ParkingSpace.objects.all()
+
+# Do stuff with an existing parking space
+
+class ParkingSpaceView(RetrieveUpdateDestroyAPIView):
+    serializer_class = ParkingSpaceSerializer
+    def get_queryset(self):
+        space = self.kwargs['parkingID']
+        return ParkingSpace.objects.filter(parkingSpace=space)
+
+# Get all parking spaces owned by the user
+
+class ParkingSpaceList(ListAPIView):
+    serializer_class = ParkingSpaceSerializer
     def get_queryset(self):
         provider = self.request.user
         return ParkingSpace.objects.filter(provider=provider)
 
-class ParkingSpaceView(GenericAPIView):
-    serializer_class = ParkingSpaceSerializer
-
-    def get_queryset(self):
-        # need to fix this so it filters for only a given car space
-        space = self.kwargs['pk']
-        return ParkingSpace.objects.filter(parkingSpace=space)
-
-    def get(self, request):
-        serializer = ParkingDetailsSerializer(data=request.data)
-        serializer.is_valid()
-        if not serializer.errors:
-            details = serializer.get(request)
-            del details['_state']
-            return Response(details, status=status.HTTP_200_OK)
-        else:
-            return Response({'message': 'Parking space not found'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    def post(self,request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        # print(serializer.errors)
-        serializer.save(request)
-        if not serializer.errors:
-            return Response({'message': 'Parking space added'}, status=status.HTTP_201_CREATED)
-        else:
-            return Response({'message': 'Parking space not added'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    def patch(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid()
-        if not serializer.errors:
-            serializer.edit(request)
-            return Response({'message': 'Parking space updated'}, status=status.HTTP_200_OK)
-        else:
-            return Response({'message': 'Parking space not updated'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    def delete(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid()
-        if not serializer.errors:
-            serializer.delete(request)
-            return Response({'message': 'Parking space deleted'}, status=status.HTTP_204_NO_CONTENT)
-        else:
-            return Response({'message': 'Parking space not deleted'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
-class ImageView(GenericAPIView):
+# IMAGES
+       
+# Upload an image
+class CreateImage(CreateAPIView):
     serializer_class = ImageSerializer
+    queryset = Image.objects.all()
 
-    def get(self, request):
-        # serializer = self.get_serializer(data=request.data)
-        return Image.objects.filter(key=request.data.get('pk'))
+# Do stuff with an existing image
 
-    def save(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid()
-        if not serializer.errors:
-            serializer.save(request)
-            return Response({'message': 'Images uploaded'}, status=status.HTTP_201_CREATED)
-        else:
-            return Response({'message': 'Images not uploaded'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            
-class Booking(RetrieveUpdateDestroyAPIView):
+class ImageView(RetrieveUpdateDestroyAPIView):
+    serializer_class = ImageSerializer
+    def get_queryset(self):
+        image = self.kwargs['imgID']
+        return Image.objects.filter(pk=image)
+
+
+# Get all images associated with a Parking Space
+
+class ImageList(ListAPIView):
+    serializer_class = ImageSerializer
+    def get_queryset(self):
+        space = self.kwargs['parkingID']
+        return Image.objects.filter(key=space)
+
+
+# BOOKINGS
+       
+# Add a booking
+class CreateBooking(CreateAPIView):
     serializer_class = TransactionSerializer
     queryset = Transaction.objects.all()
 
-class Favourite(RetrieveUpdateDestroyAPIView):
-    serializer_class = FavouriteSerializer
-    queryset = Favourite.objects.all()
+# Do stuff with an existing booking
 
-class FavouriteList(ListAPIView):
-    serializer_class = FavouriteSerializer
+class BookingView(RetrieveUpdateDestroyAPIView):
+    serializer_class = TransactionSerializer
     def get_queryset(self):
-        user = self.request.user
-        return Favourite.objects.filter(consumer=user)
+        booking = self.kwargs['bookingID']
+        return Transaction.objects.filter(pk=booking)
 
 
-class Vehicle(RetrieveUpdateDestroyAPIView):
-    serializer_class = VehicleSerializer
-    queryset = Vehicle.objects.all()
-    
+# Get all bookings associated with a Parking Space
 
-class ProviderHistory(ListAPIView):
+class BookingList(ListAPIView):
+    serializer_class = TransactionSerializer
+    def get_queryset(self):
+        space = self.kwargs['parkingID']
+        return Transaction.objects.filter(parkingSpace=space)
+
+# Get all bookings that involve the user as a Provider
+
+class ProviderBookingHistory(ListAPIView):
     serializer_class = TransactionSerializer
     def get_queryset(self):
         user = self.request.user
         return Transaction.objects.filter(provider=user)
 
-class ConsumerHistory(ListAPIView):
+# Get all bookings that involve the user as a Consumer   
+
+class ConsumerBookingHistory(ListAPIView):
     serializer_class = TransactionSerializer
     def get_queryset(self):
         user = self.request.user
         return Transaction.objects.filter(consumer=user)
 
-class Review(RetrieveUpdateDestroyAPIView):
+
+# FAVOURITE
+       
+# Favourite a parking space
+class CreateFavourite(CreateAPIView):
+    serializer_class = FavouriteSerializer
+    queryset = Favourite.objects.all()
+
+# Do stuff with an existing Favourite
+
+class FavouriteView(RetrieveUpdateDestroyAPIView):
+    serializer_class = FavouriteSerializer
+    def get_queryset(self):
+        favourite = self.kwargs['favID']
+        return Favourite.objects.filter(pk=favourite)
+
+# Get all favourites associated with a Parking Space
+
+class FavouriteList(ListAPIView):
+    serializer_class = FavouriteSerializer
+    def get_queryset(self):
+        space = self.kwargs['parkingID']
+        return Favourite.objects.filter(parkingSpace=space)
+
+# VEHICLE
+
+# Add a vehicle
+class CreateVehicle(CreateAPIView):
+    serializer_class = VehicleSerializer
+    queryset = Vehicle.objects.all()
+
+# Do stuff with an existing vehicle
+
+class VehicleView(RetrieveUpdateDestroyAPIView):
+    serializer_class = VehicleSerializer
+    def get_queryset(self):
+        vehicle = self.kwargs['vehicleID']
+        return Vehicle.objects.filter(pk=vehicle)
+
+# Get all vehicles associated with a consumer
+
+class VehicleList(ListAPIView):
+    serializer_class = VehicleSerializer
+    def get_queryset(self):
+        owner = self.kwargs['consumerID']
+        return Vehicle.objects.filter(user=owner)
+
+
+# REVIEW
+
+# Add a review
+
+class CreateReview(CreateAPIView):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
+
+
+# Do stuff with an existing review
+
+class ReviewView(RetrieveUpdateDestroyAPIView):
+    serializer_class = ReviewSerializer
+    def get_queryset(self):
+        review = self.kwargs['reviewID']
+        return Review.objects.filter(pk=review)
+
+# Get all reviews associated with a parking space
 
 class ReviewList(ListAPIView):
     serializer_class = ReviewSerializer
     def get_queryset(self):
-        # need to fix this so it filters for only a given car space
-        space = self.kwargs['pk']
+        space = self.kwargs['parkingID']
         return Review.objects.filter(parkingSpace=space)
 
-class ParkingSpaceSchedule(ListAPIView):
-    serializer_class = TransactionSerializer
-    def get_queryset(self):
-        # need to fix this so it filters for only a given car space
-        space = self.kwargs['pk']
-        return Transaction.objects.filter(parkingSpace=space)
+
 
     
 

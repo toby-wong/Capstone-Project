@@ -68,27 +68,6 @@ class RemoveUserSerializer(ModelSerializer):
         # user.is_active = False
         # user.save()
 
-class ProviderParkingSerializer(ModelSerializer):
-
-    provider = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
-    class Meta:
-        model = ParkingSpace
-        fields = (
-            'provider',
-            'streetAddress',
-            'city',
-            'state',
-            'postcode',
-            'longitude',
-            'latitude',
-            'price',
-            'size',
-            'notes',
-            'is_active',
-            'pk', 
-        )
-
-        read_only_fields = ['pk']
 
 class ParkingDetailsSerializer(ModelSerializer):
 
@@ -129,7 +108,11 @@ class ParkingDetailsSerializer(ModelSerializer):
         parkingID = request.data.get('pk')
         details = self.Meta.model.objects.get(pk=parkingID).__dict__
         return details
+
 class ParkingSpaceSerializer(ModelSerializer):
+
+    provider = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+
     class Meta:
         model = ParkingSpace
         # fields = []
@@ -193,22 +176,20 @@ class ParkingSpaceSerializer(ModelSerializer):
         # parkingInstance.save()
         parkingInstance.delete()
 
-class ImageSerializer:
+
+class ImageSerializer(ModelSerializer):
+
+    key = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
+
     class Meta:
         model = Image
         fields = (
             'key',
-            'image'
+            'image',
+            'pk'
         )
 
-    def get(self, request):
-        parkingID = request.data.get('pk')
-        return self.Meta.model.objects.filter(key=parkingID)
-
-    def save(self, request):
-        parkImage = super().save(request)
-        parkImage.key = getParkingSpace(self.data.get('pk'))
-        parkImage.image = self.data.get('image')
+        read_only_fields = ['pk']
 
 
 class VehicleSerializer(ModelSerializer):
