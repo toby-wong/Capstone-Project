@@ -94,7 +94,6 @@ class ParkingDetailsSerializer(ModelSerializer):
 
     # provider = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
     pk = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
-    images = PrimaryKeyRelatedField(queryset=Image.objects.all())
     class Meta:
         model = ParkingSpace
         fields = (
