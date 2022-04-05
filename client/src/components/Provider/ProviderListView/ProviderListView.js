@@ -2,7 +2,7 @@ import classes from "./ProviderListView.module.css";
 import { Link, useLocation } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 
-import AuthContext from "../../contexts/auth-context";
+import AuthContext from "../../../contexts/auth-context";
 
 import {
   Button,
@@ -13,19 +13,24 @@ import {
   Divider,
   CircularProgress,
 } from "@mui/material";
-import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import MapIcon from "@mui/icons-material/Map";
 import BeenhereIcon from "@mui/icons-material/Beenhere";
 import ArchiveIcon from "@mui/icons-material/Archive";
 
-import { sendRequest } from "../../utility";
-import * as config from "../../config";
+import { sendRequest } from "../../../utility";
+import * as config from "../../../config";
+import ProviderListItem from "./ProviderListItem";
 
-const ProviderListView = ({ onAdd }) => {
+/*
+  1. Create Seperate Component for ProviderListViewItem
+  2. Get data from backend and redner the above component using the data from backend
+*/
+const ProviderListView = ({ onAdd, onClickItem }) => {
   const location = useLocation();
   const authContext = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [carSpaces, setCarSpaces] = useState([]);
 
   const activeTabView = location.pathname.split("/")[2] ?? false;
   const activeTabListings = location.pathname.split("/")[3] ?? false;
@@ -37,6 +42,8 @@ const ProviderListView = ({ onAdd }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        if (!authContext.userInfo) return;
+
         const authToken = localStorage.getItem("parkItAuthToken");
         const url = `${config.SERVER_URL}/api/provider/${authContext.userInfo.pk}/parking`;
         const options = {
@@ -50,14 +57,14 @@ const ProviderListView = ({ onAdd }) => {
         const response = await sendRequest(url, options, setIsLoading);
         if (response.status >= 300 || !response.status) throw Error;
 
-        console.log(response);
+        setCarSpaces(response.data);
       } catch (e) {
-        console.log("error");
+        console.log(e.message);
       }
     };
 
     fetchData();
-  }, []);
+  }, [authContext.userInfo]);
 
   return (
     <Paper variant="sectionBody">
@@ -139,55 +146,18 @@ const ProviderListView = ({ onAdd }) => {
               <CircularProgress className={classes.spinner} />
             </div>
           )}
-          {!isLoading && (
-            <div className={classes.listItem}>
-              <div className={classes.listItem__content}>
-                <div className={classes.listItem__content__main}>
-                  <Typography variant="sectionSubTitle">
-                    <span className={classes.descriptor}>Garage</span> on Wharf
-                    Street
-                  </Typography>
-                  <Typography
-                    variant="sectionContent"
-                    className={classes.listItem__content__description}
-                  >
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Cras vitae vehicula ante, eu laoreet orci. Cras eu turpis
-                    aliquet dui sodales porta. Mauris lobortis mollis ligula
-                    quis ultrices. Sed a posuere risus. Quisque ultrices mi ut
-                    sodales commodo. Etiam at libero consequat nulla gravida
-                    tempus. Sed a posuere risus.
-                  </Typography>
-                </div>
-                <div className={classes.listItem__content__details}>
-                  <div className={classes.distance}>
-                    <DirectionsWalkIcon className={classes.walkIcon} />
-                    <Typography variant="sectionSubContent">50km</Typography>
-                  </div>
-                  <div className={classes.capacity_rate}>
-                    <Typography
-                      variant="sectionContent"
-                      className={classes.capacity}
-                    >
-                      Fits an SUV
-                    </Typography>
-                    <Typography
-                      color="primary"
-                      variant="sectionContent"
-                      className={classes.rate}
-                    >
-                      $25.00
-                    </Typography>
-                  </div>
-                </div>
-              </div>
-              <img
-                className={classes.listItem__image}
-                alt="parking at Sydney1"
-                src="https://www.realestate.com.au/blog/images/550x350-fit,progressive/2016/03/space-body.jpg"
+          {!isLoading &&
+            carSpaces.map((item) => (
+              <ProviderListItem
+                key={item.pk}
+                id={item.pk}
+                streetAddress={item.streetAddress}
+                notes={item.notes}
+                size={item.size}
+                price={item.price}
+                onClick={onClickItem}
               />
-            </div>
-          )}
+            ))}
         </Paper>
       </Paper>
     </Paper>

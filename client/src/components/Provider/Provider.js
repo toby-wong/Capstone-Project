@@ -4,14 +4,16 @@ import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import CarSpaceModal from "./CarSpaceModal/CarSpaceModal";
-import ProviderListView from "./ProviderListView";
-import ProviderMapView from "./ProviderMapView";
+import ProviderListView from "./ProviderListView/ProviderListView";
+import ProviderMapView from "./ProviderMapView/ProviderMapView";
 
 /*
   1. Review Modal - reviews of a parking space
   2. History Modal - list of parking space usages
   3. Edit Modal - transition from display to edit
   4. Link with Backend
+  
+  + Error handling not implemented on Provider List view rendering
 */
 const Provider = () => {
   const [modalPage, setModalPage] = useState("");
@@ -45,7 +47,7 @@ const Provider = () => {
           element={
             <ProviderListView
               onAdd={addCarSpaceHandler}
-              // onClickItem={displayCarSpaceHandler}
+              onClickItem={displayCarSpaceHandler}
             />
           }
         />

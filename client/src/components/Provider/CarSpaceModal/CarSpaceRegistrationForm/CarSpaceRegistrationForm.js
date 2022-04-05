@@ -50,10 +50,35 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
 
   useEffect(() => {
     if (!carSpaceId) return;
-    // TODO:
-    // 1. fetch a space data whose id is carSpaceId
-    // 2. set values for all fields using the fecthed data
-    //   - use Reducer for this.
+    const fetchData = async () => {
+      try {
+        // 1. fetch a space data whose id is carSpaceId
+        const authToken = localStorage.getItem("parkItAuthToken");
+        const getCarInfoUrl = `${config.SERVER_URL}/api/provider/parking/${carSpaceId}`;
+        const getCarInfoOptions = {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + authToken,
+            "Content-Type": "application/json",
+          },
+        };
+
+        const getCarInfoResponse = await utility.sendRequest(
+          getCarInfoUrl,
+          getCarInfoOptions
+        );
+        if (getCarInfoResponse.status >= 300 || !getCarInfoResponse.status)
+          throw Error;
+
+        // 2. set values for all fields using the fecthed data
+        dispatchFormState({ type: "FETCH", value: getCarInfoResponse.data });
+      } catch (e) {
+        console.log(e.message);
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, [carSpaceId]);
 
   // Image Upload Handlers
@@ -158,7 +183,7 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
         image: imagesInBase64[0],
         notes: formState.notes.value,
       };
-      const carSpaceRegistrationUrl = `${config.SERVER_URL}/api/provider/add/parking`;
+      const carSpaceRegistrationUrl = `${config.SERVER_URL}/api/provider/parking`;
       const carSpaceRegistrationOptions = {
         method: "POST",
         headers: {
@@ -194,7 +219,7 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
         isOpen: true,
         onClose: closeSubModalHandler,
         title: "Error",
-        content: [e.message],
+        content: e.message.split(","),
       });
     }
   };
@@ -221,7 +246,12 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
         title={subModal.title}
         content={subModal.content}
       />
-      <CarSpaceCardHeader title={"Car space registration"} onClose={onClose} />
+      <CarSpaceCardHeader
+        title={
+          carSpaceId === null ? "Car space registration" : "Car space edit"
+        }
+        onClose={onClose}
+      />
       <CarSpaceCardContent>
         <CarSpaceCardContentLeft>
           <div className={classes["image-upload-container"]}>
@@ -265,7 +295,13 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
               type="submit"
               disabled={!formState.isFormValid}
             >
-              {isLoading ? <CircularProgress size="1.5rem" /> : "Registration"}
+              {isLoading ? (
+                <CircularProgress size="1.5rem" />
+              ) : carSpaceId === null ? (
+                "Registration"
+              ) : (
+                "Edit"
+              )}
             </Button>
           </div>
         </CarSpaceCardContentLeft>
@@ -282,6 +318,7 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
                   name="street"
                   value={formState.streetAddress.value}
                   onChange={streetAddressChangeHandler}
+                  disabled={formState.streetAddress.disabled}
                 />
                 <InputField
                   className={classes["input-container"]}
@@ -291,6 +328,7 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
                   name="city"
                   value={formState.city.value}
                   onChange={cityChangeHandler}
+                  disabled={formState.city.disabled}
                 />
                 <div className={classes.details__item__content__row}>
                   <DropdownSelect
@@ -304,6 +342,7 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
                     value={formState.state.value}
                     onChange={stateChangeHandler}
                     items={config.AUS_STATES}
+                    disabled={formState.state.disabled}
                   />
                   <InputField
                     className={classes.input}
@@ -313,6 +352,7 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
                     name="postcode"
                     value={formState.postcode.value}
                     onChange={postCodeChangeHandler}
+                    disabled={formState.postcode.disabled}
                   />
                 </div>
               </div>

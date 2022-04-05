@@ -1,6 +1,24 @@
 export const carSpaceFormReducer = (state, action) => {
   const newState = { ...state };
 
+  if (action.type === "FETCH") {
+    return {
+      isFormValid: true,
+      images: { value: action.image, isValid: true },
+      streetAddress: {
+        value: action.streetAddress,
+        isValid: true,
+        disabled: true,
+      },
+      city: { value: action.city, isValid: true, disabled: true },
+      state: { value: action.state, isValid: true, disabled: true },
+      postcode: { value: action.postcode, isValid: true, disabled: true },
+      price: { value: action.price, isValid: true },
+      maxVehicleSize: { value: action.size, isValid: true },
+      notes: { value: action.notes, isValid: true },
+    };
+  }
+
   if (action.type === "RESET") {
     return getCarSpaceFormInitialState();
   }
@@ -62,10 +80,10 @@ export const getCarSpaceFormInitialState = () => {
   return {
     isFormValid: false,
     images: { value: [], isValid: false },
-    streetAddress: { value: "", isValid: false },
-    city: { value: "", isValid: false },
-    state: { value: "", isValid: false },
-    postcode: { value: "", isValid: false },
+    streetAddress: { value: "", isValid: false, disabled: false },
+    city: { value: "", isValid: false, disabled: false },
+    state: { value: "", isValid: false, disabled: false },
+    postcode: { value: "", isValid: false, disabled: false },
     price: { value: "", isValid: false },
     maxVehicleSize: { value: "", isValid: false },
     notes: { value: "", isValid: false },

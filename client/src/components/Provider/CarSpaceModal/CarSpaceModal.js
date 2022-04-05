@@ -26,21 +26,26 @@ const CarSpaceModal = ({ open, onClose, className, page, setPage }) => {
       {page === "/add" && <CarSpaceRegistrationForm onClose={onClose} />}
       {page.startsWith("/edit") && (
         <CarSpaceRegistrationForm
-          // carSpaceId={page.split("/")[2]}
+          carSpaceId={page.split("/")[2]}
           onClose={onClose}
         />
       )}
       {page.startsWith("/info") && (
         <CarSpaceInfo
-          // carSpaceId={page.split("/")[2]}
+          carSpaceId={page.split("/")[2]}
           carInfo={{
             streetAddress: "507 Wattle Street",
             city: "Ultimo",
             state: "NSW",
             postcode: "2007",
-            maxVehicleSize: "4WD/SUV",
+            price: 27,
+            size: "4WD/SUV",
             notes:
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sit amet massa rhoncus, fringilla lectus eu, semper nisl. Quisque egestas, quam a dignissim aliquam, ipsum nunc faucibus nisi, in tempor nisi velit non purus. Fusce vel enim eu lacus consectetur vestibulum ac vitae felis. Nulla facilisi. Nam eu nisl vitae felis tincidunt pellentesque. In magna tortor, dictum ut bibendum in, mollis a ex. Nullam finibus venenatis lacus dictum elementum. Morbi blandit mauris non maximus faucibus. Quisque tincidunt bibendum elit a bibendum. Nam congue quam a sapien hendrerit, mattis facilisis purus mattis. Suspendisse lorem ante, molestie eget erat nec, lobortis viverra., lobortis viverra., lobortis viverra., lobortis viverra., lobortis viverra., lobortis viverra.",
+          }}
+          ratingInfo={{
+            total: 127,
+            average: 3.5,
           }}
           onClose={onClose}
           onEdit={editCarSpaceInfoHandler}
