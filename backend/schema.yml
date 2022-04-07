@@ -1557,17 +1557,15 @@ components:
     Image:
       type: object
       properties:
-        parkingSpace:
-          type: integer
         image:
           type: string
+          format: uri
         pk:
           type: integer
           readOnly: true
           title: ID
       required:
       - image
-      - parkingSpace
       - pk
     JWT:
       type: object
@@ -1597,6 +1595,7 @@ components:
       - password
     ParkingSpace:
       type: object
+      description: Adds nested create feature
       properties:
         provider:
           type: integer
@@ -1620,6 +1619,27 @@ components:
         notes:
           type: string
           maxLength: 500
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        status:
+          type: string
+          readOnly: true
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+        avg_rating:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+          readOnly: true
+        n_ratings:
+          type: integer
+          readOnly: true
         is_active:
           type: boolean
           readOnly: true
@@ -1628,15 +1648,21 @@ components:
           readOnly: true
           title: ID
       required:
+      - avg_rating
       - city
+      - endTime
+      - images
       - is_active
+      - n_ratings
       - notes
       - pk
       - postcode
       - price
       - provider
       - size
+      - startTime
       - state
+      - status
       - streetAddress
     PasswordChange:
       type: object
@@ -1692,16 +1718,16 @@ components:
     PatchedImage:
       type: object
       properties:
-        parkingSpace:
-          type: integer
         image:
           type: string
+          format: uri
         pk:
           type: integer
           readOnly: true
           title: ID
     PatchedParkingSpace:
       type: object
+      description: Adds nested create feature
       properties:
         provider:
           type: integer
@@ -1725,6 +1751,27 @@ components:
         notes:
           type: string
           maxLength: 500
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        status:
+          type: string
+          readOnly: true
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+        avg_rating:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+          readOnly: true
+        n_ratings:
+          type: integer
+          readOnly: true
         is_active:
           type: boolean
           readOnly: true

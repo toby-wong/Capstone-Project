@@ -57,6 +57,12 @@ class ParkingSpace(models.Model):
     # image = models.CharField(max_length=10000000, blank=True)
     size = models.CharField(max_length=100)
     notes = models.TextField(max_length=500)
+    startTime = models.DateTimeField()
+    endTime = models.DateTimeField()
+    status = models.CharField(max_length=50, default="pending")
+    images = models.ForeignKey('Image', on_delete=models.CASCADE, related_name='image_array')
+    avg_rating = models.DecimalField(max_digits=2, decimal_places=1)
+    n_ratings = models.IntegerField()
     is_active = models.BooleanField(default=False)
 
     def __str__(self):

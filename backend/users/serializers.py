@@ -6,9 +6,11 @@ import pkg_resources
 from .utils import AddressValidation, getCoords, getParkingSpace, getUser
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField, StringRelatedField
+from drf_extra_fields.fields import Base64ImageField
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from .models import CustomUser, Favourite, ParkingSpace, Image, Transaction, Review, Vehicle
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from drf_writable_nested.serializers import WritableNestedModelSerializer
 
 class UserSerializer(ModelSerializer):
     class Meta:
@@ -69,49 +71,64 @@ class RemoveUserSerializer(ModelSerializer):
         # user.save()
 
 
-class ParkingDetailsSerializer(ModelSerializer):
+# class ParkingDetailsSerializer(ModelSerializer):
 
-    # provider = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
-    pk = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
+#     # provider = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+#     pk = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
+#     class Meta:
+#         model = ParkingSpace
+#         fields = (
+#             'provider',
+#             'streetAddress',
+#             'city',
+#             'state',
+#             'postcode',
+#             'longitude',
+#             'latitude',
+#             'price',
+#             'size',
+#             'notes',
+#             'is_active',
+#             'pk'
+#         )
+
+#         read_only_fields = [
+#             'provider',
+#             'streetAddress',
+#             'city',
+#             'state',
+#             'postcode',
+#             'longitude',
+#             'latitude',
+#             'price',
+#             'size',
+#             'notes',
+#             'is_active'
+#         ]
+
+#     def get(self, request):
+#         parkingID = request.data.get('pk')
+#         details = self.Meta.model.objects.get(pk=parkingID).__dict__
+#         return details
+
+class ImageSerializer(ModelSerializer):
+
+    image = Base64ImageField()
+
     class Meta:
-        model = ParkingSpace
+        model = Image
         fields = (
-            'provider',
-            'streetAddress',
-            'city',
-            'state',
-            'postcode',
-            'longitude',
-            'latitude',
-            'price',
-            'size',
-            'notes',
-            'is_active',
+            'image',
             'pk'
         )
 
-        read_only_fields = [
-            'provider',
-            'streetAddress',
-            'city',
-            'state',
-            'postcode',
-            'longitude',
-            'latitude',
-            'price',
-            'size',
-            'notes',
-            'is_active'
-        ]
+        read_only_fields = ['pk']
 
-    def get(self, request):
-        parkingID = request.data.get('pk')
-        details = self.Meta.model.objects.get(pk=parkingID).__dict__
-        return details
 
-class ParkingSpaceSerializer(ModelSerializer):
+class ParkingSpaceSerializer(WritableNestedModelSerializer):
 
     provider = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+    images = ImageSerializer(many=True)
 
     class Meta:
         model = ParkingSpace
@@ -125,16 +142,21 @@ class ParkingSpaceSerializer(ModelSerializer):
             'price',
             'size',
             'notes',
+            'startTime',
+            'endTime',
+            'status',
+            'images',
+            'avg_rating',
+            'n_ratings',
             'is_active',
             'pk',      
         )
         # read_only_fields = ('provider', 'streetAddress','city', 'state', 'postcode')
 
-        read_only_fields = ['pk', 'is_active']
+        read_only_fields = ['pk', 'is_active', 'status', 'avg_rating', 'n_ratings']
 
-
+    
     def save(self, request):
-        parking = super().save()
         cleanAddress = AddressValidation(request.data)
         cleanAddress = cleanAddress.validate()
 
@@ -152,12 +174,48 @@ class ParkingSpaceSerializer(ModelSerializer):
         parking.price = self.data.get('price')
         parking.size = self.data.get('size')
         parking.notes = self.data.get('notes')
+        parking.status = self.data.get('status')
+        parking.avg_rating = self.data.get('avg_rating')
+        parking.n_ratings = self.data.get('n_ratings')
         parking.is_active = True # need to change to False when we implement the admin panel
         parking.save()
-        if "images" in self.data.keys():
-            for i in self.data.get('images'):
-                ImageSerializer(parkingID=parking.id, image=i)
+        
+        # if "images" in self.data.keys():
+        #     for i in self.data.get('images'):
+        #         ImageSerializer(parkingID=parking.id, image=i)
         return parking
+
+
+
+    # def save(self, request):
+    #     parking = super().save()
+    #     cleanAddress = AddressValidation(request.data)
+    #     cleanAddress = cleanAddress.validate()
+
+    #     if not type(cleanAddress) == dict:
+    #         raise serializers.ValidationError(cleanAddress.errors)
+    #     parking.streetAddress = cleanAddress['street_address']
+    #     parking.city = cleanAddress['city']
+    #     parking.state = cleanAddress['country_area']
+    #     parking.postcode = cleanAddress['postal_code']
+    #     address = ' '.join(list(cleanAddress.values())[:4])
+    #     coords = getCoords(address)
+    #     parking.longitude = coords[0]
+    #     parking.latitude = coords[1]        
+    #     parking.provider = getUser(self.data.get('provider'))
+    #     parking.price = self.data.get('price')
+    #     parking.size = self.data.get('size')
+    #     parking.notes = self.data.get('notes')
+    #     parking.status = self.data.get('status')
+    #     parking.avg_rating = self.data.get('avg_rating')
+    #     parking.n_ratings = self.data.get('n_ratings')
+    #     parking.is_active = True # need to change to False when we implement the admin panel
+    #     parking.save()
+        
+    #     # if "images" in self.data.keys():
+    #     #     for i in self.data.get('images'):
+    #     #         ImageSerializer(parkingID=parking.id, image=i)
+    #     return parking
 
     def edit(self, request):
         parkingInstance = self.Meta.model.objects.get(id=request.data.get('pk'))
@@ -175,19 +233,7 @@ class ParkingSpaceSerializer(ModelSerializer):
         parkingInstance.delete()
 
 
-class ImageSerializer(ModelSerializer):
 
-    parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
-
-    class Meta:
-        model = Image
-        fields = (
-            'parkingSpace',
-            'image',
-            'pk'
-        )
-
-        read_only_fields = ['pk']
 
 
 class VehicleSerializer(ModelSerializer):
