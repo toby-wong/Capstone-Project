@@ -59,3 +59,15 @@ def getUser(pk):
 def getParkingSpace(pk):
     parking_obj = ParkingSpace.objects.get(id=pk)
     return parking_obj
+
+class ParkingSearchAlgorithm(object):
+    def __init__(self, *args, **kwargs):
+        self.lat_min = None
+        self.lon_min = None
+        self.lat_max = None
+        self.lon_max = None
+    
+    def getBoundingBox(distance, lat, lon):
+        assert half_side_in_miles > 0
+        assert latitude_in_degrees >= -90.0 and latitude_in_degrees  <= 90.0
+        assert longitude_in_degrees >= -180.0 and longitude_in_degrees <= 180.0
