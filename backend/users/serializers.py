@@ -157,6 +157,7 @@ class ParkingSpaceSerializer(WritableNestedModelSerializer):
 
     
     def save(self, request):
+        parking = super().save()
         cleanAddress = AddressValidation(request.data)
         cleanAddress = cleanAddress.validate()
 
