@@ -1557,15 +1557,14 @@ components:
     Image:
       type: object
       properties:
-        image:
+        image_data:
           type: string
-          format: uri
         pk:
           type: integer
           readOnly: true
           title: ID
       required:
-      - image
+      - image_data
       - pk
     JWT:
       type: object
@@ -1595,7 +1594,7 @@ components:
       - password
     ParkingSpace:
       type: object
-      description: Adds nested create feature
+      description: Adds update nested feature
       properties:
         provider:
           type: integer
@@ -1637,9 +1636,11 @@ components:
           format: decimal
           pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
           readOnly: true
+          nullable: true
         n_ratings:
           type: integer
           readOnly: true
+          nullable: true
         is_active:
           type: boolean
           readOnly: true
@@ -1718,16 +1719,15 @@ components:
     PatchedImage:
       type: object
       properties:
-        image:
+        image_data:
           type: string
-          format: uri
         pk:
           type: integer
           readOnly: true
           title: ID
     PatchedParkingSpace:
       type: object
-      description: Adds nested create feature
+      description: Adds update nested feature
       properties:
         provider:
           type: integer
@@ -1769,9 +1769,11 @@ components:
           format: decimal
           pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
           readOnly: true
+          nullable: true
         n_ratings:
           type: integer
           readOnly: true
+          nullable: true
         is_active:
           type: boolean
           readOnly: true
@@ -1786,7 +1788,6 @@ components:
           type: integer
         consumer:
           type: string
-          readOnly: true
         rating:
           type: string
           format: decimal
@@ -1910,7 +1911,6 @@ components:
           type: integer
         consumer:
           type: string
-          readOnly: true
         rating:
           type: string
           format: decimal

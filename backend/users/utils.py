@@ -1,8 +1,8 @@
 from i18naddress import InvalidAddress, normalize_address, get_validation_rules
 import base64
 import io
-from PIL import Image
 from .models import CustomUser, ParkingSpace
+
 class AddressValidation:
 
     def __init__(self, data):

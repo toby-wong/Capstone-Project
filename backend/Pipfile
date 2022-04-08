@@ -17,6 +17,7 @@ Pillow = "*"
 google-i18n-address = "*"
 drf-extra-fields = "*"
 drf-writable-nested = "*"
+drf-flex-fields = "*"
 
 [dev-packages]
 
