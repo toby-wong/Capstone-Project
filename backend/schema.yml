@@ -655,6 +655,24 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/consumer/favourite/all:
+    get:
+      operationId: consumer_favourite_all_list
+      tags:
+      - consumer
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Favourite'
+          description: ''
   /api/consumer/history:
     get:
       operationId: consumer_history_list
@@ -1376,30 +1394,6 @@ paths:
                 items:
                   $ref: '#/components/schemas/Transaction'
           description: ''
-  /api/provider/parking/favourites/{parkingID}:
-    get:
-      operationId: provider_parking_favourites_list
-      parameters:
-      - in: path
-        name: parkingID
-        schema:
-          type: integer
-        required: true
-      tags:
-      - provider
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Favourite'
-          description: ''
   /api/provider/parking/images/{parkingID}:
     get:
       operationId: provider_parking_images_list
@@ -1625,7 +1619,8 @@ components:
           type: string
           format: date-time
         status:
-          type: string
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
           readOnly: true
         images:
           type: array
@@ -1758,7 +1753,8 @@ components:
           type: string
           format: date-time
         status:
-          type: string
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
           readOnly: true
         images:
           type: array
@@ -1932,6 +1928,12 @@ components:
       - pk
       - publishDate
       - rating
+    StatusEnum:
+      enum:
+      - pending
+      - approved
+      - rejected
+      type: string
     TokenRefresh:
       type: object
       properties:
