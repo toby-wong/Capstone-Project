@@ -15,7 +15,6 @@ const ProviderListItem = ({
     onClick(id);
   };
 
-  // console.log(`data:image/png;base64, ${image[0].image}`);
   return (
     <div className={classes.listItem}>
       <div className={classes.listItem__content}>
@@ -32,7 +31,7 @@ const ProviderListItem = ({
             variant="sectionContent"
             className={classes.listItem__content__description}
           >
-            {notes}
+            {notes.slice(0, 100)}
           </Typography>
         </div>
         <div className={classes.listItem__content__details}>
@@ -53,7 +52,7 @@ const ProviderListItem = ({
       <img
         className={classes.listItem__image}
         alt="parking at Sydney1"
-        src={`data:image/png;base64, ${image[0]?.image}`}
+        src={`data:image/png;base64, ${image}`}
       />
     </div>
   );

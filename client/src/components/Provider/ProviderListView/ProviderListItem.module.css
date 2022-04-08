@@ -3,9 +3,10 @@
 .listItem{
   display: flex;
   justify-content: space-between;
-  height: 200px;
+  height: 150px;
   width: 100%;
   margin-bottom: 40px;
+  padding-bottom: 5px;
 }
 
 /* List Item Content */
@@ -70,7 +71,7 @@
 
 /* ListItem Image */
 .listItem__image{
-  height: 200px;
+  height: 150px;
   width: 300px;
   object-fit: contain;
 }

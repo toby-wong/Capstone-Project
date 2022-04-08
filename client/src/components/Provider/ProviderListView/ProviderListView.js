@@ -49,26 +49,8 @@ const ProviderListView = ({ onAdd, onClickItem }) => {
         const response = await sendRequest(url, options, setIsLoading);
         if (response.status >= 300 || !response.status) throw Error;
 
-        const carSpacesObjs = [];
-        for (const space of response.data) {
-          const getImageUrl = `${config.SERVER_URL}/api/provider/parking/images/${space.pk}`;
-          const getImageOptions = {
-            method: "GET",
-            headers: {
-              Authorization: "Bearer " + authToken,
-              "Content-Type": "application/json",
-            },
-          };
-          const getImageResponse = await sendRequest(
-            getImageUrl,
-            getImageOptions
-          );
-          if (getImageResponse.status >= 300 || !getImageResponse.status)
-            throw Error;
-
-          carSpacesObjs.push({ ...space, image: getImageResponse.data });
-        }
-        setCarSpaces(carSpacesObjs);
+        setCarSpaces(response.data);
+        console.log(response.data);
       } catch (e) {
         console.log(e.message);
         setError({
@@ -168,11 +150,13 @@ const ProviderListView = ({ onAdd, onClickItem }) => {
                 key={item.pk}
                 id={item.pk}
                 streetAddress={item.streetAddress}
+                startDate={item.startDate}
+                endDate={item.endDate}
                 notes={item.notes}
                 size={item.size}
                 price={item.price}
+                image={item.images[0].image_data}
                 onClick={onClickItem}
-                image={item.image}
               />
             ))}
           {!isLoading && error.value && (

@@ -1,10 +1,12 @@
 import classes from "./CarSpaceRegistrationForm.module.css";
 
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import BusinessIcon from "@mui/icons-material/Business";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
-import { Button, CircularProgress } from "@mui/material";
+import DateTimePicker from "@mui/lab/DateTimePicker";
+import { Button, CircularProgress, TextField } from "@mui/material";
 
 import CarSpaceRegistrationSubModal from "./CarSpaceRegistrationSubModal/CarSpaceRegistrationSubModal";
 import CarSpaceCardHeader from "../CarSpaceCard/CarSpaceCardHeader";
@@ -60,8 +62,12 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
   };
 
   // Address Handlers
-  const streetAddressChangeHandler = (e) => {
-    dispatchFormState({ type: "STREET_ADDRESS_INPUT", value: e.target.value });
+  const streetNumberChangeHandler = (e) => {
+    dispatchFormState({ type: "STREET_NUMBER_INPUT", value: e.target.value });
+  };
+
+  const streetNameChangeHandler = (e) => {
+    dispatchFormState({ type: "STREET_NAME_INPUT", value: e.target.value });
   };
 
   const cityChangeHandler = (e) => {
@@ -104,55 +110,21 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
       const authToken = localStorage.getItem("parkItAuthToken");
       if (!authToken) return;
 
-      // TODO: Can I send images in form together?
-      // 1. Upload images first
-      // if (carSpaceId === null) {
-      //   // for (const image of imagesInBase64) {
-      //   //   const carSpaceRegistrationImageUploadUrl = `${config.SERVER_URL}/api/provider/image/${carSpaceId}`;
-      //   //   const carSpaceRegistrationImageUploadOptions = {
-      //   //     method: "POST",
-      //   //     headers: {
-      //   //       Authorization: "Bearer " + authToken,
-      //   //       "Content-Type": "application/json",
-      //   //     },
-      //   //     body: {
-      //   //       parkingSpace: carSpaceId,
-      //   //       image: image,
-      //   //     },
-      //   //   };
-      //   //   const carSpaceRegistrationImageUploadResponse =
-      //   //     await utility.sendRequest(
-      //   //       carSpaceRegistrationImageUploadUrl,
-      //   //       carSpaceRegistrationImageUploadOptions
-      //   //     );
-      //   //   if (!carSpaceRegistrationImageUploadResponse.status)
-      //   //     throw Error(config.NETWORK_ERROR_MESSAGE);
-      //   //   if (carSpaceRegistrationImageUploadResponse.status >= 300) {
-      //   //     const errorMsgs = [];
-      //   //     for (const key of Object.keys(
-      //   //       carSpaceRegistrationImageUploadResponse.data
-      //   //     )) {
-      //   //       errorMsgs.push(` - Not a valid ${key}.`);
-      //   //     }
-      //   //     throw Error(errorMsgs);
-      //   //   }
-      //   // }
-      // }
-
-      // 2. Upload the rest data points
       const formData = {
-        provider: authContext.userInfo.username,
-        streetAddress: formState.streetAddress.value,
+        provider: authContext.userInfo.pk,
+        startTime: formState.startDateTime.value,
+        endTime: formState.endDateTime.value,
+        streetAddress: `${formState.streetNumber.value} ${formState.streetName.value}`,
         city: formState.city.value,
         state: formState.state.value,
         postcode: formState.postcode.value,
         price: formState.price.value,
         size: formState.maxVehicleSize.value,
-        image: imagesInBase64,
+        images: imagesInBase64,
         notes: formState.notes.value,
       };
+      console.log(formData);
       const carSpaceRegistrationUrl = `${config.SERVER_URL}/api/provider/parking`;
-
       const carSpaceRegistrationOptions = {
         method: "POST",
         headers: {
@@ -207,7 +179,7 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
   };
 
   return (
-    <form onSubmit={formSubmitHandler}>
+    <form onSubmit={formSubmitHandler} className={classes.form}>
       <CarSpaceRegistrationSubModal
         open={subModal.isOpen}
         onClose={subModal.onClose}
@@ -244,17 +216,79 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
         <CarSpaceCardContentRight>
           <div className={classes.details}>
             <div className={classes.details__item}>
+              <AccessTimeIcon className={classes.icon} fontSize="large" />
+              <div className={classes.details__item__content__row}>
+                <DateTimePicker
+                  label="Start Date"
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      className={classes["date-input"]}
+                      error={!formState.startDateTime.isValid}
+                    />
+                  )}
+                  value={formState.startDateTime.value}
+                  minDateTime={new Date()}
+                  onChange={(newDate) => {
+                    dispatchFormState({
+                      type: "START_TIME_INPUT",
+                      value: newDate,
+                    });
+                  }}
+                  shouldDisableTime={(timeValue, clockType) => {
+                    return clockType === "minutes" && timeValue % 15;
+                  }}
+                  reduceAnimations={true}
+                />
+                <DateTimePicker
+                  label="End Date"
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      className={classes["date-input"]}
+                      error={!formState.endDateTime.isValid}
+                    />
+                  )}
+                  value={formState.endDateTime.value}
+                  minDateTime={new Date()}
+                  onChange={(newDate) => {
+                    dispatchFormState({
+                      type: "END_TIME_INPUT",
+                      value: newDate,
+                    });
+                  }}
+                  shouldDisableTime={(timeValue, clockType) => {
+                    return clockType === "minutes" && timeValue % 15;
+                  }}
+                  reduceAnimations={true}
+                />
+              </div>
+            </div>
+            <div className={classes.details__item}>
               <BusinessIcon className={classes.icon} fontSize="large" />
               <div className={classes.details__item__content}>
-                <InputField
-                  className={classes["input-container"]}
-                  inputClassName={classes.input}
-                  label="Street Address"
-                  type="text"
-                  name="street"
-                  value={formState.streetAddress.value}
-                  onChange={streetAddressChangeHandler}
-                />
+                <div
+                  className={`${classes.details__item__content__row} ${classes["input-container"]}`}
+                >
+                  <InputField
+                    className={`${classes.input} ${classes.field}`}
+                    inputClassName={classes.input}
+                    label="Street Number"
+                    type="number"
+                    name="street"
+                    value={formState.streetNumber.value}
+                    onChange={streetNumberChangeHandler}
+                  />
+                  <InputField
+                    className={classes.input}
+                    inputClassName={classes.input}
+                    label="Street Name"
+                    type="text"
+                    name="street"
+                    value={formState.streetName.value}
+                    onChange={streetNameChangeHandler}
+                  />
+                </div>
                 <InputField
                   className={classes["input-container"]}
                   inputClassName={classes.input}

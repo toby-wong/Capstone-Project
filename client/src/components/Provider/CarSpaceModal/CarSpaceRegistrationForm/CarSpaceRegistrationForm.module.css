@@ -1,3 +1,9 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
 /* Left */
 .image-upload-container {
   display: flex;
@@ -40,6 +46,18 @@
   margin-bottom: 20px;
 }
 
+.details__item:first-of-type {
+  margin-top:5px;
+}
+
+.date-input {
+  min-width: 235px;
+}
+
+.date-input:first-of-type {
+  margin-right: 30px;
+}
+
 .input-container {
   margin-bottom: 10px;
 }
@@ -49,7 +67,7 @@
 }
 
 .input {
-  height: 50px;
+  height: 53px;
   width: 100%;
 }
 

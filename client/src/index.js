@@ -12,13 +12,18 @@ import { ThemeProvider } from "@emotion/react";
 import { theme } from "./theme";
 import { AuthContextProvider } from "./contexts/auth-context";
 
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DateAdapter from "@mui/lab/AdapterDateFns";
+
 ReactDOM.render(
   <React.StrictMode>
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <AuthContextProvider>
-            <App />
+            <LocalizationProvider dateAdapter={DateAdapter}>
+              <App />
+            </LocalizationProvider>
           </AuthContextProvider>
         </BrowserRouter>
       </ThemeProvider>
