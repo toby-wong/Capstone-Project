@@ -187,37 +187,6 @@ class ParkingSpaceSerializer(WritableNestedModelSerializer):
         return parking
 
 
-
-    # def save(self, request):
-    #     parking = super().save()
-    #     cleanAddress = AddressValidation(request.data)
-    #     cleanAddress = cleanAddress.validate()
-
-    #     if not type(cleanAddress) == dict:
-    #         raise serializers.ValidationError(cleanAddress.errors)
-    #     parking.streetAddress = cleanAddress['street_address']
-    #     parking.city = cleanAddress['city']
-    #     parking.state = cleanAddress['country_area']
-    #     parking.postcode = cleanAddress['postal_code']
-    #     address = ' '.join(list(cleanAddress.values())[:4])
-    #     coords = getCoords(address)
-    #     parking.longitude = coords[0]
-    #     parking.latitude = coords[1]        
-    #     parking.provider = getUser(self.data.get('provider'))
-    #     parking.price = self.data.get('price')
-    #     parking.size = self.data.get('size')
-    #     parking.notes = self.data.get('notes')
-    #     parking.status = self.data.get('status')
-    #     parking.avg_rating = self.data.get('avg_rating')
-    #     parking.n_ratings = self.data.get('n_ratings')
-    #     parking.is_active = True # need to change to False when we implement the admin panel
-    #     parking.save()
-        
-    #     # if "images" in self.data.keys():
-    #     #     for i in self.data.get('images'):
-    #     #         ImageSerializer(parkingID=parking.id, image=i)
-    #     return parking
-
     def edit(self, request):
         parkingInstance = self.Meta.model.objects.get(id=request.data.get('pk'))
         parkingInstance.__dict__ = {**parkingInstance.__dict__, **request.data}

@@ -95,4 +95,4 @@ class Review(models.Model):
 
 class Image(models.Model):
     parkingSpace = models.ForeignKey('ParkingSpace', on_delete=models.CASCADE)
-    image = models.TextField()
+    image = models.Base64ImageField()
