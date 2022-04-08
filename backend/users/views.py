@@ -40,23 +40,23 @@ class RemoveUserView(GenericAPIView):
 # #     serializer.is_valid(raise_exception=True)
 # #     serializer.save(request)
 class CreateParkingSpace(CreateAPIView):
-    #serializer_class = ParkingSpaceSerializer
-    #queryset = ParkingSpace.objects.all()
-
     serializer_class = ParkingSpaceSerializer
+    queryset = ParkingSpace.objects.all()
 
-    # def get(self, request):
-    #     # serializer = self.get_serializer(data=request.data)
-    #     return ParkingSpace.objects.filter(id=request.data.get('pk'))
-    def post(self,request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        # print(serializer.errors)
-        serializer.save(request)
-        if not serializer.errors:
-            return Response({'message': 'Parking space added'}, status=status.HTTP_201_CREATED)
-        else:
-            return Response({'message': 'Parking space not added'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    # serializer_class = ParkingSpaceSerializer
+
+    # # def get(self, request):
+    # #     # serializer = self.get_serializer(data=request.data)
+    # #     return ParkingSpace.objects.filter(id=request.data.get('pk'))
+    # def post(self,request):
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     # print(serializer.errors)
+    #     serializer.save(request)
+    #     if not serializer.errors:
+    #         return Response({'message': 'Parking space added'}, status=status.HTTP_201_CREATED)
+    #     else:
+    #         return Response({'message': 'Parking space not added'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # # Do stuff with an existing parking space
 
@@ -65,6 +65,7 @@ class ParkingSpaceView(RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         space = self.kwargs['pk']
         return ParkingSpace.objects.filter(pk=space)
+
 
 # Get all parking spaces owned by the user
 
@@ -80,7 +81,7 @@ class ParkingSpaceList(ListAPIView):
 class CreateImage(CreateAPIView):   
     serializer_class = ImageSerializer
     
-    def delete(self, request, format=None):
+    def delete(self, request, *args, **kwargs):
         space = self.kwargs['parkingID']
         images = Image.objects.filter(parkingSpace=space)
         if images:
@@ -172,8 +173,8 @@ class FavouriteView(RetrieveUpdateDestroyAPIView):
 class FavouriteList(ListAPIView):
     serializer_class = FavouriteSerializer
     def get_queryset(self):
-        space = self.kwargs['parkingID']
-        return Favourite.objects.filter(parkingSpace=space)
+        user = self.request.user
+        return Favourite.objects.filter(consumer=user)
 
 # VEHICLE
 
@@ -195,8 +196,8 @@ class VehicleView(RetrieveUpdateDestroyAPIView):
 class VehicleList(ListAPIView):
     serializer_class = VehicleSerializer
     def get_queryset(self):
-        owner = self.kwargs['consumerID']
-        return Vehicle.objects.filter(user=owner)
+        user = self.request.user
+        return Vehicle.objects.filter(user=user)
 
 
 # REVIEW

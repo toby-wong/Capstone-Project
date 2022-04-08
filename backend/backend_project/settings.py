@@ -72,7 +72,7 @@ TEMPLATES = [
 ]
 
 REST_FRAMEWORK = {
-    'DATETIME_FORMAT': "%m/%d/%Y %I:%M%P", 
+    'DATETIME_FORMAT': "%d/%m/%Y %H:%M", 
     'DEFAULT_AUTHENTICATION_CLASSES': ['dj_rest_auth.jwt_auth.JWTCookieAuthentication',],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     
@@ -187,9 +187,11 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
-USE_I18N = True
 
-USE_TZ = True
+
+USE_I18N = True
+L10N=False
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

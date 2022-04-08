@@ -655,6 +655,24 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/consumer/favourite/all:
+    get:
+      operationId: consumer_favourite_all_list
+      tags:
+      - consumer
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Favourite'
+          description: ''
   /api/consumer/history:
     get:
       operationId: consumer_history_list
@@ -1376,30 +1394,6 @@ paths:
                 items:
                   $ref: '#/components/schemas/Transaction'
           description: ''
-  /api/provider/parking/favourites/{parkingID}:
-    get:
-      operationId: provider_parking_favourites_list
-      parameters:
-      - in: path
-        name: parkingID
-        schema:
-          type: integer
-        required: true
-      tags:
-      - provider
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Favourite'
-          description: ''
   /api/provider/parking/images/{parkingID}:
     get:
       operationId: provider_parking_images_list
@@ -1557,17 +1551,14 @@ components:
     Image:
       type: object
       properties:
-        parkingSpace:
-          type: integer
-        image:
+        image_data:
           type: string
         pk:
           type: integer
           readOnly: true
           title: ID
       required:
-      - image
-      - parkingSpace
+      - image_data
       - pk
     JWT:
       type: object
@@ -1597,6 +1588,7 @@ components:
       - password
     ParkingSpace:
       type: object
+      description: Adds update nested feature
       properties:
         provider:
           type: integer
@@ -1620,6 +1612,30 @@ components:
         notes:
           type: string
           maxLength: 500
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          readOnly: true
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+        avg_rating:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+          readOnly: true
+          nullable: true
+        n_ratings:
+          type: integer
+          readOnly: true
+          nullable: true
         is_active:
           type: boolean
           readOnly: true
@@ -1628,15 +1644,21 @@ components:
           readOnly: true
           title: ID
       required:
+      - avg_rating
       - city
+      - endTime
+      - images
       - is_active
+      - n_ratings
       - notes
       - pk
       - postcode
       - price
       - provider
       - size
+      - startTime
       - state
+      - status
       - streetAddress
     PasswordChange:
       type: object
@@ -1692,9 +1714,7 @@ components:
     PatchedImage:
       type: object
       properties:
-        parkingSpace:
-          type: integer
-        image:
+        image_data:
           type: string
         pk:
           type: integer
@@ -1702,6 +1722,7 @@ components:
           title: ID
     PatchedParkingSpace:
       type: object
+      description: Adds update nested feature
       properties:
         provider:
           type: integer
@@ -1725,6 +1746,30 @@ components:
         notes:
           type: string
           maxLength: 500
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          readOnly: true
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+        avg_rating:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+          readOnly: true
+          nullable: true
+        n_ratings:
+          type: integer
+          readOnly: true
+          nullable: true
         is_active:
           type: boolean
           readOnly: true
@@ -1739,7 +1784,6 @@ components:
           type: integer
         consumer:
           type: string
-          readOnly: true
         rating:
           type: string
           format: decimal
@@ -1863,7 +1907,6 @@ components:
           type: integer
         consumer:
           type: string
-          readOnly: true
         rating:
           type: string
           format: decimal
@@ -1885,6 +1928,12 @@ components:
       - pk
       - publishDate
       - rating
+    StatusEnum:
+      enum:
+      - pending
+      - approved
+      - rejected
+      type: string
     TokenRefresh:
       type: object
       properties:

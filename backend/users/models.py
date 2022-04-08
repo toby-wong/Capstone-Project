@@ -41,6 +41,11 @@ class Favourite(models.Model):
     def __str__(self):
         return f"{self.consumer.username} favourited {self.parkingSpace}"
 
+STATUS = (
+    ('pending', 'pending'),
+    ('approved', 'approved'),
+    ('rejected', 'rejected')
+)
 
 # # PROVIDER MODELS
 class ParkingSpace(models.Model):
@@ -57,7 +62,12 @@ class ParkingSpace(models.Model):
     # image = models.CharField(max_length=10000000, blank=True)
     size = models.CharField(max_length=100)
     notes = models.TextField(max_length=500)
-    is_active = models.BooleanField(default=False)
+    startTime = models.DateTimeField()
+    endTime = models.DateTimeField()
+    status = models.CharField(max_length=50, choices=STATUS, default="pending")
+    avg_rating = models.DecimalField(max_digits=2, decimal_places=1, null=True)
+    n_ratings = models.IntegerField(null=True)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.provider.username}'s car space at {self.streetAddress}, {self.city} {self.postcode}"
@@ -75,6 +85,10 @@ class Transaction(models.Model):
         return f"{self.consumer.username} booked {self.parkingSpace} between {self.startTime} and {self.endTime}"
 
 
+class Image(models.Model):
+    parkingSpace = models.ForeignKey('ParkingSpace', on_delete=models.CASCADE, related_name='images')
+    image_data = models.CharField(max_length=1000000)
+
 # # REVIEW MODELS
 class Review(models.Model):
     parkingSpace = models.ForeignKey('ParkingSpace', on_delete=models.CASCADE)
@@ -87,6 +101,4 @@ class Review(models.Model):
         return f"{self.consumer.username} reviewed {self.parkingSpace}"
     
 
-class Image(models.Model):
-    parkingSpace = models.ForeignKey('ParkingSpace', on_delete=models.CASCADE)
-    image = models.TextField()
+    
