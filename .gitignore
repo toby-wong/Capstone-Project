@@ -4,4 +4,5 @@ Scripts/
 pyenv.cfg
 Lib/
 backend/.venv
+backend/.gitignore
 capstone-project-3900-w14b-blue-man-group.code-workspace

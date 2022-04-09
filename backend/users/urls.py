@@ -20,7 +20,6 @@ urlpatterns = [
     path('provider/parking/<int:pk>', ParkingSpaceView.as_view(), name='modify_parking_space'),
     path('provider/parking/images/<int:parkingID>', ImageList.as_view(), name='list_images'),
     path('provider/parking/reviews/<int:parkingID>', ReviewList.as_view(), name='list_reviews'),
-    path('provider/parking/favourites/<int:parkingID>', FavouriteList.as_view(), name='list_favourites'),
     path('provider/parking/bookings/<int:parkingID>', BookingList.as_view(), name='list_bookings'),
     path('provider/parking/all', ParkingSpaceList.as_view(), name='list_parking_space'),
 
@@ -50,6 +49,7 @@ urlpatterns = [
 
     path('consumer/favourite', CreateFavourite.as_view(), name='create_favourite'),
     path('consumer/favourite/<int:favID>', FavouriteView.as_view(), name='modify_favourite'),
+    path('consumer/favourite/all', FavouriteList.as_view(), name='list_favourites'),
 
     # Vehicle
 

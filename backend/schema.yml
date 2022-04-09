@@ -655,9 +655,22 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/consumer/history:
+  /api/consumer/favourite/all:
     get:
-      operationId: consumer_history_list
+      operationId: consumer_favourite_all_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
       tags:
       - consumer
       security:
@@ -669,9 +682,36 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Transaction'
+                $ref: '#/components/schemas/PaginatedFavouriteList'
+          description: ''
+  /api/consumer/history:
+    get:
+      operationId: consumer_history_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      tags:
+      - consumer
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTransactionList'
           description: ''
   /api/consumer/review:
     post:
@@ -940,6 +980,19 @@ paths:
   /api/consumer/vehicle/all:
     get:
       operationId: consumer_vehicle_all_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
       tags:
       - consumer
       security:
@@ -951,9 +1004,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Vehicle'
+                $ref: '#/components/schemas/PaginatedVehicleList'
           description: ''
   /api/delete/user:
     delete:
@@ -1049,6 +1100,19 @@ paths:
   /api/provider/history:
     get:
       operationId: provider_history_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
       tags:
       - provider
       security:
@@ -1060,9 +1124,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Transaction'
+                $ref: '#/components/schemas/PaginatedTransactionList'
           description: ''
   /api/provider/image/{imgID}:
     get:
@@ -1337,6 +1399,19 @@ paths:
   /api/provider/parking/all:
     get:
       operationId: provider_parking_all_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
       tags:
       - provider
       security:
@@ -1348,14 +1423,24 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ParkingSpace'
+                $ref: '#/components/schemas/PaginatedParkingSpaceList'
           description: ''
   /api/provider/parking/bookings/{parkingID}:
     get:
       operationId: provider_parking_bookings_list
       parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
       - in: path
         name: parkingID
         schema:
@@ -1372,38 +1457,24 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Transaction'
-          description: ''
-  /api/provider/parking/favourites/{parkingID}:
-    get:
-      operationId: provider_parking_favourites_list
-      parameters:
-      - in: path
-        name: parkingID
-        schema:
-          type: integer
-        required: true
-      tags:
-      - provider
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Favourite'
+                $ref: '#/components/schemas/PaginatedTransactionList'
           description: ''
   /api/provider/parking/images/{parkingID}:
     get:
       operationId: provider_parking_images_list
       parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
       - in: path
         name: parkingID
         schema:
@@ -1420,14 +1491,24 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Image'
+                $ref: '#/components/schemas/PaginatedImageList'
           description: ''
   /api/provider/parking/reviews/{parkingID}:
     get:
       operationId: provider_parking_reviews_list
       parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
       - in: path
         name: parkingID
         schema:
@@ -1444,9 +1525,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Review'
+                $ref: '#/components/schemas/PaginatedReviewList'
           description: ''
   /api/registration/:
     post:
@@ -1557,17 +1636,14 @@ components:
     Image:
       type: object
       properties:
-        parkingSpace:
-          type: integer
-        image:
+        image_data:
           type: string
         pk:
           type: integer
           readOnly: true
           title: ID
       required:
-      - image
-      - parkingSpace
+      - image_data
       - pk
     JWT:
       type: object
@@ -1595,8 +1671,129 @@ components:
           type: string
       required:
       - password
+    PaginatedFavouriteList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Favourite'
+    PaginatedImageList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+    PaginatedParkingSpaceList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParkingSpace'
+    PaginatedReviewList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Review'
+    PaginatedTransactionList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+    PaginatedVehicleList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Vehicle'
     ParkingSpace:
       type: object
+      description: Adds update nested feature
       properties:
         provider:
           type: integer
@@ -1619,7 +1816,31 @@ components:
           maxLength: 100
         notes:
           type: string
-          maxLength: 500
+          maxLength: 10000
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          readOnly: true
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+        avg_rating:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+          readOnly: true
+          nullable: true
+        n_ratings:
+          type: integer
+          readOnly: true
+          nullable: true
         is_active:
           type: boolean
           readOnly: true
@@ -1628,15 +1849,21 @@ components:
           readOnly: true
           title: ID
       required:
+      - avg_rating
       - city
+      - endTime
+      - images
       - is_active
+      - n_ratings
       - notes
       - pk
       - postcode
       - price
       - provider
       - size
+      - startTime
       - state
+      - status
       - streetAddress
     PasswordChange:
       type: object
@@ -1692,9 +1919,7 @@ components:
     PatchedImage:
       type: object
       properties:
-        parkingSpace:
-          type: integer
-        image:
+        image_data:
           type: string
         pk:
           type: integer
@@ -1702,6 +1927,7 @@ components:
           title: ID
     PatchedParkingSpace:
       type: object
+      description: Adds update nested feature
       properties:
         provider:
           type: integer
@@ -1724,7 +1950,31 @@ components:
           maxLength: 100
         notes:
           type: string
-          maxLength: 500
+          maxLength: 10000
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          readOnly: true
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+        avg_rating:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+          readOnly: true
+          nullable: true
+        n_ratings:
+          type: integer
+          readOnly: true
+          nullable: true
         is_active:
           type: boolean
           readOnly: true
@@ -1739,7 +1989,6 @@ components:
           type: integer
         consumer:
           type: string
-          readOnly: true
         rating:
           type: string
           format: decimal
@@ -1863,7 +2112,6 @@ components:
           type: integer
         consumer:
           type: string
-          readOnly: true
         rating:
           type: string
           format: decimal
@@ -1885,6 +2133,12 @@ components:
       - pk
       - publishDate
       - rating
+    StatusEnum:
+      enum:
+      - pending
+      - approved
+      - rejected
+      type: string
     TokenRefresh:
       type: object
       properties:

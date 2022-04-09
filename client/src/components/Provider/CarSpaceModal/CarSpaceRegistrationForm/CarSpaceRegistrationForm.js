@@ -87,8 +87,9 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
         if (getImageResponse.status >= 300 || !getImageResponse.status)
           throw Error;
 
-        const images = getImageResponse.data.map((el) => el.image);
-        console.log(images);
+        const images = getImageResponse.data.map(
+          (el) => "data:image/png;base64, " + el.image
+        );
 
         dispatchFormState({ type: "FETCH", value: getCarInfoResponse.data });
         dispatchFormState({ type: "IMAGES_INPUT", value: images });
@@ -224,7 +225,7 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
         //   }
         // }
       } else {
-        const carSpaceUpdateDeleteImagesUrl = `${config.SERVER_URL}/api/proivder/image/${carSpaceId}`;
+        const carSpaceUpdateDeleteImagesUrl = `${config.SERVER_URL}/api/provider/image/${carSpaceId}`;
         const carSpaceUpdateDeleteImagesOptions = {
           method: "DELETE",
           headers: {
@@ -345,11 +346,7 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
               {formState.images.value.map((imgSrc, idx) => (
                 <div className={classes["image-item"]} key={imgSrc}>
                   <img
-                    src={
-                      carSpaceId === null
-                        ? imgSrc
-                        : "data:image/png;base64, " + imgSrc
-                    }
+                    src={imgSrc}
                     alt={"car-space"}
                     onMouseEnter={uploadedImageMouseEnterHandler}
                     onMouseLeave={uploadedImageMouseLeaveHandler}

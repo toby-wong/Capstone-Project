@@ -89,6 +89,7 @@ const CarSpaceInfo = ({ carSpaceId, onClose, onEdit, onClickReviews }) => {
         };
 
         setRatingInfo(newRatingInfo);
+        console.log(getImageResponse.data.map((el) => el.image));
         setImage(getImageResponse.data.map((el) => el.image));
         setIsLoading(false);
       } catch (e) {

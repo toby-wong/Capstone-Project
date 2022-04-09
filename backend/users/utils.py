@@ -1,8 +1,8 @@
 from i18naddress import InvalidAddress, normalize_address, get_validation_rules
 import base64
 import io
-from PIL import Image
 from .models import CustomUser, ParkingSpace
+
 class AddressValidation:
 
     def __init__(self, data):
@@ -46,8 +46,8 @@ def getCoords(address):
     url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(address) +'?format=json'
 
     response = requests.get(url).json()
-    # print(response[0]["lat"])
-    # print(response[0]["lon"])
+    #print(response[0]["lat"])
+    #print(response[0]["lon"])
     return(response[0]["lat"], response[0]["lon"])
 
 def getUser(pk):
