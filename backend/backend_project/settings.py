@@ -71,12 +71,7 @@ TEMPLATES = [
 
 ]
 
-REST_FRAMEWORK = {
-    'DATETIME_FORMAT': "%d/%m/%Y %H:%M", 
-    'DEFAULT_AUTHENTICATION_CLASSES': ['dj_rest_auth.jwt_auth.JWTCookieAuthentication',],
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-    
-}
+
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=6000),
@@ -117,6 +112,14 @@ INSTALLED_APPS = [
     # Local Apps
     'users',
 ]
+
+REST_FRAMEWORK = {
+    'DATETIME_FORMAT': "%d/%m/%Y %H:%M", 
+    'DEFAULT_AUTHENTICATION_CLASSES': ['dj_rest_auth.jwt_auth.JWTCookieAuthentication',],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination'
+    
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',

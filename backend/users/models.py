@@ -61,7 +61,7 @@ class ParkingSpace(models.Model):
     # image = Base64ImageField(max_length=None, use_url=True)
     # image = models.CharField(max_length=10000000, blank=True)
     size = models.CharField(max_length=100)
-    notes = models.TextField(max_length=500)
+    notes = models.TextField(max_length=10000)
     startTime = models.DateTimeField()
     endTime = models.DateTimeField()
     status = models.CharField(max_length=50, choices=STATUS, default="pending")

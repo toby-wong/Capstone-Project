@@ -4,6 +4,7 @@ const colors = {
   green: "#3da886",
   dark: "#353837",
   light: "#f7f7f7",
+  grey: "#a0a3a6",
   purple: "#7e78d2",
   red: "#ef6461",
   background: "#ffffff",
@@ -99,6 +100,16 @@ export const theme = createTheme({
       fontFamily: "Montserrat",
       fontSize: "14px",
       color: colors.dark,
+    },
+    listItemTitle: {
+      fontFamily: "Montserrat",
+      fontSize: "18px",
+      color: colors.dark,
+    },
+    listItemSubTitle: {
+      fontFamily: "Montserrat",
+      fontSize: "13px",
+      color: colors.grey,
     },
   },
   components: {
