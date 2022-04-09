@@ -1,14 +1,13 @@
-import classes from "./CarSpaceRegistrationForm.module.css";
+import classes from "./CarSpaceEditForm.module.css";
 
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import BusinessIcon from "@mui/icons-material/Business";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { Button, CircularProgress, FormHelperText } from "@mui/material";
-import Carousel from "react-material-ui-carousel";
+import { Button, CircularProgress, Typography } from "@mui/material";
 
-import CarSpaceRegistrationSubModal from "./CarSpaceRegistrationSubModal/CarSpaceRegistrationSubModal";
+import CarSpaceFormSubModal from "../CarSpaceForm/CarSpaceFormSubModal/CarSpaceFormSubModal";
 import CarSpaceCardHeader from "../CarSpaceCard/CarSpaceCardHeader";
 import CarSpaceCardContentLeft from "../CarSpaceCard/CarSpaceCardContentLeft";
 import CarSpaceCardContentRight from "../CarSpaceCard/CarSpaceCardContentRight";
@@ -19,13 +18,15 @@ import DropdownSelect from "../../../UI/DropdownSelect/DropdownSelect";
 import * as config from "../../../../config";
 import * as utility from "../../../../utility";
 
-import { useEffect, useReducer, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import {
   carSpaceFormReducer,
   getCarSpaceFormInitialState,
 } from "../../../../reducers/carSpaceForm-reducer";
+import CarSpaceFormImageCarousel from "../CarSpaceForm/CarSpaceFormImageCarousel/CarSpaceFormImageCarousel";
+import AuthContext from "../../../../contexts/auth-context";
 
-const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
+const CarSpaceEditForm = ({ onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [subModal, setSubModal] = useState({
     isOpen: false,
@@ -34,12 +35,13 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
     content: [],
   });
   const [uploadedImages, setUploadedImages] = useState([]);
-  const [isDeleteIconVisible, setIsDeleteIconVisible] = useState("hidden");
   const [formState, dispatchFormState] = useReducer(
     carSpaceFormReducer,
     getCarSpaceFormInitialState()
   );
+  const authContext = useContext(AuthContext);
 
+  // Image Upload Handlers
   useEffect(() => {
     const newUploadedImageUrls = [];
     uploadedImages.forEach((image) =>
@@ -48,72 +50,8 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
     dispatchFormState({ type: "IMAGES_INPUT", value: newUploadedImageUrls });
   }, [uploadedImages]);
 
-  useEffect(() => {
-    if (!carSpaceId) return;
-    const fetchData = async () => {
-      try {
-        // 1. fetch a space data whose id is carSpaceId
-        const authToken = localStorage.getItem("parkItAuthToken");
-        const getCarInfoUrl = `${config.SERVER_URL}/api/provider/parking/${carSpaceId}`;
-        const getCarInfoOptions = {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + authToken,
-            "Content-Type": "application/json",
-          },
-        };
-
-        const getCarInfoResponse = await utility.sendRequest(
-          getCarInfoUrl,
-          getCarInfoOptions
-        );
-        if (getCarInfoResponse.status >= 300 || !getCarInfoResponse.status)
-          throw Error;
-
-        // 2. set values for all fields using the fecthed data
-        const getImageUrl = `${config.SERVER_URL}/api/provider/parking/images/${carSpaceId}`;
-        const getImageOptions = {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + authToken,
-            "Content-Type": "application/json",
-          },
-        };
-
-        const getImageResponse = await utility.sendRequest(
-          getImageUrl,
-          getImageOptions
-        );
-        if (getImageResponse.status >= 300 || !getImageResponse.status)
-          throw Error;
-
-        const images = getImageResponse.data.map(
-          (el) => "data:image/png;base64, " + el.image
-        );
-        console.log(images);
-
-        dispatchFormState({ type: "FETCH", value: getCarInfoResponse.data });
-        dispatchFormState({ type: "IMAGES_INPUT", value: images });
-      } catch (e) {
-        console.log(e.message);
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [carSpaceId]);
-
-  // Image Upload Handlers
   const imageUploadHandler = (e) => {
     setUploadedImages([...e.target.files]);
-  };
-
-  const uploadedImageMouseEnterHandler = (e) => {
-    setIsDeleteIconVisible("visible");
-  };
-
-  const uploadedImageMouseLeaveHandler = (e) => {
-    setIsDeleteIconVisible("hidden");
   };
 
   const imageDeleteHandler = (e) => {
@@ -123,8 +61,12 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
   };
 
   // Address Handlers
-  const streetAddressChangeHandler = (e) => {
-    dispatchFormState({ type: "STREET_ADDRESS_INPUT", value: e.target.value });
+  const streetNumberChangeHandler = (e) => {
+    dispatchFormState({ type: "STREET_NUMBER_INPUT", value: e.target.value });
+  };
+
+  const streetNameChangeHandler = (e) => {
+    dispatchFormState({ type: "STREET_NAME_INPUT", value: e.target.value });
   };
 
   const cityChangeHandler = (e) => {
@@ -164,111 +106,26 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
         uploadedImages
       );
 
-      // Get username
       const authToken = localStorage.getItem("parkItAuthToken");
       if (!authToken) return;
 
-      const getUserDataUrl = `${config.SERVER_URL}/api/auth/user/`;
-      const getUserDataoptions = {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + authToken,
-        },
-      };
-
-      // Send Car Space Registration Data to Backend
-      setIsLoading(true);
-      const getUserDataResponse = await utility.sendRequest(
-        getUserDataUrl,
-        getUserDataoptions
-      );
-
-      if (!getUserDataResponse.status)
-        throw Error(config.NETWORK_ERROR_MESSAGE);
-
-      if (getUserDataResponse.status >= 300) {
-        const errorMsgs = [];
-        for (const [key, value] of Object.entries(getUserDataResponse.data)) {
-          errorMsgs.push(` - ${key}: ${value}`);
-        }
-        throw Error(errorMsgs);
-      }
-
-      if (carSpaceId === null) {
-        // for (const image of imagesInBase64) {
-        //   const carSpaceRegistrationImageUploadUrl = `${config.SERVER_URL}/api/provider/image/${carSpaceId}`;
-        //   const carSpaceRegistrationImageUploadOptions = {
-        //     method: "POST",
-        //     headers: {
-        //       Authorization: "Bearer " + authToken,
-        //       "Content-Type": "application/json",
-        //     },
-        //     body: {
-        //       parkingSpace: carSpaceId,
-        //       image: image,
-        //     },
-        //   };
-        //   const carSpaceRegistrationImageUploadResponse =
-        //     await utility.sendRequest(
-        //       carSpaceRegistrationImageUploadUrl,
-        //       carSpaceRegistrationImageUploadOptions
-        //     );
-        //   if (!carSpaceRegistrationImageUploadResponse.status)
-        //     throw Error(config.NETWORK_ERROR_MESSAGE);
-        //   if (carSpaceRegistrationImageUploadResponse.status >= 300) {
-        //     const errorMsgs = [];
-        //     for (const key of Object.keys(
-        //       carSpaceRegistrationImageUploadResponse.data
-        //     )) {
-        //       errorMsgs.push(` - Not a valid ${key}.`);
-        //     }
-        //     throw Error(errorMsgs);
-        //   }
-        // }
-      } else {
-        const carSpaceUpdateDeleteImagesUrl = `${config.SERVER_URL}/api/provider/image/${carSpaceId}`;
-        const carSpaceUpdateDeleteImagesOptions = {
-          method: "DELETE",
-          headers: {
-            Authorization: "Bearer " + authToken,
-            "Content-Type": "application/json",
-          },
-        };
-
-        const carSpaceUpdateDeleteImagesResponse = await utility.sendRequest(
-          carSpaceUpdateDeleteImagesUrl,
-          carSpaceUpdateDeleteImagesOptions
-        );
-        if (!carSpaceUpdateDeleteImagesResponse.status)
-          throw Error(config.NETWORK_ERROR_MESSAGE);
-        if (carSpaceUpdateDeleteImagesResponse.status >= 300) {
-          const errorMsgs = [];
-          for (const key of Object.keys(
-            carSpaceUpdateDeleteImagesResponse.data
-          )) {
-            errorMsgs.push(` - Not a valid ${key}.`);
-          }
-          throw Error(errorMsgs);
-        }
-      }
-
       const formData = {
-        provider: getUserDataResponse.data.pk,
-        streetAddress: formState.streetAddress.value,
+        provider: authContext.userInfo.pk,
+        startTime: formState.startDateTime.value,
+        endTime: formState.endDateTime.value,
+        streetAddress: `${formState.streetNumber.value} ${formState.streetName.value}`,
         city: formState.city.value,
         state: formState.state.value,
         postcode: formState.postcode.value,
         price: formState.price.value,
         size: formState.maxVehicleSize.value,
-        image: imagesInBase64,
+        images: imagesInBase64,
         notes: formState.notes.value,
       };
-      const carSpaceRegistrationUrl = `${
-        config.SERVER_URL
-      }/api/provider/parking${carSpaceId === null ? "" : `/${carSpaceId}`}`;
-
+      console.log(formData);
+      const carSpaceRegistrationUrl = `${config.SERVER_URL}/api/provider/parking`;
       const carSpaceRegistrationOptions = {
-        method: carSpaceId === null ? "POST" : "PUT",
+        method: "POST",
         headers: {
           Authorization: "Bearer " + authToken,
           "Content-Type": "application/json",
@@ -277,9 +134,9 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
       };
       const carSpaceRegistrationResponse = await utility.sendRequest(
         carSpaceRegistrationUrl,
-        carSpaceRegistrationOptions
+        carSpaceRegistrationOptions,
+        setIsLoading
       );
-      setIsLoading(false);
 
       if (!carSpaceRegistrationResponse.status)
         throw Error(config.NETWORK_ERROR_MESSAGE);
@@ -306,69 +163,42 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
       });
     }
   };
-  // Close handlers
+
+  // CloseSubModal handlers
   const closeSubModalHandler = () => {
     setSubModal((prev) => {
-      const newSubModal = { ...prev, isOpen: false };
-      return newSubModal;
+      return { ...prev, isOpen: false };
     });
   };
   const closeAllHandler = () => {
     setSubModal((prev) => {
-      const newSubModal = { ...prev, isOpen: false };
-      return newSubModal;
+      return { ...prev, isOpen: false };
     });
     onClose();
   };
 
   return (
-    <form onSubmit={formSubmitHandler}>
-      <CarSpaceRegistrationSubModal
+    <form onSubmit={formSubmitHandler} className={classes.form}>
+      <CarSpaceFormSubModal
         open={subModal.isOpen}
         onClose={subModal.onClose}
         title={subModal.title}
         content={subModal.content}
       />
-      <CarSpaceCardHeader
-        title={
-          carSpaceId === null ? "Car space registration" : "Car space edit"
-        }
-        onClose={onClose}
-      />
+      <CarSpaceCardHeader title={"Car space registration"} onClose={onClose} />
       <CarSpaceCardContent>
         <CarSpaceCardContentLeft>
           <div className={classes["image-upload-container"]}>
-            <Carousel
-              className={classes["image-container"]}
-              autoPlay={false}
-              animation="slide"
-              indicators={false}
-            >
-              {formState.images.value.map((imgSrc, idx) => (
-                <div className={classes["image-item"]} key={imgSrc}>
-                  <img
-                    src={imgSrc}
-                    alt={"car-space"}
-                    onMouseEnter={uploadedImageMouseEnterHandler}
-                    onMouseLeave={uploadedImageMouseLeaveHandler}
-                  />
-                  <DeleteOutlineIcon
-                    className={classes["delete-icon"]}
-                    fontSize="large"
-                    sx={{ visibility: isDeleteIconVisible }}
-                    onClick={imageDeleteHandler}
-                    data-imagenum={idx}
-                  />
-                </div>
-              ))}
-            </Carousel>
+            <CarSpaceFormImageCarousel
+              images={formState.images.value}
+              onDeleteImage={imageDeleteHandler}
+            />
             <div className={classes["image-uploader"]}>
               <InputField
                 type="file"
                 onChange={imageUploadHandler}
                 multiple={true}
               />
-              <FormHelperText>* Plase upload at least 1 image</FormHelperText>
             </div>
           </div>
           <div className={classes.actions}>
@@ -378,31 +208,49 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
               type="submit"
               disabled={!formState.isFormValid}
             >
-              {isLoading ? (
-                <CircularProgress size="1.5rem" />
-              ) : carSpaceId === null ? (
-                "Registration"
-              ) : (
-                "Edit"
-              )}
+              {isLoading ? <CircularProgress size="1.5rem" /> : "Registration"}
             </Button>
           </div>
         </CarSpaceCardContentLeft>
         <CarSpaceCardContentRight>
           <div className={classes.details}>
             <div className={classes.details__item}>
+              <AccessTimeIcon className={classes.icon} fontSize="large" />
+              <div className={classes.details__item__content}>
+                <Typography variant="carSpaceModalSubTitle">
+                  Available Dates
+                </Typography>
+                <Typography variant="carSpaceModalContent">
+                  {/* {`${carInfo.startTime} ~ ${carInfo.endTime}`} */}
+                  {`20/04/22 ~ 20/05/22`}
+                </Typography>
+              </div>
+            </div>
+            <div className={classes.details__item}>
               <BusinessIcon className={classes.icon} fontSize="large" />
               <div className={classes.details__item__content}>
-                <InputField
-                  className={classes["input-container"]}
-                  inputClassName={classes.input}
-                  label="Street Address"
-                  type="text"
-                  name="street"
-                  value={formState.streetAddress.value}
-                  onChange={streetAddressChangeHandler}
-                  disabled={formState.streetAddress.disabled}
-                />
+                <div
+                  className={`${classes.details__item__content__row} ${classes["input-container"]}`}
+                >
+                  <InputField
+                    className={`${classes.input} ${classes.field}`}
+                    inputClassName={classes.input}
+                    label="Street Number"
+                    type="number"
+                    name="street"
+                    value={formState.streetNumber.value}
+                    onChange={streetNumberChangeHandler}
+                  />
+                  <InputField
+                    className={classes.input}
+                    inputClassName={classes.input}
+                    label="Street Name"
+                    type="text"
+                    name="street"
+                    value={formState.streetName.value}
+                    onChange={streetNameChangeHandler}
+                  />
+                </div>
                 <InputField
                   className={classes["input-container"]}
                   inputClassName={classes.input}
@@ -411,7 +259,6 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
                   name="city"
                   value={formState.city.value}
                   onChange={cityChangeHandler}
-                  disabled={formState.city.disabled}
                 />
                 <div className={classes.details__item__content__row}>
                   <DropdownSelect
@@ -425,7 +272,6 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
                     value={formState.state.value}
                     onChange={stateChangeHandler}
                     items={config.AUS_STATES}
-                    disabled={formState.state.disabled}
                   />
                   <InputField
                     className={classes.input}
@@ -435,7 +281,6 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
                     name="postcode"
                     value={formState.postcode.value}
                     onChange={postCodeChangeHandler}
-                    disabled={formState.postcode.disabled}
                   />
                 </div>
               </div>
@@ -493,4 +338,4 @@ const CarSpaceRegistrationForm = ({ carSpaceId = null, onClose }) => {
   );
 };
 
-export default CarSpaceRegistrationForm;
+export default CarSpaceEditForm;

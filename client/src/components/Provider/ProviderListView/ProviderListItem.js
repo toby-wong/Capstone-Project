@@ -1,19 +1,16 @@
 import classes from "./ProviderListItem.module.css";
 
+import { useContext } from "react";
+import CarSpaceModalContext from "../../../contexts/carspace-modal-context";
+
 import { Typography } from "@mui/material";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 
-const ProviderListItem = ({
-  streetAddress,
-  notes,
-  size,
-  price,
-  id,
-  onClick,
-  image,
-}) => {
+const ProviderListItem = ({ streetAddress, notes, size, price, id, image }) => {
+  const carSpaceModalContext = useContext(CarSpaceModalContext);
+
   const listItemClickHandler = () => {
-    onClick(id);
+    carSpaceModalContext.openPage("/info", id);
   };
 
   return (

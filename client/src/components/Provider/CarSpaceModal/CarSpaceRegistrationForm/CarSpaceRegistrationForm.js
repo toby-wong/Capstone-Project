@@ -8,7 +8,7 @@ import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import DateTimePicker from "@mui/lab/DateTimePicker";
 import { Button, CircularProgress, TextField } from "@mui/material";
 
-import CarSpaceRegistrationSubModal from "./CarSpaceRegistrationSubModal/CarSpaceRegistrationSubModal";
+import CarSpaceFormSubModal from "../CarSpaceForm/CarSpaceFormSubModal/CarSpaceFormSubModal";
 import CarSpaceCardHeader from "../CarSpaceCard/CarSpaceCardHeader";
 import CarSpaceCardContentLeft from "../CarSpaceCard/CarSpaceCardContentLeft";
 import CarSpaceCardContentRight from "../CarSpaceCard/CarSpaceCardContentRight";
@@ -26,8 +26,9 @@ import {
 } from "../../../../reducers/carSpaceForm-reducer";
 import CarSpaceFormImageCarousel from "../CarSpaceForm/CarSpaceFormImageCarousel/CarSpaceFormImageCarousel";
 import AuthContext from "../../../../contexts/auth-context";
+import CarSpaceModalContext from "../../../../contexts/carspace-modal-context";
 
-const CarSpaceRegistrationForm = ({ onClose }) => {
+const CarSpaceRegistrationForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [subModal, setSubModal] = useState({
     isOpen: false,
@@ -41,6 +42,7 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
     getCarSpaceFormInitialState()
   );
   const authContext = useContext(AuthContext);
+  const carSpaceModalContext = useContext(CarSpaceModalContext);
 
   // Image Upload Handlers
   useEffect(() => {
@@ -175,18 +177,21 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
     setSubModal((prev) => {
       return { ...prev, isOpen: false };
     });
-    onClose();
+    carSpaceModalContext.closeModal();
   };
 
   return (
     <form onSubmit={formSubmitHandler} className={classes.form}>
-      <CarSpaceRegistrationSubModal
+      <CarSpaceFormSubModal
         open={subModal.isOpen}
         onClose={subModal.onClose}
         title={subModal.title}
         content={subModal.content}
       />
-      <CarSpaceCardHeader title={"Car space registration"} onClose={onClose} />
+      <CarSpaceCardHeader
+        title={"Car space registration"}
+        onClose={carSpaceModalContext.closeModal}
+      />
       <CarSpaceCardContent>
         <CarSpaceCardContentLeft>
           <div className={classes["image-upload-container"]}>

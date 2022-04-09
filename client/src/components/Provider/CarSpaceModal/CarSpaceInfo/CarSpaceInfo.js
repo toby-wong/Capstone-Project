@@ -1,5 +1,6 @@
 import classes from "./CarSpaceInfo.module.css";
 
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import BusinessIcon from "@mui/icons-material/Business";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
@@ -13,26 +14,32 @@ import CarSpaceCardContentLeft from "../CarSpaceCard/CarSpaceCardContentLeft";
 import CarSpaceCardContentRight from "../CarSpaceCard/CarSpaceCardContentRight";
 import CarSpaceCardContent from "../CarSpaceCard/CarSpaceCardContent";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import * as config from "../../../../config";
 import { sendRequest } from "../../../../utility";
+import CarSpaceModalContext from "../../../../contexts/carspace-modal-context";
 
-const CarSpaceInfo = ({ carSpaceId, onClose, onEdit, onClickReviews }) => {
+const CarSpaceInfo = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [carInfo, setCarInfo] = useState({});
-  const [ratingInfo, setRatingInfo] = useState({
-    total: 0,
-    average: 0,
+  const [carInfo, setCarInfo] = useState({
+    images: [],
   });
-  const [image, setImage] = useState([]);
+  const carSpaceModalContext = useContext(CarSpaceModalContext);
+
+  const editListHandler = () => {
+    carSpaceModalContext.openPage("/edit");
+  };
+
+  const displayReviewsHandler = () => {
+    carSpaceModalContext.openPage("/reviews");
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setIsLoading(true);
         const authToken = localStorage.getItem("parkItAuthToken");
-        const getCarInfoUrl = `${config.SERVER_URL}/api/provider/parking/${carSpaceId}`;
+        const getCarInfoUrl = `${config.SERVER_URL}/api/provider/parking/${carSpaceModalContext.carSpaceId}`;
         const getCarInfoOptions = {
           method: "GET",
           headers: {
@@ -43,62 +50,21 @@ const CarSpaceInfo = ({ carSpaceId, onClose, onEdit, onClickReviews }) => {
 
         const getCarInforesponse = await sendRequest(
           getCarInfoUrl,
-          getCarInfoOptions
+          getCarInfoOptions,
+          setIsLoading
         );
         if (getCarInforesponse.status >= 300 || !getCarInforesponse.status)
           throw Error;
 
-        const getRatingsUrl = `${config.SERVER_URL}/api/provider/parking/reviews/${carSpaceId}`;
-        const getRatingsOptions = {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + authToken,
-            "Content-Type": "application/json",
-          },
-        };
-
-        const getRatingsResponse = await sendRequest(
-          getRatingsUrl,
-          getRatingsOptions
-        );
-        if (getRatingsResponse.status >= 300 || !getRatingsResponse.status)
-          throw Error;
-
-        const getImageUrl = `${config.SERVER_URL}/api/provider/parking/images/${carSpaceId}`;
-        const getImageOptions = {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + authToken,
-            "Content-Type": "application/json",
-          },
-        };
-
-        const getImageResponse = await sendRequest(
-          getImageUrl,
-          getImageOptions
-        );
-        if (getImageResponse.status >= 300 || !getImageResponse.status)
-          throw Error;
-
+        console.log(getCarInforesponse.data);
         setCarInfo(getCarInforesponse.data);
-        const newRatingInfo = {
-          total: getRatingsResponse.data.length,
-          average:
-            getRatingsResponse.data.reduce((pre, curr) => pre + curr, 0) /
-            getRatingsResponse.data.length,
-        };
-
-        setRatingInfo(newRatingInfo);
-        console.log(getImageResponse.data.map((el) => el.image));
-        setImage(getImageResponse.data.map((el) => el.image));
-        setIsLoading(false);
       } catch (e) {
         console.log(e.message);
         setIsLoading(false);
       }
     };
     fetchData();
-  }, [carSpaceId]);
+  }, [carSpaceModalContext.carSpaceId, setIsLoading]);
 
   return (
     <>
@@ -107,20 +73,22 @@ const CarSpaceInfo = ({ carSpaceId, onClose, onEdit, onClickReviews }) => {
         <>
           <CarSpaceCardHeader
             title={`${carInfo.streetAddress}, ${carInfo.city}`}
-            onClose={onClose}
+            onClose={carSpaceModalContext.closeModal}
           >
             <div className={classes["review-container"]}>
               <div className={classes["ratings"]}>
                 <StarIcon color="yellow" fontSize="medium" />
                 <Typography variant="carSpaceModalSubContent">
-                  ({ratingInfo.average}/5)
+                  {carInfo.avg_rating ? `${carInfo.avg_rating} /5` : ""}
                 </Typography>
                 <Typography
                   variant="carSpaceModalSubContent"
                   className={classes["review-link"]}
-                  onClick={onClickReviews}
+                  onClick={displayReviewsHandler}
                 >
-                  View {ratingInfo.total} reviews
+                  {carInfo.n_ratings
+                    ? `View ${carInfo.n_ratings} reviews`
+                    : "No reviews"}
                 </Typography>
               </div>
             </div>
@@ -133,11 +101,11 @@ const CarSpaceInfo = ({ carSpaceId, onClose, onEdit, onClickReviews }) => {
                 animation="slide"
                 indicators={false}
               >
-                {image.map((imgSrc, idx) => {
+                {carInfo.images.map((imgObj, idx) => {
                   return (
                     <img
                       key={idx}
-                      src={"data:image/png;base64, " + imgSrc}
+                      src={"data:image/png;base64, " + imgObj.image_data}
                       alt="parking-space"
                     />
                   );
@@ -147,13 +115,28 @@ const CarSpaceInfo = ({ carSpaceId, onClose, onEdit, onClickReviews }) => {
                 <Button variant="contained" size="large">
                   View Bookings
                 </Button>
-                <Button variant="contained" size="large" onClick={onEdit}>
+                <Button
+                  variant="contained"
+                  size="large"
+                  onClick={editListHandler}
+                >
                   Edit Listing
                 </Button>
               </div>
             </CarSpaceCardContentLeft>
             <CarSpaceCardContentRight>
               <div className={classes.details}>
+                <div className={classes.details__item}>
+                  <AccessTimeIcon className={classes.icon} fontSize="large" />
+                  <div className={classes.details__item__content}>
+                    <Typography variant="carSpaceModalSubTitle">
+                      Available Dates
+                    </Typography>
+                    <Typography variant="carSpaceModalContent">
+                      {`${carInfo.startTime} ~ ${carInfo.endTime}`}
+                    </Typography>
+                  </div>
+                </div>
                 <div className={classes.details__item}>
                   <BusinessIcon className={classes.icon} fontSize="large" />
                   <div className={classes.details__item__content}>
