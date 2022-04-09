@@ -1,44 +1,13 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
 /* Left */
 .image-upload-container {
   display: flex;
   flex-direction: column;
-}
-
-.image-container {
-  flex: 1;
-  display: flex;
-  min-height: 260px;
-  max-height: 260px;
-}
-
-.image-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
-
-.image-item img {
-  height: 100%;
-  width: 100%;
-  object-fit: contain;
-}
-
-.delete-icon {
-  position: absolute;
-  top: 50%;
-  right: 50%;
-  border-radius: 50%;
-  padding: 2px;
-  background-color: var(--background);
-  cursor: pointer;
-}
-
-.delete-icon:hover {
-  visibility: visible;
 }
 
 .image-uploader {
@@ -49,7 +18,6 @@
   margin-top: 20px;
   margin-bottom: 20px;
 }
-
 
 .actions {
   flex: 1;
@@ -78,6 +46,18 @@
   margin-bottom: 20px;
 }
 
+.details__item:first-of-type {
+  margin-top:5px;
+}
+
+.date-input {
+  min-width: 235px;
+}
+
+.date-input:first-of-type {
+  margin-right: 30px;
+}
+
 .input-container {
   margin-bottom: 10px;
 }
@@ -87,7 +67,7 @@
 }
 
 .input {
-  height: 50px;
+  height: 53px;
   width: 100%;
 }
 

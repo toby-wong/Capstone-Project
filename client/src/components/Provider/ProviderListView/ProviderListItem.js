@@ -1,6 +1,7 @@
 import classes from "./ProviderListItem.module.css";
 
 import { Typography } from "@mui/material";
+import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 
 const ProviderListItem = ({
   streetAddress,
@@ -15,29 +16,32 @@ const ProviderListItem = ({
     onClick(id);
   };
 
-  // console.log(`data:image/png;base64, ${image[0].image}`);
   return (
-    <div className={classes.listItem}>
+    <div className={classes.listItem} onClick={listItemClickHandler}>
       <div className={classes.listItem__content}>
         <div className={classes.listItem__content__main}>
           <Typography
             className={classes.listItem__content__title}
-            variant="sectionSubTitle"
+            variant="listItemTitle"
             color="primary"
-            onClick={listItemClickHandler}
           >
             {streetAddress}
           </Typography>
           <Typography
-            variant="sectionContent"
+            variant="listItemSubTitle"
             className={classes.listItem__content__description}
           >
-            {notes}
+            {notes.length > 200 ? notes.slice(0, 200) + "..." : notes}
           </Typography>
         </div>
         <div className={classes.listItem__content__details}>
           <div className={classes.capacity_rate}>
-            <Typography variant="sectionContent" className={classes.capacity}>
+            <Typography variant="listItemSubTitle" className={classes.capacity}>
+              <DirectionsCarIcon
+                className={classes.icon}
+                fontSize="small"
+                color="primary"
+              />
               Fits {size}
             </Typography>
             <Typography
@@ -45,7 +49,7 @@ const ProviderListItem = ({
               variant="sectionContent"
               className={classes.rate}
             >
-              ${price} per hour
+              ${price} AUD hour
             </Typography>
           </div>
         </div>
@@ -53,7 +57,7 @@ const ProviderListItem = ({
       <img
         className={classes.listItem__image}
         alt="parking at Sydney1"
-        src={`data:image/png;base64, ${image[0]?.image}`}
+        src={`data:image/png;base64, ${image}`}
       />
     </div>
   );

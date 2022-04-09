@@ -1,22 +1,22 @@
 export const carSpaceFormReducer = (state, action) => {
   const newState = { ...state };
 
-  if (action.type === "FETCH") {
-    return {
-      isFormValid: true,
-      streetAddress: {
-        value: action.streetAddress,
-        isValid: true,
-        disabled: true,
-      },
-      city: { value: action.city, isValid: true, disabled: true },
-      state: { value: action.state, isValid: true, disabled: true },
-      postcode: { value: action.postcode, isValid: true, disabled: true },
-      price: { value: action.price, isValid: true },
-      maxVehicleSize: { value: action.size, isValid: true },
-      notes: { value: action.notes, isValid: true },
-    };
-  }
+  // if (action.type === "FETCH") {
+  //   return {
+  //     isFormValid: true,
+  //     streetAddress: {
+  //       value: action.streetAddress,
+  //       isValid: true,
+  //       disabled: true,
+  //     },
+  //     city: { value: action.city, isValid: true, disabled: true },
+  //     state: { value: action.state, isValid: true, disabled: true },
+  //     postcode: { value: action.postcode, isValid: true, disabled: true },
+  //     price: { value: action.price, isValid: true },
+  //     maxVehicleSize: { value: action.size, isValid: true },
+  //     notes: { value: action.notes, isValid: true },
+  //   };
+  // }
 
   if (action.type === "RESET") {
     return getCarSpaceFormInitialState();
@@ -27,9 +27,37 @@ export const carSpaceFormReducer = (state, action) => {
     newState.images.isValid = action.value.length > 0;
   }
 
-  if (action.type === "STREET_ADDRESS_INPUT") {
-    newState.streetAddress.value = action.value;
-    newState.streetAddress.isValid = action.value !== "";
+  if (action.type.includes("TIME_INPUT")) {
+    if (action.type === "START_TIME_INPUT")
+      newState.startDateTime.value = action.value;
+
+    if (action.type === "END_TIME_INPUT")
+      newState.endDateTime.value = action.value;
+
+    const isStartTimeValidUnit =
+      newState.startDateTime.value.getMinutes() % 15 === 0;
+    const isEndTimeValidUnit =
+      newState.endDateTime.value.getMinutes() % 15 === 0;
+    const isTimeOrderValid =
+      newState.endDateTime.value.getTime() -
+        newState.startDateTime.value.getTime() >
+      0;
+
+    newState.startDateTime.isValid = isStartTimeValidUnit && isTimeOrderValid;
+    newState.endDateTime.isValid = isEndTimeValidUnit && isTimeOrderValid;
+
+    newState.startDateTime.value.setSeconds(0, 0);
+    newState.endDateTime.value.setSeconds(0, 0);
+  }
+
+  if (action.type === "STREET_NUMBER_INPUT") {
+    newState.streetNumber.value = action.value;
+    newState.streetNumber.isValid = action.value !== "" && action.value > 0;
+  }
+
+  if (action.type === "STREET_NAME_INPUT") {
+    newState.streetName.value = action.value;
+    newState.streetName.isValid = action.value !== "";
   }
 
   if (action.type === "CITY_INPUT") {
@@ -49,7 +77,7 @@ export const carSpaceFormReducer = (state, action) => {
 
   if (action.type === "PRICE_INPUT") {
     newState.price.value = action.value;
-    newState.price.isValid = action.value !== "";
+    newState.price.isValid = action.value !== "" && action.value > 0;
   }
 
   if (action.type === "MAX_VEHICLE_SIZE_INPUT") {
@@ -64,7 +92,10 @@ export const carSpaceFormReducer = (state, action) => {
 
   newState.isFormValid =
     newState.images.isValid &&
-    newState.streetAddress.isValid &&
+    newState.startDateTime.isValid &&
+    newState.endDateTime.isValid &&
+    newState.streetNumber.isValid &&
+    newState.streetName.isValid &&
     newState.city.isValid &&
     newState.state.isValid &&
     newState.postcode.isValid &&
@@ -79,10 +110,13 @@ export const getCarSpaceFormInitialState = () => {
   return {
     isFormValid: false,
     images: { value: [], isValid: false },
-    streetAddress: { value: "", isValid: false, disabled: false },
-    city: { value: "", isValid: false, disabled: false },
-    state: { value: "", isValid: false, disabled: false },
-    postcode: { value: "", isValid: false, disabled: false },
+    startDateTime: { value: new Date(), isValid: false },
+    endDateTime: { value: new Date(), isValid: false },
+    streetNumber: { value: "", isValid: false },
+    streetName: { value: "", isValid: false },
+    city: { value: "", isValid: false },
+    state: { value: "", isValid: false },
+    postcode: { value: "", isValid: false },
     price: { value: "", isValid: false },
     maxVehicleSize: { value: "", isValid: false },
     notes: { value: "", isValid: false },

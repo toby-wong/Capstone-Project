@@ -54,3 +54,9 @@
 .spinner {
   color: var(--green);
 }
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}

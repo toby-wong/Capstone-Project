@@ -7,7 +7,7 @@ export const convertImagesToBase64 = async (imageFiles) => {
         const base64String = reader.result
           .replace("data:", "")
           .replace(/^.+,/, "");
-        resolve(base64String);
+        resolve({ image_data: base64String });
       };
 
       reader.readAsDataURL(imageFile);

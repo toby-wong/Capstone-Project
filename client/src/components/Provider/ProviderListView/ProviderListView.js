@@ -1,6 +1,6 @@
 import classes from "./ProviderListView.module.css";
 import { Link, useLocation } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Button,
@@ -10,6 +10,7 @@ import {
   Typography,
   Divider,
   CircularProgress,
+  TablePagination,
 } from "@mui/material";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import MapIcon from "@mui/icons-material/Map";
@@ -25,6 +26,9 @@ const ProviderListView = ({ onAdd, onClickItem }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({ value: false, message: "" });
   const [carSpaces, setCarSpaces] = useState([]);
+  const [listItemCount, setListItemCount] = useState(-1);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const activeTabView = location.pathname.split("/")[2] ?? false;
   const activeTabListings = location.pathname.split("/")[3] ?? false;
@@ -33,11 +37,24 @@ const ProviderListView = ({ onAdd, onClickItem }) => {
   // prettier-ignore
   const activeUrl = `${location.pathname.split("/").slice(0, 3).join("/")}/active`;
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const authToken = localStorage.getItem("parkItAuthToken");
-        const url = `${config.SERVER_URL}/api/provider/parking/all`;
+        const url = `${
+          config.SERVER_URL
+        }/api/provider/parking/all?limit=${rowsPerPage}&offset=${
+          page * rowsPerPage
+        }`;
         const options = {
           method: "GET",
           headers: {
@@ -49,28 +66,9 @@ const ProviderListView = ({ onAdd, onClickItem }) => {
         const response = await sendRequest(url, options, setIsLoading);
         if (response.status >= 300 || !response.status) throw Error;
 
-        const carSpacesObjs = [];
-        for (const space of response.data) {
-          const getImageUrl = `${config.SERVER_URL}/api/provider/parking/images/${space.pk}`;
-          const getImageOptions = {
-            method: "GET",
-            headers: {
-              Authorization: "Bearer " + authToken,
-              "Content-Type": "application/json",
-            },
-          };
-          const getImageResponse = await sendRequest(
-            getImageUrl,
-            getImageOptions
-          );
-          if (getImageResponse.status >= 300 || !getImageResponse.status)
-            throw Error;
-
-          carSpacesObjs.push({ ...space, image: getImageResponse.data });
-        }
-        setCarSpaces(carSpacesObjs);
+        setCarSpaces(response.data.results);
+        setListItemCount(response.data.count);
       } catch (e) {
-        console.log(e.message);
         setError({
           value: true,
           message: config.NETWORK_ERROR_MESSAGE,
@@ -79,7 +77,7 @@ const ProviderListView = ({ onAdd, onClickItem }) => {
     };
 
     fetchData();
-  }, []);
+  }, [page, rowsPerPage]);
 
   return (
     <Paper variant="sectionBody">
@@ -171,13 +169,24 @@ const ProviderListView = ({ onAdd, onClickItem }) => {
                 notes={item.notes}
                 size={item.size}
                 price={item.price}
+                image={item.images[0].image_data}
                 onClick={onClickItem}
-                image={item.image}
               />
             ))}
           {!isLoading && error.value && (
             <div className={classes["center-container"]}>{error.message}</div>
           )}
+
+          <TablePagination
+            className={classes.pagination}
+            component="div"
+            count={listItemCount}
+            page={page}
+            onPageChange={handleChangePage}
+            rowsPerPage={rowsPerPage}
+            rowsPerPageOptions={[5, 10]}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
         </Paper>
       </Paper>
     </Paper>

@@ -1,0 +1,6 @@
+.image-container {
+  flex: 1;
+  display: flex;
+  min-height: 260px;
+  max-height: 260px;
+}
