@@ -69,7 +69,11 @@ const CarSpaceInfo = () => {
 
   return (
     <>
-      {isLoading && <CircularProgress />}
+      {isLoading && (
+        <div className={classes["spinner-container"]}>
+          <CircularProgress className={classes.spinner} />
+        </div>
+      )}
       {!isLoading && (
         <>
           <CarSpaceCardHeader

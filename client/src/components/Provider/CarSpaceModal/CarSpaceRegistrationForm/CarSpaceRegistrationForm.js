@@ -141,6 +141,8 @@ const CarSpaceRegistrationForm = () => {
         throw Error(errorMsgs);
       }
 
+      carSpaceModalContext.toggleCarSpacesRefreshStatus();
+
       setSubModal({
         isOpen: true,
         onClose: closeAllHandler,

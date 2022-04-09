@@ -29,7 +29,8 @@ import {
 } from "../../../../reducers/carspace-edit-form-reducer";
 
 const CarSpaceEditForm = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [subModal, setSubModal] = useState({
     isOpen: false,
     onClose: () => {},
@@ -101,7 +102,7 @@ const CarSpaceEditForm = () => {
         images: formState.images.value,
         notes: formState.notes.value,
       };
-      console.log(formData);
+
       const carSpaceRegistrationUrl = `${config.SERVER_URL}/api/provider/parking/${carSpaceModalContext.carSpaceId}`;
       const carSpaceRegistrationOptions = {
         method: "PUT",
@@ -114,7 +115,7 @@ const CarSpaceEditForm = () => {
       const carSpaceRegistrationResponse = await utility.sendRequest(
         carSpaceRegistrationUrl,
         carSpaceRegistrationOptions,
-        setIsLoading
+        setIsEditing
       );
 
       if (!carSpaceRegistrationResponse.status)
@@ -127,11 +128,13 @@ const CarSpaceEditForm = () => {
         throw Error(errorMsgs);
       }
 
+      carSpaceModalContext.toggleCarSpacesRefreshStatus();
+
       setSubModal({
         isOpen: true,
         onClose: closeAllHandler,
         title: "Success",
-        content: ["Your space has been successfully registered"],
+        content: ["Your space has been successfully edited"],
       });
     } catch (e) {
       setSubModal({
@@ -154,6 +157,49 @@ const CarSpaceEditForm = () => {
       return { ...prev, isOpen: false };
     });
     carSpaceModalContext.closeModal();
+  };
+
+  const deleteCarSpaceHandler = async () => {
+    try {
+      const authToken = localStorage.getItem("parkItAuthToken");
+      if (!authToken) return;
+
+      const carSpaceRegistrationUrl = `${config.SERVER_URL}/api/provider/parking/${carSpaceModalContext.carSpaceId}`;
+      const carSpaceRegistrationOptions = {
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + authToken,
+          "Content-Type": "application/json",
+        },
+      };
+      const carSpaceRegistrationResponse = await utility.sendRequest(
+        carSpaceRegistrationUrl,
+        carSpaceRegistrationOptions,
+        setIsDeleting
+      );
+
+      if (
+        !carSpaceRegistrationResponse.status ||
+        carSpaceRegistrationResponse.status >= 300
+      )
+        throw Error(config.NETWORK_ERROR_MESSAGE);
+
+      carSpaceModalContext.toggleCarSpacesRefreshStatus();
+
+      setSubModal({
+        isOpen: true,
+        onClose: closeAllHandler,
+        title: "Success",
+        content: ["Your space has been successfully deleted"],
+      });
+    } catch (e) {
+      setSubModal({
+        isOpen: true,
+        onClose: closeSubModalHandler,
+        title: "Error",
+        content: e.message.split(","),
+      });
+    }
   };
 
   return (
@@ -190,7 +236,15 @@ const CarSpaceEditForm = () => {
               type="submit"
               disabled={!formState.isFormValid}
             >
-              {isLoading ? <CircularProgress size="1.5rem" /> : "Edit"}
+              {isEditing ? <CircularProgress size="1.5rem" /> : "Edit"}
+            </Button>
+            <Button
+              variant="contained"
+              size="large"
+              color="warning"
+              onClick={deleteCarSpaceHandler}
+            >
+              {isDeleting ? <CircularProgress size="1.5rem" /> : "Delete"}
             </Button>
           </div>
         </CarSpaceCardContentLeft>

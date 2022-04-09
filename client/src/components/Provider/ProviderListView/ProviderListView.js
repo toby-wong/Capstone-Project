@@ -83,7 +83,7 @@ const ProviderListView = () => {
     };
 
     fetchData();
-  }, [page, rowsPerPage]);
+  }, [page, rowsPerPage, carSpaceModalContext.carSpacesRefreshStatus]);
 
   return (
     <Paper variant="sectionBody">

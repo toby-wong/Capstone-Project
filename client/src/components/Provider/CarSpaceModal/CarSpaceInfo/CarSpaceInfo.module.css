@@ -77,3 +77,14 @@
   display: block;
   max-height: 20vh;
 }
+
+.spinner {
+  color: var(--green);
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}

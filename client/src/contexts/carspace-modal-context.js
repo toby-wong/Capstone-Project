@@ -5,6 +5,8 @@ const CarSpaceModalContext = React.createContext({
   page: "",
   carSpaceInfo: { images: [] },
   isOpen: false,
+  carSpacesRefreshStatus: false,
+  toggleCarSpacesRefreshStatus: () => {},
   openPage: () => {},
   closeModal: () => {},
   setCarSpaceInfo: () => {},
@@ -15,6 +17,7 @@ export const CarSpaceModalContextProvider = (props) => {
   const [carSpaceId, setCarSpaceId] = useState("");
   const [page, setPage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [carSpacesRefreshStatus, setCarSpacesRefreshStatus] = useState(false);
 
   const openPage = (path, csId = null) => {
     if (!isOpen) setIsOpen(true);
@@ -29,11 +32,17 @@ export const CarSpaceModalContextProvider = (props) => {
     setPage("");
   };
 
+  const toggleCarSpacesRefreshStatus = () => {
+    setCarSpacesRefreshStatus(!carSpacesRefreshStatus);
+  };
+
   const contextValue = {
     carSpaceInfo,
     carSpaceId,
     page,
     isOpen,
+    carSpacesRefreshStatus,
+    toggleCarSpacesRefreshStatus,
     openPage,
     closeModal,
     setCarSpaceInfo,
