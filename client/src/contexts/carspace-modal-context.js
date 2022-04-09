@@ -3,12 +3,15 @@ import React, { useState } from "react";
 const CarSpaceModalContext = React.createContext({
   carSpaceId: null,
   page: "",
+  carSpaceInfo: { images: [] },
   isOpen: false,
   openPage: () => {},
   closeModal: () => {},
+  setCarSpaceInfo: () => {},
 });
 
 export const CarSpaceModalContextProvider = (props) => {
+  const [carSpaceInfo, setCarSpaceInfo] = useState({ iamges: [] });
   const [carSpaceId, setCarSpaceId] = useState("");
   const [page, setPage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -27,11 +30,13 @@ export const CarSpaceModalContextProvider = (props) => {
   };
 
   const contextValue = {
+    carSpaceInfo,
     carSpaceId,
     page,
     isOpen,
     openPage,
     closeModal,
+    setCarSpaceInfo,
   };
 
   return (

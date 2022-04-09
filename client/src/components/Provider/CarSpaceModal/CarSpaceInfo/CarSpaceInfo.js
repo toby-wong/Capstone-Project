@@ -28,6 +28,7 @@ const CarSpaceInfo = () => {
   const carSpaceModalContext = useContext(CarSpaceModalContext);
 
   const editListHandler = () => {
+    carSpaceModalContext.setCarSpaceInfo(carInfo);
     carSpaceModalContext.openPage("/edit");
   };
 

@@ -8,7 +8,7 @@ import CarSpaceReviews from "./CarSpaceReviews/CarSpaceReviews";
 import { useContext } from "react";
 import CarSpaceModalContext from "../../../contexts/carspace-modal-context";
 
-const CarSpaceModal = ({ page, setPage }) => {
+const CarSpaceModal = () => {
   const carSpaceModalContext = useContext(CarSpaceModalContext);
 
   return (
@@ -26,17 +26,3 @@ const CarSpaceModal = ({ page, setPage }) => {
 };
 
 export default CarSpaceModal;
-
-/*
-  <GeneralModal open={open} onClose={onClose} className={classes.modal}>
-    <CarSpaceCardHeader title={"Title"} onClose={onClose} />
-    <CarSpaceCardContentTop>CardContentTop</CarSpaceCardContentTop>
-    <CarSpaceCardContentBottom>CardContentBottom</CarSpaceCardContentBottom>
-  </GeneralModal>
-
-  import { Route, Routes } from "react-router-dom";
-  <Routes>
-  <Route path="login" element={<div>Card</div>} />
-  <Route path="signup" element={<SignupForm onClose={onClose} />} />
-  </Routes>
-*/

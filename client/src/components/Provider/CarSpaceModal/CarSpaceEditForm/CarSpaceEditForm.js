@@ -19,14 +19,16 @@ import * as config from "../../../../config";
 import * as utility from "../../../../utility";
 
 import { useContext, useEffect, useReducer, useState } from "react";
-import {
-  carSpaceFormReducer,
-  getCarSpaceFormInitialState,
-} from "../../../../reducers/carSpaceForm-reducer";
+
 import CarSpaceFormImageCarousel from "../CarSpaceForm/CarSpaceFormImageCarousel/CarSpaceFormImageCarousel";
 import AuthContext from "../../../../contexts/auth-context";
+import CarSpaceModalContext from "../../../../contexts/carspace-modal-context";
+import {
+  carSpaceEditFormReducer,
+  getCarSpaceEditFormInitialState,
+} from "../../../../reducers/carspace-edit-form-reducer";
 
-const CarSpaceEditForm = ({ onClose }) => {
+const CarSpaceEditForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [subModal, setSubModal] = useState({
     isOpen: false,
@@ -34,51 +36,33 @@ const CarSpaceEditForm = ({ onClose }) => {
     title: "",
     content: [],
   });
-  const [uploadedImages, setUploadedImages] = useState([]);
   const [formState, dispatchFormState] = useReducer(
-    carSpaceFormReducer,
-    getCarSpaceFormInitialState()
+    carSpaceEditFormReducer,
+    getCarSpaceEditFormInitialState()
   );
   const authContext = useContext(AuthContext);
+  const carSpaceModalContext = useContext(CarSpaceModalContext);
+
+  useEffect(() => {
+    dispatchFormState({
+      type: "FETCH",
+      value: carSpaceModalContext.carSpaceInfo,
+    });
+  }, [carSpaceModalContext.carSpaceInfo]);
 
   // Image Upload Handlers
-  useEffect(() => {
-    const newUploadedImageUrls = [];
-    uploadedImages.forEach((image) =>
-      newUploadedImageUrls.push(URL.createObjectURL(image))
-    );
-    dispatchFormState({ type: "IMAGES_INPUT", value: newUploadedImageUrls });
-  }, [uploadedImages]);
+  const imageUploadHandler = async (e) => {
+    const images = Array.from(e.target.files);
+    const base64Images = await utility.convertImagesToBase64(images);
 
-  const imageUploadHandler = (e) => {
-    setUploadedImages([...e.target.files]);
+    dispatchFormState({ type: "IMAGES_INPUT", value: base64Images });
   };
 
   const imageDeleteHandler = (e) => {
     const targetImageNum = e.target.dataset.imagenum;
-    uploadedImages.splice(targetImageNum, 1);
-    setUploadedImages([...uploadedImages]);
-  };
+    formState.images.value.splice(targetImageNum, 1);
 
-  // Address Handlers
-  const streetNumberChangeHandler = (e) => {
-    dispatchFormState({ type: "STREET_NUMBER_INPUT", value: e.target.value });
-  };
-
-  const streetNameChangeHandler = (e) => {
-    dispatchFormState({ type: "STREET_NAME_INPUT", value: e.target.value });
-  };
-
-  const cityChangeHandler = (e) => {
-    dispatchFormState({ type: "CITY_INPUT", value: e.target.value });
-  };
-
-  const stateChangeHandler = (e) => {
-    dispatchFormState({ type: "STATE_INPUT", value: e.target.value });
-  };
-
-  const postCodeChangeHandler = (e) => {
-    dispatchFormState({ type: "POSTCODE_INPUT", value: e.target.value });
+    dispatchFormState({ type: "IMAGES_INPUT", value: formState.images.value });
   };
 
   // Price/Vehicle Size/Notes Handler
@@ -101,31 +85,26 @@ const CarSpaceEditForm = ({ onClose }) => {
   const formSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      // Base64 Encoding for images
-      const imagesInBase64 = await utility.convertImagesToBase64(
-        uploadedImages
-      );
-
       const authToken = localStorage.getItem("parkItAuthToken");
       if (!authToken) return;
 
       const formData = {
         provider: authContext.userInfo.pk,
-        startTime: formState.startDateTime.value,
-        endTime: formState.endDateTime.value,
-        streetAddress: `${formState.streetNumber.value} ${formState.streetName.value}`,
-        city: formState.city.value,
-        state: formState.state.value,
-        postcode: formState.postcode.value,
+        startTime: utility.getDate(formState.startDateTime),
+        endTime: utility.getDate(formState.endDateTime),
+        streetAddress: formState.streetAddress,
+        city: formState.city,
+        state: formState.state,
+        postcode: formState.postcode,
         price: formState.price.value,
         size: formState.maxVehicleSize.value,
-        images: imagesInBase64,
+        images: formState.images.value,
         notes: formState.notes.value,
       };
       console.log(formData);
-      const carSpaceRegistrationUrl = `${config.SERVER_URL}/api/provider/parking`;
+      const carSpaceRegistrationUrl = `${config.SERVER_URL}/api/provider/parking/${carSpaceModalContext.carSpaceId}`;
       const carSpaceRegistrationOptions = {
-        method: "POST",
+        method: "PUT",
         headers: {
           Authorization: "Bearer " + authToken,
           "Content-Type": "application/json",
@@ -174,7 +153,7 @@ const CarSpaceEditForm = ({ onClose }) => {
     setSubModal((prev) => {
       return { ...prev, isOpen: false };
     });
-    onClose();
+    carSpaceModalContext.closeModal();
   };
 
   return (
@@ -185,12 +164,15 @@ const CarSpaceEditForm = ({ onClose }) => {
         title={subModal.title}
         content={subModal.content}
       />
-      <CarSpaceCardHeader title={"Car space registration"} onClose={onClose} />
+      <CarSpaceCardHeader
+        title={"Edit Car Space"}
+        onClose={carSpaceModalContext.closeModal}
+      />
       <CarSpaceCardContent>
         <CarSpaceCardContentLeft>
           <div className={classes["image-upload-container"]}>
             <CarSpaceFormImageCarousel
-              images={formState.images.value}
+              images={formState.images.value.map((imgObj) => imgObj.image_data)}
               onDeleteImage={imageDeleteHandler}
             />
             <div className={classes["image-uploader"]}>
@@ -208,7 +190,7 @@ const CarSpaceEditForm = ({ onClose }) => {
               type="submit"
               disabled={!formState.isFormValid}
             >
-              {isLoading ? <CircularProgress size="1.5rem" /> : "Registration"}
+              {isLoading ? <CircularProgress size="1.5rem" /> : "Edit"}
             </Button>
           </div>
         </CarSpaceCardContentLeft>
@@ -221,68 +203,17 @@ const CarSpaceEditForm = ({ onClose }) => {
                   Available Dates
                 </Typography>
                 <Typography variant="carSpaceModalContent">
-                  {/* {`${carInfo.startTime} ~ ${carInfo.endTime}`} */}
-                  {`20/04/22 ~ 20/05/22`}
+                  {`${formState.startDateTime} ~ ${formState.endDateTime}`}
                 </Typography>
               </div>
             </div>
             <div className={classes.details__item}>
               <BusinessIcon className={classes.icon} fontSize="large" />
               <div className={classes.details__item__content}>
-                <div
-                  className={`${classes.details__item__content__row} ${classes["input-container"]}`}
-                >
-                  <InputField
-                    className={`${classes.input} ${classes.field}`}
-                    inputClassName={classes.input}
-                    label="Street Number"
-                    type="number"
-                    name="street"
-                    value={formState.streetNumber.value}
-                    onChange={streetNumberChangeHandler}
-                  />
-                  <InputField
-                    className={classes.input}
-                    inputClassName={classes.input}
-                    label="Street Name"
-                    type="text"
-                    name="street"
-                    value={formState.streetName.value}
-                    onChange={streetNameChangeHandler}
-                  />
-                </div>
-                <InputField
-                  className={classes["input-container"]}
-                  inputClassName={classes.input}
-                  label="City"
-                  type="text"
-                  name="city"
-                  value={formState.city.value}
-                  onChange={cityChangeHandler}
-                />
-                <div className={classes.details__item__content__row}>
-                  <DropdownSelect
-                    className={`${classes.input} ${classes.field}`}
-                    selectClassName={classes.input}
-                    selectMenuClassName={classes["select-menu"]}
-                    selectItemClassName={classes["select-item"]}
-                    labelId="stateLabelId"
-                    selectId="stateSelectId"
-                    label="State"
-                    value={formState.state.value}
-                    onChange={stateChangeHandler}
-                    items={config.AUS_STATES}
-                  />
-                  <InputField
-                    className={classes.input}
-                    inputClassName={classes.input}
-                    label="Postal Code"
-                    type="number"
-                    name="postcode"
-                    value={formState.postcode.value}
-                    onChange={postCodeChangeHandler}
-                  />
-                </div>
+                <Typography variant="carSpaceModalSubTitle">ADDRESS</Typography>
+                <Typography variant="carSpaceModalContent">
+                  {`${formState.streetAddress}, ${formState.city}, ${formState.state}, ${formState.postcode}`}
+                </Typography>
               </div>
             </div>
             <div className={classes.details__item}>

@@ -6,8 +6,9 @@ const CarSpaceFormImageCarousel = ({ images, onDeleteImage = () => {} }) => {
     <CarSpaceImageCarousel>
       {images.map((imgSrc, idx) => (
         <CarSpaceFormImageItem
+          key={idx}
           id={idx}
-          imgSrc={imgSrc}
+          imgSrc={"data:image/png;base64, " + imgSrc}
           onDelete={onDeleteImage}
         />
       ))}
