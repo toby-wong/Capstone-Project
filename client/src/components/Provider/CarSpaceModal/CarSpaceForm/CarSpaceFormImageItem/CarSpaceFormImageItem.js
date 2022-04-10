@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
+import CarSpaceImage from "../../CarSpaceImage/CarSpaceImage";
+
 const CarSpaceFormImageItem = ({ id, imgSrc, onDelete }) => {
   const [isDeleteIconVisible, setIsDeleteIconVisible] = useState("hidden");
 
@@ -16,13 +18,12 @@ const CarSpaceFormImageItem = ({ id, imgSrc, onDelete }) => {
   };
 
   return (
-    <div className={classes["image-item"]} key={id}>
-      <img
-        src={imgSrc}
-        alt={"car-space"}
-        onMouseEnter={imageMouseEnterHandler}
-        onMouseLeave={imageMouseLeaveHandler}
-      />
+    <CarSpaceImage
+      src={imgSrc}
+      alt="car-space"
+      onMouseEnter={imageMouseEnterHandler}
+      onMouseLeave={imageMouseLeaveHandler}
+    >
       <DeleteOutlineIcon
         className={classes["delete-icon"]}
         fontSize="large"
@@ -30,7 +31,7 @@ const CarSpaceFormImageItem = ({ id, imgSrc, onDelete }) => {
         onClick={onDelete}
         data-imagenum={id}
       />
-    </div>
+    </CarSpaceImage>
   );
 };
 

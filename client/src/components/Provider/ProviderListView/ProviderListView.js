@@ -1,6 +1,6 @@
 import classes from "./ProviderListView.module.css";
 import { Link, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import {
   Button,
@@ -20,15 +20,17 @@ import ArchiveIcon from "@mui/icons-material/Archive";
 import { sendRequest } from "../../../utility";
 import * as config from "../../../config";
 import ProviderListItem from "./ProviderListItem";
+import CarSpaceModalContext from "../../../contexts/carspace-modal-context";
 
-const ProviderListView = ({ onAdd, onClickItem }) => {
+const ProviderListView = () => {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({ value: false, message: "" });
   const [carSpaces, setCarSpaces] = useState([]);
   const [listItemCount, setListItemCount] = useState(-1);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(3);
+  const carSpaceModalContext = useContext(CarSpaceModalContext);
 
   const activeTabView = location.pathname.split("/")[2] ?? false;
   const activeTabListings = location.pathname.split("/")[3] ?? false;
@@ -37,13 +39,17 @@ const ProviderListView = ({ onAdd, onClickItem }) => {
   // prettier-ignore
   const activeUrl = `${location.pathname.split("/").slice(0, 3).join("/")}/active`;
 
-  const handleChangePage = (event, newPage) => {
+  const changePageHandler = (event, newPage) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
+  const changeRowsPerPageHandler = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+
+  const addCarSpaceHandler = () => {
+    carSpaceModalContext.openPage("/add");
   };
 
   useEffect(() => {
@@ -77,7 +83,7 @@ const ProviderListView = ({ onAdd, onClickItem }) => {
     };
 
     fetchData();
-  }, [page, rowsPerPage]);
+  }, [page, rowsPerPage, carSpaceModalContext.carSpacesRefreshStatus]);
 
   return (
     <Paper variant="sectionBody">
@@ -145,7 +151,7 @@ const ProviderListView = ({ onAdd, onClickItem }) => {
             color="primary"
             variant="contained"
             size="large"
-            onClick={onAdd}
+            onClick={addCarSpaceHandler}
           >
             Add Car Space
           </Button>
@@ -170,7 +176,6 @@ const ProviderListView = ({ onAdd, onClickItem }) => {
                 size={item.size}
                 price={item.price}
                 image={item.images[0].image_data}
-                onClick={onClickItem}
               />
             ))}
           {!isLoading && error.value && (
@@ -182,10 +187,10 @@ const ProviderListView = ({ onAdd, onClickItem }) => {
             component="div"
             count={listItemCount}
             page={page}
-            onPageChange={handleChangePage}
+            onPageChange={changePageHandler}
             rowsPerPage={rowsPerPage}
-            rowsPerPageOptions={[5, 10]}
-            onRowsPerPageChange={handleChangeRowsPerPage}
+            rowsPerPageOptions={[3, 5, 10]}
+            onRowsPerPageChange={changeRowsPerPageHandler}
           />
         </Paper>
       </Paper>

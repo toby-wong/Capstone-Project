@@ -1,19 +1,3 @@
-.image-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
-
-.image-item img {
-  height: 100%;
-  width: 100%;
-  object-fit: contain;
-}
-
 .delete-icon {
   position: absolute;
   top: 50%;

@@ -1,25 +1,8 @@
-export const carSpaceFormReducer = (state, action) => {
+export const carSpaceRegistrationFormReducer = (state, action) => {
   const newState = { ...state };
 
-  // if (action.type === "FETCH") {
-  //   return {
-  //     isFormValid: true,
-  //     streetAddress: {
-  //       value: action.streetAddress,
-  //       isValid: true,
-  //       disabled: true,
-  //     },
-  //     city: { value: action.city, isValid: true, disabled: true },
-  //     state: { value: action.state, isValid: true, disabled: true },
-  //     postcode: { value: action.postcode, isValid: true, disabled: true },
-  //     price: { value: action.price, isValid: true },
-  //     maxVehicleSize: { value: action.size, isValid: true },
-  //     notes: { value: action.notes, isValid: true },
-  //   };
-  // }
-
   if (action.type === "RESET") {
-    return getCarSpaceFormInitialState();
+    return getCarSpaceRegistrationFormInitialState();
   }
 
   if (action.type === "IMAGES_INPUT") {
@@ -106,7 +89,7 @@ export const carSpaceFormReducer = (state, action) => {
   return newState;
 };
 
-export const getCarSpaceFormInitialState = () => {
+export const getCarSpaceRegistrationFormInitialState = () => {
   return {
     isFormValid: false,
     images: { value: [], isValid: false },

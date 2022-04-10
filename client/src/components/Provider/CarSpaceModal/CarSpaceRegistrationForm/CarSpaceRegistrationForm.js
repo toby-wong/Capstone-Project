@@ -8,7 +8,7 @@ import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import DateTimePicker from "@mui/lab/DateTimePicker";
 import { Button, CircularProgress, TextField } from "@mui/material";
 
-import CarSpaceRegistrationSubModal from "./CarSpaceRegistrationSubModal/CarSpaceRegistrationSubModal";
+import CarSpaceFormSubModal from "../CarSpaceForm/CarSpaceFormSubModal/CarSpaceFormSubModal";
 import CarSpaceCardHeader from "../CarSpaceCard/CarSpaceCardHeader";
 import CarSpaceCardContentLeft from "../CarSpaceCard/CarSpaceCardContentLeft";
 import CarSpaceCardContentRight from "../CarSpaceCard/CarSpaceCardContentRight";
@@ -19,15 +19,16 @@ import DropdownSelect from "../../../UI/DropdownSelect/DropdownSelect";
 import * as config from "../../../../config";
 import * as utility from "../../../../utility";
 
-import { useContext, useEffect, useReducer, useState } from "react";
+import { useContext, useReducer, useState } from "react";
 import {
-  carSpaceFormReducer,
-  getCarSpaceFormInitialState,
-} from "../../../../reducers/carSpaceForm-reducer";
+  carSpaceRegistrationFormReducer,
+  getCarSpaceRegistrationFormInitialState,
+} from "../../../../reducers/carspace-registration-form-reducer";
 import CarSpaceFormImageCarousel from "../CarSpaceForm/CarSpaceFormImageCarousel/CarSpaceFormImageCarousel";
 import AuthContext from "../../../../contexts/auth-context";
+import CarSpaceModalContext from "../../../../contexts/carspace-modal-context";
 
-const CarSpaceRegistrationForm = ({ onClose }) => {
+const CarSpaceRegistrationForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [subModal, setSubModal] = useState({
     isOpen: false,
@@ -35,30 +36,26 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
     title: "",
     content: [],
   });
-  const [uploadedImages, setUploadedImages] = useState([]);
   const [formState, dispatchFormState] = useReducer(
-    carSpaceFormReducer,
-    getCarSpaceFormInitialState()
+    carSpaceRegistrationFormReducer,
+    getCarSpaceRegistrationFormInitialState()
   );
   const authContext = useContext(AuthContext);
+  const carSpaceModalContext = useContext(CarSpaceModalContext);
 
   // Image Upload Handlers
-  useEffect(() => {
-    const newUploadedImageUrls = [];
-    uploadedImages.forEach((image) =>
-      newUploadedImageUrls.push(URL.createObjectURL(image))
-    );
-    dispatchFormState({ type: "IMAGES_INPUT", value: newUploadedImageUrls });
-  }, [uploadedImages]);
+  const imageUploadHandler = async (e) => {
+    const images = Array.from(e.target.files);
+    const base64Images = await utility.convertImagesToBase64(images);
 
-  const imageUploadHandler = (e) => {
-    setUploadedImages([...e.target.files]);
+    dispatchFormState({ type: "IMAGES_INPUT", value: base64Images });
   };
 
   const imageDeleteHandler = (e) => {
     const targetImageNum = e.target.dataset.imagenum;
-    uploadedImages.splice(targetImageNum, 1);
-    setUploadedImages([...uploadedImages]);
+    formState.images.value.splice(targetImageNum, 1);
+
+    dispatchFormState({ type: "IMAGES_INPUT", value: formState.images.value });
   };
 
   // Address Handlers
@@ -102,11 +99,6 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
   const formSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      // Base64 Encoding for images
-      const imagesInBase64 = await utility.convertImagesToBase64(
-        uploadedImages
-      );
-
       const authToken = localStorage.getItem("parkItAuthToken");
       if (!authToken) return;
 
@@ -120,10 +112,10 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
         postcode: formState.postcode.value,
         price: formState.price.value,
         size: formState.maxVehicleSize.value,
-        images: imagesInBase64,
+        images: formState.images.value,
         notes: formState.notes.value,
       };
-      console.log(formData);
+
       const carSpaceRegistrationUrl = `${config.SERVER_URL}/api/provider/parking`;
       const carSpaceRegistrationOptions = {
         method: "POST",
@@ -148,6 +140,8 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
         }
         throw Error(errorMsgs);
       }
+
+      carSpaceModalContext.toggleCarSpacesRefreshStatus();
 
       setSubModal({
         isOpen: true,
@@ -175,23 +169,26 @@ const CarSpaceRegistrationForm = ({ onClose }) => {
     setSubModal((prev) => {
       return { ...prev, isOpen: false };
     });
-    onClose();
+    carSpaceModalContext.closeModal();
   };
 
   return (
     <form onSubmit={formSubmitHandler} className={classes.form}>
-      <CarSpaceRegistrationSubModal
+      <CarSpaceFormSubModal
         open={subModal.isOpen}
         onClose={subModal.onClose}
         title={subModal.title}
         content={subModal.content}
       />
-      <CarSpaceCardHeader title={"Car space registration"} onClose={onClose} />
+      <CarSpaceCardHeader
+        title={"Car space registration"}
+        onClose={carSpaceModalContext.closeModal}
+      />
       <CarSpaceCardContent>
         <CarSpaceCardContentLeft>
           <div className={classes["image-upload-container"]}>
             <CarSpaceFormImageCarousel
-              images={formState.images.value}
+              images={formState.images.value.map((imgObj) => imgObj.image_data)}
               onDeleteImage={imageDeleteHandler}
             />
             <div className={classes["image-uploader"]}>
