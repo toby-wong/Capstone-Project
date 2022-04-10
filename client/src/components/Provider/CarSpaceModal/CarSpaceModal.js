@@ -1,13 +1,14 @@
+import classes from "./CarSpaceModal.module.css";
+
+import { useContext } from "react";
+
 import GeneralModal from "../../UI/GeneralModal/GeneralModal";
 import CarSpaceInfo from "./CarSpaceInfo/CarSpaceInfo";
-
-import classes from "./CarSpaceModal.module.css";
 import CarSpaceRegistrationForm from "./CarSpaceRegistrationForm/CarSpaceRegistrationForm";
 import CarSpaceEditForm from "./CarSpaceEditForm/CarSpaceEditForm";
-// import CarSpaceReviews from "./CarSpaceReviews/CarSpaceReviews";
-import { useContext } from "react";
 import CarSpaceModalContext from "../../../contexts/carspace-modal-context";
 import CarSpaceReviews from "./CarSpaceReviews/CarSpaceReviews";
+import CarSpaceBookings from "./CarSpaceBookings/CarSpaceBookings";
 
 const CarSpaceModal = () => {
   const carSpaceModalContext = useContext(CarSpaceModalContext);
@@ -22,7 +23,7 @@ const CarSpaceModal = () => {
       {carSpaceModalContext.page === "/edit" && <CarSpaceEditForm />}
       {carSpaceModalContext.page === "/info" && <CarSpaceInfo />}
       {carSpaceModalContext.page === "/reviews" && <CarSpaceReviews />}
-      {/* {carSpaceModalContext.page === "/bookings" && <CarSpaceBookings />} */}
+      {carSpaceModalContext.page === "/bookings" && <CarSpaceBookings />}
     </GeneralModal>
   );
 };
