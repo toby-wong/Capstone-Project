@@ -1,6 +1,6 @@
 .image-container {
-  flex: 1;
+  height: 300px;
   display: flex;
-  min-height: 260px;
-  max-height: 260px;
+  justify-content: space-between;
+  position: relative;
 }

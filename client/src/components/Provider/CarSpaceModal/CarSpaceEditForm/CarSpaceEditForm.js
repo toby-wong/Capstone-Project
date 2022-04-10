@@ -146,7 +146,7 @@ const CarSpaceEditForm = () => {
     }
   };
 
-  // CloseSubModal handlers
+  // Navigation handlers
   const closeSubModalHandler = () => {
     setSubModal((prev) => {
       return { ...prev, isOpen: false };
@@ -159,6 +159,11 @@ const CarSpaceEditForm = () => {
     carSpaceModalContext.closeModal();
   };
 
+  const backToCarSpaceInfoHandler = () => {
+    carSpaceModalContext.openPage("/info");
+  };
+
+  // Delete Car Space Handlers
   const deleteCarSpaceHandler = async () => {
     try {
       const authToken = localStorage.getItem("parkItAuthToken");
@@ -213,6 +218,7 @@ const CarSpaceEditForm = () => {
       <CarSpaceCardHeader
         title={"Edit Car Space"}
         onClose={carSpaceModalContext.closeModal}
+        onBack={backToCarSpaceInfoHandler}
       />
       <CarSpaceCardContent>
         <CarSpaceCardContentLeft>

@@ -3,21 +3,30 @@ import React, { useState } from "react";
 const CarSpaceModalContext = React.createContext({
   carSpaceId: null,
   page: "",
-  carSpaceInfo: { images: [] },
+  carSpaceInfo: { images: [], fetched: false },
   isOpen: false,
   carSpacesRefreshStatus: false,
   toggleCarSpacesRefreshStatus: () => {},
   openPage: () => {},
   closeModal: () => {},
-  setCarSpaceInfo: () => {},
+  fetchCarSpaceInfo: () => {},
 });
 
 export const CarSpaceModalContextProvider = (props) => {
-  const [carSpaceInfo, setCarSpaceInfo] = useState({ iamges: [] });
+  const [carSpaceInfo, setCarSpaceInfo] = useState({
+    iamges: [],
+    fetched: false,
+  });
   const [carSpaceId, setCarSpaceId] = useState("");
   const [page, setPage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [carSpacesRefreshStatus, setCarSpacesRefreshStatus] = useState(false);
+
+  const resetContextValue = () => {
+    setCarSpaceInfo({ images: [], fetched: false });
+    setCarSpaceId("");
+    setPage("");
+  };
 
   const openPage = (path, csId = null) => {
     if (!isOpen) setIsOpen(true);
@@ -29,11 +38,15 @@ export const CarSpaceModalContextProvider = (props) => {
 
   const closeModal = () => {
     setIsOpen(false);
-    setPage("");
+    resetContextValue();
   };
 
   const toggleCarSpacesRefreshStatus = () => {
     setCarSpacesRefreshStatus(!carSpacesRefreshStatus);
+  };
+
+  const fetchCarSpaceInfo = (info) => {
+    setCarSpaceInfo({ ...info, fetched: true });
   };
 
   const contextValue = {
@@ -45,7 +58,7 @@ export const CarSpaceModalContextProvider = (props) => {
     toggleCarSpacesRefreshStatus,
     openPage,
     closeModal,
-    setCarSpaceInfo,
+    fetchCarSpaceInfo,
   };
 
   return (

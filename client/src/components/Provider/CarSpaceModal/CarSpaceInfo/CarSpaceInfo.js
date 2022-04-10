@@ -7,7 +7,7 @@ import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import StarIcon from "@mui/icons-material/Star";
 import { Button, CircularProgress, Typography } from "@mui/material";
-import Carousel from "react-material-ui-carousel";
+import CarSpaceImageCarousel from "../CarSpaceImageCarousel/CarSpaceImageCarousel";
 
 import CarSpaceCardHeader from "../CarSpaceCard/CarSpaceCardHeader";
 import CarSpaceCardContentLeft from "../CarSpaceCard/CarSpaceCardContentLeft";
@@ -19,6 +19,7 @@ import { useContext, useEffect, useState } from "react";
 import * as config from "../../../../config";
 import { sendRequest } from "../../../../utility";
 import CarSpaceModalContext from "../../../../contexts/carspace-modal-context";
+import CarSpaceImage from "../CarSpaceImage/CarSpaceImage";
 
 const CarSpaceInfo = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -28,7 +29,6 @@ const CarSpaceInfo = () => {
   const carSpaceModalContext = useContext(CarSpaceModalContext);
 
   const editListHandler = () => {
-    carSpaceModalContext.setCarSpaceInfo(carInfo);
     carSpaceModalContext.openPage("/edit");
   };
 
@@ -39,6 +39,8 @@ const CarSpaceInfo = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        if (carSpaceModalContext.carSpaceInfo.fetched)
+          return setCarInfo(carSpaceModalContext.carSpaceInfo);
         const authToken = localStorage.getItem("parkItAuthToken");
         const getCarInfoUrl = `${config.SERVER_URL}/api/provider/parking/${carSpaceModalContext.carSpaceId}`;
         const getCarInfoOptions = {
@@ -57,15 +59,15 @@ const CarSpaceInfo = () => {
         if (getCarInforesponse.status >= 300 || !getCarInforesponse.status)
           throw Error;
 
-        console.log(getCarInforesponse.data);
         setCarInfo(getCarInforesponse.data);
+        carSpaceModalContext.fetchCarSpaceInfo(getCarInforesponse.data);
       } catch (e) {
         console.log(e.message);
         setIsLoading(false);
       }
     };
     fetchData();
-  }, [carSpaceModalContext.carSpaceId, setIsLoading]);
+  }, [carSpaceModalContext, setIsLoading]);
 
   return (
     <>
@@ -100,22 +102,18 @@ const CarSpaceInfo = () => {
           </CarSpaceCardHeader>
           <CarSpaceCardContent>
             <CarSpaceCardContentLeft>
-              <Carousel
-                className={classes["image-container"]}
-                autoPlay={false}
-                animation="slide"
-                indicators={false}
-              >
+              <CarSpaceImageCarousel>
                 {carInfo.images.map((imgObj, idx) => {
                   return (
-                    <img
+                    <CarSpaceImage
                       key={idx}
-                      src={"data:image/png;base64, " + imgObj.image_data}
+                      src={`data:image/png;base64, ${imgObj.image_data}`}
                       alt="parking-space"
                     />
                   );
                 })}
-              </Carousel>
+              </CarSpaceImageCarousel>
+
               <div className={classes.actions}>
                 <Button variant="contained" size="large">
                   View Bookings
@@ -124,6 +122,7 @@ const CarSpaceInfo = () => {
                   variant="contained"
                   size="large"
                   onClick={editListHandler}
+                  color="secondary"
                 >
                   Edit Listing
                 </Button>

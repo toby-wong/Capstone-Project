@@ -29,7 +29,7 @@ const ProviderListView = () => {
   const [carSpaces, setCarSpaces] = useState([]);
   const [listItemCount, setListItemCount] = useState(-1);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(3);
   const carSpaceModalContext = useContext(CarSpaceModalContext);
 
   const activeTabView = location.pathname.split("/")[2] ?? false;
@@ -189,7 +189,7 @@ const ProviderListView = () => {
             page={page}
             onPageChange={changePageHandler}
             rowsPerPage={rowsPerPage}
-            rowsPerPageOptions={[5, 10]}
+            rowsPerPageOptions={[3, 5, 10]}
             onRowsPerPageChange={changeRowsPerPageHandler}
           />
         </Paper>

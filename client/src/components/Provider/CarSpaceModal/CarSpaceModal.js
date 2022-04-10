@@ -7,6 +7,7 @@ import CarSpaceEditForm from "./CarSpaceEditForm/CarSpaceEditForm";
 // import CarSpaceReviews from "./CarSpaceReviews/CarSpaceReviews";
 import { useContext } from "react";
 import CarSpaceModalContext from "../../../contexts/carspace-modal-context";
+import CarSpaceReviews from "./CarSpaceReviews/CarSpaceReviews";
 
 const CarSpaceModal = () => {
   const carSpaceModalContext = useContext(CarSpaceModalContext);
@@ -20,7 +21,7 @@ const CarSpaceModal = () => {
       {carSpaceModalContext.page === "/add" && <CarSpaceRegistrationForm />}
       {carSpaceModalContext.page === "/edit" && <CarSpaceEditForm />}
       {carSpaceModalContext.page === "/info" && <CarSpaceInfo />}
-      {/* {carSpaceModalContext.page === "/reviews" && <CarSpaceReviews />} */}
+      {carSpaceModalContext.page === "/reviews" && <CarSpaceReviews />}
       {/* {carSpaceModalContext.page === "/bookings" && <CarSpaceBookings />} */}
     </GeneralModal>
   );
