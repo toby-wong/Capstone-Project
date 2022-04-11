@@ -1,5 +1,7 @@
 # "Queries" for Django database
 from urllib import request
+from users.filters import RadiusFilter
+from users.filters import ParkingSearchFilter
 from users.forms import *
 from users.models import CustomUser, ParkingSpace, Transaction
 from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView, CreateAPIView
@@ -9,6 +11,7 @@ from rest_framework import status
 from .serializers import *
 import datetime as dt
 from drf_spectacular.utils import extend_schema
+from django_filters import rest_framework as filters
 
 # Create your views here.
 # @login_required(login_url='http://127.0.0.1:8000/')
@@ -74,6 +77,31 @@ class ParkingSpaceList(ListAPIView):
     def get_queryset(self):
         provider = self.request.user
         return ParkingSpace.objects.filter(provider=provider)
+
+#Get all parking spaces owned by user that are pending
+
+class PendingParkingSpaceList(ListAPIView):
+    serializer_class = ParkingSpaceSerializer
+    def get_queryset(self):
+        provider = self.request.user
+        return ParkingSpace.objects.filter(provider=provider).filter(status='pending')
+
+
+#Get all parking spaces owned by user that are rejected
+
+class RejectedParkingSpaceList(ListAPIView):
+    serializer_class = ParkingSpaceSerializer
+    def get_queryset(self):
+        provider = self.request.user
+        return ParkingSpace.objects.filter(provider=provider).filter(status='rejected')
+
+#Get all parking spaces owned by user that are approved
+
+class ApprovedParkingSpaceList(ListAPIView):
+    serializer_class = ParkingSpaceSerializer
+    def get_queryset(self):
+        provider = self.request.user
+        return ParkingSpace.objects.filter(provider=provider).filter(status='approved')
 
 # IMAGES
        
@@ -154,7 +182,7 @@ class ConsumerBookingHistory(ListAPIView):
 
 
 # FAVOURITE
-       
+
 # Favourite a parking space
 class CreateFavourite(CreateAPIView):
     serializer_class = FavouriteSerializer
@@ -225,9 +253,21 @@ class ReviewList(ListAPIView):
         space = self.kwargs['parkingID']
         return Review.objects.filter(parkingSpace=space)
 
+# SEARCH
 
+# Search for a parking space
 
-    
+class ParkingSearchList(ListAPIView):
+    serializer_class = ParkingSpaceSerializer
+    queryset = ParkingSpace.objects.filter()
+    # queryset = ParkingSpace.objects.filter(is_active=True)
 
+    serializer_class = ParkingSpaceSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_class = ParkingSearchFilter
+    pagination_class = None     # insert pagination class here
     
-    
+    def get_queryset(self):
+        queryset = super(ParkingSearchList, self).get_queryset()
+        queryset = RadiusFilter(queryset, self.request.query_params.get('address'), self.request.query_params.get('radius'))
+        return queryset

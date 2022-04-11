@@ -1425,6 +1425,35 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedParkingSpaceList'
           description: ''
+  /api/provider/parking/approved:
+    get:
+      operationId: provider_parking_approved_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      tags:
+      - provider
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedParkingSpaceList'
+          description: ''
   /api/provider/parking/bookings/{parkingID}:
     get:
       operationId: provider_parking_bookings_list
@@ -1492,6 +1521,64 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedImageList'
+          description: ''
+  /api/provider/parking/pending:
+    get:
+      operationId: provider_parking_pending_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      tags:
+      - provider
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedParkingSpaceList'
+          description: ''
+  /api/provider/parking/rejected:
+    get:
+      operationId: provider_parking_rejected_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      tags:
+      - provider
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedParkingSpaceList'
           description: ''
   /api/provider/parking/reviews/{parkingID}:
     get:
@@ -2005,6 +2092,11 @@ components:
           title: ID
     PatchedTransaction:
       type: object
+      description: |-
+        A ModelSerializer that takes additional arguments for
+        "fields", "omit" and "expand" in order to
+        control which fields are displayed, and whether to replace simple
+        values with complex, nested serializations
       properties:
         provider:
           type: integer
@@ -2161,6 +2253,11 @@ components:
       - token
     Transaction:
       type: object
+      description: |-
+        A ModelSerializer that takes additional arguments for
+        "fields", "omit" and "expand" in order to
+        control which fields are displayed, and whether to replace simple
+        values with complex, nested serializations
       properties:
         provider:
           type: integer

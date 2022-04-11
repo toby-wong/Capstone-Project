@@ -48,6 +48,17 @@ STATUS = (
 )
 
 # # PROVIDER MODELS
+STATUS = (
+    ('pending', 'pending'),
+    ('approved', 'approved'),
+    ('rejected', 'rejected')
+)
+SIZE = (
+    ('Hatchback', 'Hatchback'),
+    ('Sedan', 'Sedan'),
+    ('4WD/SUV', '4WD/SUV'),
+    ('Van', 'Van'),
+)
 class ParkingSpace(models.Model):
     provider = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
     streetAddress = models.CharField(max_length=100)
@@ -60,7 +71,7 @@ class ParkingSpace(models.Model):
     # image = models.ImageField(upload_to='media/parking_spaces')
     # image = Base64ImageField(max_length=None, use_url=True)
     # image = models.CharField(max_length=10000000, blank=True)
-    size = models.CharField(max_length=100)
+    size = models.CharField(max_length=50, choices=SIZE, default='Hatchback')
     notes = models.TextField(max_length=10000)
     startTime = models.DateTimeField()
     endTime = models.DateTimeField()

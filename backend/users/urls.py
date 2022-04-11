@@ -22,6 +22,9 @@ urlpatterns = [
     path('provider/parking/reviews/<int:parkingID>', ReviewList.as_view(), name='list_reviews'),
     path('provider/parking/bookings/<int:parkingID>', BookingList.as_view(), name='list_bookings'),
     path('provider/parking/all', ParkingSpaceList.as_view(), name='list_parking_space'),
+    path('provider/parking/pending', PendingParkingSpaceList.as_view(), name='pending_list_parking_space'),
+    path('provider/parking/rejected', RejectedParkingSpaceList.as_view(), name='rejected_list_parking_space'),
+    path('provider/parking/approved', ApprovedParkingSpaceList.as_view(), name='approved_list_parking_space'),
 
     # Booking
 
@@ -57,5 +60,7 @@ urlpatterns = [
     path('consumer/vehicle/<int:vehicleID>', VehicleView.as_view(), name='modify_vehicle'),
     path('consumer/vehicle/all', VehicleList.as_view(), name='list_vehicle'),
 
+    # Search 
 
+    path('provider/parking/search/', ParkingSearchList.as_view(), name='search_parking_space'),
 ]
