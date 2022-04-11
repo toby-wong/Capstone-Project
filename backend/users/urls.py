@@ -29,7 +29,7 @@ urlpatterns = [
     # Booking
 
     path('consumer/book', CreateBooking.as_view(), name='create_booking'),
-    path('consumer/book/<int:bookingID>', BookingView.as_view(), name='modify_booking'),
+    path('consumer/book/<int:pk>', BookingView.as_view(), name='modify_booking'),
 
     # History
 
