@@ -1,6 +1,6 @@
-from django.urls import include, path, re_path
+from django.urls import include, path
 from dj_rest_auth.registration.views import VerifyEmailView, ConfirmEmailView
-from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView, UserDetailsView
+from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
 from users.views import *
 
 urlpatterns = [
@@ -62,5 +62,6 @@ urlpatterns = [
 
     # Search 
 
+    path('provider/parking/search/suggestions/', AddressSuggestions.as_view(), name='address_suggestions'),
     path('provider/parking/search/', ParkingSearchList.as_view(), name='search_parking_space'),
 ]

@@ -1,8 +1,8 @@
 from operator import itemgetter
 from django import forms
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm 
-from .models import CustomUser, ParkingSpace, Transaction
-from i18naddress import InvalidAddress, normalize_address, get_validation_rules
+from .models import CustomUser, Transaction
+from i18naddress import normalize_address, get_validation_rules
 
 
 #need to update this with the custom fields too

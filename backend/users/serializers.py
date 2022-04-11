@@ -1,19 +1,13 @@
 # Controls what fields are packaged together
 
-from ast import Mod
-from webbrowser import get
 from django.db import transaction
 from django.db.models import Avg
-import pkg_resources
-from .utils import AddressValidation, getCoords, getParkingSpace, getUser
+from .utils import AddressValidation, getCoords
 from rest_framework import serializers
-from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField, StringRelatedField, SlugRelatedField
-from drf_extra_fields.fields import Base64ImageField
+from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField, SlugRelatedField
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from .models import CustomUser, Favourite, ParkingSpace, Image, Transaction, Review, Vehicle
-from django.core.files.uploadedfile import InMemoryUploadedFile
-from drf_writable_nested.serializers import WritableNestedModelSerializer, NestedUpdateMixin 
-from rest_flex_fields import FlexFieldsModelSerializer
+from drf_writable_nested.serializers import NestedUpdateMixin 
 
 class UserSerializer(ModelSerializer):
     class Meta:

@@ -1,8 +1,6 @@
-from cgitb import lookup
-from dataclasses import field
 from django_filters import RangeFilter, NumberFilter, MultipleChoiceFilter, CharFilter
 from django_filters.rest_framework import FilterSet
-from users.models import ParkingSpace, Transaction, STATUS, SIZE
+from users.models import SIZE
 from users.utils import *
 
 def RadiusFilter(queryset, address='Sydney', radius=2):
@@ -23,4 +21,3 @@ class ParkingSearchFilter(FilterSet):
     price__gte = NumberFilter(field_name='price', lookup_expr='gte') # ?price__gte=100
     rating__lte = RangeFilter(field_name='avg_rating', lookup_expr='lte') # ?rating__lte=4.5
     rating__gte = RangeFilter(field_name='avg_rating', lookup_expr='gte') # ?rating__gte=4.5
-    # start
