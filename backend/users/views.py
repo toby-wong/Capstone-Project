@@ -128,7 +128,7 @@ class CreateBooking(CreateAPIView):
 class BookingView(RetrieveUpdateDestroyAPIView):
     serializer_class = TransactionSerializer
     def get_queryset(self):
-        booking = self.kwargs['bookingID']
+        booking = self.kwargs['pk']
         return Transaction.objects.filter(pk=booking)
 
 

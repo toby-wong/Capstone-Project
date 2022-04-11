@@ -179,6 +179,8 @@ class TransactionSerializer(ModelSerializer):
     city = serializers.CharField(source="parkingSpace.city", required=False) 
     state = serializers.CharField(source="parkingSpace.state", required=False)
     postcode = serializers.CharField(source="parkingSpace.postcode", required=False)
+    consumerName = serializers.CharField(source="consumer.username", required=False)
+    parkingSpaceSize = serializers.CharField(source="parkingSpace.size", required=False)
 
 
     class Meta:
@@ -192,6 +194,8 @@ class TransactionSerializer(ModelSerializer):
             'city',
             'state',
             'postcode',
+            'consumerName',
+            'parkingSpaceSize',
             'startTime',
             'endTime',
             'totalCost',
@@ -205,12 +209,12 @@ class TransactionSerializer(ModelSerializer):
         endTime = data['endTime']
         if startTime > endTime:
             raise serializers.ValidationError('Booking start time must be before booking end time')
+        parkingSpace = ParkingSpace.objects.filter(pk=data['parkingSpace'].pk).first()
+        if parkingSpace.startTime > startTime or parkingSpace.endTime < endTime or parkingSpace.startTime > endTime or parkingSpace.endTime < startTime:
+             raise serializers.ValidationError('This booking does not fit within the parking space availability.')
         qs = Transaction.objects.filter(parkingSpace=data['parkingSpace']).exclude(startTime__date__gt=endTime).exclude(endTime__date__lt=startTime)
         if qs.exists():
             raise serializers.ValidationError('This booking overlaps with an existing booking.')
-        parkingSpace = ParkingSpace.objects.filter(pk=data['parkingSpace']).first()
-        if parkingSpace.startTime > startTime or parkingSpace.endTime < endTime or parkingSpace.startTime > endTime or parkingSpace.endTime < startTime:
-             raise serializers.ValidationError('This booking does not fit within the parking space availability.')
         return data
 
         
