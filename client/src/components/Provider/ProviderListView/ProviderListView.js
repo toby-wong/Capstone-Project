@@ -72,6 +72,7 @@ const ProviderListView = () => {
         const response = await sendRequest(url, options, setIsLoading);
         if (response.status >= 300 || !response.status) throw Error;
 
+        console.log(response.data);
         setCarSpaces(response.data.results);
         setListItemCount(response.data.count);
       } catch (e) {

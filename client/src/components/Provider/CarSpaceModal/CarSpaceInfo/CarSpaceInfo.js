@@ -36,6 +36,10 @@ const CarSpaceInfo = () => {
     carSpaceModalContext.openPage("/reviews");
   };
 
+  const viewBookingsHandler = () => {
+    carSpaceModalContext.openPage("/bookings");
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -115,7 +119,11 @@ const CarSpaceInfo = () => {
               </CarSpaceImageCarousel>
 
               <div className={classes.actions}>
-                <Button variant="contained" size="large">
+                <Button
+                  variant="contained"
+                  size="large"
+                  onClick={viewBookingsHandler}
+                >
                   View Bookings
                 </Button>
                 <Button
