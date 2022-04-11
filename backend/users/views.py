@@ -236,7 +236,7 @@ class ParkingSearchList(ListAPIView):
     queryset = ParkingSpace.objects.filter()
     # queryset = ParkingSpace.objects.filter(is_active=True)
 
-    serializer_class = ParkingSearchSerializer
+    serializer_class = ParkingSpaceSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filter_class = ParkingSearchFilter
     pagination_class = None     # insert pagination class here

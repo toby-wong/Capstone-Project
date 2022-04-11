@@ -47,8 +47,6 @@ def getCoords(address):
     url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(address) +'?format=json'
 
     response = requests.get(url).json()
-    #print(response[0]["lat"])
-    #print(response[0]["lon"])
     return(float(response[0]["lat"]), float(response[0]["lon"]))
 
 def getUser(pk):

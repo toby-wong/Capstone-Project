@@ -1,12 +1,11 @@
 from dataclasses import field
 from django_filters import RangeFilter, NumberFilter, MultipleChoiceFilter, CharFilter
 from django_filters.rest_framework import FilterSet
-from users.models import ParkingSpace, Transaction
+from users.models import ParkingSpace, Transaction, STATUS, SIZE
 from users.utils import *
 
 def RadiusFilter(queryset, address='Sydney', radius=2):
     lat, lon = getCoords(address)
-    print((lat), (lon))
     radius = int(radius)
     lat_min = lat - (radius * 1/111)
     lat_max = lat + (radius * 1/111)
@@ -18,15 +17,7 @@ def RadiusFilter(queryset, address='Sydney', radius=2):
 
 class ParkingSearchFilter(FilterSet):
 
-    # class Meta:
-    #     model = ParkingSpace
-    #     fields = {
-    #         'size': ['exact', 'in'], # ?size=Hatchback or ?size=Hatchback&size=Sedan
-    #         'price': ['exact', 'lte', 'gte'], # ?price=10 or ?price=10&price=20
-    #         }
-    #         # 'address': ['range']
-    #         # 'rating': ['lte', 'gte', 'exact'],
-    size = CharFilter(field_name='size', lookup_expr='exact')
+    size = MultipleChoiceFilter(choices=SIZE, field_name='size')
     price__lte = NumberFilter(field_name='price', lookup_expr='lte')
     price__gte = NumberFilter(field_name='price', lookup_expr='gte')
-    rating = RangeFilter(field_name='rating', lookup_expr='gte') # need to implement
+    avg_rating = RangeFilter(field_name='rating', lookup_expr='gte') # need to implement
