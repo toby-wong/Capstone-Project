@@ -1,3 +1,4 @@
+from cgitb import lookup
 from dataclasses import field
 from django_filters import RangeFilter, NumberFilter, MultipleChoiceFilter, CharFilter
 from django_filters.rest_framework import FilterSet
@@ -17,7 +18,8 @@ def RadiusFilter(queryset, address='Sydney', radius=2):
 
 class ParkingSearchFilter(FilterSet):
 
-    size = MultipleChoiceFilter(choices=SIZE, field_name='size')
+    size = MultipleChoiceFilter(choices=SIZE, field_name='size', lookup_expr='iexact') # ?size=Hatchback or ?size=Hatchback&size=Sedan
     price__lte = NumberFilter(field_name='price', lookup_expr='lte')
     price__gte = NumberFilter(field_name='price', lookup_expr='gte')
-    avg_rating = RangeFilter(field_name='rating', lookup_expr='gte') # need to implement
+    rating__lte = RangeFilter(field_name='avg_rating', lookup_expr='lte')
+    rating__gte = RangeFilter(field_name='avg_rating', lookup_expr='gte')
