@@ -31,7 +31,7 @@ urlpatterns = [
     path('consumer/book', CreateBooking.as_view(), name='create_booking'),
     path('consumer/book/<int:bookingID>', BookingView.as_view(), name='modify_booking'),
 
-    #History
+    # History
 
     path('provider/history', ProviderBookingHistory.as_view(), name='provider_history'),
     path('consumer/history', ConsumerBookingHistory.as_view(), name='consumer_history'),
