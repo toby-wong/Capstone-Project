@@ -23,3 +23,4 @@ class ParkingSearchFilter(FilterSet):
     price__gte = NumberFilter(field_name='price', lookup_expr='gte') # ?price__gte=100
     rating__lte = RangeFilter(field_name='avg_rating', lookup_expr='lte') # ?rating__lte=4.5
     rating__gte = RangeFilter(field_name='avg_rating', lookup_expr='gte') # ?rating__gte=4.5
+    # start
