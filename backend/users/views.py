@@ -75,6 +75,31 @@ class ParkingSpaceList(ListAPIView):
         provider = self.request.user
         return ParkingSpace.objects.filter(provider=provider)
 
+#Get all parking spaces owned by user that are pending
+
+class PendingParkingSpaceList(ListAPIView):
+    serializer_class = ParkingSpaceSerializer
+    def get_queryset(self):
+        provider = self.request.user
+        return ParkingSpace.objects.filter(provider=provider).filter(status='pending')
+
+
+#Get all parking spaces owned by user that are rejected
+
+class RejectedParkingSpaceList(ListAPIView):
+    serializer_class = ParkingSpaceSerializer
+    def get_queryset(self):
+        provider = self.request.user
+        return ParkingSpace.objects.filter(provider=provider).filter(status='rejected')
+
+#Get all parking spaces owned by user that are approved
+
+class ApprovedParkingSpaceList(ListAPIView):
+    serializer_class = ParkingSpaceSerializer
+    def get_queryset(self):
+        provider = self.request.user
+        return ParkingSpace.objects.filter(provider=provider).filter(status='approved')
+
 # IMAGES
        
 # Upload an image

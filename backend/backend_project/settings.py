@@ -33,7 +33,8 @@ ALLOWED_HOSTS = []
 # server will be running is safe to receive requests
 # from.
 CORS_ALLOWED_ORIGINS = [    
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
 ]
 
 # Django All Auth config.
