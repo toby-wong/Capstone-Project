@@ -206,7 +206,7 @@ const CarSpaceRegistrationForm = () => {
               type="submit"
               disabled={!formState.isFormValid}
             >
-              {isLoading ? <CircularProgress size="1.5rem" /> : "Registration"}
+              {isLoading ? <CircularProgress size="1.5rem" /> : "Register"}
             </Button>
           </div>
         </CarSpaceCardContentLeft>
@@ -216,7 +216,7 @@ const CarSpaceRegistrationForm = () => {
               <AccessTimeIcon className={classes.icon} fontSize="large" />
               <div className={classes.details__item__content__row}>
                 <DateTimePicker
-                  label="Start Date"
+                  label="Available From"
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -236,9 +236,10 @@ const CarSpaceRegistrationForm = () => {
                     return clockType === "minutes" && timeValue % 15;
                   }}
                   reduceAnimations={true}
+                  inputFormat="dd/MM/yyyy hh:mm a"
                 />
                 <DateTimePicker
-                  label="End Date"
+                  label="Available To"
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -258,6 +259,7 @@ const CarSpaceRegistrationForm = () => {
                     return clockType === "minutes" && timeValue % 15;
                   }}
                   reduceAnimations={true}
+                  inputFormat="dd/MM/yyyy hh:mm a"
                 />
               </div>
             </div>

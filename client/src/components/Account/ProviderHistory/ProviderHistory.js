@@ -9,56 +9,11 @@ import GeneralDataGrid from "../../UI/DataGrid/GeneralDataGrid";
 
 const ProviderHistory = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState({
+    value: false,
+    message: "",
+  });
   const [history, setHistory] = useState([]);
-
-  const dummyHistory = [
-    {
-      id: 0,
-      startTime: "04/01/2022 10:00",
-      endTime: "05/01/2022 21:00",
-      cost: 123,
-      parkingSpace: 55,
-      vehicle: "Sedan",
-      consumer: "#Younggil",
-    },
-    {
-      id: 1,
-      startTime: "04/01/2022 10:00",
-      endTime: "05/01/2022 21:00",
-      cost: 135,
-      parkingSpace: 55,
-      vehicle: "Sedan",
-      consumer: "#Younggil",
-    },
-    {
-      id: 2,
-      startTime: "21/01/2022 10:00",
-      endTime: "28/01/2022 21:00",
-      cost: 150,
-      parkingSpace: 55,
-      vehicle: "Sedan",
-      consumer: "#Younggil",
-    },
-    {
-      id: 3,
-      startTime: "14/01/2022 10:00",
-      endTime: "21/01/2022 21:00",
-      cost: 125,
-      parkingSpace: 55,
-      vehicle: "Sedan",
-      consumer: "#Younggil",
-    },
-    {
-      id: 4,
-      startTime: "04/12/2022 10:00",
-      endTime: "05/12/2022 21:00",
-      cost: 100,
-      parkingSpace: 55,
-      vehicle: "Sedan",
-      consumer: "#Younggil",
-    },
-  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,7 +21,7 @@ const ProviderHistory = () => {
       if (!authToken) return;
 
       try {
-        const url = `${config.SERVER_URL}/api/provider/history/`;
+        const url = `${config.SERVER_URL}/api/provider/history`;
         const options = {
           method: "GET",
           headers: {
@@ -77,24 +32,22 @@ const ProviderHistory = () => {
         if (response.status >= 300 || !response.status) throw Error;
 
         const fetchedHistory = [];
-        for (const booking of response.data.results) {
+        for (const booking of response.data) {
           fetchedHistory.push({
             id: booking.pk,
             startTime: booking.startTime,
             endTime: booking.endTime,
-            cost: booking.cost,
-            parkingSpace: booking.parkingSpace,
-            vehicle: booking.vehicle,
-            consumer: booking.consumer,
+            cost: booking.totalCost,
+            streetAddress: booking.streetAddress,
+            vehicle: booking.parkingSpaceSize,
+            consumer: booking.consumerName,
           });
         }
 
         setHistory(fetchedHistory);
       } catch (e) {
-        setHistory(dummyHistory);
-
         console.log(e.message);
-        setError(true);
+        setError({ value: true, message: config.NETWORK_ERROR_MESSAGE });
       }
     };
 
@@ -108,7 +61,7 @@ const ProviderHistory = () => {
         {isLoading && (
           <CircularProgress className={classes.spinner} size="3rem" />
         )}
-        {!isLoading && !error && (
+        {!isLoading && !error.value && (
           <GeneralDataGrid
             rows={history}
             columns={[
@@ -128,8 +81,8 @@ const ProviderHistory = () => {
                 widht: 125,
               },
               {
-                field: "parkingSpace",
-                headerName: "Parking Space",
+                field: "streetAddress",
+                headerName: "Car Space",
                 flex: 1,
               },
               {
@@ -148,7 +101,7 @@ const ProviderHistory = () => {
               sorting: {
                 sortModel: [
                   {
-                    field: "rating",
+                    field: "startTime",
                     sort: "desc",
                   },
                 ],
@@ -156,7 +109,7 @@ const ProviderHistory = () => {
             }}
           />
         )}
-        {!isLoading && error && config.NETWORK_ERROR_MESSAGE}
+        {!isLoading && error.message}
       </Paper>
     </>
   );

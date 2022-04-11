@@ -45,14 +45,14 @@ const CarSpaceBookings = () => {
         for (const booking of response.data) {
           fecthedBookings.push({
             id: booking.pk,
-            starTime: booking.startTime,
+            startTime: booking.startTime,
             endTime: booking.endTime,
             cost: booking.totalCost,
-            consumer: booking.consumer,
-            vehicle: booking.vehicle,
+            consumer: booking.consumerName,
+            vehicle: booking.parkingSpaceSize,
           });
         }
-
+        console.log(fecthedBookings);
         setBookings(fecthedBookings);
       } catch (e) {
         console.log(e.message);
