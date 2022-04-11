@@ -17,6 +17,7 @@ Pillow = "*"
 google-i18n-address = "*"
 drf-extra-fields = "*"
 haversine = "*"
+django-filter = "*"
 
 [dev-packages]
 

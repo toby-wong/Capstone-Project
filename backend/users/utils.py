@@ -49,7 +49,7 @@ def getCoords(address):
     response = requests.get(url).json()
     #print(response[0]["lat"])
     #print(response[0]["lon"])
-    return(response[0]["lat"], response[0]["lon"])
+    return(float(response[0]["lat"]), float(response[0]["lon"]))
 
 def getUser(pk):
     # print(pk)

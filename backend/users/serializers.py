@@ -146,8 +146,8 @@ class ParkingSpaceSerializer(ModelSerializer):
         parking.postcode = cleanAddress['postal_code']
         address = ' '.join(list(cleanAddress.values())[:4])
         coords = getCoords(address)
-        parking.longitude = coords[0]
-        parking.latitude = coords[1]        
+        parking.latitude = coords[0]        
+        parking.longitude = coords[1]
         parking.provider = getUser(self.data.get('provider'))
         parking.price = self.data.get('price')
         parking.size = self.data.get('size')
@@ -261,6 +261,25 @@ class ReviewSerializer(ModelSerializer):
             'comment',
             'publishDate',
             'pk'
+        )
+
+        read_only_fields = ['pk']
+
+class ParkingSearchSerializer(ModelSerializer):
+
+    class Meta:
+        model = ParkingSpace
+        fields = (
+            'provider',
+            'streetAddress',
+            'city',
+            'state',
+            'postcode',
+            'price',
+            'size',
+            'notes',
+            'is_active',
+            'pk', 
         )
 
         read_only_fields = ['pk']
