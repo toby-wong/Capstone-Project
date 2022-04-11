@@ -58,10 +58,6 @@ const AccountDetailsForm = ({ details, setPage }) => {
     setPage("changePassword");
   };
 
-  const changeEmailHandler = () => {
-    setPage("changeEmail");
-  };
-
   const deleteAccountHandler = () => {
     setPage("deleteAccount");
   };
@@ -92,17 +88,6 @@ const AccountDetailsForm = ({ details, setPage }) => {
       <div className={classes.row}>
         <div className={classes["col-horizontal"]}>
           <AccountDetailsEntry label={"Email Address"} value={details.email} />
-          <div className={classes.col}>
-            {/* <Button
-              className={classes.button}
-              color="secondary"
-              variant="contained"
-              size="small"
-              onClick={changeEmailHandler}
-            >
-              Change Email
-            </Button> */}
-          </div>
         </div>
         <div className={classes["col-horizontal"]}>
           <AccountDetailsFormInput

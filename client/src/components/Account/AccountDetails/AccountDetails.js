@@ -10,8 +10,6 @@ import AccountDetailsForm from "./AccountDetailsForm/AccountDetailsForm";
 import AccountDetailsAuthForm from "./AccountDetailsAuthForm/AccountDetailsAuthForm";
 import ChangePasswordForm from "./ChangePasswordForm/ChangePasswordForm";
 import DeleteAccountForm from "./DeleteAccountForm/DeleteAccountForm";
-import ChangeEmailForm from "./ChangeEmailForm/ChangeEmailForm";
-import EmailUpdateSuccess from "./EmailUpdateSuccess/EmailUpdateSuccess";
 import DeleteAccountSuccess from "./DeleteAccountSuccess/DeleteAccountSuccess";
 
 const ErrorMessage = () => {
@@ -66,8 +64,6 @@ const AccountDetails = () => {
         {page === "auth" && <AccountDetailsAuthForm setPage={setPage} />}
         {page === "details" && <AccountDetailsForm details={details} setPage={setPage}/>}
         {page === "changePassword" && <ChangePasswordForm setPage={setPage}/>}
-        {page === "changeEmail" && <ChangeEmailForm setPage={setPage}/>}
-        {page === "emailUpdateSuccess" && <EmailUpdateSuccess setPage={setPage}/>}
         {page === "deleteAccount" && <DeleteAccountForm setPage={setPage}/>}
         {page === "deleteAccountSuccess" && <DeleteAccountSuccess setPage={setPage}/>}
       </Paper>
