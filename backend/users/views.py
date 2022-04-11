@@ -103,7 +103,7 @@ class CreateImage(CreateAPIView):
 class ImageView(RetrieveUpdateAPIView):
     serializer_class = ImageSerializer
     def get_queryset(self):
-        image = self.kwargs['imgID']
+        image = self.kwargs['pk']
         return Image.objects.filter(pk=image)
 
 
@@ -169,7 +169,7 @@ class CreateFavourite(CreateAPIView):
 class FavouriteView(RetrieveUpdateDestroyAPIView):
     serializer_class = FavouriteSerializer
     def get_queryset(self):
-        favourite = self.kwargs['favID']
+        favourite = self.kwargs['pk']
         return Favourite.objects.filter(pk=favourite)
 
 # Get all favourites associated with a Parking Space
@@ -192,7 +192,7 @@ class CreateVehicle(CreateAPIView):
 class VehicleView(RetrieveUpdateDestroyAPIView):
     serializer_class = VehicleSerializer
     def get_queryset(self):
-        vehicle = self.kwargs['vehicleID']
+        vehicle = self.kwargs['pk']
         return Vehicle.objects.filter(pk=vehicle)
 
 # Get all vehicles associated with a consumer
@@ -218,7 +218,7 @@ class CreateReview(CreateAPIView):
 class ReviewView(RetrieveUpdateDestroyAPIView):
     serializer_class = ReviewSerializer
     def get_queryset(self):
-        review = self.kwargs['reviewID']
+        review = self.kwargs['pk']
         return Review.objects.filter(pk=review)
 
 # Get all reviews associated with a parking space
