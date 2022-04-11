@@ -41,12 +41,6 @@ class Favourite(models.Model):
     def __str__(self):
         return f"{self.consumer.username} favourited {self.parkingSpace}"
 
-STATUS = (
-    ('pending', 'pending'),
-    ('approved', 'approved'),
-    ('rejected', 'rejected')
-)
-
 # # PROVIDER MODELS
 STATUS = (
     ('pending', 'pending'),

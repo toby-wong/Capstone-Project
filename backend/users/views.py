@@ -1,4 +1,5 @@
 # "Queries" for Django database
+from errno import EDEADLK
 from urllib import request
 from users.filters import RadiusFilter
 from users.filters import ParkingSearchFilter
@@ -12,6 +13,7 @@ from .serializers import *
 import datetime as dt
 from drf_spectacular.utils import extend_schema
 from django_filters import rest_framework as filters
+from dateutil import parser
 
 # Create your views here.
 # @login_required(login_url='http://127.0.0.1:8000/')
@@ -259,15 +261,27 @@ class ReviewList(ListAPIView):
 
 class ParkingSearchList(ListAPIView):
     serializer_class = ParkingSpaceSerializer
-    queryset = ParkingSpace.objects.filter()
-    # queryset = ParkingSpace.objects.filter(is_active=True)
+    queryset = ParkingSpace.objects.filter(is_active=True, status='approved')
 
     serializer_class = ParkingSpaceSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filter_class = ParkingSearchFilter
-    pagination_class = None     # insert pagination class here
     
     def get_queryset(self):
         queryset = super(ParkingSearchList, self).get_queryset()
-        queryset = RadiusFilter(queryset, self.request.query_params.get('address'), self.request.query_params.get('radius'))
-        return queryset
+        try:
+            address = self.request.query_params.get('address')
+            radius = self.request.query_params.get('radius')
+            queryset = RadiusFilter(queryset, address, radius)
+        except:
+            queryset = RadiusFilter(queryset) # query params does not include address and radius
+        # acceptable address formats: 'address, city, state', 'city, state'
+        try:
+            startTime = dt.datetime.strptime(self.request.query_params.get('startTime'), '%Y-%m-%d %H:%M:%S')
+            endTime = dt.datetime.strptime(self.request.query_params.get('endTime'), '%Y-%m-%d %H:%M:%S')
+            for booking in Transaction.objects.exclude(startTime__date__gt=endTime, endTime__date__lt=startTime):
+                if queryset.contains(booking.parkingSpace):
+                    queryset = queryset.exclude(pk=booking.parkingSpace.pk)
+            return queryset
+        except:
+            return queryset
