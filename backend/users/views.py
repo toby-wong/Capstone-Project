@@ -259,15 +259,20 @@ class ReviewList(ListAPIView):
 
 class ParkingSearchList(ListAPIView):
     serializer_class = ParkingSpaceSerializer
-    queryset = ParkingSpace.objects.filter()
-    # queryset = ParkingSpace.objects.filter(is_active=True)
+    queryset = ParkingSpace.objects.filter(is_active=True, status='approved')
 
     serializer_class = ParkingSpaceSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filter_class = ParkingSearchFilter
-    pagination_class = None     # insert pagination class here
     
     def get_queryset(self):
         queryset = super(ParkingSearchList, self).get_queryset()
-        queryset = RadiusFilter(queryset, self.request.query_params.get('address'), self.request.query_params.get('radius'))
+        try:
+            address = self.request.query_params.get('address', None)
+            radius = self.request.query_params.get('radius', None)
+            queryset = RadiusFilter(queryset, address, radius)
+        except:
+            queryset = RadiusFilter(queryset) # query params does not include address and radius
+        # acceptable address formats: 'address, city, state', 'city, state'
+        
         return queryset
