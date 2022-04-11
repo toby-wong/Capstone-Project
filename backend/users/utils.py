@@ -59,7 +59,6 @@ def getParkingSpace(pk):
     parking_obj = ParkingSpace.objects.get(id=pk)
     return parking_obj
 
-
 # MOVED TO FILTER CLASS
  
 # class ParkingSearchAlgorithm:
