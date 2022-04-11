@@ -1,5 +1,6 @@
 # Controls what fields are packaged together
 
+from ast import Mod
 from webbrowser import get
 from django.db import transaction
 from django.db.models import Avg
@@ -12,6 +13,7 @@ from dj_rest_auth.registration.serializers import RegisterSerializer
 from .models import CustomUser, Favourite, ParkingSpace, Image, Transaction, Review, Vehicle
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from drf_writable_nested.serializers import WritableNestedModelSerializer, NestedUpdateMixin 
+from rest_flex_fields import FlexFieldsModelSerializer
 
 class UserSerializer(ModelSerializer):
     class Meta:
@@ -177,6 +179,11 @@ class TransactionSerializer(ModelSerializer):
     consumer = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
     vehicle = PrimaryKeyRelatedField(queryset=Vehicle.objects.all())
     parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
+    streetAddress = serializers.CharField(source="parkingSpace.streetAddress")
+    city = serializers.CharField(source="parkingSpace.city")
+    state = serializers.CharField(source="parkingSpace.state")
+    postcode = serializers.CharField(source="parkingSpace.postcode")
+
 
     class Meta:
         model = Transaction
@@ -185,11 +192,17 @@ class TransactionSerializer(ModelSerializer):
             'consumer',
             'vehicle',
             'parkingSpace',
+            'streetAddress',
+            'city',
+            'state',
+            'postcode',
             'startTime',
             'endTime',
             'totalCost',
             'pk'
         )
+
+        depth=1
 
         read_only_fields = ['pk']
         
