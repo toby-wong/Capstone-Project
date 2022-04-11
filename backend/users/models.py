@@ -43,6 +43,17 @@ class Favourite(models.Model):
 
 
 # # PROVIDER MODELS
+STATUS = (
+    ('pending', 'pending'),
+    ('approved', 'approved'),
+    ('rejected', 'rejected')
+)
+SIZE = (
+    ('Hatchback', 'Hatchback'),
+    ('Sedan', 'Sedan'),
+    ('4WD/SUV', '4WD/SUV'),
+    ('Van', 'Van'),
+)
 class ParkingSpace(models.Model):
     provider = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
     streetAddress = models.CharField(max_length=100)
@@ -55,12 +66,14 @@ class ParkingSpace(models.Model):
     # image = models.ImageField(upload_to='media/parking_spaces')
     # image = Base64ImageField(max_length=None, use_url=True)
     # image = models.CharField(max_length=10000000, blank=True)
-    size = models.CharField(max_length=100)
-    notes = models.TextField(max_length=500)
-    is_active = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f"{self.provider.username}'s car space at {self.streetAddress}, {self.city} {self.postcode}"
+    size = models.CharField(max_length=50, choices=SIZE, default='Hatchback')
+    notes = models.TextField(max_length=10000)
+    startTime = models.DateTimeField()
+    endTime = models.DateTimeField()
+    status = models.CharField(max_length=50, choices=STATUS, default="pending")
+    avg_rating = models.DecimalField(max_digits=2, decimal_places=1, null=True)
+    n_ratings = models.IntegerField(null=True)
+    is_active = models.BooleanField(default=True)
 
 class Transaction(models.Model):
     provider = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='provider_transaction')

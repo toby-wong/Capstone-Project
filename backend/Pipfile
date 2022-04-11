@@ -16,6 +16,9 @@ django-booking = "*"
 Pillow = "*"
 google-i18n-address = "*"
 drf-extra-fields = "*"
+haversine = "*"
+django-filter = "*"
+drf-writable-nested = "*"
 
 [dev-packages]
 
