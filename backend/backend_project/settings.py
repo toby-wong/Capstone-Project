@@ -33,7 +33,8 @@ ALLOWED_HOSTS = []
 # server will be running is safe to receive requests
 # from.
 CORS_ALLOWED_ORIGINS = [    
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
 ]
 
 # Django All Auth config.
@@ -71,7 +72,12 @@ TEMPLATES = [
 
 ]
 
-
+REST_FRAMEWORK = {
+    'DATETIME_FORMAT': "%m/%d/%Y %I:%M%P", 
+    'DEFAULT_AUTHENTICATION_CLASSES': ['dj_rest_auth.jwt_auth.JWTCookieAuthentication',],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+}
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=6000),
@@ -108,6 +114,7 @@ INSTALLED_APPS = [
     'dj_rest_auth.registration',
     'corsheaders',
     'drf_spectacular',
+    'django_filters',
     # 'booking',
     # Local Apps
     'users',

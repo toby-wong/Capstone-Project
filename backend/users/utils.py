@@ -1,8 +1,5 @@
-from i18naddress import InvalidAddress, normalize_address, get_validation_rules
-import base64
-import io
+from i18naddress import InvalidAddress, normalize_address
 from .models import CustomUser, ParkingSpace
-
 class AddressValidation:
 
     def __init__(self, data):
@@ -43,12 +40,11 @@ def getCoords(address):
     import requests
     import urllib.parse
 
-    url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(address) +'?format=json'
+    url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(address) + '?countrycodes=au&format=json'
 
+    print(url)
     response = requests.get(url).json()
-    #print(response[0]["lat"])
-    #print(response[0]["lon"])
-    return(response[0]["lat"], response[0]["lon"])
+    return(float(response[0]["lat"]), float(response[0]["lon"]))
 
 def getUser(pk):
     # print(pk)
@@ -59,3 +55,10 @@ def getUser(pk):
 def getParkingSpace(pk):
     parking_obj = ParkingSpace.objects.get(id=pk)
     return parking_obj
+
+def getSuggestions(address):
+    import requests
+    import urllib.parse
+    url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(address) + '?countrycodes=au&format=json'
+    response = requests.get(url).json()
+    return [''.join(i["display_name"].split(',')[:3]) + ''.join(i["display_name"].split(',')[-3:-1]) for i in response]

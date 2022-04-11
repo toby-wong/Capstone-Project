@@ -1,6 +1,6 @@
-from django.urls import include, path, re_path
+from django.urls import include, path
 from dj_rest_auth.registration.views import VerifyEmailView, ConfirmEmailView
-from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView, UserDetailsView
+from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
 from users.views import *
 
 urlpatterns = [
@@ -22,13 +22,16 @@ urlpatterns = [
     path('provider/parking/reviews/<int:parkingID>', ReviewList.as_view(), name='list_reviews'),
     path('provider/parking/bookings/<int:parkingID>', BookingList.as_view(), name='list_bookings'),
     path('provider/parking/all', ParkingSpaceList.as_view(), name='list_parking_space'),
+    path('provider/parking/pending', PendingParkingSpaceList.as_view(), name='pending_list_parking_space'),
+    path('provider/parking/rejected', RejectedParkingSpaceList.as_view(), name='rejected_list_parking_space'),
+    path('provider/parking/approved', ApprovedParkingSpaceList.as_view(), name='approved_list_parking_space'),
 
     # Booking
 
     path('consumer/book', CreateBooking.as_view(), name='create_booking'),
     path('consumer/book/<int:bookingID>', BookingView.as_view(), name='modify_booking'),
 
-    #History
+    # History
 
     path('provider/history', ProviderBookingHistory.as_view(), name='provider_history'),
     path('consumer/history', ConsumerBookingHistory.as_view(), name='consumer_history'),
@@ -57,5 +60,8 @@ urlpatterns = [
     path('consumer/vehicle/<int:vehicleID>', VehicleView.as_view(), name='modify_vehicle'),
     path('consumer/vehicle/all', VehicleList.as_view(), name='list_vehicle'),
 
+    # Search 
 
+    path('provider/parking/search/suggestions/', AddressSuggestions.as_view(), name='address_suggestions'),
+    path('provider/parking/search/', ParkingSearchList.as_view(), name='search_parking_space'),
 ]
