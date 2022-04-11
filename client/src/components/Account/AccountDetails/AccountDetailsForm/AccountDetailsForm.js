@@ -93,7 +93,7 @@ const AccountDetailsForm = ({ details, setPage }) => {
         <div className={classes["col-horizontal"]}>
           <AccountDetailsEntry label={"Email Address"} value={details.email} />
           <div className={classes.col}>
-            <Button
+            {/* <Button
               className={classes.button}
               color="secondary"
               variant="contained"
@@ -101,7 +101,7 @@ const AccountDetailsForm = ({ details, setPage }) => {
               onClick={changeEmailHandler}
             >
               Change Email
-            </Button>
+            </Button> */}
           </div>
         </div>
         <div className={classes["col-horizontal"]}>

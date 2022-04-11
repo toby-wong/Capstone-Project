@@ -19,17 +19,6 @@
 }
 
 /* Left */
-.image-container {
-  flex: 1;
-  min-height: 300px;
-}
-
-.image-container img {
-  height: 100%;
-  width: 100%;
-  object-fit: contain;
-}
-
 .actions {
   flex: 1;
   display: flex;
@@ -74,4 +63,15 @@
   flex: 1;
   display: block;
   max-height: 20vh;
+}
+
+.spinner {
+  color: var(--green);
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
 }

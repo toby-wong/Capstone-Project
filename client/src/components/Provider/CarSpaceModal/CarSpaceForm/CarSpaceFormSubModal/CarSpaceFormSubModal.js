@@ -1,4 +1,4 @@
-import classes from "./CarSpaceRegistrationSubModal.module.css";
+import classes from "./CarSpaceFormSubModal.module.css";
 
 import GeneralModal from "../../../../UI/GeneralModal/GeneralModal";
 import GeneralModalHeader from "../../../../UI/GeneralModal/GeneralModalHeader";
@@ -7,7 +7,7 @@ import GeneralModalActions from "../../../../UI/GeneralModal/GeneralModalActions
 
 import { Button, Typography } from "@mui/material";
 
-const CarSpaceRegistrationSubModal = ({ open, onClose, title, content }) => {
+const CarSpaceFormSubModal = ({ open, onClose, title, content }) => {
   return (
     <GeneralModal open={open} onClose={onClose} className={classes.modal}>
       <GeneralModalHeader title={title} onClose={onClose} />
@@ -38,4 +38,4 @@ const CarSpaceRegistrationSubModal = ({ open, onClose, title, content }) => {
   );
 };
 
-export default CarSpaceRegistrationSubModal;
+export default CarSpaceFormSubModal;

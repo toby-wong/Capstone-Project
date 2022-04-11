@@ -19,6 +19,7 @@ drf-extra-fields = "*"
 haversine = "*"
 django-filter = "*"
 drf-writable-nested = "*"
+drf-flex-fields = "*"
 
 [dev-packages]
 

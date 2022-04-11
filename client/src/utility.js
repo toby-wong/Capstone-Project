@@ -1,3 +1,11 @@
+export const getDate = (dateTimeStr) => {
+  const [date, time] = dateTimeStr.split(" ");
+  const [day, month, year] = date.split("/");
+  const [hour, minute] = time.split(":");
+
+  return new Date(year, month, day, hour, minute);
+};
+
 export const convertImagesToBase64 = async (imageFiles) => {
   const getBase64 = (imageFile) =>
     new Promise((resolve, reject) => {
@@ -7,7 +15,7 @@ export const convertImagesToBase64 = async (imageFiles) => {
         const base64String = reader.result
           .replace("data:", "")
           .replace(/^.+,/, "");
-        resolve(base64String);
+        resolve({ image_data: base64String });
       };
 
       reader.readAsDataURL(imageFile);

@@ -1,15 +1,19 @@
 # Controls what fields are packaged together
 
+from ast import Mod
 from webbrowser import get
 from django.db import transaction
+from django.db.models import Avg
 import pkg_resources
 from .utils import AddressValidation, getCoords, getParkingSpace, getUser
 from rest_framework import serializers
-from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField, StringRelatedField
+from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField, StringRelatedField, SlugRelatedField
+from drf_extra_fields.fields import Base64ImageField
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from .models import CustomUser, Favourite, ParkingSpace, Image, Transaction, Review, Vehicle
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from drf_writable_nested.serializers import WritableNestedModelSerializer, NestedUpdateMixin 
+from rest_flex_fields import FlexFieldsModelSerializer
 
 class UserSerializer(ModelSerializer):
     class Meta:
@@ -70,46 +74,6 @@ class RemoveUserSerializer(ModelSerializer):
         # user.save()
 
 
-class ParkingDetailsSerializer(ModelSerializer):
-
-    # provider = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
-    pk = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
-    class Meta:
-        model = ParkingSpace
-        fields = (
-            'provider',
-            'streetAddress',
-            'city',
-            'state',
-            'postcode',
-            'longitude',
-            'latitude',
-            'price',
-            'size',
-            'notes',
-            'is_active',
-            'pk'
-        )
-
-        read_only_fields = [
-            'provider',
-            'streetAddress',
-            'city',
-            'state',
-            'postcode',
-            'longitude',
-            'latitude',
-            'price',
-            'size',
-            'notes',
-            'is_active'
-        ]
-
-    def get(self, request):
-        parkingID = request.data.get('pk')
-        details = self.Meta.model.objects.get(pk=parkingID).__dict__
-        return details
-
 class ImageSerializer(ModelSerializer):
 
     image_data = serializers.CharField()
@@ -121,6 +85,7 @@ class ImageSerializer(ModelSerializer):
         )
 
         read_only_fields = ['pk']
+
 
 class ParkingSpaceSerializer(NestedUpdateMixin, ModelSerializer):
 
@@ -174,7 +139,6 @@ class ParkingSpaceSerializer(NestedUpdateMixin, ModelSerializer):
             Image.objects.create(parkingSpace=parkingSpace, **img_data)
         return parkingSpace
 
-
 class VehicleSerializer(ModelSerializer):
 
     user = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
@@ -215,6 +179,11 @@ class TransactionSerializer(ModelSerializer):
     consumer = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
     vehicle = PrimaryKeyRelatedField(queryset=Vehicle.objects.all())
     parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
+    streetAddress = serializers.CharField(source="parkingSpace.streetAddress")
+    city = serializers.CharField(source="parkingSpace.city")
+    state = serializers.CharField(source="parkingSpace.state")
+    postcode = serializers.CharField(source="parkingSpace.postcode")
+
 
     class Meta:
         model = Transaction
@@ -223,18 +192,24 @@ class TransactionSerializer(ModelSerializer):
             'consumer',
             'vehicle',
             'parkingSpace',
+            'streetAddress',
+            'city',
+            'state',
+            'postcode',
             'startTime',
             'endTime',
             'totalCost',
             'pk'
         )
 
+        depth=1
+
         read_only_fields = ['pk']
         
 
 class ReviewSerializer(ModelSerializer):
 
-    consumer = StringRelatedField()
+    consumer = SlugRelatedField(queryset=CustomUser.objects.all(), slug_field='username')
     parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
 
     class Meta:
@@ -249,3 +224,14 @@ class ReviewSerializer(ModelSerializer):
         )
 
         read_only_fields = ['pk']
+
+    def create(self, validated_data):
+        review = Review.objects.create(**validated_data)
+        count = Review.objects.filter(parkingSpace = review.parkingSpace).count()
+        average = Review.objects.filter(parkingSpace = review.parkingSpace).aggregate(Avg('rating'))
+        parkingSpace = ParkingSpace.objects.filter(pk=review.parkingSpace.pk).first()
+        parkingSpace.avg_rating = average['rating__avg']
+        parkingSpace.n_ratings = count
+        parkingSpace.save()
+
+        return review

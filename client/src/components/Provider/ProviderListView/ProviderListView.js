@@ -10,6 +10,7 @@ import {
   Typography,
   Divider,
   CircularProgress,
+  TablePagination,
 } from "@mui/material";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import MapIcon from "@mui/icons-material/Map";
@@ -19,12 +20,17 @@ import ArchiveIcon from "@mui/icons-material/Archive";
 import { sendRequest } from "../../../utility";
 import * as config from "../../../config";
 import ProviderListItem from "./ProviderListItem";
+import CarSpaceModalContext from "../../../contexts/carspace-modal-context";
 
-const ProviderListView = ({ onAdd, onClickItem }) => {
+const ProviderListView = () => {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({ value: false, message: "" });
   const [carSpaces, setCarSpaces] = useState([]);
+  const [listItemCount, setListItemCount] = useState(-1);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(3);
+  const carSpaceModalContext = useContext(CarSpaceModalContext);
 
   const activeTabView = location.pathname.split("/")[2] ?? false;
   const activeTabListings = location.pathname.split("/")[3] ?? false;
@@ -33,11 +39,28 @@ const ProviderListView = ({ onAdd, onClickItem }) => {
   // prettier-ignore
   const activeUrl = `${location.pathname.split("/").slice(0, 3).join("/")}/active`;
 
+  const changePageHandler = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const changeRowsPerPageHandler = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const addCarSpaceHandler = () => {
+    carSpaceModalContext.openPage("/add");
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const authToken = localStorage.getItem("parkItAuthToken");
-        const url = `${config.SERVER_URL}/api/provider/parking/all`;
+        const url = `${
+          config.SERVER_URL
+        }/api/provider/parking/all?limit=${rowsPerPage}&offset=${
+          page * rowsPerPage
+        }`;
         const options = {
           method: "GET",
           headers: {
@@ -49,28 +72,10 @@ const ProviderListView = ({ onAdd, onClickItem }) => {
         const response = await sendRequest(url, options, setIsLoading);
         if (response.status >= 300 || !response.status) throw Error;
 
-        const carSpacesObjs = [];
-        for (const space of response.data) {
-          const getImageUrl = `${config.SERVER_URL}/api/provider/parking/images/${space.pk}`;
-          const getImageOptions = {
-            method: "GET",
-            headers: {
-              Authorization: "Bearer " + authToken,
-              "Content-Type": "application/json",
-            },
-          };
-          const getImageResponse = await sendRequest(
-            getImageUrl,
-            getImageOptions
-          );
-          if (getImageResponse.status >= 300 || !getImageResponse.status)
-            throw Error;
-
-          carSpacesObjs.push({ ...space, image: getImageResponse.data });
-        }
-        setCarSpaces(carSpacesObjs);
+        console.log(response.data);
+        setCarSpaces(response.data.results);
+        setListItemCount(response.data.count);
       } catch (e) {
-        console.log(e.message);
         setError({
           value: true,
           message: config.NETWORK_ERROR_MESSAGE,
@@ -79,7 +84,7 @@ const ProviderListView = ({ onAdd, onClickItem }) => {
     };
 
     fetchData();
-  }, []);
+  }, [page, rowsPerPage, carSpaceModalContext.carSpacesRefreshStatus]);
 
   return (
     <Paper variant="sectionBody">
@@ -147,7 +152,7 @@ const ProviderListView = ({ onAdd, onClickItem }) => {
             color="primary"
             variant="contained"
             size="large"
-            onClick={onAdd}
+            onClick={addCarSpaceHandler}
           >
             Add Car Space
           </Button>
@@ -171,13 +176,23 @@ const ProviderListView = ({ onAdd, onClickItem }) => {
                 notes={item.notes}
                 size={item.size}
                 price={item.price}
-                onClick={onClickItem}
-                image={item.image}
+                image={item.images[0].image_data}
               />
             ))}
           {!isLoading && error.value && (
             <div className={classes["center-container"]}>{error.message}</div>
           )}
+
+          <TablePagination
+            className={classes.pagination}
+            component="div"
+            count={listItemCount}
+            page={page}
+            onPageChange={changePageHandler}
+            rowsPerPage={rowsPerPage}
+            rowsPerPageOptions={[3, 5, 10]}
+            onRowsPerPageChange={changeRowsPerPageHandler}
+          />
         </Paper>
       </Paper>
     </Paper>

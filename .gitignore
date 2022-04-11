@@ -4,5 +4,5 @@ Scripts/
 pyenv.cfg
 Lib/
 backend/.venv
-backend/.gitignore
+backend/db.sqlite3
 capstone-project-3900-w14b-blue-man-group.code-workspace
