@@ -39,25 +39,25 @@ urlpatterns = [
     # Images 
 
     path('provider/image/<int:parkingID>', CreateImage.as_view(), name='create_image'),
-    path('provider/image/<int:imgID>', ImageView.as_view(), name='modify_image'),
+    path('provider/image/<int:pk>', ImageView.as_view(), name='modify_image'),
     
 
     # Reviews
 
     path('consumer/review', CreateReview.as_view(), name='create_review'),
-    path('consumer/review/<int:reviewID>', ReviewView.as_view(), name='modify_review'),
+    path('consumer/review/<int:pk>', ReviewView.as_view(), name='modify_review'),
  
 
     # Favourites
 
     path('consumer/favourite', CreateFavourite.as_view(), name='create_favourite'),
-    path('consumer/favourite/<int:favID>', FavouriteView.as_view(), name='modify_favourite'),
+    path('consumer/favourite/<int:pk>', FavouriteView.as_view(), name='modify_favourite'),
     path('consumer/favourite/all', FavouriteList.as_view(), name='list_favourites'),
 
     # Vehicle
 
     path('consumer/vehicle', CreateVehicle.as_view(), name='create_vehicle'),
-    path('consumer/vehicle/<int:vehicleID>', VehicleView.as_view(), name='modify_vehicle'),
+    path('consumer/vehicle/<int:pk>', VehicleView.as_view(), name='modify_vehicle'),
     path('consumer/vehicle/all', VehicleList.as_view(), name='list_vehicle'),
 
     # Search 
