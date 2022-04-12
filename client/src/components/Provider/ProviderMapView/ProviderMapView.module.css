@@ -3,56 +3,98 @@ body{
     overflow: hidden;
 }
 
-.mainContainer{
-    width: 40%;
-    height: 80%;
-    top: 10%;
-    left: 2%;
+.bodyContainer{
+    width: 100%;
+    height: 100%;
     display: flex;
-    flex-direction: column;
-    position: absolute;
-    margin-left: 10px;
-    background-color: var(--light);
-    border-radius: 15px;
-    z-index: 1000;
+    flex-direction: row;
 }
 
 .title{
-    margin: 30px;
-    margin-bottom: 10px;
-    font-size: 45px;
+    font-size: 40px;
+    margin-left: 10px;
 }
 
 /* Main Menu Section */
 .menuContainer{
-    width: 100%;
+    width: 600px;
     display: flex;
     flex-direction: column;
-    margin-left: 15px;
+    margin-top: 20px;
+    margin-left: 40px;
+}
+
+/* Selecting between map view, etc. menu bar */
+.viewSelection{
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+    margin-bottom: 10px;
 }
 
 .tabContainer{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.menu__tab{
-    width: 22%;
-    font-size: 15px;
-    margin-right: 3px;
+    width: 45%;
+    height: auto;
     align-items: center;
 }
 
-.tab-icon {
+.menu__tab{
+    font-size: 12px;
+}
+
+.tab-icon{
     color: var(--light);
     background-color: var(--green);
-    border-radius: 15px;
+    border-radius: 50%;
     padding: 5px;
     font-size: 30px;
 }
+
+.navbar_divider_betweenTabs{
+    align-self: center;
+    width: 5px;
+    height: 45%;
+}
+
+/* Listing container and listings */
+.listingContainer{
+    width: 100%;
+    height: 100%;
+    margin-top: 15px;
+}
+
+.navbar_divider_listingStart {
+    width: 95%;
+    height: 2px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    justify-content: center;
+}
+
+.center_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.spinner {
+    color: var(--green);
+}
+
+
+
+.mapContainer {
+    width: 100%;
+    height: 100%;
+}
+
+.mapElement {
+    width: 100%;
+    height: 100%;
+}
+
 
 .button{
     margin-right: 30px;
@@ -63,79 +105,4 @@ body{
     z-index: 1000;
     top: 10%;
     left: 90%;
-}
-
-/* Listing container and listings */
-.listingContainer{
-    width: 100%;
-    height: 100%;
-    margin-top: 15px;
-}
-
-.listing {
-    width: 90%;
-    height: 40%;
-    display: flex;
-    flex-direction: row;
-    margin-top: 1px;
-    margin-bottom: 20px;
-    border-radius: 15px;
-    padding: 15px;
-}
-
-/* LHS - Description and information */
-.lhs{
-width: 60%;
-height: 100%;
-display: flex;
-flex-direction: column;
-}
-
-.descriptor{
-color: var(--green);
-}
-
-.description{
-    width: 100%;
-    height: 80%;
-    text-align: justify;
-    margin-top: 10px;
-    color: black;
-}
-
-.infoBar{
-width: 100%;
-height: 20px;
-display: flex;
-flex-direction: column;
-margin-top: 20px;
-font-weight: bold;
-}
-
-.capacity_rate{
-display: flex;
-flex-direction: row;
-width: 100%;
-align-items: center;
-justify-content: space-between;
-}
-
-.rate{
-    align-items: center;
-    color: var(--green);
-}
-
-.capacity{
-    color: var(--grey);
-}
-
-.imageContainer{
-    width: 30%;
-    height: 100%;
-    margin-left: 20px;
-}
-.imageEntry{
-    width: 100%;
-    height: 100%;
-    object-fit:fill;
 }
