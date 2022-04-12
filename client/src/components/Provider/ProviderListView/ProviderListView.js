@@ -22,7 +22,7 @@ import * as config from "../../../config";
 import ProviderListItem from "./ProviderListItem";
 import CarSpaceModalContext from "../../../contexts/carspace-modal-context";
 
-const ProviderListView = () => {
+const ProviderListView = ({ pending = false }) => {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({ value: false, message: "" });
@@ -56,11 +56,10 @@ const ProviderListView = () => {
     const fetchData = async () => {
       try {
         const authToken = localStorage.getItem("parkItAuthToken");
-        const url = `${
-          config.SERVER_URL
-        }/api/provider/parking/all?limit=${rowsPerPage}&offset=${
-          page * rowsPerPage
-        }`;
+
+        const url = `${config.SERVER_URL}/api/provider/parking/${
+          pending ? "pending" : "approved"
+        }?limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
         const options = {
           method: "GET",
           headers: {
@@ -72,7 +71,6 @@ const ProviderListView = () => {
         const response = await sendRequest(url, options, setIsLoading);
         if (response.status >= 300 || !response.status) throw Error;
 
-        console.log(response.data);
         setCarSpaces(response.data.results);
         setListItemCount(response.data.count);
       } catch (e) {
@@ -84,7 +82,7 @@ const ProviderListView = () => {
     };
 
     fetchData();
-  }, [page, rowsPerPage, carSpaceModalContext.carSpacesRefreshStatus]);
+  }, [pending, page, rowsPerPage, carSpaceModalContext.carSpacesRefreshStatus]);
 
   return (
     <Paper variant="sectionBody">
