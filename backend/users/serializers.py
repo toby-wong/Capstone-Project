@@ -1,19 +1,15 @@
 # Controls what fields are packaged together
 
-from ast import Mod
-from webbrowser import get
 from django.db import transaction
 from django.db.models import Avg
-import pkg_resources
-from .utils import AddressValidation, getCoords, getParkingSpace, getUser
+from pkg_resources import require
+from .utils import AddressValidation, getCoords
 from rest_framework import serializers
-from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField, StringRelatedField, SlugRelatedField
-from drf_extra_fields.fields import Base64ImageField
+from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField, SlugRelatedField
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from .models import CustomUser, Favourite, ParkingSpace, Image, Transaction, Review, Vehicle
-from django.core.files.uploadedfile import InMemoryUploadedFile
-from drf_writable_nested.serializers import WritableNestedModelSerializer, NestedUpdateMixin 
-from rest_flex_fields import FlexFieldsModelSerializer
+from drf_writable_nested.serializers import NestedUpdateMixin
+from datetime import datetime
 
 class UserSerializer(ModelSerializer):
     class Meta:
@@ -179,10 +175,12 @@ class TransactionSerializer(ModelSerializer):
     consumer = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
     vehicle = PrimaryKeyRelatedField(queryset=Vehicle.objects.all())
     parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
-    streetAddress = serializers.CharField(source="parkingSpace.streetAddress")
-    city = serializers.CharField(source="parkingSpace.city")
-    state = serializers.CharField(source="parkingSpace.state")
-    postcode = serializers.CharField(source="parkingSpace.postcode")
+    streetAddress = serializers.CharField(source="parkingSpace.streetAddress", required=False)
+    city = serializers.CharField(source="parkingSpace.city", required=False) 
+    state = serializers.CharField(source="parkingSpace.state", required=False)
+    postcode = serializers.CharField(source="parkingSpace.postcode", required=False)
+    consumerName = serializers.CharField(source="consumer.username", required=False)
+    parkingSpaceSize = serializers.CharField(source="parkingSpace.size", required=False)
 
 
     class Meta:
@@ -196,15 +194,29 @@ class TransactionSerializer(ModelSerializer):
             'city',
             'state',
             'postcode',
+            'consumerName',
+            'parkingSpaceSize',
             'startTime',
             'endTime',
             'totalCost',
             'pk'
         )
 
-        depth=1
+        read_only_fields = ['pk', 'streetAddress', 'city', 'state', 'postcode']
+    
+    def validate(self, data):
+        startTime = data['startTime']
+        endTime = data['endTime']
+        if startTime > endTime:
+            raise serializers.ValidationError('Booking start time must be before booking end time')
+        parkingSpace = ParkingSpace.objects.filter(pk=data['parkingSpace'].pk).first()
+        if parkingSpace.startTime > startTime or parkingSpace.endTime < endTime or parkingSpace.startTime > endTime or parkingSpace.endTime < startTime:
+             raise serializers.ValidationError('This booking does not fit within the parking space availability.')
+        qs = Transaction.objects.filter(parkingSpace=data['parkingSpace']).exclude(startTime__date__gt=endTime).exclude(endTime__date__lt=startTime)
+        if qs.exists():
+            raise serializers.ValidationError('This booking overlaps with an existing booking.')
+        return data
 
-        read_only_fields = ['pk']
         
 
 class ReviewSerializer(ModelSerializer):

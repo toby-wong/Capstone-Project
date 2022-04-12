@@ -1,6 +1,6 @@
-from django.urls import include, path, re_path
+from django.urls import include, path
 from dj_rest_auth.registration.views import VerifyEmailView, ConfirmEmailView
-from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView, UserDetailsView
+from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
 from users.views import *
 
 urlpatterns = [
@@ -29,9 +29,9 @@ urlpatterns = [
     # Booking
 
     path('consumer/book', CreateBooking.as_view(), name='create_booking'),
-    path('consumer/book/<int:bookingID>', BookingView.as_view(), name='modify_booking'),
+    path('consumer/book/<int:pk>', BookingView.as_view(), name='modify_booking'),
 
-    #History
+    # History
 
     path('provider/history', ProviderBookingHistory.as_view(), name='provider_history'),
     path('consumer/history', ConsumerBookingHistory.as_view(), name='consumer_history'),
@@ -39,28 +39,29 @@ urlpatterns = [
     # Images 
 
     path('provider/image/<int:parkingID>', CreateImage.as_view(), name='create_image'),
-    path('provider/image/<int:imgID>', ImageView.as_view(), name='modify_image'),
+    path('provider/image/<int:pk>', ImageView.as_view(), name='modify_image'),
     
 
     # Reviews
 
     path('consumer/review', CreateReview.as_view(), name='create_review'),
-    path('consumer/review/<int:reviewID>', ReviewView.as_view(), name='modify_review'),
+    path('consumer/review/<int:pk>', ReviewView.as_view(), name='modify_review'),
  
 
     # Favourites
 
     path('consumer/favourite', CreateFavourite.as_view(), name='create_favourite'),
-    path('consumer/favourite/<int:favID>', FavouriteView.as_view(), name='modify_favourite'),
+    path('consumer/favourite/<int:pk>', FavouriteView.as_view(), name='modify_favourite'),
     path('consumer/favourite/all', FavouriteList.as_view(), name='list_favourites'),
 
     # Vehicle
 
     path('consumer/vehicle', CreateVehicle.as_view(), name='create_vehicle'),
-    path('consumer/vehicle/<int:vehicleID>', VehicleView.as_view(), name='modify_vehicle'),
+    path('consumer/vehicle/<int:pk>', VehicleView.as_view(), name='modify_vehicle'),
     path('consumer/vehicle/all', VehicleList.as_view(), name='list_vehicle'),
 
     # Search 
 
+    path('provider/parking/search/suggestions/', AddressSuggestions.as_view(), name='address_suggestions'),
     path('provider/parking/search/', ParkingSearchList.as_view(), name='search_parking_space'),
 ]

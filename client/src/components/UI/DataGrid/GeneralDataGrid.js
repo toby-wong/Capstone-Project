@@ -1,7 +1,12 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
 
-const GeneralDataGrid = ({ rows, columns, rowsPerPageOptions }) => {
+const GeneralDataGrid = ({
+  rows,
+  columns,
+  rowsPerPageOptions,
+  initialState,
+}) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -22,6 +27,7 @@ const GeneralDataGrid = ({ rows, columns, rowsPerPageOptions }) => {
       pageSize={rowsPerPage}
       onPageSizeChange={changeRowsPerPageHandler}
       rowsPerPageOptions={rowsPerPageOptions}
+      initialState={initialState}
       sx={{
         "& .MuiDataGrid-columnHeader": {
           fontSize: "1rem",

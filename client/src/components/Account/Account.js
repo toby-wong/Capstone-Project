@@ -8,6 +8,7 @@ import classes from "./Account.module.css";
 
 import { Link, Route, Routes, useLocation } from "react-router-dom";
 import AccountDetails from "./AccountDetails/AccountDetails";
+import ProviderHistory from "./ProviderHistory/ProviderHistory";
 
 const Account = (props) => {
   const location = useLocation();
@@ -66,10 +67,7 @@ const Account = (props) => {
             path="history/consumer"
             element={<div>Consumer History</div>}
           />
-          <Route
-            path="history/provider"
-            element={<div>Provider History</div>}
-          />
+          <Route path="history/provider" element={<ProviderHistory />} />
           <Route path="favourites" element={<div>Favourites</div>} />
         </Routes>
       </div>

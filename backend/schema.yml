@@ -1614,6 +1614,96 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedReviewList'
           description: ''
+  /api/provider/parking/search/:
+    get:
+      operationId: provider_parking_search_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: price__gte
+        schema:
+          type: integer
+      - in: query
+        name: price__lte
+        schema:
+          type: integer
+      - in: query
+        name: rating__gte_max
+        schema:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+          nullable: true
+      - in: query
+        name: rating__gte_min
+        schema:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+          nullable: true
+      - in: query
+        name: rating__lte_max
+        schema:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+          nullable: true
+      - in: query
+        name: rating__lte_min
+        schema:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+          nullable: true
+      - in: query
+        name: size
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - 4WD/SUV
+            - Hatchback
+            - Sedan
+            - Van
+        explode: true
+        style: form
+      tags:
+      - provider
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedParkingSpaceList'
+          description: ''
+  /api/provider/parking/search/suggestions/:
+    get:
+      operationId: provider_parking_search_suggestions_retrieve
+      tags:
+      - provider
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
   /api/registration/:
     post:
       operationId: registration_create
@@ -1899,8 +1989,7 @@ components:
         price:
           type: integer
         size:
-          type: string
-          maxLength: 100
+          $ref: '#/components/schemas/SizeEnum'
         notes:
           type: string
           maxLength: 10000
@@ -1947,7 +2036,6 @@ components:
       - postcode
       - price
       - provider
-      - size
       - startTime
       - state
       - status
@@ -2033,8 +2121,7 @@ components:
         price:
           type: integer
         size:
-          type: string
-          maxLength: 100
+          $ref: '#/components/schemas/SizeEnum'
         notes:
           type: string
           maxLength: 10000
@@ -2092,11 +2179,6 @@ components:
           title: ID
     PatchedTransaction:
       type: object
-      description: |-
-        A ModelSerializer that takes additional arguments for
-        "fields", "omit" and "expand" in order to
-        control which fields are displayed, and whether to replace simple
-        values with complex, nested serializations
       properties:
         provider:
           type: integer
@@ -2106,6 +2188,14 @@ components:
           type: integer
         parkingSpace:
           type: integer
+        streetAddress:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        postcode:
+          type: string
         startTime:
           type: string
           format: date-time
@@ -2225,6 +2315,13 @@ components:
       - pk
       - publishDate
       - rating
+    SizeEnum:
+      enum:
+      - Hatchback
+      - Sedan
+      - 4WD/SUV
+      - Van
+      type: string
     StatusEnum:
       enum:
       - pending
@@ -2253,11 +2350,6 @@ components:
       - token
     Transaction:
       type: object
-      description: |-
-        A ModelSerializer that takes additional arguments for
-        "fields", "omit" and "expand" in order to
-        control which fields are displayed, and whether to replace simple
-        values with complex, nested serializations
       properties:
         provider:
           type: integer
@@ -2267,6 +2359,14 @@ components:
           type: integer
         parkingSpace:
           type: integer
+        streetAddress:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        postcode:
+          type: string
         startTime:
           type: string
           format: date-time
@@ -2282,12 +2382,16 @@ components:
           readOnly: true
           title: ID
       required:
+      - city
       - consumer
       - endTime
       - parkingSpace
       - pk
+      - postcode
       - provider
       - startTime
+      - state
+      - streetAddress
       - totalCost
       - vehicle
     User:
