@@ -419,12 +419,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Transaction'
           description: ''
-  /api/consumer/book/{bookingID}:
+  /api/consumer/book/{id}:
     get:
       operationId: consumer_book_retrieve
       parameters:
       - in: path
-        name: bookingID
+        name: id
         schema:
           type: integer
         required: true
@@ -445,7 +445,7 @@ paths:
       operationId: consumer_book_update
       parameters:
       - in: path
-        name: bookingID
+        name: id
         schema:
           type: integer
         required: true
@@ -478,7 +478,7 @@ paths:
       operationId: consumer_book_partial_update
       parameters:
       - in: path
-        name: bookingID
+        name: id
         schema:
           type: integer
         required: true
@@ -510,7 +510,7 @@ paths:
       operationId: consumer_book_destroy
       parameters:
       - in: path
-        name: bookingID
+        name: id
         schema:
           type: integer
         required: true
@@ -551,12 +551,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Favourite'
           description: ''
-  /api/consumer/favourite/{favID}:
+  /api/consumer/favourite/{id}:
     get:
       operationId: consumer_favourite_retrieve
       parameters:
       - in: path
-        name: favID
+        name: id
         schema:
           type: integer
         required: true
@@ -577,7 +577,7 @@ paths:
       operationId: consumer_favourite_update
       parameters:
       - in: path
-        name: favID
+        name: id
         schema:
           type: integer
         required: true
@@ -610,7 +610,7 @@ paths:
       operationId: consumer_favourite_partial_update
       parameters:
       - in: path
-        name: favID
+        name: id
         schema:
           type: integer
         required: true
@@ -642,7 +642,7 @@ paths:
       operationId: consumer_favourite_destroy
       parameters:
       - in: path
-        name: favID
+        name: id
         schema:
           type: integer
         required: true
@@ -741,12 +741,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Review'
           description: ''
-  /api/consumer/review/{reviewID}:
+  /api/consumer/review/{id}:
     get:
       operationId: consumer_review_retrieve
       parameters:
       - in: path
-        name: reviewID
+        name: id
         schema:
           type: integer
         required: true
@@ -767,7 +767,7 @@ paths:
       operationId: consumer_review_update
       parameters:
       - in: path
-        name: reviewID
+        name: id
         schema:
           type: integer
         required: true
@@ -800,7 +800,7 @@ paths:
       operationId: consumer_review_partial_update
       parameters:
       - in: path
-        name: reviewID
+        name: id
         schema:
           type: integer
         required: true
@@ -832,7 +832,7 @@ paths:
       operationId: consumer_review_destroy
       parameters:
       - in: path
-        name: reviewID
+        name: id
         schema:
           type: integer
         required: true
@@ -873,12 +873,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Vehicle'
           description: ''
-  /api/consumer/vehicle/{vehicleID}:
+  /api/consumer/vehicle/{id}:
     get:
       operationId: consumer_vehicle_retrieve
       parameters:
       - in: path
-        name: vehicleID
+        name: id
         schema:
           type: integer
         required: true
@@ -899,7 +899,7 @@ paths:
       operationId: consumer_vehicle_update
       parameters:
       - in: path
-        name: vehicleID
+        name: id
         schema:
           type: integer
         required: true
@@ -932,7 +932,7 @@ paths:
       operationId: consumer_vehicle_partial_update
       parameters:
       - in: path
-        name: vehicleID
+        name: id
         schema:
           type: integer
         required: true
@@ -964,7 +964,7 @@ paths:
       operationId: consumer_vehicle_destroy
       parameters:
       - in: path
-        name: vehicleID
+        name: id
         schema:
           type: integer
         required: true
@@ -1126,93 +1126,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedTransactionList'
           description: ''
-  /api/provider/image/{imgID}:
-    get:
-      operationId: provider_image_retrieve
-      parameters:
-      - in: path
-        name: imgID
-        schema:
-          type: integer
-        required: true
-      tags:
-      - provider
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Image'
-          description: ''
-    put:
-      operationId: provider_image_update
-      parameters:
-      - in: path
-        name: imgID
-        schema:
-          type: integer
-        required: true
-      tags:
-      - provider
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Image'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Image'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/Image'
-        required: true
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Image'
-          description: ''
-    patch:
-      operationId: provider_image_partial_update
-      parameters:
-      - in: path
-        name: imgID
-        schema:
-          type: integer
-        required: true
-      tags:
-      - provider
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchedImage'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedImage'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PatchedImage'
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Image'
-          description: ''
   /api/provider/image/{parkingID}:
     post:
       operationId: provider_image_create
@@ -1264,6 +1177,93 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/provider/image/{id}:
+    get:
+      operationId: provider_image_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+          description: ''
+    put:
+      operationId: provider_image_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Image'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Image'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Image'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+          description: ''
+    patch:
+      operationId: provider_image_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - provider
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedImage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedImage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedImage'
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+          description: ''
   /api/provider/parking:
     post:
       operationId: provider_parking_create
@@ -1993,6 +1993,16 @@ components:
         notes:
           type: string
           maxLength: 10000
+        longitude:
+          type: number
+          format: double
+          readOnly: true
+          nullable: true
+        latitude:
+          type: number
+          format: double
+          readOnly: true
+          nullable: true
         startTime:
           type: string
           format: date-time
@@ -2000,9 +2010,7 @@ components:
           type: string
           format: date-time
         status:
-          allOf:
-          - $ref: '#/components/schemas/StatusEnum'
-          readOnly: true
+          $ref: '#/components/schemas/StatusEnum'
         images:
           type: array
           items:
@@ -2030,6 +2038,8 @@ components:
       - endTime
       - images
       - is_active
+      - latitude
+      - longitude
       - n_ratings
       - notes
       - pk
@@ -2038,7 +2048,6 @@ components:
       - provider
       - startTime
       - state
-      - status
       - streetAddress
     PasswordChange:
       type: object
@@ -2125,6 +2134,16 @@ components:
         notes:
           type: string
           maxLength: 10000
+        longitude:
+          type: number
+          format: double
+          readOnly: true
+          nullable: true
+        latitude:
+          type: number
+          format: double
+          readOnly: true
+          nullable: true
         startTime:
           type: string
           format: date-time
@@ -2132,9 +2151,7 @@ components:
           type: string
           format: date-time
         status:
-          allOf:
-          - $ref: '#/components/schemas/StatusEnum'
-          readOnly: true
+          $ref: '#/components/schemas/StatusEnum'
         images:
           type: array
           items:
@@ -2195,6 +2212,10 @@ components:
         state:
           type: string
         postcode:
+          type: string
+        consumerName:
+          type: string
+        parkingSpaceSize:
           type: string
         startTime:
           type: string
@@ -2326,6 +2347,7 @@ components:
       enum:
       - pending
       - approved
+      - cancelled
       - rejected
       type: string
     TokenRefresh:
@@ -2367,6 +2389,10 @@ components:
           type: string
         postcode:
           type: string
+        consumerName:
+          type: string
+        parkingSpaceSize:
+          type: string
         startTime:
           type: string
           format: date-time
@@ -2382,16 +2408,12 @@ components:
           readOnly: true
           title: ID
       required:
-      - city
       - consumer
       - endTime
       - parkingSpace
       - pk
-      - postcode
       - provider
       - startTime
-      - state
-      - streetAddress
       - totalCost
       - vehicle
     User:
