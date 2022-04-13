@@ -103,6 +103,8 @@ class ParkingSpaceSerializer(NestedUpdateMixin, ModelSerializer):
             'price',
             'size',
             'notes',
+            'longitude',
+            'latitude',
             'startTime',
             'endTime',
             'status',
@@ -115,7 +117,7 @@ class ParkingSpaceSerializer(NestedUpdateMixin, ModelSerializer):
 
         # read_only_fields = ('provider', 'streetAddress','city', 'state', 'postcode')
 
-        read_only_fields = ['pk', 'is_active', 'status', 'avg_rating', 'n_ratings']
+        read_only_fields = ['pk', 'is_active', 'status', 'avg_rating', 'n_ratings', 'longitude', 'latitude']
 
 
     def create(self, validated_data):
