@@ -15,9 +15,7 @@ const ProviderMapItem = ({ streetAddress, notes, size, price, id, image }) => {
 
   return (
     <div className={classes.listing} onClick={mapItemClickHandler}>
-      <div className={classes.imageContainer}>
-        <img className={classes.imageEntry}  alt={"parking spot at"} src={`data:image/png;base64, ${image}`}/>
-      </div>
+      <img className={classes.imageEntry}  alt={"parking spot at"} src={`data:image/png;base64, ${image}`}/>
       <div className={classes.lhs}>
           <Typography 
               variant="sectionTitle"
@@ -26,9 +24,11 @@ const ProviderMapItem = ({ streetAddress, notes, size, price, id, image }) => {
               {streetAddress}
               <Divider orientation="horizontal" className={classes.navbar_divider_listingTitle} />
           </Typography>
-          <div className={classes.description}>
+          <Typography 
+            variant="listItemSubTitle"
+            className={classes.description}>
             {notes.length > 200 ? notes.slice(0, 200) + "..." : notes}
-          </div>
+          </Typography>
           <div className={classes.infoBar}>
               <div className={classes.capacity}>
                   <DirectionsCarIcon

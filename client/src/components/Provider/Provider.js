@@ -19,6 +19,10 @@ const Provider = () => {
             element={<ProviderListView pending={true} />}
           />
           <Route path="mapView/active/*" element={<ProviderMapView />} />
+          <Route
+            path="mapView/pending/*"
+            element={<ProviderMapView pending={true} />}
+          />
         </Routes>
       </div>
     </CarSpaceModalContextProvider>

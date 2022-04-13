@@ -25,7 +25,7 @@ import * as config from "../../../config";
 import ProviderMapItem from "./ProviderMapItem";
 import CarSpaceModalContext from "../../../contexts/carspace-modal-context";
 
-const ProviderMapView = () => {
+const ProviderMapView = ({pending = false}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState({ value: false, message: ""});
     const [carSpaces, setCarSpaces] = useState([]);
@@ -49,7 +49,9 @@ const ProviderMapView = () => {
             const authToken = localStorage.getItem("parkItAuthToken");
             const url = `${
             config.SERVER_URL
-            }/api/provider/parking/all`;
+            }/api/provider/parking/${
+                pending ? "pending" : "approved"
+              }`;
             const options = {
             method: "GET",
             headers: {
@@ -72,7 +74,7 @@ const ProviderMapView = () => {
         };
     
         fetchData();
-    }, [carSpaceModalContext.carSpacesRefreshStatus]);
+    }, [pending, carSpaceModalContext.carSpacesRefreshStatus]);
     
     return (
     <div className={classes.bodyContainer}>
@@ -167,7 +169,7 @@ const ProviderMapView = () => {
                             price={item.price}
                             image={item.images[0].image_data}
                         />
-                    ))
+                        ))
                 }
                 {!isLoading 
                     && error.value 
@@ -198,11 +200,12 @@ const ProviderMapView = () => {
                 </Marker>
             </MapContainer>
             <Button
+                className={classes.button}
                 color="primary"
                 variant="contained"
                 size="large"
                 onClick={addCarSpaceHandler}
-            ></Button>
+            >Add Car Space</Button>
         </div>
    </div>
   )
