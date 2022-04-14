@@ -46,6 +46,8 @@ class ParkingSpaceView(RetrieveUpdateDestroyAPIView):
         return ParkingSpace.objects.filter(pk=space)
 
 
+
+
 # Get all parking spaces owned by the user
 
 class ParkingSpaceList(ListAPIView):
@@ -137,7 +139,22 @@ class BookingView(RetrieveUpdateDestroyAPIView):
         booking = self.kwargs['pk']
         return Transaction.objects.filter(pk=booking)
 
+    def perform_destroy(self, instance):    
+        bookingSpace = instance.parkingSpace
+        instance.delete()
+        if not Transaction.objects.filter(parkingSpace = bookingSpace).exists():
+            print("NULL BEEP")
+            parkingSpace = ParkingSpace.objects.filter(pk=bookingSpace.pk).first()
+            parkingSpace.latestTime = None
+            parkingSpace.save()
+            return
+        print("EXISTS BEEP")
+        latest = Transaction.objects.filter(parkingSpace = bookingSpace).latest('endTime')
+        parkingSpace = ParkingSpace.objects.filter(pk=bookingSpace.pk).first()
+        parkingSpace.latestTime = latest.endTime
 
+        parkingSpace.save()
+        
 # Get all bookings associated with a Parking Space
 
 class BookingList(ListAPIView):
@@ -223,9 +240,22 @@ class CreateReview(CreateAPIView):
 
 class ReviewView(RetrieveUpdateDestroyAPIView):
     serializer_class = ReviewSerializer
+    
     def get_queryset(self):
         review = self.kwargs['pk']
         return Review.objects.filter(pk=review)
+
+    def perform_destroy(self, instance):
+        reviewSpace = instance.parkingSpace
+        instance.delete()
+        count = Review.objects.filter(parkingSpace = reviewSpace).count()
+        average = Review.objects.filter(parkingSpace = reviewSpace).aggregate(Avg('rating'))
+        parkingSpace = ParkingSpace.objects.filter(pk=reviewSpace.pk).first()
+        parkingSpace.avg_rating = average['rating__avg']
+        parkingSpace.n_ratings = count
+        parkingSpace.save()
+        
+
 
 # Get all reviews associated with a parking space
 
