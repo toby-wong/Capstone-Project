@@ -121,11 +121,21 @@ class ParkingSpaceSerializer(NestedUpdateMixin, ModelSerializer):
 
 
     def validate(self, data):
+        method = (self.context['view'].request.method)
+
+        if (method == 'POST'):
+            return data
+        
+        if ('startTime' not in data or 'endTime' not in data):
+            return data
+            
+        pk = self.context['view'].kwargs['pk']
         startTime = data['startTime']
         endTime = data['endTime']
+
         if startTime > endTime:
             raise serializers.ValidationError('Parking space start time must be before the parking space end time')
-        qs = Transaction.objects.filter(parkingSpace=data['parkingSpace']).exclude(startTime__date__gte=startTime).exclude(endTime__date__lte=endTime)
+        qs = Transaction.objects.filter(parkingSpace=pk).exclude(startTime__date__gte=startTime).exclude(endTime__date__lte=endTime)
         if qs.exists():
             raise serializers.ValidationError('This availability would violate existing bookings.')
         return data

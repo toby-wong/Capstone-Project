@@ -79,6 +79,12 @@ class ApprovedParkingSpaceList(ListAPIView):
         provider = self.request.user
         return ParkingSpace.objects.filter(provider=provider).filter(status='approved')
 
+class CancelledParkingSpaceList(ListAPIView):
+    serializer_class = ParkingSpaceSerializer
+    def get_queryset(self):
+        provider = self.request.user
+        return ParkingSpace.objects.filter(provider=provider).filter(status='cancelled')
+
 # IMAGES
        
 # Upload an image
