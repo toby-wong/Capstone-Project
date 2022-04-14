@@ -45,6 +45,7 @@ class Favourite(models.Model):
 STATUS = (
     ('pending', 'pending'),
     ('approved', 'approved'),
+    ('cancelled', 'cancelled'),
     ('rejected', 'rejected')
 )
 SIZE = (
