@@ -3,10 +3,10 @@ import classes from "./ProviderMapItem.module.css";
 import { useContext } from "react";
 import CarSpaceModalContext from "../../../contexts/carspace-modal-context";
 
-import { Typography, Divider} from "@mui/material";
+import { Typography, Divider } from "@mui/material";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 
-const ProviderMapItem = ({ streetAddress, notes, size, price, id, image }) => {
+const ProviderMapItem = ({ streetAddress, notes, size, price, id, image}) => {
   const carSpaceModalContext = useContext(CarSpaceModalContext);
 
   const mapItemClickHandler = () => {

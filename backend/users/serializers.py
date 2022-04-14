@@ -1,7 +1,7 @@
 # Controls what fields are packaged together
 
 from django.db import transaction
-from django.db.models import Avg
+from django.db.models import Avg, Max
 from pkg_resources import require
 from .utils import AddressValidation, getCoords
 from rest_framework import serializers
@@ -107,6 +107,7 @@ class ParkingSpaceSerializer(NestedUpdateMixin, ModelSerializer):
             'latitude',
             'startTime',
             'endTime',
+            'latestTime',
             'status',
             'images',
             'avg_rating',
@@ -117,15 +118,26 @@ class ParkingSpaceSerializer(NestedUpdateMixin, ModelSerializer):
 
         # read_only_fields = ('provider', 'streetAddress','city', 'state', 'postcode')
 
-        read_only_fields = ['pk', 'is_active', 'avg_rating', 'n_ratings', 'longitude', 'latitude']
+        read_only_fields = ['pk', 'is_active', 'avg_rating', 'n_ratings', 'longitude', 'latitude', 'latestTime']
 
 
     def validate(self, data):
+        
+        method = (self.context['view'].request.method)
+
+        if (method == 'POST'):
+            return data
+        
+        if ('startTime' not in data or 'endTime' not in data):
+            return data
+
+        pk = self.context['view'].kwargs['pk']
         startTime = data['startTime']
         endTime = data['endTime']
+
         if startTime > endTime:
             raise serializers.ValidationError('Parking space start time must be before the parking space end time')
-        qs = Transaction.objects.filter(parkingSpace=data['parkingSpace']).exclude(startTime__date__gte=startTime).exclude(endTime__date__lte=endTime)
+        qs = Transaction.objects.filter(parkingSpace=pk).exclude(startTime__date__gte=startTime).exclude(endTime__date__lte=endTime)
         if qs.exists():
             raise serializers.ValidationError('This availability would violate existing bookings.')
         return data
@@ -217,13 +229,15 @@ class TransactionSerializer(ModelSerializer):
         read_only_fields = ['pk', 'streetAddress', 'city', 'state', 'postcode']
     
     def validate(self, data):
+        
         startTime = data['startTime']
         endTime = data['endTime']
-        if data['status'] == 'cancelled':
-            raise serializers.ValidationError('The parking space is no longer accepting new bookings')
+
         if startTime > endTime:
             raise serializers.ValidationError('Booking start time must be before booking end time')
         parkingSpace = ParkingSpace.objects.filter(pk=data['parkingSpace'].pk).first()
+        if parkingSpace.status == 'cancelled':
+            raise serializers.ValidationError('The parking space is no longer accepting new bookings')
         if parkingSpace.startTime > startTime or parkingSpace.endTime < endTime or parkingSpace.startTime > endTime or parkingSpace.endTime < startTime:
              raise serializers.ValidationError('This booking does not fit within the parking space availability.')
         qs = Transaction.objects.filter(parkingSpace=data['parkingSpace']).exclude(startTime__date__gt=endTime).exclude(endTime__date__lt=startTime)
@@ -231,6 +245,13 @@ class TransactionSerializer(ModelSerializer):
             raise serializers.ValidationError('This booking overlaps with an existing booking.')
         return data
 
+    def create(self, validated_data):
+        booking = Transaction.objects.create(**validated_data)
+        latest = Transaction.objects.filter(parkingSpace = booking.parkingSpace).latest('endTime').endTime
+        parkingSpace = ParkingSpace.objects.filter(pk=booking.parkingSpace.pk).first()
+        parkingSpace.latestTime = latest
+        parkingSpace.save()
+        return booking
         
 
 class ReviewSerializer(ModelSerializer):

@@ -25,6 +25,7 @@ urlpatterns = [
     path('provider/parking/pending', PendingParkingSpaceList.as_view(), name='pending_list_parking_space'),
     path('provider/parking/rejected', RejectedParkingSpaceList.as_view(), name='rejected_list_parking_space'),
     path('provider/parking/approved', ApprovedParkingSpaceList.as_view(), name='approved_list_parking_space'),
+    path('provider/parking/cancelled', CancelledParkingSpaceList.as_view(), name='cancelled_list_parking_space'),
 
     # Booking
 

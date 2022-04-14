@@ -1,8 +1,9 @@
 import classes from "./ProviderMapView.module.css";
 import { Link, useLocation } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
+import MapPointObject from "./MapPointObject";
 
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer} from 'react-leaflet'
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import {
     Button,
@@ -30,6 +31,8 @@ const ProviderMapView = ({pending = false}) => {
     const [error, setError] = useState({ value: false, message: ""});
     const [carSpaces, setCarSpaces] = useState([]);
     const carSpaceModalContext = useContext(CarSpaceModalContext);
+    const [center, setCenter] = useState([-33.9139982, 151.2418546]);
+    const [zoom, setZoom] = useState(17);
 
     const location = useLocation();
     const activeTabView = location.pathname.split("/")[2] ?? false;
@@ -169,7 +172,7 @@ const ProviderMapView = ({pending = false}) => {
                             price={item.price}
                             image={item.images[0].image_data}
                         />
-                        ))
+                    ))
                 }
                 {!isLoading 
                     && error.value 
@@ -182,22 +185,44 @@ const ProviderMapView = ({pending = false}) => {
         </div>
         <div className={classes.mapContainer}>
             <MapContainer 
-                className={classes.mapElement}
-                center={[-33.916663, 151.2420]} 
-                zoom={16} 
+                className={classes.mapContainer}
+                center={center} 
+                zoom={zoom} 
                 scrollWheelZoom={true}
                 dragging={true}
                 animate={true}
-                easeLinearity={0.35}>
+                easeLinearity={0.35}
+                // eventHandlers={{
+                //     click: mapItemClickHandler,
+                // }}>
+                >  
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <Marker position={[-33.916663, 151.2420]}>
-                    <Popup>
-                        Welcome to BMG HQ
-                    </Popup>
-                </Marker>
+                {isLoading && (
+                    <div className={classes.center_container}>
+                        <CircularProgress className={classes.spinner} />
+                    </div>
+                )}
+                {!isLoading &&
+                    !error.value &&
+                    carSpaces.map((item) => (
+                        <MapPointObject
+                            key={item.pk}
+                            id={item.pk}
+                            longitude={item.longitude}
+                            latitude={item.latitude}
+                            streetAddress={item.streetAddress}
+                        /> 
+                    ))
+                }
+                {!isLoading 
+                    && error.value 
+                    && (
+                        <div className={classes.center_container}> {error.message}</div>
+                    )
+                }
             </MapContainer>
             <Button
                 className={classes.button}
@@ -212,7 +237,3 @@ const ProviderMapView = ({pending = false}) => {
 };
 
 export default ProviderMapView;
-
-
-
-

@@ -96,12 +96,11 @@ body{
 
 
 .button{
-    margin-right: 30px;
     font-size: 15px;
     width: auto;
     height: 50px;
-    position: relative;
     z-index: 1000;
-    top: 2%;
-    left: 86%;
+    float: right;
+    margin-right: 20px;
+    margin-top: 20px;
 }
