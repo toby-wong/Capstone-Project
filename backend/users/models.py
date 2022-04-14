@@ -2,6 +2,8 @@ from re import M
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from drf_extra_fields.fields import Base64ImageField
+import requests
+import urllib.parse
 
 # USER MODELS
 class CustomUser(AbstractUser):
@@ -68,10 +70,25 @@ class ParkingSpace(models.Model):
     startTime = models.DateTimeField()
     endTime = models.DateTimeField()
     status = models.CharField(max_length=50, choices=STATUS, default="pending")
-    avg_rating = models.DecimalField(max_digits=2, decimal_places=1, null=True)
-    n_ratings = models.IntegerField(null=True)
-    latestTime = models.DateTimeField(null=True)
+    avg_rating = models.DecimalField(max_digits=2, decimal_places=1, blank=True, null=True)
+    n_ratings = models.IntegerField(null=True, blank=True)
+    latestTime = models.DateTimeField(null=True,  blank=True)
     is_active = models.BooleanField(default=True)
+
+    def getCoords(self, address):
+        url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(address) + '?countrycodes=au&format=json'
+        response = requests.get(url).json()
+        return(float(response[0]["lat"]), float(response[0]["lon"]))       
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        addressTuple = (self.streetAddress, self.city, self.state, self.postcode)
+        address = ' '.join(addressTuple)
+        print(address)
+        coords = self.getCoords(address)
+        self.longitude = coords[0]
+        self.latitude = coords[1]
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.provider.username}'s car space at {self.streetAddress}, {self.city} {self.postcode}"
@@ -84,6 +101,28 @@ class Transaction(models.Model):
     startTime = models.DateTimeField()
     endTime = models.DateTimeField()
     totalCost = models.DecimalField(max_digits=6, decimal_places=2)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        latest = Transaction.objects.filter(parkingSpace = self.parkingSpace).latest('endTime').endTime
+        parkingSpace = ParkingSpace.objects.filter(pk=self.parkingSpace.pk).first()
+        parkingSpace.latestTime = latest
+        parkingSpace.save()
+
+    def delete(self, *args, **kwargs):    
+        bookingSpace = self.parkingSpace
+        super().delete(*args, **kwargs)
+        if not Transaction.objects.filter(parkingSpace = bookingSpace).exists():
+            parkingSpace = ParkingSpace.objects.filter(pk=bookingSpace.pk).first()
+            parkingSpace.latestTime = None
+            parkingSpace.save()
+            return
+        latest = Transaction.objects.filter(parkingSpace = bookingSpace).latest('endTime')
+        parkingSpace = ParkingSpace.objects.filter(pk=bookingSpace.pk).first()
+        parkingSpace.latestTime = latest.endTime
+        parkingSpace.save()
+
+
 
     def __str__(self):
         return f"{self.consumer.username} booked {self.parkingSpace} between {self.startTime} and {self.endTime}"
@@ -100,6 +139,25 @@ class Review(models.Model):
     rating = models.DecimalField(max_digits=2, decimal_places=1)
     comment = models.TextField()
     publishDate = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        count = Review.objects.filter(parkingSpace = self.parkingSpace).count()
+        average = Review.objects.filter(parkingSpace = self.parkingSpace).aggregate(models.Avg('rating'))
+        parkingSpace = ParkingSpace.objects.filter(pk=self.parkingSpace.pk).first()
+        parkingSpace.avg_rating = average['rating__avg']
+        parkingSpace.n_ratings = count
+        parkingSpace.save()
+
+    def delete(self, *args, **kwargs):
+        reviewSpace = self.parkingSpace
+        super().delete(*args, **kwargs)
+        count = Review.objects.filter(parkingSpace = reviewSpace).count()
+        average = Review.objects.filter(parkingSpace = reviewSpace).aggregate(models.Avg('rating'))
+        parkingSpace = ParkingSpace.objects.filter(pk=reviewSpace.pk).first()
+        parkingSpace.avg_rating = average['rating__avg']
+        parkingSpace.n_ratings = count
+        parkingSpace.save()
 
     def __str__(self):
         return f"{self.consumer.username} reviewed {self.parkingSpace}"

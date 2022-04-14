@@ -142,6 +142,7 @@ class ParkingSpaceSerializer(NestedUpdateMixin, ModelSerializer):
             raise serializers.ValidationError('This availability would violate existing bookings.')
         return data
 
+
     def create(self, validated_data):
         imgs_data = validated_data.pop('images')
         parkingSpace = ParkingSpace.objects.create(**validated_data)
@@ -149,11 +150,6 @@ class ParkingSpaceSerializer(NestedUpdateMixin, ModelSerializer):
         cleanAddress = cleanAddress.validate()
         if not type(cleanAddress) == dict:
             raise serializers.ValidationError(cleanAddress.errors)
-        address = ' '.join(list(cleanAddress.values())[:4])
-        coords = getCoords(address)
-        parkingSpace.longitude = coords[0]
-        parkingSpace.latitude = coords[1] 
-
         parkingSpace.save()
         for img_data in imgs_data:
             Image.objects.create(parkingSpace=parkingSpace, **img_data)
@@ -245,13 +241,6 @@ class TransactionSerializer(ModelSerializer):
             raise serializers.ValidationError('This booking overlaps with an existing booking.')
         return data
 
-    def create(self, validated_data):
-        booking = Transaction.objects.create(**validated_data)
-        latest = Transaction.objects.filter(parkingSpace = booking.parkingSpace).latest('endTime').endTime
-        parkingSpace = ParkingSpace.objects.filter(pk=booking.parkingSpace.pk).first()
-        parkingSpace.latestTime = latest
-        parkingSpace.save()
-        return booking
         
 
 class ReviewSerializer(ModelSerializer):
@@ -271,14 +260,3 @@ class ReviewSerializer(ModelSerializer):
         )
 
         read_only_fields = ['pk']
-
-    def create(self, validated_data):
-        review = Review.objects.create(**validated_data)
-        count = Review.objects.filter(parkingSpace = review.parkingSpace).count()
-        average = Review.objects.filter(parkingSpace = review.parkingSpace).aggregate(Avg('rating'))
-        parkingSpace = ParkingSpace.objects.filter(pk=review.parkingSpace.pk).first()
-        parkingSpace.avg_rating = average['rating__avg']
-        parkingSpace.n_ratings = count
-        parkingSpace.save()
-
-        return review
