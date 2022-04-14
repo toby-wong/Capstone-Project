@@ -75,11 +75,11 @@ class ParkingSpace(models.Model):
     latestTime = models.DateTimeField(null=True,  blank=True)
     is_active = models.BooleanField(default=True)
 
-    def getCoords(address):
+    def getCoords(self, address):
         import requests
         url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address.replace(" ", "+") + '&key=AIzaSyCwTgq7juhaZiACJFsYWm-dZgvhQRvvFw4'
         response = requests.get(url).json()
-        return (float(response['lat']), float(response['lng']))
+        return (float(response['results'][0]['geometry']['location']['lat']), float(response['results'][0]['geometry']['location']['lng']))
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
