@@ -75,10 +75,11 @@ class ParkingSpace(models.Model):
     latestTime = models.DateTimeField(null=True,  blank=True)
     is_active = models.BooleanField(default=True)
 
-    def getCoords(self, address):
-        url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(address) + '?countrycodes=au&format=json'
+    def getCoords(address):
+        import requests
+        url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address.replace(" ", "+") + '&key=AIzaSyCwTgq7juhaZiACJFsYWm-dZgvhQRvvFw4'
         response = requests.get(url).json()
-        return(float(response[0]["lat"]), float(response[0]["lon"]))       
+        return (float(response['lat']), float(response['lng']))
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
