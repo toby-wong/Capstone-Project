@@ -143,12 +143,10 @@ class BookingView(RetrieveUpdateDestroyAPIView):
         bookingSpace = instance.parkingSpace
         instance.delete()
         if not Transaction.objects.filter(parkingSpace = bookingSpace).exists():
-            print("NULL BEEP")
             parkingSpace = ParkingSpace.objects.filter(pk=bookingSpace.pk).first()
             parkingSpace.latestTime = None
             parkingSpace.save()
             return
-        print("EXISTS BEEP")
         latest = Transaction.objects.filter(parkingSpace = bookingSpace).latest('endTime')
         parkingSpace = ParkingSpace.objects.filter(pk=bookingSpace.pk).first()
         parkingSpace.latestTime = latest.endTime
