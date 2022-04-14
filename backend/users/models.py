@@ -88,7 +88,7 @@ class ParkingSpace(models.Model):
         coords = self.getCoords(address)
         self.longitude = coords[0]
         self.latitude = coords[1]
-        super().save(*args, **kwargs)
+        #super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.provider.username}'s car space at {self.streetAddress}, {self.city} {self.postcode}"
