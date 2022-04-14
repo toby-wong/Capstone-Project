@@ -38,8 +38,9 @@ class AddressValidation:
 
 def getCoords(address):
     import requests
+    from my_secrets import secrets
 
-    url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address.replace(" ", "+") + '&key=AIzaSyCwTgq7juhaZiACJFsYWm-dZgvhQRvvFw4'
+    url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address.replace(" ", "+") + f'&key={secrets.GOOGLE_API_KEY}'
 
     response = requests.get(url).json()
     return (float(response['results'][0]['geometry']['location']['lat']), float(response['results'][0]['geometry']['location']['lng']))
