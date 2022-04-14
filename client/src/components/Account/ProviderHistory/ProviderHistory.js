@@ -1,5 +1,3 @@
-import classes from "./ProviderHistory.module.css";
-
 import { Typography, Paper, CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 
@@ -57,9 +55,9 @@ const ProviderHistory = () => {
   return (
     <>
       <Typography variant="sectionTitle">Provider History</Typography>
-      <Paper elevation={0} className={classes.body}>
+      <Paper variant="accountSectionContent">
         {isLoading && (
-          <CircularProgress className={classes.spinner} size="3rem" />
+          <CircularProgress style={{ color: "var(--green)" }} size="3rem" />
         )}
         {!isLoading && !error.value && (
           <GeneralDataGrid

@@ -161,6 +161,47 @@ export const theme = createTheme({
             padding: 0,
           },
         },
+        {
+          props: { variant: "accountSectionContent" },
+          style: {
+            flex: 1,
+            marginTop: "20px",
+            justifyContent: "center",
+            alignItems: "center",
+          },
+        },
+        {
+          props: { variant: "largeModal" },
+          style: {
+            marginTop: "50px",
+            marginBottom: "50px",
+            minHeight: "600px",
+            maxHeight: "800px",
+            minWidth: "1000px",
+            maxWidth: "1200px",
+            height: "90%",
+            width: "80%",
+            flexDirection: "column",
+            overflow: "hidden",
+          },
+        },
+        {
+          props: { variant: "smallModal" },
+          style: {
+            height: "500px",
+            width: "800px",
+          },
+        },
+        {
+          props: { variant: "messageModal" },
+          style: {
+            alignSelf: "center",
+            display: "flex",
+            height: "500px",
+            width: "500px",
+            flexDirection: "column",
+          },
+        },
       ],
     },
     MuiOutlinedInput: {
@@ -261,6 +302,12 @@ export const theme = createTheme({
             borderRadius: "50%",
             padding: "4px",
             fontSize: "30px",
+          },
+        },
+        {
+          props: { variant: "form" },
+          style: {
+            marginRight: "20px",
           },
         },
       ],

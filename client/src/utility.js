@@ -3,7 +3,7 @@ export const getDate = (dateTimeStr) => {
   const [day, month, year] = date.split("/");
   const [hour, minute] = time.split(":");
 
-  return new Date(year, month, day, hour, minute);
+  return new Date(year, month - 1, day, hour, minute);
 };
 
 export const convertImagesToBase64 = async (imageFiles) => {

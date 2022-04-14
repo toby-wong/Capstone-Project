@@ -16,13 +16,15 @@ import ListAltIcon from "@mui/icons-material/ListAlt";
 import MapIcon from "@mui/icons-material/Map";
 import BeenhereIcon from "@mui/icons-material/Beenhere";
 import ArchiveIcon from "@mui/icons-material/Archive";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import DoDisturbAltIcon from "@mui/icons-material/DoDisturbAlt";
 
 import { sendRequest } from "../../../utility";
 import * as config from "../../../config";
 import ProviderListItem from "./ProviderListItem";
 import CarSpaceModalContext from "../../../contexts/carspace-modal-context";
 
-const ProviderListView = ({ pending = false }) => {
+const ProviderListView = ({ status }) => {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({ value: false, message: "" });
@@ -34,10 +36,12 @@ const ProviderListView = ({ pending = false }) => {
 
   const activeTabView = location.pathname.split("/")[2] ?? false;
   const activeTabListings = location.pathname.split("/")[3] ?? false;
-  // prettier-ignore
-  const pendingUrl = `${location.pathname.split("/").slice(0, 3).join("/")}/pending`;
-  // prettier-ignore
-  const activeUrl = `${location.pathname.split("/").slice(0, 3).join("/")}/active`;
+
+  const providerViewURL = location.pathname.split("/").slice(0, 3).join("/");
+  const activeUrl = `${providerViewURL}/active`;
+  const pendingUrl = `${providerViewURL}/pending`;
+  const rejectedUrl = `${providerViewURL}/rejected`;
+  const cancelledUrl = `${providerViewURL}/cancelled`;
 
   const changePageHandler = (event, newPage) => {
     setPage(newPage);
@@ -57,9 +61,11 @@ const ProviderListView = ({ pending = false }) => {
       try {
         const authToken = localStorage.getItem("parkItAuthToken");
 
-        const url = `${config.SERVER_URL}/api/provider/parking/${
-          pending ? "pending" : "approved"
-        }?limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
+        const url = `${
+          config.SERVER_URL
+        }/api/provider/parking/${status}?limit=${rowsPerPage}&offset=${
+          page * rowsPerPage
+        }`;
         const options = {
           method: "GET",
           headers: {
@@ -82,7 +88,7 @@ const ProviderListView = ({ pending = false }) => {
     };
 
     fetchData();
-  }, [pending, page, rowsPerPage, carSpaceModalContext.carSpacesRefreshStatus]);
+  }, [status, page, rowsPerPage, carSpaceModalContext.carSpacesRefreshStatus]);
 
   return (
     <Paper variant="sectionBody">
@@ -139,6 +145,28 @@ const ProviderListView = ({ pending = false }) => {
             value="pending"
             label="Pending Listings"
             icon={<ArchiveIcon className={classes["tab-icon"]} />}
+            iconPosition="start"
+          />
+
+          <Tab
+            className={classes.navbar__tab}
+            variant="sideMenu"
+            component={Link}
+            to={rejectedUrl}
+            value="rejected"
+            label="Rejected Listings"
+            icon={<ThumbDownIcon className={classes["tab-icon"]} />}
+            iconPosition="start"
+          />
+
+          <Tab
+            className={classes.navbar__tab}
+            variant="sideMenu"
+            component={Link}
+            to={cancelledUrl}
+            value="cancelled"
+            label="Cancelled Listings"
+            icon={<DoDisturbAltIcon className={classes["tab-icon"]} />}
             iconPosition="start"
           />
         </Tabs>

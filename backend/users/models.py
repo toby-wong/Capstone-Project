@@ -70,6 +70,7 @@ class ParkingSpace(models.Model):
     status = models.CharField(max_length=50, choices=STATUS, default="pending")
     avg_rating = models.DecimalField(max_digits=2, decimal_places=1, null=True)
     n_ratings = models.IntegerField(null=True)
+    latestTime = models.DateTimeField(null=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):

@@ -1,3 +1,5 @@
+import { getDate } from "../utility";
+
 export const carSpaceEditFormReducer = (state, action) => {
   const newState = { ...state };
 
@@ -8,8 +10,9 @@ export const carSpaceEditFormReducer = (state, action) => {
         value: action.value.images,
         isValid: true,
       },
-      startDateTime: action.value.startTime,
-      endDateTime: action.value.endTime,
+      startDateTime: getDate(action.value.startTime),
+      endDateTime: { value: getDate(action.value.endTime), isValid: true },
+      latestTime: action.value.latestTime,
       streetAddress: action.value.streetAddress,
       city: action.value.city,
       state: action.value.state,
@@ -18,6 +21,10 @@ export const carSpaceEditFormReducer = (state, action) => {
       maxVehicleSize: { value: action.value.size, isValid: true },
       notes: { value: action.value.notes, isValid: true },
     };
+  }
+
+  if (action.type === "END_TIME_INPUT") {
+    newState.endDateTime.value = action.value;
   }
 
   if (action.type === "IMAGES_INPUT") {
@@ -54,7 +61,8 @@ export const getCarSpaceEditFormInitialState = () => {
     isFormValid: false,
     images: { value: [], isValid: false },
     startDateTime: "",
-    endDateTime: "",
+    endDateTime: { value: "", isValid: false },
+    latestTime: "22/02/2222 22:22",
     streetAddress: "",
     city: "",
     state: "",

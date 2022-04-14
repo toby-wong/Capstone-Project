@@ -71,10 +71,6 @@
   width: 100%;
 }
 
-.field {
-  margin-right: 30px;
-}
-
 .select-menu {
   flex: 1;
   display: flex;
@@ -97,10 +93,8 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-}
-
-.details__item__content:first-of-type {
-  padding-top: 5px;
+  margin-left: 8px;
+  margin-bottom: 10px;
 }
 
 .details__item__content__row {

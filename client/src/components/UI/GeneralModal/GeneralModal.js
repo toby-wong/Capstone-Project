@@ -8,6 +8,7 @@ const GeneralModal = ({
   flexDirection,
   children,
   className,
+  size = "large",
 }) => {
   return (
     <Modal open={open} onClose={onClose}>
@@ -17,7 +18,8 @@ const GeneralModal = ({
           width: width,
           flexDirection: flexDirection,
         }}
-        className={className}
+        className={`${className}`}
+        variant={`${size}Modal`}
       >
         {children}
       </Paper>

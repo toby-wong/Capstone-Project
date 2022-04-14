@@ -7,9 +7,15 @@ import GeneralModalActions from "../../../../UI/GeneralModal/GeneralModalActions
 
 import { Button, Typography } from "@mui/material";
 
-const CarSpaceFormSubModal = ({ open, onClose, title, content }) => {
+const CarSpaceFormSubModal = ({
+  open,
+  onClickOk = null,
+  onClose,
+  title,
+  content,
+}) => {
   return (
-    <GeneralModal open={open} onClose={onClose} className={classes.modal}>
+    <GeneralModal open={open} onClose={onClose} size="message">
       <GeneralModalHeader title={title} onClose={onClose} />
       <GeneralModalContent className={classes.content}>
         {content.map((message) => {
@@ -25,14 +31,37 @@ const CarSpaceFormSubModal = ({ open, onClose, title, content }) => {
         })}
       </GeneralModalContent>
       <GeneralModalActions>
-        <Button
-          size="large"
-          variant="contained"
-          className={classes.btn}
-          onClick={onClose}
-        >
-          OK
-        </Button>
+        {onClickOk && (
+          <>
+            <Button
+              size="large"
+              variant="contained"
+              className={classes.btn}
+              onClick={onClickOk}
+            >
+              OK
+            </Button>
+            <Button
+              size="large"
+              variant="contained"
+              color="warning"
+              className={classes.btn}
+              onClick={onClose}
+            >
+              Cancel
+            </Button>
+          </>
+        )}
+        {!onClickOk && (
+          <Button
+            size="large"
+            variant="contained"
+            className={classes.btn}
+            onClick={onClose}
+          >
+            OK
+          </Button>
+        )}
       </GeneralModalActions>
     </GeneralModal>
   );

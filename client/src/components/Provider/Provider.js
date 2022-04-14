@@ -7,16 +7,30 @@ import ProviderListView from "./ProviderListView/ProviderListView";
 import ProviderMapView from "./ProviderMapView/ProviderMapView";
 import { CarSpaceModalContextProvider } from "../../contexts/carspace-modal-context";
 
+/*
+  Set a modal size: large, medium, small
+*/
 const Provider = () => {
   return (
     <CarSpaceModalContextProvider>
       <div className={classes.body}>
         <CarSpaceModal />
         <Routes>
-          <Route path="listView/active/*" element={<ProviderListView />} />
+          <Route
+            path="listView/active/*"
+            element={<ProviderListView status="approved" />}
+          />
           <Route
             path="listView/pending/*"
-            element={<ProviderListView pending={true} />}
+            element={<ProviderListView status={"pending"} />}
+          />
+          <Route
+            path="listView/rejected/*"
+            element={<ProviderListView status={"rejected"} />}
+          />
+          <Route
+            path="listView/cancelled/*"
+            element={<ProviderListView status={"cancelled"} />}
           />
           <Route path="mapView/active/*" element={<ProviderMapView />} />
         </Routes>

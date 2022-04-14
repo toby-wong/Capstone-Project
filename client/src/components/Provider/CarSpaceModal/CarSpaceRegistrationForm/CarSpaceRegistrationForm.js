@@ -32,6 +32,7 @@ const CarSpaceRegistrationForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [subModal, setSubModal] = useState({
     isOpen: false,
+    onClickOk: null,
     onClose: () => {},
     title: "",
     content: [],
@@ -96,9 +97,22 @@ const CarSpaceRegistrationForm = () => {
   };
 
   // Form Submission
-  const formSubmitHandler = async (e) => {
-    e.preventDefault();
+  const clickRegisterButtonHandler = () => {
+    setSubModal({
+      isOpen: true,
+      onClickOk: formSubmitHandler,
+      onClose: closeSubModalHandler,
+      title: "Confirmation",
+      content: [
+        "Once your car space is registered and approved to be available by admin, consumers can make bookings for the car space and you cannot cancel the bookings by yourself. If you agree with this, please press `OK` button and register the car space.",
+      ],
+    });
+  };
+
+  const formSubmitHandler = async () => {
     try {
+      closeSubModalHandler();
+
       const authToken = localStorage.getItem("parkItAuthToken");
       if (!authToken) return;
 
@@ -173,9 +187,10 @@ const CarSpaceRegistrationForm = () => {
   };
 
   return (
-    <form onSubmit={formSubmitHandler} className={classes.form}>
+    <form className={classes.form}>
       <CarSpaceFormSubModal
         open={subModal.isOpen}
+        onClickOk={subModal.onClickOk}
         onClose={subModal.onClose}
         title={subModal.title}
         content={subModal.content}
@@ -203,8 +218,8 @@ const CarSpaceRegistrationForm = () => {
             <Button
               variant="contained"
               size="large"
-              type="submit"
               disabled={!formState.isFormValid}
+              onClick={clickRegisterButtonHandler}
             >
               {isLoading ? <CircularProgress size="1.5rem" /> : "Register"}
             </Button>
