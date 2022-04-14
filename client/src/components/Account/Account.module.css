@@ -6,8 +6,8 @@
 
 .navbar {
   display: flex;
-  height: 220px;
-  width: 260px;
+  height: 270px;
+  width: 270px;
   margin-right: 70px;
   padding: 10px 5px 10px;
   background-color: var(--light);

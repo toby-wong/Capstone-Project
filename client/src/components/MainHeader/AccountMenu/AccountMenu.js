@@ -1,10 +1,12 @@
+import classes from "./AccountMenu.module.css";
+
 import { Menu, MenuItem, Typography, Divider } from "@mui/material";
+
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-
-import classes from "./AccountMenu.module.css";
+import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 
 import { Link } from "react-router-dom";
 import { useContext } from "react";
@@ -41,16 +43,6 @@ const AccountMenu = ({ open, anchorEl, onClose, anchorOrigin }) => {
       <MenuItem
         onClick={onClose}
         component={Link}
-        to="/account/history/consumer"
-      >
-        <ManageSearchOutlinedIcon className={classes.menuItemIcon} />
-        <Typography className={classes.menuItemText}>
-          Consumer History
-        </Typography>
-      </MenuItem>
-      <MenuItem
-        onClick={onClose}
-        component={Link}
         to="/account/history/provider"
       >
         <ManageSearchOutlinedIcon className={classes.menuItemIcon} />
@@ -58,6 +50,23 @@ const AccountMenu = ({ open, anchorEl, onClose, anchorOrigin }) => {
           Provider History
         </Typography>
       </MenuItem>
+
+      <MenuItem
+        onClick={onClose}
+        component={Link}
+        to="/account/history/consumer"
+      >
+        <ManageSearchOutlinedIcon className={classes.menuItemIcon} />
+        <Typography className={classes.menuItemText}>
+          Consumer Bookings
+        </Typography>
+      </MenuItem>
+
+      <MenuItem onClick={onClose} component={Link} to="/account/myCars">
+        <DirectionsCarIcon className={classes.menuItemIcon} />
+        <Typography className={classes.menuItemText}>My Cars</Typography>
+      </MenuItem>
+
       <MenuItem onClick={onClose} component={Link} to="/account/favourites">
         <FavoriteBorderOutlinedIcon className={classes.menuItemIcon} />
         <Typography className={classes.menuItemText}>Favourites</Typography>

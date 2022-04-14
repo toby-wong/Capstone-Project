@@ -5,7 +5,13 @@ import BusinessIcon from "@mui/icons-material/Business";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
-import { Button, CircularProgress, Typography } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  FormHelperText,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 import CarSpaceFormSubModal from "../CarSpaceForm/CarSpaceFormSubModal/CarSpaceFormSubModal";
 import CarSpaceCardHeader from "../CarSpaceCard/CarSpaceCardHeader";
@@ -27,12 +33,14 @@ import {
   carSpaceEditFormReducer,
   getCarSpaceEditFormInitialState,
 } from "../../../../reducers/carspace-edit-form-reducer";
+import DateTimePicker from "@mui/lab/DateTimePicker";
 
 const CarSpaceEditForm = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [subModal, setSubModal] = useState({
     isOpen: false,
+    onClickOk: null,
     onClose: () => {},
     title: "",
     content: [],
@@ -49,6 +57,7 @@ const CarSpaceEditForm = () => {
       type: "FETCH",
       value: carSpaceModalContext.carSpaceInfo,
     });
+    console.log(carSpaceModalContext.carSpaceInfo);
   }, [carSpaceModalContext.carSpaceInfo]);
 
   // Image Upload Handlers
@@ -91,8 +100,8 @@ const CarSpaceEditForm = () => {
 
       const formData = {
         provider: authContext.userInfo.pk,
-        startTime: utility.getDate(formState.startDateTime),
-        endTime: utility.getDate(formState.endDateTime),
+        startTime: formState.startDateTime,
+        endTime: formState.endDateTime.value,
         streetAddress: formState.streetAddress,
         city: formState.city,
         state: formState.state,
@@ -103,8 +112,10 @@ const CarSpaceEditForm = () => {
         notes: formState.notes.value,
       };
 
-      const carSpaceRegistrationUrl = `${config.SERVER_URL}/api/provider/parking/${carSpaceModalContext.carSpaceId}`;
-      const carSpaceRegistrationOptions = {
+      console.log(formData);
+
+      const carSpaceEditUrl = `${config.SERVER_URL}/api/provider/parking/${carSpaceModalContext.carSpaceId}`;
+      const carSpaceEditOptions = {
         method: "PUT",
         headers: {
           Authorization: "Bearer " + authToken,
@@ -112,17 +123,17 @@ const CarSpaceEditForm = () => {
         },
         body: formData,
       };
-      const carSpaceRegistrationResponse = await utility.sendRequest(
-        carSpaceRegistrationUrl,
-        carSpaceRegistrationOptions,
+      const carSpaceEditResponse = await utility.sendRequest(
+        carSpaceEditUrl,
+        carSpaceEditOptions,
         setIsEditing
       );
 
-      if (!carSpaceRegistrationResponse.status)
+      if (!carSpaceEditResponse.status)
         throw Error(config.NETWORK_ERROR_MESSAGE);
-      if (carSpaceRegistrationResponse.status >= 300) {
+      if (carSpaceEditResponse.status >= 300) {
         const errorMsgs = [];
-        for (const key of Object.keys(carSpaceRegistrationResponse.data)) {
+        for (const key of Object.keys(carSpaceEditResponse.data)) {
           errorMsgs.push(` - Not a valid ${key}.`);
         }
         throw Error(errorMsgs);
@@ -164,28 +175,59 @@ const CarSpaceEditForm = () => {
   };
 
   // Delete Car Space Handlers
+  const clickDeleteButtonHandler = () => {
+    setSubModal({
+      isOpen: true,
+      onClickOk: deleteCarSpaceHandler,
+      onClose: closeSubModalHandler,
+      title: "Confirmation",
+      content: [
+        `Once you delete the car space, the space won't be available on the user search anymore.  
+        And you still need to provide services to the remaning bookings for this space. 
+        If you still agree with this, please click 'OK' button to proceed.`,
+      ],
+    });
+  };
+
+  // TODO: Check its fucntionality with back-end again.
   const deleteCarSpaceHandler = async () => {
     try {
+      closeSubModalHandler();
+
       const authToken = localStorage.getItem("parkItAuthToken");
       if (!authToken) return;
 
-      const carSpaceRegistrationUrl = `${config.SERVER_URL}/api/provider/parking/${carSpaceModalContext.carSpaceId}`;
-      const carSpaceRegistrationOptions = {
-        method: "DELETE",
+      const carSpaceDeleteUrl = `${config.SERVER_URL}/api/provider/parking/${carSpaceModalContext.carSpaceId}`;
+      const carSpaceDeleteOptions = {
+        method: "PUT",
         headers: {
           Authorization: "Bearer " + authToken,
           "Content-Type": "application/json",
         },
+        body: {
+          provider: authContext.userInfo.pk,
+          startTime: formState.startDateTime,
+          endTime: formState.endDateTime.value,
+          streetAddress: formState.streetAddress,
+          city: formState.city,
+          state: formState.state,
+          postcode: formState.postcode,
+          price: formState.price.value,
+          size: formState.maxVehicleSize.value,
+          images: formState.images.value,
+          notes: formState.notes.value,
+          status: "cancelled",
+        },
       };
-      const carSpaceRegistrationResponse = await utility.sendRequest(
-        carSpaceRegistrationUrl,
-        carSpaceRegistrationOptions,
+      const carSpaceDeleteResponse = await utility.sendRequest(
+        carSpaceDeleteUrl,
+        carSpaceDeleteOptions,
         setIsDeleting
       );
 
       if (
-        !carSpaceRegistrationResponse.status ||
-        carSpaceRegistrationResponse.status >= 300
+        !carSpaceDeleteResponse.status ||
+        carSpaceDeleteResponse.status >= 300
       )
         throw Error(config.NETWORK_ERROR_MESSAGE);
 
@@ -211,6 +253,7 @@ const CarSpaceEditForm = () => {
     <form onSubmit={formSubmitHandler} className={classes.form}>
       <CarSpaceFormSubModal
         open={subModal.isOpen}
+        onClickOk={subModal.onClickOk}
         onClose={subModal.onClose}
         title={subModal.title}
         content={subModal.content}
@@ -248,7 +291,7 @@ const CarSpaceEditForm = () => {
               variant="contained"
               size="large"
               color="warning"
-              onClick={deleteCarSpaceHandler}
+              onClick={clickDeleteButtonHandler}
             >
               {isDeleting ? <CircularProgress size="1.5rem" /> : "Delete"}
             </Button>
@@ -258,13 +301,60 @@ const CarSpaceEditForm = () => {
           <div className={classes.details}>
             <div className={classes.details__item}>
               <AccessTimeIcon className={classes.icon} fontSize="large" />
-              <div className={classes.details__item__content}>
-                <Typography variant="carSpaceModalSubTitle">
-                  Available Dates
-                </Typography>
-                <Typography variant="carSpaceModalContent">
-                  {`${formState.startDateTime} ~ ${formState.endDateTime}`}
-                </Typography>
+              <div>
+                <div className={classes.details__item__content__row}>
+                  <DateTimePicker
+                    label="Available From"
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        className={classes["date-input"]}
+                      />
+                    )}
+                    value={formState.startDateTime}
+                    onChange={() => {}}
+                    inputFormat="dd/MM/yyyy hh:mm a"
+                    readOnly
+                  />
+                  <DateTimePicker
+                    label="Available To"
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        className={classes["date-input"]}
+                        error={!formState.endDateTime.isValid}
+                      />
+                    )}
+                    value={formState.endDateTime.value}
+                    minDateTime={
+                      formState.latestTime
+                        ? utility.getDate(formState.latestTime)
+                        : false
+                    }
+                    onChange={(newDate) => {
+                      dispatchFormState({
+                        type: "END_TIME_INPUT",
+                        value: newDate,
+                      });
+                    }}
+                    shouldDisableTime={(timeValue, clockType) => {
+                      return clockType === "minutes" && timeValue % 15;
+                    }}
+                    reduceAnimations={true}
+                    inputFormat="dd/MM/yyyy hh:mm a"
+                  />
+                </div>
+                <FormHelperText>
+                  * End datetime cannot change to the datetime earlier than the
+                  end datetime of the most recent booking for the car space.
+                  <br />
+                  {formState.latestTime &&
+                  utility.getDate(formState.latestTime).getTime() -
+                    new Date().getTime() >
+                    0
+                    ? `* The end datetime of the most recent booking is ${formState.latestTime}`
+                    : "* There is no remaining bookings."}
+                </FormHelperText>
               </div>
             </div>
             <div className={classes.details__item}>
@@ -295,7 +385,7 @@ const CarSpaceEditForm = () => {
             <div className={classes.details__item}>
               <DirectionsCarIcon className={classes.icon} fontSize="large" />
               <DropdownSelect
-                className={`${classes.input} ${classes.field}`}
+                className={`${classes.input}`}
                 selectClassName={classes.input}
                 selectMenuClassName={classes["select-menu"]}
                 selectItemClassName={classes["select-item"]}
