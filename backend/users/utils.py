@@ -42,7 +42,7 @@ def getCoords(address):
     url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address.replace(" ", "+") + '&key=AIzaSyCwTgq7juhaZiACJFsYWm-dZgvhQRvvFw4'
 
     response = requests.get(url).json()
-    return (float(response['lat']), float(response['lng']))
+    return (float(response['results'][0]['geometry']['location']['lat']), float(response['results'][0]['geometry']['location']['lng']))
 
 
 def getUser(pk):
