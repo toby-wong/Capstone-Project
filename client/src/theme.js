@@ -186,6 +186,13 @@ export const theme = createTheme({
           },
         },
         {
+          props: { variant: "mediumModal" },
+          style: {
+            height: "580px",
+            width: "900px",
+          },
+        },
+        {
           props: { variant: "smallModal" },
           style: {
             height: "500px",

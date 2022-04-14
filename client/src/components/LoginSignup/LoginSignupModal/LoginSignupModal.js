@@ -20,9 +20,8 @@ const LoginSignupModal = () => {
     <GeneralModal
       open={loginSignupModalContext.isOpen}
       onClose={loginSignupModalContext.closeModal}
-      height={location.pathname === "/signup" ? "580px" : "500px"}
-      width={location.pathname === "/signup" ? "900px" : "500px"}
       flexDirection="column"
+      size={location.pathname === "/signup" ? "medium" : "message"}
     >
       <Routes>
         <Route path="login" element={<LoginForm onClose={onClose} />} />
