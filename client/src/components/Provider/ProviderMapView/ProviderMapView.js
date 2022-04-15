@@ -19,6 +19,8 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import MapIcon from '@mui/icons-material/Map';
 import BeenhereIcon from '@mui/icons-material/Beenhere';
 import ArchiveIcon from '@mui/icons-material/Archive';
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import DoDisturbAltIcon from "@mui/icons-material/DoDisturbAlt";
 
 
 import { sendRequest } from "../../../utility";
@@ -147,7 +149,7 @@ const ProviderMapView = ({status}) => {
                         to={rejectedUrl}
                         value="rejected"
                         label="rejected"
-                        icon={<ArchiveIcon className={classes["tab-icon"]} />}
+                        icon={<ThumbDownIcon className={classes["tab-icon"]} />}
                         iconPosition="start"
                     />
                     <Tab
@@ -156,7 +158,7 @@ const ProviderMapView = ({status}) => {
                         to={cancelledUrl}
                         value="cancelled"
                         label="cancelled"
-                        icon={<ArchiveIcon className={classes["tab-icon"]} />}
+                        icon={<DoDisturbAltIcon className={classes["tab-icon"]} />}
                         iconPosition="start"
                     />
                 </Tabs>
