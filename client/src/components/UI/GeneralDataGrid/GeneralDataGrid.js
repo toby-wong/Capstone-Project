@@ -6,6 +6,7 @@ const GeneralDataGrid = ({
   columns,
   rowsPerPageOptions,
   initialState,
+  onRowClick,
 }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -28,6 +29,7 @@ const GeneralDataGrid = ({
       onPageSizeChange={changeRowsPerPageHandler}
       rowsPerPageOptions={rowsPerPageOptions}
       initialState={initialState}
+      onRowClick={onRowClick}
       sx={{
         "& .MuiDataGrid-columnHeader": {
           fontSize: "1rem",

@@ -1,4 +1,6 @@
 .actions {
+  flex: 1;
   display: flex;
-  align-self: flex-end;
+  justify-content: center;
+  align-items: center;
 }
