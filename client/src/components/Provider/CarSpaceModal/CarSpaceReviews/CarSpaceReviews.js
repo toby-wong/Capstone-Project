@@ -10,7 +10,7 @@ import CarSpaceCardContent from "../CarSpaceCard/CarSpaceCardContent";
 import * as config from "../../../../config";
 import { sendRequest } from "../../../../utility";
 import CarSpaceModalContext from "../../../../contexts/carspace-modal-context";
-import GeneralDataGrid from "../../../UI/DataGrid/GeneralDataGrid";
+import GeneralDataGrid from "../../../UI/GeneralDataGrid/GeneralDataGrid";
 
 const CarSpaceReviews = () => {
   const [reviews, setReviews] = useState([]);

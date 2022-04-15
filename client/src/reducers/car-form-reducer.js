@@ -1,4 +1,4 @@
-export const addCarFormReducer = (state, action) => {
+export const carFormReducer = (state, action) => {
   const newState = { ...state };
 
   if (action.type === "MANUFACTURER_INPUT") {
@@ -36,7 +36,7 @@ export const addCarFormReducer = (state, action) => {
   return newState;
 };
 
-export const addCarFormInitialState = () => {
+export const carFormInitialState = () => {
   return {
     isFormValid: false,
     manufacturer: { value: "", isValid: false },

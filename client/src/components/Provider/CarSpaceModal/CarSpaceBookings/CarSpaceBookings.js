@@ -7,7 +7,7 @@ import { CircularProgress } from "@mui/material";
 import CarSpaceModalContext from "../../../../contexts/carspace-modal-context";
 import CarSpaceCardContent from "../CarSpaceCard/CarSpaceCardContent";
 import CarSpaceCardHeader from "../CarSpaceCard/CarSpaceCardHeader";
-import GeneralDataGrid from "../../../UI/DataGrid/GeneralDataGrid";
+import GeneralDataGrid from "../../../UI/GeneralDataGrid/GeneralDataGrid";
 
 import * as config from "../../../../config";
 import { sendRequest } from "../../../../utility";

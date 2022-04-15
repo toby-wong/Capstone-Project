@@ -14,6 +14,7 @@ import AccountDetails from "./AccountDetails/AccountDetails";
 import ProviderHistory from "./ProviderHistory/ProviderHistory";
 import MyCars from "./MyCars/MyCars";
 import { AccountModalContextProvider } from "../../contexts/account-modal-context";
+import { AccountSubModalContextProvider } from "../../contexts/account-submodal-context";
 
 const Account = (props) => {
   const location = useLocation();
@@ -22,7 +23,9 @@ const Account = (props) => {
   return (
     <AccountModalContextProvider>
       <Paper className={classes.body}>
-        <AccountModal />
+        <AccountSubModalContextProvider>
+          <AccountModal />
+        </AccountSubModalContextProvider>
         <Tabs
           className={classes["navbar"]}
           value={activeTab}

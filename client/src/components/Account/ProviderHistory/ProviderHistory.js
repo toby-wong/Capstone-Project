@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import * as config from "../../../config";
 import { sendRequest } from "../../../utility";
-import GeneralDataGrid from "../../UI/DataGrid/GeneralDataGrid";
+import GeneralDataGrid from "../../UI/GeneralDataGrid/GeneralDataGrid";
 
 const ProviderHistory = () => {
   const [isLoading, setIsLoading] = useState(false);
