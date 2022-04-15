@@ -100,6 +100,7 @@ export const theme = createTheme({
       fontFamily: "Montserrat",
       fontSize: "14px",
       color: colors.dark,
+      marginBottom: "3px",
     },
     listItemTitle: {
       fontFamily: "Montserrat",
