@@ -1,0 +1,16 @@
+.form {
+  flex: 1;
+}
+
+.leftSection {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.rightSection {
+  min-width: 350px;
+  max-width: 450px;
+  flex: 1;
+  flex-direction: column;
+}

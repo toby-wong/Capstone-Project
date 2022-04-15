@@ -7,9 +7,6 @@ import ProviderListView from "./ProviderListView/ProviderListView";
 import ProviderMapView from "./ProviderMapView/ProviderMapView";
 import { CarSpaceModalContextProvider } from "../../contexts/carspace-modal-context";
 
-/*
-  Set a modal size: large, medium, small
-*/
 const Provider = () => {
   return (
     <CarSpaceModalContextProvider>
