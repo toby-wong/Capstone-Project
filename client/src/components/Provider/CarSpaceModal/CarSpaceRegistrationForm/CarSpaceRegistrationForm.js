@@ -130,6 +130,8 @@ const CarSpaceRegistrationForm = () => {
         notes: formState.notes.value,
       };
 
+      console.log(formData)
+
       const carSpaceRegistrationUrl = `${config.SERVER_URL}/api/provider/parking`;
       const carSpaceRegistrationOptions = {
         method: "POST",

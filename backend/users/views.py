@@ -93,14 +93,6 @@ class CancelledParkingSpaceList(ListAPIView):
 class CreateImage(CreateAPIView):   
     serializer_class = ImageSerializer
     
-    def delete(self, request, *args, **kwargs):
-        space = self.kwargs['parkingID']
-        images = Image.objects.filter(parkingSpace=space)
-        if images:
-            images.delete()
-            return Response({"status":"ok"}, status=status.HTTP_200_OK)
-        return Response({'message': 'Image deletion failed'}, status=status.HTTP_400_BAD_REQUEST)
-
     def get_queryset(self):
         space = self.kwargs['parkingID']
         #Image.objects.filter(parkingSpace=space).delete()
@@ -108,7 +100,7 @@ class CreateImage(CreateAPIView):
 
 # Do stuff with an existing image
 
-class ImageView(RetrieveUpdateAPIView):
+class ImageView(RetrieveUpdateDestroyAPIView):
     serializer_class = ImageSerializer
     def get_queryset(self):
         image = self.kwargs['pk']
@@ -139,19 +131,6 @@ class BookingView(RetrieveUpdateDestroyAPIView):
         booking = self.kwargs['pk']
         return Transaction.objects.filter(pk=booking)
 
-    def perform_destroy(self, instance):    
-        bookingSpace = instance.parkingSpace
-        instance.delete()
-        if not Transaction.objects.filter(parkingSpace = bookingSpace).exists():
-            parkingSpace = ParkingSpace.objects.filter(pk=bookingSpace.pk).first()
-            parkingSpace.latestTime = None
-            parkingSpace.save()
-            return
-        latest = Transaction.objects.filter(parkingSpace = bookingSpace).latest('endTime')
-        parkingSpace = ParkingSpace.objects.filter(pk=bookingSpace.pk).first()
-        parkingSpace.latestTime = latest.endTime
-
-        parkingSpace.save()
         
 # Get all bookings associated with a Parking Space
 
@@ -243,15 +222,6 @@ class ReviewView(RetrieveUpdateDestroyAPIView):
         review = self.kwargs['pk']
         return Review.objects.filter(pk=review)
 
-    def perform_destroy(self, instance):
-        reviewSpace = instance.parkingSpace
-        instance.delete()
-        count = Review.objects.filter(parkingSpace = reviewSpace).count()
-        average = Review.objects.filter(parkingSpace = reviewSpace).aggregate(Avg('rating'))
-        parkingSpace = ParkingSpace.objects.filter(pk=reviewSpace.pk).first()
-        parkingSpace.avg_rating = average['rating__avg']
-        parkingSpace.n_ratings = count
-        parkingSpace.save()
         
 
 

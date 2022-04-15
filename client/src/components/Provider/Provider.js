@@ -13,6 +13,7 @@ const Provider = () => {
       <div className={classes.body}>
         <CarSpaceModal />
         <Routes>
+          {/* List View */}
           <Route
             path="listView/active/*"
             element={<ProviderListView status="approved" />}
@@ -29,7 +30,22 @@ const Provider = () => {
             path="listView/cancelled/*"
             element={<ProviderListView status={"cancelled"} />}
           />
-          <Route path="mapView/active/*" element={<ProviderMapView />} />
+          {/* Map View */}
+          <Route 
+            path="mapView/active/*" 
+            element={<ProviderMapView status={"approved"}/>} />
+          <Route
+            path="mapView/pending/*"
+            element={<ProviderMapView status={"pending"} />}
+          />
+          <Route
+            path="mapView/rejected/*"
+            element={<ProviderMapView status={"rejected"} />}
+          />
+          <Route
+            path="mapView/cancelled/*"
+            element={<ProviderMapView status={"cancelled"} />}
+          />
         </Routes>
       </div>
     </CarSpaceModalContextProvider>

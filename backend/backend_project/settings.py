@@ -23,7 +23,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-b%_51t=5bl7mlmkmsfgmzz7(khjr5$$pt!e79=9%ec$msgoyvs'
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -35,7 +34,10 @@ ALLOWED_HOSTS = []
 CORS_ALLOWED_ORIGINS = [    
     'http://localhost:3000',
     'http://127.0.0.1:3000',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
 ]
+# CORS_ORIGIN_ALLOW_ALL = True
 
 # Django All Auth config.
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # Uncomment to send emails to console

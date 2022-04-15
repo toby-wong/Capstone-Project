@@ -48,7 +48,6 @@ export const sendRequest = async (
     }
 
     const data = await response.json();
-
     result = { status: response.status, data: data };
   } catch (err) {
     result = {

@@ -38,17 +38,14 @@ class AddressValidation:
 
 def getCoords(address):
     import requests
-    import urllib.parse
+    import os
 
-    url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(address) + '?countrycodes=au&format=json'
-
-    print(url)
+    url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address.replace(" ", "+") + f'&key={os.environ["GOOGLE_MAPS_API_KEY"]}'
     response = requests.get(url).json()
-    return(float(response[0]["lat"]), float(response[0]["lon"]))
+    return (float(response['results'][0]['geometry']['location']['lat']), float(response['results'][0]['geometry']['location']['lng']))
+
 
 def getUser(pk):
-    # print(pk)
-    # print(CustomUser.objects.values())
     user_obj = CustomUser.objects.get(id=pk)
     return user_obj
 
