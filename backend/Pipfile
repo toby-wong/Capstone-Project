@@ -21,6 +21,7 @@ django-filter = "*"
 drf-writable-nested = "*"
 drf-flex-fields = "*"
 python-dateutil = "*"
+django-secrets = "*"
 
 [dev-packages]
 
