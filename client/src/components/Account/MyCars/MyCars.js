@@ -53,7 +53,7 @@ const MyCars = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [accountModalContext.pageRefreshStatus]);
 
   const addCarHandler = () => {
     accountModalContext.openPage("/addCar", "small");

@@ -1,13 +1,48 @@
-// export const addCarFormReducer = (state, action) => {
-//   const newState = { ...state };
+export const addCarFormReducer = (state, action) => {
+  const newState = { ...state };
 
-//   if (action.type === "END_TIME_INPUT") {
-//     newState.endDateTime.value = action.value;
-//   }
-// };
+  if (action.type === "MANUFACTURER_INPUT") {
+    newState.manufacturer.value = action.value;
+    newState.manufacturer.isValid = action.value !== "";
+  }
 
-// export const addCarFormInitialState = () => {
-//   return {
+  if (action.type === "MODEL_INPUT") {
+    newState.model.value = action.value;
+    newState.model.isValid = action.value !== "";
+  }
 
-//   }
-// }
+  if (action.type === "YEAR_INPUT") {
+    newState.year.value = action.value;
+    newState.year.isValid = action.value !== "";
+  }
+
+  if (action.type === "COLOUR_INPUT") {
+    newState.colour.value = action.value;
+    newState.colour.isValid = action.value !== "";
+  }
+
+  if (action.type === "REGISTRATION_NUMBER_INPUT") {
+    newState.registrationNumber.value = action.value;
+    newState.registrationNumber.isValid = action.value !== "";
+  }
+
+  newState.isFormValid =
+    newState.manufacturer.isValid &&
+    newState.model.isValid &&
+    newState.year.isValid &&
+    newState.colour.isValid &&
+    newState.registrationNumber.isValid;
+
+  return newState;
+};
+
+export const addCarFormInitialState = () => {
+  return {
+    isFormValid: false,
+    manufacturer: { value: "", isValid: false },
+    model: { value: "", isValid: false },
+    year: { value: "", isValid: false },
+    colour: { value: "", isValid: false },
+    registrationNumber: { value: "", isValid: false },
+  };
+};
