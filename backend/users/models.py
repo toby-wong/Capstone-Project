@@ -78,7 +78,7 @@ class ParkingSpace(models.Model):
     def getCoords(self, address):
         import requests
         import os
-        url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address.replace(" ", "+") + f'&key={os.environ["GOOGLE_MAPS_API_KEY"]}'
+        url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address.replace(" ", "+") + '&key= AIzaSyCwTgq7juhaZiACJFsYWm-dZgvhQRvvFw4'
         response = requests.get(url).json()
         return (float(response['results'][0]['geometry']['location']['lat']), float(response['results'][0]['geometry']['location']['lng']))
 
