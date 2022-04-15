@@ -5,6 +5,8 @@ const AccountModalContext = React.createContext({
   isOpen: false,
   pageRefreshStatus: false,
   modalSize: "",
+  content: {},
+  setCarId: () => {},
   togglePageRefreshStatus: () => {},
   openPage: () => {},
   closeModal: () => {},
@@ -15,6 +17,7 @@ export const AccountModalContextProvider = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [pageRefreshStatus, setPageRefreshStatus] = useState(false);
   const [modalSize, setModalSize] = useState("large");
+  const [content, setContent] = useState({});
 
   const resetContextValue = () => {
     setPage("");
@@ -40,6 +43,8 @@ export const AccountModalContextProvider = (props) => {
     isOpen,
     pageRefreshStatus,
     modalSize,
+    content,
+    setContent,
     togglePageRefreshStatus,
     openPage,
     closeModal,

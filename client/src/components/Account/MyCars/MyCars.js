@@ -6,7 +6,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { sendRequest } from "../../../utility";
 import * as config from "../../../config";
-import GeneralDataGrid from "../../UI/DataGrid/GeneralDataGrid";
+import GeneralDataGrid from "../../UI/GeneralDataGrid/GeneralDataGrid";
 import AccountModalContext from "../../../contexts/account-modal-context";
 
 const MyCars = () => {
@@ -53,10 +53,15 @@ const MyCars = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [accountModalContext.pageRefreshStatus]);
 
   const addCarHandler = () => {
     accountModalContext.openPage("/addCar", "small");
+  };
+
+  const clickCarRowHandler = (rowData) => {
+    accountModalContext.setContent(rowData.row);
+    accountModalContext.openPage("/editCar", "small");
   };
 
   return (
@@ -105,6 +110,7 @@ const MyCars = () => {
               },
             ]}
             rowsPerPageOptions={[5, 10]}
+            onRowClick={clickCarRowHandler}
           />
         )}
         {!isLoading && error.value && error.message}
