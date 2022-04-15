@@ -26,7 +26,7 @@ import * as config from "../../../config";
 import ProviderMapItem from "./ProviderMapItem";
 import CarSpaceModalContext from "../../../contexts/carspace-modal-context";
 
-const ProviderMapView = ({pending = false}) => {
+const ProviderMapView = ({status}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState({ value: false, message: ""});
     const [carSpaces, setCarSpaces] = useState([]);
@@ -35,12 +35,16 @@ const ProviderMapView = ({pending = false}) => {
     const [zoom, setZoom] = useState(17);
 
     const location = useLocation();
+    // To show label under tabs
     const activeTabView = location.pathname.split("/")[2] ?? false;
     const activeTabListings = location.pathname.split("/")[3] ?? false;
-    // prettier-ignore
-    const pendingUrl = `${location.pathname.split("/").slice(0, 3).join("/")}/pending`;
-    // prettier-ignore
-    const activeUrl = `${location.pathname.split("/").slice(0, 3).join("/")}/active`;
+
+    // Redirection links
+    const providerViewURL = location.pathname.split("/").slice(0, 3).join("/");
+    const activeUrl = `${providerViewURL}/active`;
+    const pendingUrl = `${providerViewURL}/pending`;
+    const rejectedUrl = `${providerViewURL}/rejected`;
+    const cancelledUrl = `${providerViewURL}/cancelled`;
     
     const addCarSpaceHandler = () => {
         carSpaceModalContext.openPage("/add");
@@ -52,9 +56,7 @@ const ProviderMapView = ({pending = false}) => {
             const authToken = localStorage.getItem("parkItAuthToken");
             const url = `${
             config.SERVER_URL
-            }/api/provider/parking/${
-                pending ? "pending" : "approved"
-              }`;
+            }/api/provider/parking/${status}`;
             const options = {
             method: "GET",
             headers: {
@@ -77,7 +79,7 @@ const ProviderMapView = ({pending = false}) => {
         };
     
         fetchData();
-    }, [pending, carSpaceModalContext.carSpacesRefreshStatus]);
+    }, [status, carSpaceModalContext.carSpacesRefreshStatus]);
     
     return (
     <div className={classes.bodyContainer}>
@@ -119,7 +121,7 @@ const ProviderMapView = ({pending = false}) => {
                     orientation="horizontal"
                     className={classes.tabContainer}
                     variant="scrollable"
-                    scrollButtons={false}
+                    scrollButtons={true}
                 >
                     <Tab
                         className={classes.menu__tab}
@@ -136,6 +138,24 @@ const ProviderMapView = ({pending = false}) => {
                         to={pendingUrl}
                         value="pending"
                         label="pending"
+                        icon={<ArchiveIcon className={classes["tab-icon"]} />}
+                        iconPosition="start"
+                    />
+                    <Tab
+                        className={classes.menu__tab}
+                        component={Link}
+                        to={rejectedUrl}
+                        value="rejected"
+                        label="rejected"
+                        icon={<ArchiveIcon className={classes["tab-icon"]} />}
+                        iconPosition="start"
+                    />
+                    <Tab
+                        className={classes.menu__tab}
+                        component={Link}
+                        to={cancelledUrl}
+                        value="cancelled"
+                        label="cancelled"
                         icon={<ArchiveIcon className={classes["tab-icon"]} />}
                         iconPosition="start"
                     />

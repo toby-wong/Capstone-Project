@@ -16,7 +16,7 @@ body{
 
 /* Main Menu Section */
 .menuContainer{
-    width: 1000px;
+    width: 800px;
     display: flex;
     flex-direction: column;
     margin-top: 20px;
@@ -29,12 +29,12 @@ body{
     flex-direction: row;
     margin-top: 5px;
     margin-bottom: 10px;
+    justify-content: center;
 }
 
 .tabContainer{
-    width: 45%;
+    width: 40%;
     height: auto;
-    align-items: center;
 }
 
 .menu__tab{
