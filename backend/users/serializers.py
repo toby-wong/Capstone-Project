@@ -228,7 +228,8 @@ class TransactionSerializer(ModelSerializer):
         
         startTime = data['startTime']
         endTime = data['endTime']
-
+        if data['provider'] == data['consumer']:
+            raise serializers.ValidationError('Cannot book own parking space')
         if startTime > endTime:
             raise serializers.ValidationError('Booking start time must be before booking end time')
         parkingSpace = ParkingSpace.objects.filter(pk=data['parkingSpace'].pk).first()
