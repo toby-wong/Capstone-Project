@@ -134,6 +134,9 @@ class Image(models.Model):
     parkingSpace = models.ForeignKey('ParkingSpace', on_delete=models.CASCADE, related_name='images')
     image_data = models.CharField(max_length=1000000)
 
+    def __str__(self):
+        return f"Image of {self.parkingSpace}"
+
 # # REVIEW MODELS
 class Review(models.Model):
     parkingSpace = models.ForeignKey('ParkingSpace', on_delete=models.CASCADE)

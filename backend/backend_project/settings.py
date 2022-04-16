@@ -99,6 +99,7 @@ REST_AUTH_REGISTER_SERIALIZERS = {
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -112,7 +113,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',
+    #'allauth.socialaccount',
     'dj_rest_auth.registration',
     'corsheaders',
     'drf_spectacular',
@@ -128,6 +129,10 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination'
     
+}
+
+JAZZMIN_SETTINGS = {
+    'show_ui_builder': True
 }
 
 MIDDLEWARE = [
