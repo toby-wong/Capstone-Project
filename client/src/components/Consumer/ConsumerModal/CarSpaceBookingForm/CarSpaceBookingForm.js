@@ -2,6 +2,9 @@ import classes from "./CarSpaceBookingForm.module.css";
 
 import { useContext, useEffect, useState } from "react";
 
+import * as config from "../../../../config";
+import * as utility from "../../../../utility";
+
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import BusinessIcon from "@mui/icons-material/Business";
 import PaymentIcon from "@mui/icons-material/Payment";
@@ -11,33 +14,72 @@ import SellIcon from "@mui/icons-material/Sell";
 import { Button, Icon, Typography } from "@mui/material";
 
 import ConsumerModalContext from "../../../../contexts/consumer-modal-context";
-import GeneralModalHeader from "../../../UI/GeneralModal/GeneralModalHeader";
+import CarSpaceCardHeader from "../../../UI/CarSpaceUI/CarSpaceCard/CarSpaceCardHeader";
 import GeneralModalContent from "../../../UI/GeneralModal/GeneralModalContent";
 import ModalEntry from "../../../UI/ModalEntry/ModalEntry";
 import DropdownSelect from "../../../UI/DropdownSelect/DropdownSelect";
 import GeneralModalActions from "../../../UI/GeneralModal/GeneralModalActions";
 import CarSpaceImageCarousel from "../../../UI/CarSpaceUI/CarSpaceInfo/CarSpaceInfoImageCarousel/CarSpaceImageCarousel";
+import CarSpaceImage from "../../../UI/CarSpaceUI/CarSpaceInfo/CarSpaceInfoImage/CarSpaceImage";
+import AuthContext from "../../../../contexts/auth-context";
 
 const CarSpaceBookingForm = () => {
   const consumerModalContext = useContext(ConsumerModalContext);
-  // const [carInfo, setCarInfo] = useState({images: []});
+  const authContext = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [myCars, setMyCars] = useState([]);
 
-  // useEffect(() => {
-  //   const url =
-  // }, []);
+  const { streetAddress, city, state, postcode } =
+    consumerModalContext.carSpaceInfo;
+  const { price, size, images } = consumerModalContext.carSpaceInfo;
+
+  console.log(authContext);
+
+  useEffect(() => {
+    const getMyCars = async () => {
+      try {
+        const authToken = localStorage.getItem("parkItAuthToken");
+        const url = `${config.SERVER_URL}/api/consumer/vehicle/all`;
+        const options = {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + authToken,
+            "Content-Type": "application/json",
+          },
+        };
+        const response = await utility.sendRequest(url, options, setIsLoading);
+
+        if (!response.status || response.status >= 300)
+          throw Error(config.NETWORK_ERROR_MESSAGE);
+
+        const cars = [];
+        for (const carObj of response.data) {
+          cars.push(`${carObj.carMake} ${carObj.carModel}(${carObj.carYear})`);
+        }
+
+        setMyCars(cars);
+      } catch (e) {
+        setError(true);
+      }
+    };
+
+    getMyCars();
+  }, []);
 
   return (
     <form className={classes.form}>
-      <GeneralModalHeader
+      <CarSpaceCardHeader
         title={"Book Car Space"}
         onClose={consumerModalContext.closeModal}
+        onBack={consumerModalContext.backToInfo}
       />
       <GeneralModalContent direction="row">
         <div className={classes.leftSection}>
           <ModalEntry className={classes.entry} icon={BusinessIcon}>
             <Typography variant="carSpaceModalSubTitle">Address</Typography>
             <Typography variant="carSpaceModalSubContent">
-              507 Wattle Street
+              {`${streetAddress}, ${city}, ${state}, ${postcode}`}
             </Typography>
           </ModalEntry>
           <ModalEntry
@@ -61,14 +103,14 @@ const CarSpaceBookingForm = () => {
           <ModalEntry className={classes.entry} icon={AttachMoneyIcon}>
             <Typography variant="carSpaceModalSubTitle">Price</Typography>
             <Typography variant="carSpaceModalSubContent">
-              $10 per hour / $200 per day
+              {`$${price} per hour / $${price * 24} per day`}
             </Typography>
           </ModalEntry>
           <ModalEntry className={classes.entry} icon={DirectionsCarIcon}>
             <Typography variant="carSpaceModalSubTitle">
               Maximum Vehicle Size
             </Typography>
-            <Typography variant="carSpaceModalSubContent">Sedan</Typography>
+            <Typography variant="carSpaceModalSubContent">{size}</Typography>
           </ModalEntry>
           <ModalEntry className={classes.entry} icon={DirectionsCarIcon}>
             <DropdownSelect
@@ -78,8 +120,9 @@ const CarSpaceBookingForm = () => {
               labelId="vehicleLabelId"
               selectId="vehicleSelectId"
               label="Select Vehicle"
-              value={1}
-              items={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+              // value={formState.myCar}
+              value={""}
+              items={myCars}
               // value={formState.maxVehicleSize.value}
               // onChange={maxVehicleSizeChangeHandler}
               // items={config.VEHICLE_TYPES}
@@ -97,7 +140,7 @@ const CarSpaceBookingForm = () => {
         </div>
         <div className={classes.rightSection}>
           <CarSpaceImageCarousel className={classes["image-carousel"]}>
-            {/* {carInfo.images.map((imgObj, idx) => {
+            {images.map((imgObj, idx) => {
               return (
                 <CarSpaceImage
                   key={idx}
@@ -105,16 +148,24 @@ const CarSpaceBookingForm = () => {
                   alt="parking-space"
                 />
               );
-            })} */}
+            })}
           </CarSpaceImageCarousel>
           <ModalEntry className={classes.entry} icon={PaymentIcon}>
             <Typography variant="carSpaceModalSubTitle">Payment</Typography>
-            <Typography variant="carSpaceModalSubContent">
-              Card Number : 1234 5678 9012 3456
-            </Typography>
-            <Typography variant="carSpaceModalSubContent">
-              Expiry Date : 12/12/2027
-            </Typography>
+            {authContext.userInfo.card_number === "" ? (
+              <Typography variant="carSpaceModalSubContent">
+                No card found. Please register a card in Account Details Page.
+              </Typography>
+            ) : (
+              <>
+                <Typography variant="carSpaceModalSubContent">
+                  {`Card Number : ${authContext.userInfo.card_number}`}
+                </Typography>
+                <Typography variant="carSpaceModalSubContent">
+                  {`Expiry Date : ${authContext.userInfo.expiry_date}`}
+                </Typography>
+              </>
+            )}
           </ModalEntry>
           <ModalEntry className={classes.entry} icon={SellIcon}>
             <Typography variant="carSpaceModalSubTitle">Total Cost</Typography>

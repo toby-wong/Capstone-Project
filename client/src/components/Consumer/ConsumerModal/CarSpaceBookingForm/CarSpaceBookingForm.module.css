@@ -46,6 +46,8 @@
 }
 
 .image-carousel {
+  display: flex;
+  align-items: center;
   height: 220px !important;
   margin-bottom: 30px;
 }

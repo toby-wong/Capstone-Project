@@ -49,9 +49,7 @@ const Account = (props) => {
             to="history/provider"
             value="history/provider"
             label="Provider History"
-            icon={
-              <FavoriteBorderOutlinedIcon className={classes["tab-icon"]} />
-            }
+            icon={<ManageSearchOutlinedIcon className={classes["tab-icon"]} />}
             iconPosition="start"
           />
 
@@ -81,7 +79,9 @@ const Account = (props) => {
             to="favourites"
             value="favourites"
             label="Favourites"
-            icon={<LogoutOutlinedIcon className={classes["tab-icon"]} />}
+            icon={
+              <FavoriteBorderOutlinedIcon className={classes["tab-icon"]} />
+            }
             iconPosition="start"
           />
         </Tabs>
