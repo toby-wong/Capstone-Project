@@ -1,6 +1,8 @@
 import { useContext } from "react";
 
 import ConsumerModalContext from "../../../contexts/consumer-modal-context";
+import { SubModalContextProvider } from "../../../contexts/submodal-context";
+
 import CarSpaceReviews from "../../CarSpaceReviews/CarSpaceReviews";
 import GeneralModal from "../../UI/GeneralModal/GeneralModal";
 import CarSpaceBookingForm from "./CarSpaceBookingForm/CarSpaceBookingForm";
@@ -14,11 +16,13 @@ const ConsumerModal = () => {
       open={consumerModalContext.isOpen}
       onClose={consumerModalContext.closeModal}
     >
-      {consumerModalContext.page === "/info" && <ConsumerCarSpaceInfo />}
-      {consumerModalContext.page === "/book" && <CarSpaceBookingForm />}
-      {consumerModalContext.page === "/reviews" && (
-        <CarSpaceReviews modalContext={consumerModalContext} />
-      )}
+      <SubModalContextProvider>
+        {consumerModalContext.page === "/info" && <ConsumerCarSpaceInfo />}
+        {consumerModalContext.page === "/book" && <CarSpaceBookingForm />}
+        {consumerModalContext.page === "/reviews" && (
+          <CarSpaceReviews modalContext={consumerModalContext} />
+        )}
+      </SubModalContextProvider>
     </GeneralModal>
   );
 };

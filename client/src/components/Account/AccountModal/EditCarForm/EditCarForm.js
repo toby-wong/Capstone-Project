@@ -4,18 +4,18 @@ import * as config from "../../../../config";
 import * as utility from "../../../../utility";
 
 import AccountModalContext from "../../../../contexts/account-modal-context";
-import AccountSubModalContext from "../../../../contexts/account-submodal-context";
+import SubModalContext from "../../../../contexts/submodal-context";
 
 import CarForm from "../CarForm/CarForm";
 
 const EditCarForm = () => {
   const accountModalContext = useContext(AccountModalContext);
-  const accountSubModalContext = useContext(AccountSubModalContext);
+  const subModalContext = useContext(SubModalContext);
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const closeAllHandler = () => {
-    accountSubModalContext.closeModal();
+    subModalContext.closeModal();
     accountModalContext.closeModal();
   };
 
@@ -37,7 +37,7 @@ const EditCarForm = () => {
       if (!response.status || response.status >= 300)
         throw Error(config.NETWORK_ERROR_MESSAGE);
 
-      accountSubModalContext.openModal({
+      subModalContext.openModal({
         title: "Success",
         messages: ["A car information has been successfully deleted."],
         actions: [
@@ -52,13 +52,13 @@ const EditCarForm = () => {
 
       accountModalContext.togglePageRefreshStatus();
     } catch (e) {
-      accountSubModalContext.openModal({
+      subModalContext.openModal({
         title: "Error",
         messages: e.message.split(","),
         actions: [
           {
             color: "primary",
-            onClick: accountSubModalContext.closeModal,
+            onClick: subModalContext.closeModal,
             content: "OK",
             width: "120px",
           },
@@ -92,7 +92,7 @@ const EditCarForm = () => {
         throw Error(errorMsgs);
       }
 
-      accountSubModalContext.openModal({
+      subModalContext.openModal({
         title: "Success",
         messages: ["A car information has been successfully edited."],
         actions: [
@@ -107,13 +107,13 @@ const EditCarForm = () => {
 
       accountModalContext.togglePageRefreshStatus();
     } catch (e) {
-      accountSubModalContext.openModal({
+      subModalContext.openModal({
         title: "Error",
         messages: e.message.split(","),
         actions: [
           {
             color: "primary",
-            onClick: accountSubModalContext.closeModal,
+            onClick: subModalContext.closeModal,
             content: "OK",
             width: "120px",
           },

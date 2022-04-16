@@ -1,7 +1,7 @@
 import { useContext } from "react";
 
 import AccountModalContext from "../../../contexts/account-modal-context";
-import AccountSubModalContext from "../../../contexts/account-submodal-context";
+import SubModalContext from "../../../contexts/submodal-context";
 
 import GeneralModal from "../../UI/GeneralModal/GeneralModal";
 import MessageModal from "../../UI/MessageModal/MessageModal";
@@ -10,7 +10,7 @@ import EditCarForm from "./EditCarForm/EditCarForm";
 
 const AccountModal = () => {
   const accountModalContext = useContext(AccountModalContext);
-  const accountSubModalContext = useContext(AccountSubModalContext);
+  const subModalContext = useContext(SubModalContext);
 
   return (
     <GeneralModal
@@ -19,11 +19,11 @@ const AccountModal = () => {
       size={accountModalContext.modalSize}
     >
       <MessageModal
-        open={accountSubModalContext.isOpen}
-        onClose={accountSubModalContext.closeModal}
-        title={accountSubModalContext.content.title}
-        messages={accountSubModalContext.content.messages}
-        actions={accountSubModalContext.content.actions}
+        open={subModalContext.isOpen}
+        onClose={subModalContext.closeModal}
+        title={subModalContext.content.title}
+        messages={subModalContext.content.messages}
+        actions={subModalContext.content.actions}
       />
       {accountModalContext.page === "/addCar" && <AddCarForm />}
       {accountModalContext.page === "/editCar" && <EditCarForm />}
