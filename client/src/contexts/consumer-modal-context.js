@@ -12,6 +12,7 @@ const ConsumerModalContext = React.createContext({
   closeModal: () => {},
   fetchCarSpaceInfo: () => {},
   setFavourite: () => {},
+  backToInfo: () => {},
 });
 
 export const ConsumerModalContextProvider = (props) => {
@@ -25,6 +26,13 @@ export const ConsumerModalContextProvider = (props) => {
   const [pageRefreshStatus, setPageRefreshStatus] = useState(false);
   const [favourite, setFavourite] = useState({ id: null, value: false });
 
+  const resetContextValue = () => {
+    setCarSpaceInfo({ images: [], fetched: false });
+    setCarSpaceId("");
+    setFavourite({ id: null, value: false });
+    setPage("");
+  };
+
   const openPage = (path, csId = null) => {
     if (!isOpen) setIsOpen(true);
     setPage(path);
@@ -35,6 +43,7 @@ export const ConsumerModalContextProvider = (props) => {
 
   const closeModal = () => {
     setIsOpen(false);
+    resetContextValue();
   };
 
   const togglePageRefreshStatus = () => {
@@ -43,6 +52,10 @@ export const ConsumerModalContextProvider = (props) => {
 
   const fetchCarSpaceInfo = (info) => {
     setCarSpaceInfo({ ...info, fetched: true });
+  };
+
+  const backToInfo = () => {
+    setPage("/info");
   };
 
   const contextValue = {
@@ -57,6 +70,7 @@ export const ConsumerModalContextProvider = (props) => {
     closeModal,
     togglePageRefreshStatus,
     setFavourite,
+    backToInfo,
   };
 
   return (
