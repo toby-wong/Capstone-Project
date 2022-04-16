@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 
-const AccountSubModalContext = React.createContext({
+const SubModalContext = React.createContext({
   isOpen: false,
   openModal: () => {},
   closeModal: () => {},
+  closeAllModals: () => {},
   content: { title: "", messages: [], actions: [] },
 });
 
-export const AccountSubModalContextProvider = (props) => {
+export const SubModalContextProvider = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState({
     title: "",
@@ -15,27 +16,35 @@ export const AccountSubModalContextProvider = (props) => {
     actions: [],
   });
 
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+  const closeAllModals = (context) => {
+    return () => {
+      closeModal(context);
+      context.closeModal();
+    };
+  };
+
   const openModal = ({ title, messages, actions }) => {
     setIsOpen(true);
     setContent({ title, messages, actions });
-  };
-
-  const closeModal = () => {
-    setIsOpen(false);
   };
 
   const contextValue = {
     isOpen,
     openModal,
     closeModal,
+    closeAllModals,
     content,
   };
 
   return (
-    <AccountSubModalContext.Provider value={contextValue}>
+    <SubModalContext.Provider value={contextValue}>
       {props.children}
-    </AccountSubModalContext.Provider>
+    </SubModalContext.Provider>
   );
 };
 
-export default AccountSubModalContext;
+export default SubModalContext;

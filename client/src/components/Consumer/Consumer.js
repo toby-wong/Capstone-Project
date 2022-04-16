@@ -5,9 +5,6 @@ import { ConsumerModalContextProvider } from "../../contexts/consumer-modal-cont
 import ConsumerView from "./ConsumerView/ConsumerView";
 import ConsumerModal from "./ConsumerModal/ConsumerModal";
 
-/*
-  Set a modal size: large, medium, small
-*/
 const Consumer = () => {
   return (
     <ConsumerModalContextProvider>
