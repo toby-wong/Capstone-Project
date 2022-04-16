@@ -1,6 +1,8 @@
 import classes from "./CarSpaceInfo.module.css";
 
-import { CircularProgress } from "@mui/material";
+import * as config from "../../../../config";
+
+import { CircularProgress, Button } from "@mui/material";
 
 import CarSpaceCardHeader from "../CarSpaceCard/CarSpaceCardHeader";
 import CarSpaceCardContent from "../CarSpaceCard/CarSpaceCardContent";
@@ -8,22 +10,23 @@ import CarSpaceCardContentLeft from "../CarSpaceCard/CarSpaceCardContentLeft";
 import CarSpaceCardContentRight from "../CarSpaceCard/CarSpaceCardContentRight";
 import CarSpaceInfoReviews from "./CarSpaceInfoReviews/CarSpaceInfoReviews";
 
-// import CarSpaceInfoImageCarousel from "./CarSpaceInfoImageCarousel/CarSpaceInfoImageCarousel";
-// import CarSpaceInfoImage from "./CarSpaceInfoImage/CarSpaceInfoImage";
-
 import CarSpaceInfoImageCarousel from "./CarSpaceInfoImageCarousel/CarSpaceImageCarousel";
 import CarSpaceInfoImage from "./CarSpaceInfoImage/CarSpaceImage";
 
 import CarSpaceInfoActions from "./CarSpaceInfoActions/CarSpaceInfoActions";
 import CarSpaceInfoDetails from "./CarSpaceInfoDetails/CarSpaceInfoDetails";
+import CarSpaceInfoFavourite from "./CarSpaceInfoFavourite/CarSpaceInfoFavourite";
 
 const CarSpaceInfo = ({
   title,
-  carSpaceInfo,
   actions,
   isLoading,
+  setIsLoading,
+  error,
+  setError,
   onClose,
-  onClickReview,
+  modalContext,
+  favourite = false,
 }) => {
   return (
     <>
@@ -32,19 +35,24 @@ const CarSpaceInfo = ({
           <CircularProgress className={classes.spinner} />
         </div>
       )}
-      {!isLoading && (
+      {!isLoading && !error && (
         <>
           <CarSpaceCardHeader title={title} onClose={onClose}>
-            <CarSpaceInfoReviews
-              avgRating={carSpaceInfo.avg_rating}
-              nRatings={carSpaceInfo.n_ratings}
-              onClickReview={onClickReview}
-            />
+            <div className={classes.header}>
+              <CarSpaceInfoReviews modalContext={modalContext} />
+              {favourite && (
+                <CarSpaceInfoFavourite
+                  modalContext={modalContext}
+                  setIsLoading={setIsLoading}
+                  setError={setError}
+                />
+              )}
+            </div>
           </CarSpaceCardHeader>
           <CarSpaceCardContent>
             <CarSpaceCardContentLeft>
               <CarSpaceInfoImageCarousel>
-                {carSpaceInfo.images.map((imgObj, idx) => {
+                {modalContext.carSpaceInfo.images.map((imgObj, idx) => {
                   return (
                     <CarSpaceInfoImage
                       key={idx}
@@ -58,19 +66,32 @@ const CarSpaceInfo = ({
             </CarSpaceCardContentLeft>
             <CarSpaceCardContentRight>
               <CarSpaceInfoDetails
-                startTime={carSpaceInfo.startTime}
-                endTime={carSpaceInfo.endTime}
-                streetAddress={carSpaceInfo.streetAddress}
-                city={carSpaceInfo.city}
-                state={carSpaceInfo.state}
-                postcode={carSpaceInfo.postcode}
-                price={carSpaceInfo.price}
-                size={carSpaceInfo.size}
-                notes={carSpaceInfo.notes}
+                startTime={modalContext.carSpaceInfo.startTime}
+                endTime={modalContext.carSpaceInfo.endTime}
+                streetAddress={modalContext.carSpaceInfo.streetAddress}
+                city={modalContext.carSpaceInfo.city}
+                state={modalContext.carSpaceInfo.state}
+                postcode={modalContext.carSpaceInfo.postcode}
+                price={modalContext.carSpaceInfo.price}
+                size={modalContext.carSpaceInfo.size}
+                notes={modalContext.carSpaceInfo.notes}
               />
             </CarSpaceCardContentRight>
           </CarSpaceCardContent>
         </>
+      )}
+      {!isLoading && error && (
+        <div className={classes.error}>
+          {config.NETWORK_ERROR_MESSAGE}
+          <Button
+            variant="contained"
+            size="large"
+            onClick={onClose}
+            className={classes["error-btn"]}
+          >
+            OK
+          </Button>
+        </div>
       )}
     </>
   );

@@ -14,7 +14,7 @@ const ProviderModalContext = React.createContext({
 
 export const ProviderModalContextProvider = (props) => {
   const [carSpaceInfo, setCarSpaceInfo] = useState({
-    iamges: [],
+    images: [],
     fetched: false,
   });
   const [carSpaceId, setCarSpaceId] = useState("");

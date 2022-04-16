@@ -37,6 +37,7 @@
 }
 
 .sectionContent__body {
+  flex: 1;
   background-color: var(--background);
   display: flex;
   flex-direction: column;

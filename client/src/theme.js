@@ -138,17 +138,20 @@ export const theme = createTheme({
           props: { variant: "sectionBody" },
           style: {
             backgroundColor: colors.background,
+            display: "flex",
             height: "100%",
             width: "100%",
+            overflow: "auto",
           },
         },
         {
           props: { variant: "sectionContent" },
           style: {
+            flex: 1,
             display: "flex",
             flexDirection: "column",
             position: "relative",
-            height: "100%",
+            minHeight: "720px",
             width: "100%",
             padding: 0,
             backgroundColor: colors.background,
@@ -316,6 +319,12 @@ export const theme = createTheme({
           props: { variant: "form" },
           style: {
             marginRight: "20px",
+          },
+        },
+        {
+          props: { variant: "modalSubIcon" },
+          style: {
+            marginRight: "10px",
           },
         },
       ],

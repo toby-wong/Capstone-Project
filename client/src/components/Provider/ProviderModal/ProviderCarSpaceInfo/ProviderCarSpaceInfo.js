@@ -9,17 +9,11 @@ import * as utility from "../../../../utility";
 
 const ProviderCarSpaceInfo = ({ status }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [carSpaceInfo, setCarSpaceInfo] = useState({
-    images: [],
-  });
+  const [error, setError] = useState(false);
   const providerModalContext = useContext(ProviderModalContext);
 
   const editListHandler = () => {
     providerModalContext.openPage("/edit");
-  };
-
-  const displayReviewsHandler = () => {
-    providerModalContext.openPage("/reviews");
   };
 
   const viewBookingsHandler = () => {
@@ -45,8 +39,8 @@ const ProviderCarSpaceInfo = ({ status }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (providerModalContext.carSpaceInfo.fetched)
-          return setCarSpaceInfo(providerModalContext.carSpaceInfo);
+        if (providerModalContext.carSpaceInfo.fetched) return;
+
         const authToken = localStorage.getItem("parkItAuthToken");
         const url = `${config.SERVER_URL}/api/provider/parking/${providerModalContext.carSpaceId}`;
         const options = {
@@ -60,10 +54,10 @@ const ProviderCarSpaceInfo = ({ status }) => {
         const response = await utility.sendRequest(url, options, setIsLoading);
         if (response.status >= 300 || !response.status) throw Error;
 
-        setCarSpaceInfo(response.data);
         providerModalContext.fetchCarSpaceInfo(response.data);
       } catch (e) {
         setIsLoading(false);
+        setError(true);
       }
     };
     fetchData();
@@ -71,12 +65,13 @@ const ProviderCarSpaceInfo = ({ status }) => {
 
   return (
     <CarSpaceInfo
-      title={`${carSpaceInfo.streetAddress}, ${carSpaceInfo.city}`}
-      carSpaceInfo={carSpaceInfo}
+      title={`${providerModalContext.carSpaceInfo.streetAddress}, ${providerModalContext.carSpaceInfo.city}`}
       actions={actions}
       isLoading={isLoading}
+      error={error}
+      setError={setError}
       onClose={providerModalContext.closeModal}
-      onClickReview={displayReviewsHandler}
+      modalContext={providerModalContext}
     />
   );
 };

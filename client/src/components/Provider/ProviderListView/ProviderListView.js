@@ -217,7 +217,7 @@ const ProviderListView = ({ status }) => {
             page={page}
             onPageChange={changePageHandler}
             rowsPerPage={rowsPerPage}
-            rowsPerPageOptions={[3, 5, 10]}
+            rowsPerPageOptions={[3]}
             onRowsPerPageChange={changeRowsPerPageHandler}
           />
         </Paper>

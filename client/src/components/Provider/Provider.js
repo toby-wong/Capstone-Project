@@ -17,7 +17,7 @@ const Provider = () => {
           {/* List View */}
           <Route
             path="listView/active/*"
-            element={<ProviderListView status="approved" />}
+            element={<ProviderListView status={"approved"} />}
           />
           <Route
             path="listView/pending/*"
