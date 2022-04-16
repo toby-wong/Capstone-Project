@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 const ConsumerModalContext = React.createContext({
   page: "",
+  carSpaceId: "",
   content: {},
   isOpen: false,
   pageRefreshStatus: false,
@@ -14,11 +15,14 @@ const ConsumerModalContext = React.createContext({
 export const ConsumerModalContextProvider = (props) => {
   const [page, setPage] = useState("");
   const [content, setContent] = useState({});
+  const [carSpaceId, setCarSpaceId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [pageRefreshStatus, setPageRefreshStatus] = useState(false);
 
-  const openPage = (path) => {
-    setIsOpen(true);
+  const openPage = (path, id) => {
+    if (!isOpen) setIsOpen(true);
+
+    if (path === "/info") setCarSpaceId(id);
     setPage(path);
   };
 
@@ -32,6 +36,7 @@ export const ConsumerModalContextProvider = (props) => {
 
   const contextValue = {
     page,
+    carSpaceId,
     content,
     isOpen,
     pageRefreshStatus,

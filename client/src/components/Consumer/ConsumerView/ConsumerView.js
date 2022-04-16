@@ -1,11 +1,15 @@
-import classes from "./ProviderMapView.module.css";
+import classes from "./ConsumerView.module.css";
 
 import { Link, useLocation } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import MapPointObject from "./MapPointObject";
-
-import { MapContainer, TileLayer } from "react-leaflet";
 import { Scrollbars } from "react-custom-scrollbars-2";
+import { MapContainer, TileLayer } from "react-leaflet";
+
+import { sendRequest } from "../../../utility";
+import * as config from "../../../config";
+
+import ConsumerModalContext from "../../../contexts/consumer-modal-context";
+
 import {
   Button,
   Tab,
@@ -16,48 +20,28 @@ import {
 } from "@mui/material";
 
 // React Icon import
-import ListAltIcon from "@mui/icons-material/ListAlt";
-import MapIcon from "@mui/icons-material/Map";
-import BeenhereIcon from "@mui/icons-material/Beenhere";
-import ArchiveIcon from "@mui/icons-material/Archive";
-import ThumbDownIcon from "@mui/icons-material/ThumbDown";
-import DoDisturbAltIcon from "@mui/icons-material/DoDisturbAlt";
+import HistoryIcon from "@mui/icons-material/History";
+import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
-import { sendRequest } from "../../../utility";
-import * as config from "../../../config";
+import ConsumerMapItem from "./ConsumerMapItem";
+import MapPointObject from "./MapPointObject";
+import InputField from "../../UI/InputField/InputField";
 
-import ProviderMapItem from "./ProviderMapItem";
-import ProviderModalContext from "../../../contexts/provider-modal-context";
-
-const ProviderMapView = ({ status }) => {
+const ConsumerView = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const consumerModalContext = useContext(ConsumerModalContext);
+
   const [error, setError] = useState({ value: false, message: "" });
-  const [carSpaces, setCarSpaces] = useState([]);
-  const providerModalContext = useContext(ProviderModalContext);
+  const [consumerSpaces, setConsumerSpaces] = useState([]);
   const [center, setCenter] = useState([-33.9139982, 151.2418546]);
   const [zoom, setZoom] = useState(17);
-
-  const location = useLocation();
-  // To show label under tabs
-  const activeTabView = location.pathname.split("/")[2] ?? false;
-  const activeTabListings = location.pathname.split("/")[3] ?? false;
-
-  // Redirection links
-  const providerViewURL = location.pathname.split("/").slice(0, 3).join("/");
-  const activeUrl = `${providerViewURL}/active`;
-  const pendingUrl = `${providerViewURL}/pending`;
-  const rejectedUrl = `${providerViewURL}/rejected`;
-  const cancelledUrl = `${providerViewURL}/cancelled`;
-
-  const addCarSpaceHandler = () => {
-    providerModalContext.openPage("/add");
-  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const authToken = localStorage.getItem("parkItAuthToken");
-        const url = `${config.SERVER_URL}/api/provider/parking/${status}`;
+        const url = `${config.SERVER_URL}/api/provider/parking/pending`;
         const options = {
           method: "GET",
           headers: {
@@ -65,12 +49,11 @@ const ProviderMapView = ({ status }) => {
             "Content-Type": "application/json",
           },
         };
-
         const response = await sendRequest(url, options, setIsLoading);
         if (response.status >= 300 || !response.status) throw Error;
 
         console.log(response.data);
-        setCarSpaces(response.data);
+        setConsumerSpaces(response.data);
       } catch (e) {
         setError({
           value: true,
@@ -80,7 +63,7 @@ const ProviderMapView = ({ status }) => {
     };
 
     fetchData();
-  }, [status, providerModalContext.carSpacesRefreshStatus]);
+  }, [consumerModalContext.pageRefreshStatus]);
 
   return (
     <div className={classes.bodyContainer}>
@@ -92,88 +75,66 @@ const ProviderMapView = ({ status }) => {
           fontWeight="Bold"
         >
           {" "}
-          Your Car Spaces{" "}
+          Your Car Spaces
         </Typography>
-        <div className={classes.viewSelection}>
-          <Tabs
-            value={activeTabView}
-            orientation="horizontal"
-            className={classes.tabContainer}
-          >
-            <Tab
-              className={classes.menu__tab}
-              component={Link}
-              to="/provider/mapView/active"
-              value="mapView"
-              label="Map"
-              icon={<MapIcon className={classes["tab-icon"]} />}
-              iconPosition="start"
-            />
-            <Tab
-              className={classes.menu__tab}
-              component={Link}
-              to="/provider/listView/active"
-              value="listView"
-              label="List"
-              icon={<ListAltIcon className={classes["tab-icon"]} />}
-              iconPosition="start"
-            />
-          </Tabs>
+        <div className={classes.interactionSection}>
+          <InputField
+            className={classes.searchBar}
+            inputClassName={classes.input}
+            label="Search"
+            type="text"
+            name="query"
+            // value={formState.value}
+            // onChange={postCodeChangeHandler}
+          />
           <Divider
-            orientation="vertical"
-            variant="middle"
-            className={classes.navbar_divider_betweenTabs}
+            orientation="horizontal"
+            className={classes.navbar_divider_listingStart}
           />
           <Tabs
-            value={activeTabListings}
             orientation="horizontal"
             className={classes.tabContainer}
-            variant="scrollable"
-            scrollButtons={true}
+            value="/hidden"
           >
             <Tab
               className={classes.menu__tab}
               component={Link}
-              to={activeUrl}
-              value="active"
-              label="active"
-              icon={<BeenhereIcon className={classes["tab-icon"]} />}
+              to="/account/favourites"
+              value="/account/favourites"
+              label="favourite Spots"
+              icon={<FavoriteIcon className={classes["tab-icon"]} />}
               iconPosition="start"
             />
             <Tab
               className={classes.menu__tab}
               component={Link}
-              to={pendingUrl}
-              value="pending"
-              label="pending"
-              icon={<ArchiveIcon className={classes["tab-icon"]} />}
+              to="/account/history/consumer"
+              value="/account/history/consumer"
+              label="Past Bookings"
+              icon={<HistoryIcon className={classes["tab-icon"]} />}
               iconPosition="start"
             />
             <Tab
               className={classes.menu__tab}
               component={Link}
-              to={rejectedUrl}
-              value="rejected"
-              label="rejected"
-              icon={<ThumbDownIcon className={classes["tab-icon"]} />}
+              to="/account/myCars"
+              value="/account/myCars"
+              label="Your Cars"
+              icon={<DirectionsCarIcon className={classes["tab-icon"]} />}
               iconPosition="start"
             />
             <Tab
-              className={classes.menu__tab}
+              className={classes.hidden}
               component={Link}
-              to={cancelledUrl}
-              value="cancelled"
-              label="cancelled"
-              icon={<DoDisturbAltIcon className={classes["tab-icon"]} />}
+              to="/account/favourites"
+              value="/hidden"
+              label="favourite Spots"
+              icon={<FavoriteIcon className={classes["tab-icon"]} />}
               iconPosition="start"
             />
           </Tabs>
         </div>
         <div className={classes.listingContainer}>
-          <Divider
-            orientation="horizontal"
-            className={classes.navbar_divider_listingStart}
-          />
           <Scrollbars
             renderView={(props) => (
               <div
@@ -199,8 +160,8 @@ const ProviderMapView = ({ status }) => {
             )}
             {!isLoading &&
               !error.value &&
-              carSpaces.map((item) => (
-                <ProviderMapItem
+              consumerSpaces.map((item) => (
+                <ConsumerMapItem
                   key={item.pk}
                   id={item.pk}
                   streetAddress={item.streetAddress}
@@ -240,7 +201,8 @@ const ProviderMapView = ({ status }) => {
           )}
           {!isLoading &&
             !error.value &&
-            carSpaces.map((item) => (
+            consumerSpaces.length !== 0 &&
+            consumerSpaces.map((item) => (
               <MapPointObject
                 key={item.pk}
                 id={item.pk}
@@ -249,22 +211,16 @@ const ProviderMapView = ({ status }) => {
                 streetAddress={item.streetAddress}
               />
             ))}
+          {!isLoading && !error.value && consumerSpaces.length === 0 && (
+            <div>Testing</div>
+          )}
           {!isLoading && error.value && (
             <div className={classes.center_container}> {error.message}</div>
           )}
         </MapContainer>
-        <Button
-          className={classes.button}
-          color="primary"
-          variant="contained"
-          size="large"
-          onClick={addCarSpaceHandler}
-        >
-          Add Car Space
-        </Button>
       </div>
     </div>
   );
 };
 
-export default ProviderMapView;
+export default ConsumerView;

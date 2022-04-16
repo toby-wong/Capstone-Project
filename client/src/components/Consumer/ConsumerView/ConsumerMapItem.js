@@ -1,16 +1,16 @@
-import classes from "./ProviderMapItem.module.css";
+import classes from "./ConsumerMapItem.module.css";
 
 import { useContext } from "react";
-import ProviderModalContext from "../../../contexts/provider-modal-context";
 
 import { Typography, Divider } from "@mui/material";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import ConsumerModalContext from "../../../contexts/consumer-modal-context";
 
-const ProviderMapItem = ({ streetAddress, notes, size, price, id, image }) => {
-  const providerModalContext = useContext(ProviderModalContext);
+const ConsumerMapItem = ({ streetAddress, notes, size, price, id, image }) => {
+  const consumerModalContext = useContext(ConsumerModalContext);
 
   const mapItemClickHandler = () => {
-    providerModalContext.openPage("/info", id);
+    consumerModalContext.openPage("/info", id);
   };
 
   return (
@@ -47,4 +47,4 @@ const ProviderMapItem = ({ streetAddress, notes, size, price, id, image }) => {
   );
 };
 
-export default ProviderMapItem;
+export default ConsumerMapItem;

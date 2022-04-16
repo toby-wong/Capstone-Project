@@ -1,7 +1,7 @@
 import { LoginSignupModalContextProvider } from "../../contexts/login-signup-modal-context";
 
 import LoginSignupModal from "../LoginSignup/LoginSignupModal/LoginSignupModal";
-import MainHeader from "../MainHeader/MainHeader";
+import MainHeader from "./MainHeader/MainHeader";
 
 import classes from "./Layout.module.css";
 

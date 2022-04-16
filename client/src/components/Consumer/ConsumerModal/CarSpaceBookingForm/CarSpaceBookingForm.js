@@ -16,8 +16,7 @@ import GeneralModalContent from "../../../UI/GeneralModal/GeneralModalContent";
 import ModalEntry from "../../../UI/ModalEntry/ModalEntry";
 import DropdownSelect from "../../../UI/DropdownSelect/DropdownSelect";
 import GeneralModalActions from "../../../UI/GeneralModal/GeneralModalActions";
-import CarSpaceImageCarousel from "../../../Provider/CarSpaceModal/CarSpaceImageCarousel/CarSpaceImageCarousel";
-import CarSpaceImage from "../../../Provider/CarSpaceModal/CarSpaceImage/CarSpaceImage";
+import CarSpaceImageCarousel from "../../../UI/CarSpaceUI/CarSpaceInfo/CarSpaceInfoImageCarousel/CarSpaceImageCarousel";
 
 const CarSpaceBookingForm = () => {
   const consumerModalContext = useContext(ConsumerModalContext);

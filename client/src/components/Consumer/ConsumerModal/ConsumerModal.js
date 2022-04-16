@@ -12,6 +12,7 @@ const ConsumerModal = () => {
       open={consumerModalContext.isOpen}
       onClose={consumerModalContext.closeModal}
     >
+      {/* {consumerModalContext.page === "/info" && <CarSpaceInfo />} */}
       {consumerModalContext.page === "/book" && <CarSpaceBookingForm />}
     </GeneralModal>
   );

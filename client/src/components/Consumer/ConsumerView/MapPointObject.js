@@ -1,12 +1,12 @@
 import { useContext } from "react";
-import ProviderModalContext from "../../../contexts/provider-modal-context";
+import CarSpaceModalContext from "../../../contexts/provider-modal-context";
 import { Marker, Popup } from "react-leaflet";
 
 const MapPointObject = ({ id, longitude, latitude, streetAddress }) => {
-  const providerModalContext = useContext(ProviderModalContext);
+  const carSpaceModalContext = useContext(CarSpaceModalContext);
 
   const mapItemClickHandler = () => {
-    providerModalContext.openPage("/info", id);
+    carSpaceModalContext.openPage("/info", id);
   };
 
   return (
