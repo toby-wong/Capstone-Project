@@ -184,7 +184,7 @@ const ConsumerView = () => {
             {/* Else render values from query space */}
             {!isLoading &&
               !error.value &&
-              query != "" &&
+              query !== "" &&
               queryResults.map((item) => (
                 <ConsumerMapItem
                   key={item.pk}
