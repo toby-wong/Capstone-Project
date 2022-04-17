@@ -185,7 +185,7 @@ class FavouriteSerializer(ModelSerializer):
     startTime = serializers.DateTimeField(source="parkingSpace.startTime", required=False)
     endTime = serializers.DateTimeField(source="parkingSpace.endTime", required=False)
     cost = serializers.IntegerField(source="parkingSpace.price", required=False)
-    parkingSpaceSize = serializers.IntegerField(source="parkingSpace.size", required=False)
+    parkingSpaceSize = serializers.CharField(source="parkingSpace.size", required=False)
 
     class Meta:
         model = Favourite
