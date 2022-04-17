@@ -1846,7 +1846,7 @@ components:
         cost:
           type: integer
         parkingSpaceSize:
-          type: integer
+          type: string
         startTime:
           type: string
           format: date-time
@@ -2164,7 +2164,7 @@ components:
         cost:
           type: integer
         parkingSpaceSize:
-          type: integer
+          type: string
         startTime:
           type: string
           format: date-time
