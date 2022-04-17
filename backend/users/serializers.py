@@ -222,7 +222,7 @@ class TransactionSerializer(ModelSerializer):
             'pk'
         )
 
-        read_only_fields = ['pk', 'streetAddress', 'city', 'state', 'postcode']
+        read_only_fields = ['pk', 'streetAddress', 'city', 'state', 'postcode', 'consumerName', 'parkingSpaceSize']
     
     def validate(self, data):
         
