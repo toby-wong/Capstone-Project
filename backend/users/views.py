@@ -255,6 +255,7 @@ class ParkingSearchList(ListAPIView):
     
     def get_queryset(self):
         queryset = super(ParkingSearchList, self).get_queryset()
+        queryset = queryset.exclude(provider=self.request.user)
         try:
             address = self.request.query_params.get('address')
             radius = self.request.query_params.get('radius')
