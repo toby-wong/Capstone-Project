@@ -14,11 +14,6 @@ const EditCarForm = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const closeAllHandler = () => {
-    subModalContext.closeModal();
-    accountModalContext.closeModal();
-  };
-
   const deleteHandler = async () => {
     try {
       const authToken = localStorage.getItem("parkItAuthToken");
@@ -43,11 +38,12 @@ const EditCarForm = () => {
         actions: [
           {
             color: "primary",
-            onClick: closeAllHandler,
+            onClick: subModalContext.closeAllModals(accountModalContext),
             content: "OK",
             width: "120px",
           },
         ],
+        context: accountModalContext,
       });
 
       accountModalContext.togglePageRefreshStatus();
@@ -98,11 +94,12 @@ const EditCarForm = () => {
         actions: [
           {
             color: "primary",
-            onClick: closeAllHandler,
+            onClick: subModalContext.closeAllModals(accountModalContext),
             content: "OK",
             width: "120px",
           },
         ],
+        context: accountModalContext,
       });
 
       accountModalContext.togglePageRefreshStatus();

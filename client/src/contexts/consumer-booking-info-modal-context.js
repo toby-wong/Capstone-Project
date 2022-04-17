@@ -1,19 +1,12 @@
 import React, { useState } from "react";
 
-const ProviderModalContext = React.createContext({
+const ConsumerBookingInfoModalContext = React.createContext({
   page: "",
   carSpaceId: null,
   carSpaceInfo: { images: [], fetched: false },
   isOpen: false,
   carSpacesRefreshStatus: false,
   bookingInfo: { images: [] },
-  // bookingInfo: {
-  //   userInfo: {
-  //     username: "",
-  //     email: "",
-  //     mobile: "",
-  //   },
-  // },
   toggleCarSpacesRefreshStatus: () => {},
   openPage: () => {},
   closeModal: () => {},
@@ -21,7 +14,7 @@ const ProviderModalContext = React.createContext({
   setBookingInfo: () => {},
 });
 
-export const ProviderModalContextProvider = (props) => {
+export const ConsumerBookingInfoModalContextProvider = (props) => {
   const [carSpaceInfo, setCarSpaceInfo] = useState({
     images: [],
     fetched: false,
@@ -81,10 +74,10 @@ export const ProviderModalContextProvider = (props) => {
   };
 
   return (
-    <ProviderModalContext.Provider value={contextValue}>
+    <ConsumerBookingInfoModalContext.Provider value={contextValue}>
       {props.children}
-    </ProviderModalContext.Provider>
+    </ConsumerBookingInfoModalContext.Provider>
   );
 };
 
-export default ProviderModalContext;
+export default ConsumerBookingInfoModalContext;

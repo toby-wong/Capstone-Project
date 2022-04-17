@@ -9,8 +9,8 @@ import {
   carSpaceBookingFormReducer,
   getCarSpaceBookingFormInitialState,
 } from "../../../../reducers/carspace-booking-form-reducer";
-
 import SubModalContext from "../../../../contexts/submodal-context";
+
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import BusinessIcon from "@mui/icons-material/Business";
 import PaymentIcon from "@mui/icons-material/Payment";
@@ -92,11 +92,12 @@ const CarSpaceBookingForm = () => {
         actions: [
           {
             color: "primary",
-            onClick: subModalContext.closeAllModals(consumerModalContext),
+            onClick: subModalContext.closeModal,
             content: "OK",
             width: "120px",
           },
         ],
+        context: consumerModalContext,
       });
     } catch (e) {
       subModalContext.openModal({

@@ -213,6 +213,47 @@ export const theme = createTheme({
             flexDirection: "column",
           },
         },
+        {
+          props: { variant: "bookingInfoBody" },
+          style: {
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            borderRadius: 0,
+            padding: 0,
+          },
+        },
+        {
+          props: { variant: "bookingInfoContent" },
+          style: {
+            flex: 1,
+            display: "flex",
+            borderRadius: 0,
+            padding: 0,
+            backgroundColor: "red",
+          },
+        },
+        {
+          props: { variant: "bookingInfoContentLeft" },
+          style: {
+            flex: 2,
+            display: "flex",
+            flexDirection: "column",
+            borderRadius: 0,
+            padding: 0,
+          },
+        },
+        {
+          props: { variant: "bookingInfoContentRight" },
+          style: {
+            minWidth: "350px",
+            maxWidth: "450px",
+            flex: 1,
+            flexDirection: "column",
+            borderRadius: 0,
+            padding: 0,
+          },
+        },
       ],
     },
     MuiOutlinedInput: {

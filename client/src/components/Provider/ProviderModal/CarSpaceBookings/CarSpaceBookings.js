@@ -26,6 +26,8 @@ const CarSpaceBookings = () => {
     providerModalContext.openPage("/info");
   };
 
+  const clickCarRowHandler = (rowData) => {};
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -42,6 +44,7 @@ const CarSpaceBookings = () => {
         const response = await utility.sendRequest(url, options, setIsLoading);
         if (response.status >= 300 || !response.status) throw Error;
 
+        console.log(response);
         const fecthedBookings = [];
         for (const booking of response.data) {
           fecthedBookings.push({
@@ -53,10 +56,9 @@ const CarSpaceBookings = () => {
             vehicle: booking.parkingSpaceSize,
           });
         }
-        console.log(fecthedBookings);
+
         setBookings(fecthedBookings);
       } catch (e) {
-        console.log(e.message);
         setError({
           value: true,
           message: config.NETWORK_ERROR_MESSAGE,
@@ -111,6 +113,7 @@ const CarSpaceBookings = () => {
               },
             ]}
             rowsPerPageOptions={[5, 10]}
+            onRowClick={clickCarRowHandler}
           />
         )}
         {!isLoading && error.value && (

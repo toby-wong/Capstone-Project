@@ -1,20 +1,21 @@
+import classes from "./Account.module.css";
+
+import { Link, Route, Routes, useLocation } from "react-router-dom";
+
+import { AccountModalContextProvider } from "../../contexts/account-modal-context";
+import { SubModalContextProvider } from "../../contexts/submodal-context";
+
 import { Paper, Tab, Tabs } from "@mui/material";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
-
-import classes from "./Account.module.css";
-
-import { Link, Route, Routes, useLocation } from "react-router-dom";
 
 import AccountModal from "./AccountModal/AccountModal";
 import AccountDetails from "./AccountDetails/AccountDetails";
 import ProviderHistory from "./ProviderHistory/ProviderHistory";
 import MyCars from "./MyCars/MyCars";
-import { AccountModalContextProvider } from "../../contexts/account-modal-context";
-import { SubModalContextProvider } from "../../contexts/submodal-context";
+import ConsumerHistory from "./ConsumerHistory/ConsumerHistory";
 
 const Account = (props) => {
   const location = useLocation();
@@ -88,10 +89,7 @@ const Account = (props) => {
         <div className={classes.content}>
           <Routes>
             <Route path="details" element={<AccountDetails />} />
-            <Route
-              path="history/consumer"
-              element={<div>Consumer History</div>}
-            />
+            <Route path="history/consumer" element={<ConsumerHistory />} />
             <Route path="history/provider" element={<ProviderHistory />} />
             <Route path="myCars" element={<MyCars />} />
             <Route path="favourites" element={<div>Favourites</div>} />
