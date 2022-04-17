@@ -22,7 +22,11 @@ from .views import AddAdminView, RemoveAdminView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('users.urls')),
-    path('admin/users/customuser/<id>/change', AddAdminView.as_view(), name='add_admin'), # issue is to do with CSRF verification failing
+    path('admin/users/customuser/<id>/change', AddAdminView.as_view(), name='add_admin'),
+    path('dj-rest-auth/', include('dj_rest_auth.urls')), 
+    path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
+    
+    # issue is to do with CSRF verification failing
     # path('admin/remove_user/', RemoveAdminView.as_view(), name='remove_admin'), # may have to do with current url being admin/
     # path('booking/', include('booking.urls')),
 ] + static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
