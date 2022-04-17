@@ -1,6 +1,7 @@
 from re import M
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
 from drf_extra_fields.fields import Base64ImageField
 import requests
 import urllib.parse
@@ -92,6 +93,17 @@ class ParkingSpace(models.Model):
         self.latitude = coords[1]
         #super().save(*args, **kwargs)
 
+    def clean(self):
+        pk = self.pk
+        startTime = self.startTime
+        endTime = self.endTime
+
+        if startTime > endTime:
+            raise ValidationError('Parking space start time must be before the parking space end time')
+        qs = Transaction.objects.filter(parkingSpace=pk).exclude(startTime__date__gte=startTime).exclude(endTime__date__lte=endTime)
+        if qs.exists():
+            raise ValidationError('This availability would violate existing bookings.')
+
     def __str__(self):
         return f"{self.provider.username}'s car space at {self.streetAddress}, {self.city} {self.postcode}"
 
@@ -111,6 +123,22 @@ class Transaction(models.Model):
         parkingSpace = ParkingSpace.objects.filter(pk=self.parkingSpace.pk).first()
         parkingSpace.latestTime = latest
         parkingSpace.save()
+
+    def clean(self):
+        startTime = self.startTime
+        endTime = self.endTime
+        if self.provider == self.consumer:
+            raise ValidationError('Cannot book own parking space')
+        if startTime > endTime:
+            raise ValidationError('Booking start time must be before booking end time')
+        parkingSpace = ParkingSpace.objects.filter(pk=self.parkingSpace.pk).first()
+        if parkingSpace.status == 'cancelled':
+            raise ValidationError('The parking space is no longer accepting new bookings')
+        if parkingSpace.startTime > startTime or parkingSpace.endTime < endTime or parkingSpace.startTime > endTime or parkingSpace.endTime < startTime:
+             raise ValidationError('This booking does not fit within the parking space availability.')
+        qs = Transaction.objects.filter(parkingSpace=self.parkingSpace).exclude(startTime__date__gt=endTime).exclude(endTime__date__lt=startTime)
+        if qs.exists():
+            raise ValidationError('This booking overlaps with an existing booking.')
 
     def delete(self, *args, **kwargs):    
         bookingSpace = self.parkingSpace
