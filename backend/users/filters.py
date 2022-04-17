@@ -3,7 +3,9 @@ from django_filters.rest_framework import FilterSet
 from users.models import SIZE
 from users.utils import *
 
-def RadiusFilter(queryset, address='Sydney', radius=2):
+def RadiusFilter(queryset, address='Sydney', radius=9999):
+    if radius == 9999:
+        return queryset
     lat, lon = getCoords(address)
     radius = int(radius)
     lat_min = lat - (radius * 1/111)
