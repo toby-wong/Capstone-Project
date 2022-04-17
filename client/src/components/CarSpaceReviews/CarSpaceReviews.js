@@ -11,7 +11,7 @@ import CarSpaceCardHeader from "../UI/CarSpaceUI/CarSpaceCard/CarSpaceCardHeader
 import CarSpaceCardContent from "../UI/CarSpaceUI/CarSpaceCard/CarSpaceCardContent";
 import GeneralDataGrid from "../UI/GeneralDataGrid/GeneralDataGrid";
 
-const CarSpaceReviews = ({ modalContext }) => {
+const CarSpaceReviews = ({ modalContext, subModalContext }) => {
   const [reviews, setReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({
@@ -21,6 +21,21 @@ const CarSpaceReviews = ({ modalContext }) => {
 
   const backToCarSpaceInfoHandler = () => {
     modalContext.openPage("/info");
+  };
+
+  const clickReviewRowHandler = (rowData) => {
+    subModalContext.openModal({
+      title: "Review Message",
+      messages: [rowData.row.comment],
+      actions: [
+        {
+          color: "primary",
+          onClick: subModalContext.closeModal,
+          content: "OK",
+          width: "120px",
+        },
+      ],
+    });
   };
 
   useEffect(() => {
@@ -102,6 +117,7 @@ const CarSpaceReviews = ({ modalContext }) => {
               },
             ]}
             rowsPerPageOptions={[5, 10]}
+            onRowClick={clickReviewRowHandler}
             initialState={{
               sorting: {
                 sortModel: [
