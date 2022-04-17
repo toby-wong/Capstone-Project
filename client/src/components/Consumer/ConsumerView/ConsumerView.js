@@ -36,12 +36,14 @@ const ConsumerView = () => {
   const [consumerSpaces, setConsumerSpaces] = useState([]);
   const [center, setCenter] = useState([-33.9139982, 151.2418546]);
   const [zoom, setZoom] = useState(17);
+  const [query, setQuery] = useState("");
+  const [queryResults, setQueryResults] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const authToken = localStorage.getItem("parkItAuthToken");
-        const url = `${config.SERVER_URL}/api/provider/parking/pending`;
+        const url = `${config.SERVER_URL}/api/provider/parking/all`;
         const options = {
           method: "GET",
           headers: {
@@ -65,6 +67,13 @@ const ConsumerView = () => {
     fetchData();
   }, [consumerModalContext.pageRefreshStatus]);
 
+  const sendSearch = (e) => {
+    var filteredResults = consumerSpaces.filter(carSpace => carSpace.streetAddress.includes(e.target.value));
+    setQuery(e.target.value);
+    console.log(filteredResults);
+    setQueryResults(filteredResults);
+  }
+
   return (
     <div className={classes.bodyContainer}>
       <div className={classes.menuContainer}>
@@ -81,11 +90,10 @@ const ConsumerView = () => {
           <InputField
             className={classes.searchBar}
             inputClassName={classes.input}
+            onChange={sendSearch}
             label="Search"
             type="text"
             name="query"
-            // value={formState.value}
-            // onChange={postCodeChangeHandler}
           />
           <Divider
             orientation="horizontal"
@@ -158,9 +166,26 @@ const ConsumerView = () => {
                 <CircularProgress className={classes.spinner} />
               </div>
             )}
+            {/* If query is empty, render all car spaces*/}
             {!isLoading &&
               !error.value &&
+              query === "" &&
               consumerSpaces.map((item) => (
+                <ConsumerMapItem
+                  key={item.pk}
+                  id={item.pk}
+                  streetAddress={item.streetAddress}
+                  notes={item.notes}
+                  size={item.size}
+                  price={item.price}
+                  image={item.images[0].image_data}
+                />
+              ))}
+            {/* Else render values from query space */}
+            {!isLoading &&
+              !error.value &&
+              query != "" &&
+              queryResults.map((item) => (
                 <ConsumerMapItem
                   key={item.pk}
                   id={item.pk}
