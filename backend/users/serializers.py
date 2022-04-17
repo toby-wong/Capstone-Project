@@ -200,6 +200,8 @@ class TransactionSerializer(ModelSerializer):
     state = serializers.CharField(source="parkingSpace.state", required=False)
     postcode = serializers.CharField(source="parkingSpace.postcode", required=False)
     consumerName = serializers.CharField(source="consumer.username", required=False)
+    consumerPhone = serializers.CharField(source="consumer.phone_number", required=False)
+    consumerEmail = serializers.CharField(source="consumer.email", required=False)
     parkingSpaceSize = serializers.CharField(source="parkingSpace.size", required=False)
 
 
@@ -215,6 +217,8 @@ class TransactionSerializer(ModelSerializer):
             'state',
             'postcode',
             'consumerName',
+            'consumerPhone',
+            'consumerEmail',
             'parkingSpaceSize',
             'startTime',
             'endTime',
