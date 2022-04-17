@@ -45,6 +45,8 @@ const CarSpaceBookingForm = () => {
   const { streetAddress, city, state, postcode } =
     consumerModalContext.carSpaceInfo;
   const { price, size, images } = consumerModalContext.carSpaceInfo;
+  const paymentMethodValidity =
+    authContext.userInfo.card_number !== "" && authContext.userInfo.card_number;
 
   const vehicleChangeHandler = (e) => {
     const carName = e.target.value;
@@ -283,7 +285,7 @@ const CarSpaceBookingForm = () => {
                   variant="contained"
                   type="submit"
                   size="large"
-                  disabled={!formState.isFormValid}
+                  disabled={!formState.isFormValid || !paymentMethodValidity}
                   className={classes.btn}
                 >
                   {isLoading ? <CircularProgress size="1.5rem" /> : "Book Now"}
@@ -304,7 +306,7 @@ const CarSpaceBookingForm = () => {
               </CarSpaceImageCarousel>
               <ModalEntry className={classes.entry} icon={PaymentIcon}>
                 <Typography variant="carSpaceModalSubTitle">Payment</Typography>
-                {authContext.userInfo.card_number === "" ? (
+                {!paymentMethodValidity ? (
                   <Typography variant="carSpaceModalSubContent">
                     No card found. Please register a card in Account Details
                     Page.
