@@ -178,7 +178,10 @@ class FavouriteList(ListAPIView):
     serializer_class = FavouriteSerializer
     def get_queryset(self):
         user = self.request.user
-        return Favourite.objects.filter(consumer=user)
+        favouriteList = []
+        for f in Favourite.objects.filter(consumer=user):
+            favouriteList.append(ParkingSpace.objects.filter(pk=f.parkingSpace))
+        return favouriteList
 
 # VEHICLE
 
