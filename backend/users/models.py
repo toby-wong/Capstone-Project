@@ -31,7 +31,7 @@ class Vehicle(models.Model):
     carModel = models.CharField(max_length=100)
     carYear = models.IntegerField()
     carColour = models.CharField(max_length=100)
-    carRego = models.CharField(max_length=6, unique=True)
+    carRego = models.CharField(max_length=7, unique=True)
 
     def __str__(self):
         return f"{self.user.username}'s {self.carColour} {self.carMake} {self.carModel} ({self.carYear})"
