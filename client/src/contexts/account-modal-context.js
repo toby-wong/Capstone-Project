@@ -6,10 +6,10 @@ const AccountModalContext = React.createContext({
   pageRefreshStatus: false,
   modalSize: "",
   content: {},
-  setCarId: () => {},
   togglePageRefreshStatus: () => {},
   openPage: () => {},
   closeModal: () => {},
+  setContent: () => {},
 });
 
 export const AccountModalContextProvider = (props) => {
@@ -44,10 +44,10 @@ export const AccountModalContextProvider = (props) => {
     pageRefreshStatus,
     modalSize,
     content,
-    setContent,
     togglePageRefreshStatus,
     openPage,
     closeModal,
+    setContent,
   };
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const ProviderModalContext = React.createContext({
+const ProviderBookingInfoModalContext = React.createContext({
   page: "",
   carSpaceId: null,
   carSpaceInfo: { images: [], fetched: false },
@@ -21,7 +21,7 @@ const ProviderModalContext = React.createContext({
   setBookingInfo: () => {},
 });
 
-export const ProviderModalContextProvider = (props) => {
+export const ProviderBookingInfoModalContextProvider = (props) => {
   const [carSpaceInfo, setCarSpaceInfo] = useState({
     images: [],
     fetched: false,
@@ -81,10 +81,10 @@ export const ProviderModalContextProvider = (props) => {
   };
 
   return (
-    <ProviderModalContext.Provider value={contextValue}>
+    <ProviderBookingInfoModalContext.Provider value={contextValue}>
       {props.children}
-    </ProviderModalContext.Provider>
+    </ProviderBookingInfoModalContext.Provider>
   );
 };
 
-export default ProviderModalContext;
+export default ProviderBookingInfoModalContext;

@@ -26,7 +26,7 @@ const CarSpaceBookings = () => {
     providerModalContext.openPage("/info");
   };
 
-  const clickCarRowHandler = () => {};
+  const clickCarRowHandler = (rowData) => {};
 
   useEffect(() => {
     const fetchData = async () => {

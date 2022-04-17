@@ -7,6 +7,7 @@ import GeneralModal from "../../UI/GeneralModal/GeneralModal";
 import MessageModal from "../../UI/MessageModal/MessageModal";
 import AddCarForm from "./AddCarForm/AddCarForm";
 import EditCarForm from "./EditCarForm/EditCarForm";
+import ConsumerBookingInfo from "../../BookingInfo/ConsumerBookingInfo/ConsumerBookingInfo";
 
 const AccountModal = () => {
   const accountModalContext = useContext(AccountModalContext);
@@ -27,6 +28,9 @@ const AccountModal = () => {
       />
       {accountModalContext.page === "/addCar" && <AddCarForm />}
       {accountModalContext.page === "/editCar" && <EditCarForm />}
+      {accountModalContext.page === "/consumerBookingInfo" && (
+        <ConsumerBookingInfo context={accountModalContext} />
+      )}
     </GeneralModal>
   );
 };
