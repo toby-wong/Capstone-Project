@@ -4,19 +4,14 @@ import * as config from "../../../../config";
 import * as utility from "../../../../utility";
 
 import AccountModalContext from "../../../../contexts/account-modal-context";
-import AccountSubModalContext from "../../../../contexts/account-submodal-context";
+import SubModalContext from "../../../../contexts/submodal-context";
 
 import CarForm from "../CarForm/CarForm";
 
 const AddCarForm = () => {
   const accountModalContext = useContext(AccountModalContext);
-  const accountSubModalContext = useContext(AccountSubModalContext);
+  const subModalContext = useContext(SubModalContext);
   const [isAdding, setIsAdding] = useState(false);
-
-  const closeAllHandler = () => {
-    accountSubModalContext.closeModal();
-    accountModalContext.closeModal();
-  };
 
   const submitFormHandler = async (formData) => {
     try {
@@ -42,7 +37,7 @@ const AddCarForm = () => {
         throw Error(errorMsgs);
       }
 
-      accountSubModalContext.openModal({
+      subModalContext.openModal({
         title: "Success",
         messages: [
           "A car has been successfully registered under your account.",
@@ -50,22 +45,23 @@ const AddCarForm = () => {
         actions: [
           {
             color: "primary",
-            onClick: closeAllHandler,
+            onClick: subModalContext.closeAllModals(accountModalContext),
             content: "OK",
             width: "120px",
           },
         ],
+        context: accountModalContext,
       });
 
       accountModalContext.togglePageRefreshStatus();
     } catch (e) {
-      accountSubModalContext.openModal({
+      subModalContext.openModal({
         title: "Error",
         messages: e.message.split(","),
         actions: [
           {
             color: "primary",
-            onClick: accountSubModalContext.closeModal,
+            onClick: subModalContext.closeModal,
             content: "OK",
             width: "120px",
           },

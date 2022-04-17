@@ -100,6 +100,7 @@ export const theme = createTheme({
       fontFamily: "Montserrat",
       fontSize: "14px",
       color: colors.dark,
+      marginBottom: "3px",
     },
     listItemTitle: {
       fontFamily: "Montserrat",
@@ -137,17 +138,20 @@ export const theme = createTheme({
           props: { variant: "sectionBody" },
           style: {
             backgroundColor: colors.background,
+            display: "flex",
             height: "100%",
             width: "100%",
+            overflow: "auto",
           },
         },
         {
           props: { variant: "sectionContent" },
           style: {
+            flex: 1,
             display: "flex",
             flexDirection: "column",
             position: "relative",
-            height: "100%",
+            minHeight: "720px",
             width: "100%",
             padding: 0,
             backgroundColor: colors.background,
@@ -207,6 +211,47 @@ export const theme = createTheme({
             height: "500px",
             width: "500px",
             flexDirection: "column",
+          },
+        },
+        {
+          props: { variant: "bookingInfoBody" },
+          style: {
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            borderRadius: 0,
+            padding: 0,
+          },
+        },
+        {
+          props: { variant: "bookingInfoContent" },
+          style: {
+            flex: 1,
+            display: "flex",
+            borderRadius: 0,
+            padding: 0,
+            backgroundColor: "red",
+          },
+        },
+        {
+          props: { variant: "bookingInfoContentLeft" },
+          style: {
+            flex: 2,
+            display: "flex",
+            flexDirection: "column",
+            borderRadius: 0,
+            padding: 0,
+          },
+        },
+        {
+          props: { variant: "bookingInfoContentRight" },
+          style: {
+            minWidth: "350px",
+            maxWidth: "450px",
+            flex: 1,
+            flexDirection: "column",
+            borderRadius: 0,
+            padding: 0,
           },
         },
       ],
@@ -315,6 +360,12 @@ export const theme = createTheme({
           props: { variant: "form" },
           style: {
             marginRight: "20px",
+          },
+        },
+        {
+          props: { variant: "modalSubIcon" },
+          style: {
+            marginRight: "10px",
           },
         },
       ],

@@ -1,4 +1,5 @@
 import classes from "./ProviderListView.module.css";
+
 import { Link, useLocation } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 
@@ -22,7 +23,7 @@ import DoDisturbAltIcon from "@mui/icons-material/DoDisturbAlt";
 import { sendRequest } from "../../../utility";
 import * as config from "../../../config";
 import ProviderListItem from "./ProviderListItem";
-import CarSpaceModalContext from "../../../contexts/carspace-modal-context";
+import ProviderModalContext from "../../../contexts/provider-modal-context";
 
 const ProviderListView = ({ status }) => {
   const location = useLocation();
@@ -32,7 +33,7 @@ const ProviderListView = ({ status }) => {
   const [listItemCount, setListItemCount] = useState(-1);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(3);
-  const carSpaceModalContext = useContext(CarSpaceModalContext);
+  const providerModalContext = useContext(ProviderModalContext);
 
   const activeTabView = location.pathname.split("/")[2] ?? false;
   const activeTabListings = location.pathname.split("/")[3] ?? false;
@@ -53,7 +54,7 @@ const ProviderListView = ({ status }) => {
   };
 
   const addCarSpaceHandler = () => {
-    carSpaceModalContext.openPage("/add");
+    providerModalContext.openPage("/add");
   };
 
   useEffect(() => {
@@ -88,7 +89,7 @@ const ProviderListView = ({ status }) => {
     };
 
     fetchData();
-  }, [status, page, rowsPerPage, carSpaceModalContext.carSpacesRefreshStatus]);
+  }, [status, page, rowsPerPage, providerModalContext.carSpacesRefreshStatus]);
 
   return (
     <Paper variant="sectionBody">
@@ -216,7 +217,7 @@ const ProviderListView = ({ status }) => {
             page={page}
             onPageChange={changePageHandler}
             rowsPerPage={rowsPerPage}
-            rowsPerPageOptions={[3, 5, 10]}
+            rowsPerPageOptions={[3]}
             onRowsPerPageChange={changeRowsPerPageHandler}
           />
         </Paper>

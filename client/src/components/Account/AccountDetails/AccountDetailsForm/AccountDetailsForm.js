@@ -1,18 +1,19 @@
-import { Button, CircularProgress, InputLabel } from "@mui/material";
-import { useEffect, useReducer, useState } from "react";
+import classes from "./AccountDetailsForm.module.css";
 
+import { sendRequest } from "../../../../utility";
+import * as config from "../../../../config";
+
+import { useContext, useEffect, useReducer, useState } from "react";
 import {
   detailsformStateReducer,
   getDetailsformInitialState,
 } from "../../../../reducers/detailsform-reducer";
 
+import { Button, CircularProgress, InputLabel } from "@mui/material";
+
 import AccountDetailsEntry from "./AccountDetailsEntry";
 import AccountDetailsFormInput from "./AccountDetailsFormInput";
-
-import classes from "./AccountDetailsForm.module.css";
-
-import { sendRequest } from "../../../../utility";
-import * as config from "../../../../config";
+import AuthContext from "../../../../contexts/auth-context";
 
 const AccountDetailsForm = ({ details, setPage }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,6 +21,7 @@ const AccountDetailsForm = ({ details, setPage }) => {
     detailsformStateReducer,
     getDetailsformInitialState()
   );
+  const authContext = useContext(AuthContext);
 
   useEffect(() => {
     dispatchForm({ type: "FETCH", value: details });
@@ -49,6 +51,8 @@ const AccountDetailsForm = ({ details, setPage }) => {
 
       const response = await sendRequest(url, options, setIsLoading);
       if (response.status >= 300 || !response.status) throw Error;
+
+      authContext.setUserInfo(response.data);
     } catch (e) {
       setPage("error");
     }
