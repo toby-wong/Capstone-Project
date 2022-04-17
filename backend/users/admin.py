@@ -13,13 +13,13 @@ class CustomUserAdmin(UserAdmin):
 class ParkingSpaceAdmin(admin.ModelAdmin):
     list_filter = ['status']
     list_display = [            
-            'streetAddress',
-            'provider',
-            'price',
-            'size',
-            'startTime',
-            'endTime',
-            'status',
+        'streetAddress',
+        'provider',
+        'price',
+        'size',
+        'startTime',
+        'endTime',
+        'status',
     ]
 
     readonly_fields = [
