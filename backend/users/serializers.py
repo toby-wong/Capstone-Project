@@ -219,6 +219,7 @@ class TransactionSerializer(ModelSerializer):
             'consumerName',
             'consumerPhone',
             'consumerEmail',
+            'publishDate',
             'parkingSpaceSize',
             'startTime',
             'endTime',

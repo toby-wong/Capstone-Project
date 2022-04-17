@@ -103,6 +103,7 @@ class Transaction(models.Model):
     startTime = models.DateTimeField()
     endTime = models.DateTimeField()
     totalCost = models.DecimalField(max_digits=6, decimal_places=2)
+    publishDate = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
