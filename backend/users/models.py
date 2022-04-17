@@ -12,7 +12,7 @@ class CustomUser(AbstractUser):
     # blank = False means that the field cannot be left blank
     # null = True sets NULL on column in DB
 
-    phone_number = models.CharField(max_length=20, unique=True)
+    phone_number = models.CharField(max_length=20)
     card_number = models.CharField(max_length=16)
     expiry_date = models.CharField(max_length=5)
     cvc = models.CharField(max_length=3)
