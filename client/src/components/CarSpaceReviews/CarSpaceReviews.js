@@ -102,6 +102,17 @@ const CarSpaceReviews = ({ modalContext }) => {
               },
             ]}
             rowsPerPageOptions={[5, 10]}
+            initialState={{
+              sorting: {
+                sortModel: [
+                  {
+                    field: "publishDate",
+                    sort: "desc",
+                  },
+                ],
+              },
+            }}
+            helperText={"* Click a row to see the details of a review"}
           />
         )}
         {!isLoading && error.value && (

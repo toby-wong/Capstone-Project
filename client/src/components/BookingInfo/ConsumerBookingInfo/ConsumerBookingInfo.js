@@ -18,8 +18,9 @@ import ModalEntry from "../../UI/ModalEntry/ModalEntry";
 import GeneralModalActions from "../../UI/GeneralModal/GeneralModalActions";
 import CarSpaceImageCarousel from "../../UI/CarSpaceUI/CarSpaceInfo/CarSpaceInfoImageCarousel/CarSpaceImageCarousel";
 import CarSpaceImage from "../../UI/CarSpaceUI/CarSpaceInfo/CarSpaceInfoImage/CarSpaceImage";
+import CarSpaceInfoFavourite from "../../UI/CarSpaceUI/CarSpaceInfo/CarSpaceInfoFavourite/CarSpaceInfoFavourite";
 
-const ConsumerBookingInfo = ({ context }) => {
+const ConsumerBookingInfo = ({ context, subModalContext }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [data, setData] = useState({ images: [] });
@@ -30,60 +31,19 @@ const ConsumerBookingInfo = ({ context }) => {
       try {
         setIsLoading(true);
         // Get CarSpaceInfo
-        const authToken = localStorage.getItem("parkItAuthToken");
-        const getCarSpaceInfoUrl = `${config.SERVER_URL}/api/provider/parking/${carSpaceId}`;
-        const getCarSpaceInfoOptions = {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + authToken,
-            "Content-Type": "application/json",
-          },
-        };
-        const getCarSpaceInfoResponse = await utility.sendRequest(
-          getCarSpaceInfoUrl,
-          getCarSpaceInfoOptions
-        );
-        if (
-          !getCarSpaceInfoResponse.status ||
-          getCarSpaceInfoResponse.status >= 300
-        )
-          throw Error;
+        const carSpaceInfo = await utility.fetchCarSpaceInfo(carSpaceId);
 
         // Get CarInfo
-        const getCarInfoUrl = `${config.SERVER_URL}/api/consumer/vehicle/${vehicleId}`;
-        const getCarInfoOptions = {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + authToken,
-            "Content-Type": "application/json",
-          },
-        };
-        const getCarInfoResponse = await utility.sendRequest(
-          getCarInfoUrl,
-          getCarInfoOptions
-        );
-        if (!getCarInfoResponse.status || getCarInfoResponse.status >= 300)
-          throw Error;
-
-        // Aggregate data and fetch
-        const carSpaceInfo = getCarSpaceInfoResponse.data;
-        const { streetAddress, city, state, postcode } = carSpaceInfo;
-        const { startTime, endTime, price, size, images } = carSpaceInfo;
-
-        const carInfo = getCarInfoResponse.data;
+        const carInfo = await utility.fetchCarInfo(vehicleId);
         const { carMake, carColour, carModel, carYear, carRego } = carInfo;
 
-        const fetchedData = {};
-        fetchedData.address = `${streetAddress}, ${city}, ${state}, ${postcode}`;
-        fetchedData.startDateTime = startTime;
-        fetchedData.endDateTime = endTime;
-        fetchedData.price = price;
-        fetchedData.maxVehicleSize = size;
-        fetchedData.images = images;
-        fetchedData.transactionDate = publishDate;
-        fetchedData.totalCost = cost;
-        fetchedData.vehicle = `${carMake} ${carColour} ${carModel}(${carYear}) [${carRego}]`;
-
+        // Aggregate data and fetch
+        const fetchedData = {
+          ...carSpaceInfo,
+          vehicle: `${carMake} ${carColour} ${carModel}(${carYear}) [${carRego}]`,
+          transactionDate: publishDate,
+          totalCost: cost,
+        };
         setData(fetchedData);
         setIsLoading(false);
       } catch (e) {
@@ -115,6 +75,15 @@ const ConsumerBookingInfo = ({ context }) => {
         <>
           <Paper variant="bookingInfoContent">
             <Paper variant="bookingInfoContentLeft">
+              <div className={classes.header}>
+                <CarSpaceInfoFavourite
+                  modalContext={context}
+                  subModalContext={subModalContext}
+                  setIsLoading={setIsLoading}
+                  setError={setError}
+                  carSpaceId={context.content.carSpaceId}
+                />
+              </div>
               <ModalEntry className={classes.entry} icon={BusinessIcon}>
                 <Typography variant="carSpaceModalSubTitle">Address</Typography>
                 <Typography variant="carSpaceModalSubContent">

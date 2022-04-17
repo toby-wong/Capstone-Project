@@ -9,6 +9,7 @@ import CarSpaceEditForm from "./CarSpaceEditForm/CarSpaceEditForm";
 import ProviderCarSpaceInfo from "./ProviderCarSpaceInfo/ProviderCarSpaceInfo";
 import CarSpaceReviews from "../../CarSpaceReviews/CarSpaceReviews";
 import CarSpaceBookings from "./CarSpaceBookings/CarSpaceBookings";
+import ProviderBookingInfo from "../../BookingInfo/ProviderBookingInfo/ProviderBookingInfo";
 
 const ProviderModal = () => {
   const providerModalContext = useContext(ProviderModalContext);
@@ -30,6 +31,15 @@ const ProviderModal = () => {
         <CarSpaceReviews modalContext={providerModalContext} />
       )}
       {providerModalContext.page === "/bookings" && <CarSpaceBookings />}
+      {providerModalContext.page === "/booking" && (
+        <ProviderBookingInfo
+          context={providerModalContext}
+          content={providerModalContext.bookingInfo}
+          onBack={() => {
+            providerModalContext.openPage("/bookings");
+          }}
+        />
+      )}
     </GeneralModal>
   );
 };

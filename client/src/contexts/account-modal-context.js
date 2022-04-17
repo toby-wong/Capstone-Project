@@ -6,10 +6,12 @@ const AccountModalContext = React.createContext({
   pageRefreshStatus: false,
   modalSize: "",
   content: {},
+  favourite: { id: "", value: false },
   togglePageRefreshStatus: () => {},
   openPage: () => {},
   closeModal: () => {},
   setContent: () => {},
+  setFavourite: () => {},
 });
 
 export const AccountModalContextProvider = (props) => {
@@ -18,6 +20,7 @@ export const AccountModalContextProvider = (props) => {
   const [pageRefreshStatus, setPageRefreshStatus] = useState(false);
   const [modalSize, setModalSize] = useState("large");
   const [content, setContent] = useState({});
+  const [favourite, setFavourite] = useState({ id: "", value: false });
 
   const resetContextValue = () => {
     setPage("");
@@ -44,10 +47,12 @@ export const AccountModalContextProvider = (props) => {
     pageRefreshStatus,
     modalSize,
     content,
+    favourite,
     togglePageRefreshStatus,
     openPage,
     closeModal,
     setContent,
+    setFavourite,
   };
 
   return (

@@ -26,7 +26,10 @@ const CarSpaceBookings = () => {
     providerModalContext.openPage("/info");
   };
 
-  const clickCarRowHandler = (rowData) => {};
+  const clickCarRowHandler = (rowData) => {
+    providerModalContext.setBookingInfo(rowData.row);
+    providerModalContext.openPage("/booking");
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,11 +52,15 @@ const CarSpaceBookings = () => {
         for (const booking of response.data) {
           fecthedBookings.push({
             id: booking.pk,
+            publishDate: booking.publishDate,
+            carSpaceId: booking.parkingSpace,
+            vehicleId: booking.vehicle,
             startTime: booking.startTime,
             endTime: booking.endTime,
             cost: booking.totalCost,
             consumer: booking.consumerName,
-            vehicle: booking.parkingSpaceSize,
+            consumerEmail: booking.consumerEmail,
+            consumerPhone: booking.consumerPhone,
           });
         }
 
@@ -87,6 +94,11 @@ const CarSpaceBookings = () => {
             rows={bookings}
             columns={[
               {
+                field: "publishDate",
+                headerName: "Date",
+                flex: 1,
+              },
+              {
                 field: "startTime",
                 headerName: "Start Time",
                 flex: 1,
@@ -106,14 +118,20 @@ const CarSpaceBookings = () => {
                 headerName: "Consumer",
                 flex: 1,
               },
-              {
-                field: "vehicle",
-                headerName: "Vehicle Size",
-                flex: 1,
-              },
             ]}
             rowsPerPageOptions={[5, 10]}
             onRowClick={clickCarRowHandler}
+            initialState={{
+              sorting: {
+                sortModel: [
+                  {
+                    field: "publishDate",
+                    sort: "desc",
+                  },
+                ],
+              },
+            }}
+            helperText={"* Click a row to see the details of a booking"}
           />
         )}
         {!isLoading && error.value && (

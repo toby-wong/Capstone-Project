@@ -42,7 +42,6 @@ const MainHeaderNavigation = () => {
     setAnchorEl(null);
   };
 
-  // UPDATE: AFTER MERGE with Andrew's branch
   const markingPaths = ["/consumer", "/provider", "/admin"];
   let activeTab = location.pathname === "/" ? "/" : false;
   markingPaths.forEach((markingPath) => {
@@ -73,7 +72,12 @@ const MainHeaderNavigation = () => {
           />
         )}
         {authContext.isAdmin && (
-          <Tab component={Link} to="/admin" value="/admin" label="Admin" />
+          <Tab
+            target="_blank"
+            href="http://localhost:8000/admin"
+            value="/admin"
+            label="Admin"
+          />
         )}
       </Tabs>
 
