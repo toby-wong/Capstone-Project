@@ -44,7 +44,7 @@ const ChangePasswordForm = ({ setPage }) => {
 
     try {
       const authToken = localStorage.getItem("parkItAuthToken");
-      const url = `${config.SERVER_URL}/api/auth/password/change/`;
+      const url = `${config.SERVER_URL}/dj-rest-auth/password/change/`;
       const options = {
         method: "POST",
         headers: {

@@ -40,7 +40,7 @@ const ResetPasswordForm = ({ onClose }) => {
   const resetPasswordFormSubmitHandler = async (e) => {
     e.preventDefault();
 
-    const url = `${config.SERVER_URL}/api/auth/password/reset/confirm/`;
+    const url = `${config.SERVER_URL}/dj-rest-auth/password/reset/confirm/`;
     const options = {
       method: "POST",
       headers: {
