@@ -7,12 +7,15 @@ import { ProviderModalContextProvider } from "../../contexts/provider-modal-cont
 import ProviderModal from "./ProviderModal/ProviderModal";
 import ProviderListView from "./ProviderListView/ProviderListView";
 import ProviderMapView from "./ProviderMapView/ProviderMapView";
+import { SubModalContextProvider } from "../../contexts/submodal-context";
 
 const Provider = () => {
   return (
     <ProviderModalContextProvider>
       <div className={classes.body}>
-        <ProviderModal />
+        <SubModalContextProvider>
+          <ProviderModal />
+        </SubModalContextProvider>
         <Routes>
           {/* List View */}
           <Route

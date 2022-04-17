@@ -174,7 +174,7 @@ const ProviderListView = ({ status }) => {
       </div>
       <Paper variant="sectionContent">
         <div className={classes.sectionContent__title}>
-          <Typography variant="sectionTitle">Your Car Spaces</Typography>
+          <Typography variant="sectionTitle">Car Space Listings</Typography>
           <Button
             color="primary"
             variant="contained"

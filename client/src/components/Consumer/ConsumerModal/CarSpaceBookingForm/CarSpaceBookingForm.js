@@ -45,6 +45,8 @@ const CarSpaceBookingForm = () => {
   const { streetAddress, city, state, postcode } =
     consumerModalContext.carSpaceInfo;
   const { price, size, images } = consumerModalContext.carSpaceInfo;
+  const paymentMethodValidity =
+    authContext.userInfo.card_number !== "" && authContext.userInfo.card_number;
 
   const vehicleChangeHandler = (e) => {
     const carName = e.target.value;
@@ -53,6 +55,31 @@ const CarSpaceBookingForm = () => {
     dispatchFormState({
       type: "VEHICLE_INPUT",
       value: { name: carName, id: carId },
+    });
+  };
+
+  const displayConfirmModal = (e) => {
+    e.preventDefault();
+
+    subModalContext.openModal({
+      title: "Confirmation",
+      messages: [
+        "You cannot cancel your booking within 7 days of start date. Do you still want to proceed?",
+      ],
+      actions: [
+        {
+          color: "primary",
+          onClick: submitFormHandler,
+          content: "OK",
+          width: "120px",
+        },
+        {
+          color: "warning",
+          onClick: subModalContext.closeModal,
+          content: "Cancel",
+          width: "120px",
+        },
+      ],
     });
   };
 
@@ -147,7 +174,7 @@ const CarSpaceBookingForm = () => {
   }, []);
 
   return (
-    <form className={classes.form} onSubmit={submitFormHandler}>
+    <form className={classes.form} onSubmit={displayConfirmModal}>
       <CarSpaceCardHeader
         title={"Book Car Space"}
         onClose={consumerModalContext.closeModal}
@@ -258,7 +285,7 @@ const CarSpaceBookingForm = () => {
                   variant="contained"
                   type="submit"
                   size="large"
-                  disabled={!formState.isFormValid}
+                  disabled={!formState.isFormValid || !paymentMethodValidity}
                   className={classes.btn}
                 >
                   {isLoading ? <CircularProgress size="1.5rem" /> : "Book Now"}
@@ -279,7 +306,7 @@ const CarSpaceBookingForm = () => {
               </CarSpaceImageCarousel>
               <ModalEntry className={classes.entry} icon={PaymentIcon}>
                 <Typography variant="carSpaceModalSubTitle">Payment</Typography>
-                {authContext.userInfo.card_number === "" ? (
+                {!paymentMethodValidity ? (
                   <Typography variant="carSpaceModalSubContent">
                     No card found. Please register a card in Account Details
                     Page.
@@ -287,7 +314,10 @@ const CarSpaceBookingForm = () => {
                 ) : (
                   <>
                     <Typography variant="carSpaceModalSubContent">
-                      {`Card Number : ${authContext.userInfo.card_number}`}
+                      {`Card Number : **** **** **** ${authContext.userInfo.card_number.slice(
+                        12,
+                        16
+                      )}`}
                     </Typography>
                     <Typography variant="carSpaceModalSubContent">
                       {`Expiry Date : ${authContext.userInfo.expiry_date}`}

@@ -5,9 +5,9 @@ info:
 paths:
   /api/account-confirm-email/:
     post:
-      operationId: api_account_confirm_email_create
+      operationId: account_confirm_email_create
       tags:
-      - api
+      - account-confirm-email
       requestBody:
         content:
           application/json:
@@ -33,7 +33,7 @@ paths:
           description: ''
   /api/auth/login/:
     post:
-      operationId: api_auth_login_create
+      operationId: auth_login_create
       description: |-
         Check the credentials and return the REST Token
         if the credentials are valid and authenticated.
@@ -43,7 +43,7 @@ paths:
         Accept the following POST parameters: username, password
         Return the REST Framework Token Object's key.
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -69,14 +69,14 @@ paths:
           description: ''
   /api/auth/logout/:
     post:
-      operationId: api_auth_logout_create
+      operationId: auth_logout_create
       description: |-
         Calls Django logout method and delete the Token object
         assigned to the current User object.
 
         Accepts/Returns nothing.
       tags:
-      - api
+      - auth
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -90,14 +90,14 @@ paths:
           description: ''
   /api/auth/password/change/:
     post:
-      operationId: api_auth_password_change_create
+      operationId: auth_password_change_create
       description: |-
         Calls Django Auth SetPasswordForm save method.
 
         Accepts the following POST parameters: new_password1, new_password2
         Returns the success/fail message.
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -122,14 +122,14 @@ paths:
           description: ''
   /api/auth/password/reset/:
     post:
-      operationId: api_auth_password_reset_create
+      operationId: auth_password_reset_create
       description: |-
         Calls Django Auth PasswordResetForm save method.
 
         Accepts the following POST parameters: email
         Returns the success/fail message.
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -155,7 +155,7 @@ paths:
           description: ''
   /api/auth/password/reset/confirm/:
     post:
-      operationId: api_auth_password_reset_confirm_create
+      operationId: auth_password_reset_confirm_create
       description: |-
         Password reset e-mail link is confirmed, therefore
         this resets the user's password.
@@ -164,7 +164,7 @@ paths:
             new_password1, new_password2
         Returns the success/fail message.
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -190,9 +190,9 @@ paths:
           description: ''
   /api/auth/register/:
     post:
-      operationId: api_auth_register_create
+      operationId: auth_register_create
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -218,9 +218,9 @@ paths:
           description: ''
   /api/auth/register/verify-email/:
     post:
-      operationId: api_auth_register_verify_email_create
+      operationId: auth_register_verify_email_create
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -246,12 +246,12 @@ paths:
           description: ''
   /api/auth/token/refresh/:
     post:
-      operationId: api_auth_token_refresh_create
+      operationId: auth_token_refresh_create
       description: |-
         Takes a refresh type JSON web token and returns an access type JSON web
         token if the refresh token is valid.
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -273,12 +273,12 @@ paths:
           description: ''
   /api/auth/token/verify/:
     post:
-      operationId: api_auth_token_verify_create
+      operationId: auth_token_verify_create
       description: |-
         Takes a token and indicates if it is valid.  This view provides no
         information about a token's fitness for a particular use.
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -300,7 +300,7 @@ paths:
           description: ''
   /api/auth/user/:
     get:
-      operationId: api_auth_user_retrieve
+      operationId: auth_user_retrieve
       description: |-
         Reads and updates UserModel fields
         Accepts GET, PUT, PATCH methods.
@@ -311,7 +311,7 @@ paths:
 
         Returns UserModel fields.
       tags:
-      - api
+      - auth
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -323,7 +323,7 @@ paths:
                 $ref: '#/components/schemas/User'
           description: ''
     put:
-      operationId: api_auth_user_update
+      operationId: auth_user_update
       description: |-
         Reads and updates UserModel fields
         Accepts GET, PUT, PATCH methods.
@@ -334,7 +334,7 @@ paths:
 
         Returns UserModel fields.
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -358,7 +358,7 @@ paths:
                 $ref: '#/components/schemas/User'
           description: ''
     patch:
-      operationId: api_auth_user_partial_update
+      operationId: auth_user_partial_update
       description: |-
         Reads and updates UserModel fields
         Accepts GET, PUT, PATCH methods.
@@ -369,7 +369,7 @@ paths:
 
         Returns UserModel fields.
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -393,9 +393,9 @@ paths:
           description: ''
   /api/consumer/book:
     post:
-      operationId: api_consumer_book_create
+      operationId: consumer_book_create
       tags:
-      - api
+      - consumer
       requestBody:
         content:
           application/json:
@@ -421,7 +421,7 @@ paths:
           description: ''
   /api/consumer/book/{id}:
     get:
-      operationId: api_consumer_book_retrieve
+      operationId: consumer_book_retrieve
       parameters:
       - in: path
         name: id
@@ -429,7 +429,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - consumer
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -442,7 +442,7 @@ paths:
                 $ref: '#/components/schemas/Transaction'
           description: ''
     put:
-      operationId: api_consumer_book_update
+      operationId: consumer_book_update
       parameters:
       - in: path
         name: id
@@ -450,7 +450,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - consumer
       requestBody:
         content:
           application/json:
@@ -475,7 +475,7 @@ paths:
                 $ref: '#/components/schemas/Transaction'
           description: ''
     patch:
-      operationId: api_consumer_book_partial_update
+      operationId: consumer_book_partial_update
       parameters:
       - in: path
         name: id
@@ -483,7 +483,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - consumer
       requestBody:
         content:
           application/json:
@@ -507,7 +507,7 @@ paths:
                 $ref: '#/components/schemas/Transaction'
           description: ''
     delete:
-      operationId: api_consumer_book_destroy
+      operationId: consumer_book_destroy
       parameters:
       - in: path
         name: id
@@ -515,7 +515,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - consumer
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -525,9 +525,9 @@ paths:
           description: No response body
   /api/consumer/favourite:
     post:
-      operationId: api_consumer_favourite_create
+      operationId: consumer_favourite_create
       tags:
-      - api
+      - consumer
       requestBody:
         content:
           application/json:
@@ -553,7 +553,7 @@ paths:
           description: ''
   /api/consumer/favourite/{id}:
     get:
-      operationId: api_consumer_favourite_retrieve
+      operationId: consumer_favourite_retrieve
       parameters:
       - in: path
         name: id
@@ -561,7 +561,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - consumer
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -574,7 +574,7 @@ paths:
                 $ref: '#/components/schemas/Favourite'
           description: ''
     put:
-      operationId: api_consumer_favourite_update
+      operationId: consumer_favourite_update
       parameters:
       - in: path
         name: id
@@ -582,7 +582,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - consumer
       requestBody:
         content:
           application/json:
@@ -607,7 +607,7 @@ paths:
                 $ref: '#/components/schemas/Favourite'
           description: ''
     patch:
-      operationId: api_consumer_favourite_partial_update
+      operationId: consumer_favourite_partial_update
       parameters:
       - in: path
         name: id
@@ -615,7 +615,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - consumer
       requestBody:
         content:
           application/json:
@@ -639,7 +639,7 @@ paths:
                 $ref: '#/components/schemas/Favourite'
           description: ''
     delete:
-      operationId: api_consumer_favourite_destroy
+      operationId: consumer_favourite_destroy
       parameters:
       - in: path
         name: id
@@ -647,7 +647,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - consumer
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -657,7 +657,7 @@ paths:
           description: No response body
   /api/consumer/favourite/all:
     get:
-      operationId: api_consumer_favourite_all_list
+      operationId: consumer_favourite_all_list
       parameters:
       - name: limit
         required: false
@@ -672,7 +672,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - consumer
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -686,7 +686,7 @@ paths:
           description: ''
   /api/consumer/history:
     get:
-      operationId: api_consumer_history_list
+      operationId: consumer_history_list
       parameters:
       - name: limit
         required: false
@@ -701,7 +701,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - consumer
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -715,9 +715,9 @@ paths:
           description: ''
   /api/consumer/review:
     post:
-      operationId: api_consumer_review_create
+      operationId: consumer_review_create
       tags:
-      - api
+      - consumer
       requestBody:
         content:
           application/json:
@@ -743,7 +743,7 @@ paths:
           description: ''
   /api/consumer/review/{id}:
     get:
-      operationId: api_consumer_review_retrieve
+      operationId: consumer_review_retrieve
       parameters:
       - in: path
         name: id
@@ -751,7 +751,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - consumer
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -764,7 +764,7 @@ paths:
                 $ref: '#/components/schemas/Review'
           description: ''
     put:
-      operationId: api_consumer_review_update
+      operationId: consumer_review_update
       parameters:
       - in: path
         name: id
@@ -772,7 +772,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - consumer
       requestBody:
         content:
           application/json:
@@ -797,7 +797,7 @@ paths:
                 $ref: '#/components/schemas/Review'
           description: ''
     patch:
-      operationId: api_consumer_review_partial_update
+      operationId: consumer_review_partial_update
       parameters:
       - in: path
         name: id
@@ -805,7 +805,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - consumer
       requestBody:
         content:
           application/json:
@@ -829,7 +829,7 @@ paths:
                 $ref: '#/components/schemas/Review'
           description: ''
     delete:
-      operationId: api_consumer_review_destroy
+      operationId: consumer_review_destroy
       parameters:
       - in: path
         name: id
@@ -837,7 +837,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - consumer
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -847,9 +847,9 @@ paths:
           description: No response body
   /api/consumer/vehicle:
     post:
-      operationId: api_consumer_vehicle_create
+      operationId: consumer_vehicle_create
       tags:
-      - api
+      - consumer
       requestBody:
         content:
           application/json:
@@ -875,7 +875,7 @@ paths:
           description: ''
   /api/consumer/vehicle/{id}:
     get:
-      operationId: api_consumer_vehicle_retrieve
+      operationId: consumer_vehicle_retrieve
       parameters:
       - in: path
         name: id
@@ -883,7 +883,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - consumer
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -896,7 +896,7 @@ paths:
                 $ref: '#/components/schemas/Vehicle'
           description: ''
     put:
-      operationId: api_consumer_vehicle_update
+      operationId: consumer_vehicle_update
       parameters:
       - in: path
         name: id
@@ -904,7 +904,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - consumer
       requestBody:
         content:
           application/json:
@@ -929,7 +929,7 @@ paths:
                 $ref: '#/components/schemas/Vehicle'
           description: ''
     patch:
-      operationId: api_consumer_vehicle_partial_update
+      operationId: consumer_vehicle_partial_update
       parameters:
       - in: path
         name: id
@@ -937,7 +937,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - consumer
       requestBody:
         content:
           application/json:
@@ -961,7 +961,7 @@ paths:
                 $ref: '#/components/schemas/Vehicle'
           description: ''
     delete:
-      operationId: api_consumer_vehicle_destroy
+      operationId: consumer_vehicle_destroy
       parameters:
       - in: path
         name: id
@@ -969,7 +969,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - consumer
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -979,7 +979,7 @@ paths:
           description: No response body
   /api/consumer/vehicle/all:
     get:
-      operationId: api_consumer_vehicle_all_list
+      operationId: consumer_vehicle_all_list
       parameters:
       - name: limit
         required: false
@@ -994,7 +994,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - consumer
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1008,9 +1008,9 @@ paths:
           description: ''
   /api/delete/user:
     delete:
-      operationId: api_delete_user_destroy
+      operationId: delete_user_destroy
       tags:
-      - api
+      - delete
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1020,14 +1020,14 @@ paths:
           description: No response body
   /api/password/reset/:
     post:
-      operationId: api_password_reset_create
+      operationId: password_reset_create
       description: |-
         Calls Django Auth PasswordResetForm save method.
 
         Accepts the following POST parameters: email
         Returns the success/fail message.
       tags:
-      - api
+      - password
       requestBody:
         content:
           application/json:
@@ -1053,7 +1053,7 @@ paths:
           description: ''
   /api/password/reset/confirm/{uidb64}/{token}/:
     post:
-      operationId: api_password_reset_confirm_create
+      operationId: password_reset_confirm_create
       description: |-
         Password reset e-mail link is confirmed, therefore
         this resets the user's password.
@@ -1073,7 +1073,7 @@ paths:
           type: string
         required: true
       tags:
-      - api
+      - password
       requestBody:
         content:
           application/json:
@@ -1099,7 +1099,7 @@ paths:
           description: ''
   /api/provider/history:
     get:
-      operationId: api_provider_history_list
+      operationId: provider_history_list
       parameters:
       - name: limit
         required: false
@@ -1114,7 +1114,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - provider
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1128,7 +1128,7 @@ paths:
           description: ''
   /api/provider/image/{parkingID}:
     post:
-      operationId: api_provider_image_create
+      operationId: provider_image_create
       parameters:
       - in: path
         name: parkingID
@@ -1136,7 +1136,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - provider
       requestBody:
         content:
           application/json:
@@ -1162,7 +1162,7 @@ paths:
           description: ''
   /api/provider/image/{id}:
     get:
-      operationId: api_provider_image_retrieve
+      operationId: provider_image_retrieve
       parameters:
       - in: path
         name: id
@@ -1170,7 +1170,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - provider
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1183,7 +1183,7 @@ paths:
                 $ref: '#/components/schemas/Image'
           description: ''
     put:
-      operationId: api_provider_image_update
+      operationId: provider_image_update
       parameters:
       - in: path
         name: id
@@ -1191,7 +1191,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - provider
       requestBody:
         content:
           application/json:
@@ -1216,7 +1216,7 @@ paths:
                 $ref: '#/components/schemas/Image'
           description: ''
     patch:
-      operationId: api_provider_image_partial_update
+      operationId: provider_image_partial_update
       parameters:
       - in: path
         name: id
@@ -1224,7 +1224,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - provider
       requestBody:
         content:
           application/json:
@@ -1248,7 +1248,7 @@ paths:
                 $ref: '#/components/schemas/Image'
           description: ''
     delete:
-      operationId: api_provider_image_destroy
+      operationId: provider_image_destroy
       parameters:
       - in: path
         name: id
@@ -1256,7 +1256,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - provider
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1266,9 +1266,9 @@ paths:
           description: No response body
   /api/provider/parking:
     post:
-      operationId: api_provider_parking_create
+      operationId: provider_parking_create
       tags:
-      - api
+      - provider
       requestBody:
         content:
           application/json:
@@ -1294,7 +1294,7 @@ paths:
           description: ''
   /api/provider/parking/{id}:
     get:
-      operationId: api_provider_parking_retrieve
+      operationId: provider_parking_retrieve
       parameters:
       - in: path
         name: id
@@ -1302,7 +1302,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - provider
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1315,7 +1315,7 @@ paths:
                 $ref: '#/components/schemas/ParkingSpace'
           description: ''
     put:
-      operationId: api_provider_parking_update
+      operationId: provider_parking_update
       parameters:
       - in: path
         name: id
@@ -1323,7 +1323,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - provider
       requestBody:
         content:
           application/json:
@@ -1348,7 +1348,7 @@ paths:
                 $ref: '#/components/schemas/ParkingSpace'
           description: ''
     patch:
-      operationId: api_provider_parking_partial_update
+      operationId: provider_parking_partial_update
       parameters:
       - in: path
         name: id
@@ -1356,7 +1356,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - provider
       requestBody:
         content:
           application/json:
@@ -1380,7 +1380,7 @@ paths:
                 $ref: '#/components/schemas/ParkingSpace'
           description: ''
     delete:
-      operationId: api_provider_parking_destroy
+      operationId: provider_parking_destroy
       parameters:
       - in: path
         name: id
@@ -1388,7 +1388,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - provider
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1398,7 +1398,7 @@ paths:
           description: No response body
   /api/provider/parking/all:
     get:
-      operationId: api_provider_parking_all_list
+      operationId: provider_parking_all_list
       parameters:
       - name: limit
         required: false
@@ -1413,7 +1413,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - provider
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1427,7 +1427,7 @@ paths:
           description: ''
   /api/provider/parking/approved:
     get:
-      operationId: api_provider_parking_approved_list
+      operationId: provider_parking_approved_list
       parameters:
       - name: limit
         required: false
@@ -1442,7 +1442,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - provider
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1456,7 +1456,7 @@ paths:
           description: ''
   /api/provider/parking/bookings/{parkingID}:
     get:
-      operationId: api_provider_parking_bookings_list
+      operationId: provider_parking_bookings_list
       parameters:
       - name: limit
         required: false
@@ -1476,7 +1476,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - provider
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1490,7 +1490,7 @@ paths:
           description: ''
   /api/provider/parking/cancelled:
     get:
-      operationId: api_provider_parking_cancelled_list
+      operationId: provider_parking_cancelled_list
       parameters:
       - name: limit
         required: false
@@ -1505,7 +1505,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - provider
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1519,7 +1519,7 @@ paths:
           description: ''
   /api/provider/parking/images/{parkingID}:
     get:
-      operationId: api_provider_parking_images_list
+      operationId: provider_parking_images_list
       parameters:
       - name: limit
         required: false
@@ -1539,7 +1539,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - provider
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1553,7 +1553,7 @@ paths:
           description: ''
   /api/provider/parking/pending:
     get:
-      operationId: api_provider_parking_pending_list
+      operationId: provider_parking_pending_list
       parameters:
       - name: limit
         required: false
@@ -1568,7 +1568,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - provider
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1582,7 +1582,7 @@ paths:
           description: ''
   /api/provider/parking/rejected:
     get:
-      operationId: api_provider_parking_rejected_list
+      operationId: provider_parking_rejected_list
       parameters:
       - name: limit
         required: false
@@ -1597,7 +1597,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - provider
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1611,7 +1611,7 @@ paths:
           description: ''
   /api/provider/parking/reviews/{parkingID}:
     get:
-      operationId: api_provider_parking_reviews_list
+      operationId: provider_parking_reviews_list
       parameters:
       - name: limit
         required: false
@@ -1631,7 +1631,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - provider
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1645,7 +1645,7 @@ paths:
           description: ''
   /api/provider/parking/search/:
     get:
-      operationId: api_provider_parking_search_list
+      operationId: provider_parking_search_list
       parameters:
       - name: limit
         required: false
@@ -1709,7 +1709,7 @@ paths:
         explode: true
         style: form
       tags:
-      - api
+      - provider
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1723,9 +1723,9 @@ paths:
           description: ''
   /api/provider/parking/search/suggestions/:
     get:
-      operationId: api_provider_parking_search_suggestions_retrieve
+      operationId: provider_parking_search_suggestions_retrieve
       tags:
-      - api
+      - provider
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1735,9 +1735,9 @@ paths:
           description: No response body
   /api/registration/:
     post:
-      operationId: api_registration_create
+      operationId: registration_create
       tags:
-      - api
+      - registration
       requestBody:
         content:
           application/json:
@@ -1763,9 +1763,9 @@ paths:
           description: ''
   /api/registration/verify-email/:
     post:
-      operationId: api_registration_verify_email_create
+      operationId: registration_verify_email_create
       tags:
-      - api
+      - registration
       requestBody:
         content:
           application/json:
@@ -1835,24 +1835,6 @@ components:
           type: integer
           readOnly: true
           title: ID
-        streetAddress:
-          type: string
-        city:
-          type: string
-        state:
-          type: string
-        postcode:
-          type: string
-        cost:
-          type: integer
-        parkingSpaceSize:
-          type: string
-        startTime:
-          type: string
-          format: date-time
-        endTime:
-          type: string
-          format: date-time
       required:
       - consumer
       - parkingSpace
@@ -2153,24 +2135,6 @@ components:
           type: integer
           readOnly: true
           title: ID
-        streetAddress:
-          type: string
-        city:
-          type: string
-        state:
-          type: string
-        postcode:
-          type: string
-        cost:
-          type: integer
-        parkingSpaceSize:
-          type: string
-        startTime:
-          type: string
-          format: date-time
-        endTime:
-          type: string
-          format: date-time
     PatchedImage:
       type: object
       properties:
@@ -2291,14 +2255,6 @@ components:
           type: string
         consumerName:
           type: string
-        consumerPhone:
-          type: string
-        consumerEmail:
-          type: string
-        publishDate:
-          type: string
-          format: date-time
-          readOnly: true
         parkingSpaceSize:
           type: string
         startTime:
@@ -2475,14 +2431,6 @@ components:
           type: string
         consumerName:
           type: string
-        consumerPhone:
-          type: string
-        consumerEmail:
-          type: string
-        publishDate:
-          type: string
-          format: date-time
-          readOnly: true
         parkingSpaceSize:
           type: string
         startTime:
@@ -2505,7 +2453,6 @@ components:
       - parkingSpace
       - pk
       - provider
-      - publishDate
       - startTime
       - totalCost
       - vehicle

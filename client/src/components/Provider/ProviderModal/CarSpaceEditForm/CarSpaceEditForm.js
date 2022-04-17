@@ -344,15 +344,16 @@ const CarSpaceEditForm = () => {
                   />
                 </div>
                 <FormHelperText>
-                  * End datetime cannot change to the datetime earlier than the
-                  end datetime of the most recent booking for the car space.
+                  * The parking space must remain available at least until the
+                  end of the latest-ending booking. You may still cancel the
+                  listing to prevent new bookings.
                   <br />
                   {formState.latestTime &&
                   utility.getDate(formState.latestTime).getTime() -
                     new Date().getTime() >
                     0
                     ? `* The end datetime of the most recent booking is ${formState.latestTime}`
-                    : "* There is no remaining bookings."}
+                    : "* There are no existing bookings."}
                 </FormHelperText>
               </div>
             </div>

@@ -30,7 +30,7 @@ const LoginForm = ({ onClose }) => {
   const loginFormSubmitHandler = async (e) => {
     e.preventDefault();
 
-    const url = `${config.SERVER_URL}/api/auth/login/`;
+    const url = `${config.SERVER_URL}/dj-rest-auth/login/`;
     const options = {
       method: "POST",
       headers: {
@@ -42,7 +42,7 @@ const LoginForm = ({ onClose }) => {
       },
     };
     const loginResponse = await sendRequest(url, options, setIsLoading);
-    console.log(loginResponse)
+    console.log(loginResponse);
 
     if (loginResponse.status >= 300 || !loginResponse.status) {
       return setError(true);

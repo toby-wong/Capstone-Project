@@ -13,7 +13,7 @@ export const LoginSignupModalContextProvider = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (location.pathname.includes("api/password/reset/confirm"))
+    if (location.pathname.includes("dj-rest-auth/password/reset/confirm"))
       setIsOpen(true);
   }, [location]);
 

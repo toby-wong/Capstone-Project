@@ -26,7 +26,7 @@ const DeleteAccountForm = ({ setPage }) => {
       const authToken = localStorage.getItem("parkItAuthToken");
       if (!authToken) return;
 
-      const getUserDataUrl = `${config.SERVER_URL}/api/auth/user/`;
+      const getUserDataUrl = `${config.SERVER_URL}/dj-rest-auth/user/`;
       const getUserDataoptions = {
         method: "GET",
         headers: {

@@ -45,7 +45,7 @@ const SignupForm = ({ onClose }) => {
       last_name: formState.legalname.lastnameValue,
     };
 
-    const url = `${config.SERVER_URL}/api/auth/register/`;
+    const url = `${config.SERVER_URL}/dj-rest-auth/registration/`;
     const options = {
       method: "POST",
       headers: {

@@ -39,7 +39,7 @@ const LoginSignupModal = () => {
           element={<ForgotPasswordFormSuccess onClose={onClose} />}
         />
         <Route
-          path="api/password/reset/confirm/:uid/:token"
+          path="dj-rest-auth/password/reset/confirm/:uid/:token"
           element={<ResetPasswordForm onClose={onClose} />}
         />
         <Route
