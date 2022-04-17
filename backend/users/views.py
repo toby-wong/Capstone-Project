@@ -178,10 +178,7 @@ class FavouriteList(ListAPIView):
     serializer_class = FavouriteSerializer
     def get_queryset(self):
         user = self.request.user
-        favouriteList = []
-        for f in Favourite.objects.filter(consumer=user):
-            favouriteList.append(ParkingSpace.objects.filter(pk=f.parkingSpace))
-        return favouriteList
+        return Favourite.objects.filter(consumer=user)
 
 # VEHICLE
 
@@ -258,6 +255,7 @@ class ParkingSearchList(ListAPIView):
     
     def get_queryset(self):
         queryset = super(ParkingSearchList, self).get_queryset()
+        queryset = queryset.exclude(provider=self.request.user)
         try:
             address = self.request.query_params.get('address')
             radius = self.request.query_params.get('radius')
