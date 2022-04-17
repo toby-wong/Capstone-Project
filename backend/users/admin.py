@@ -8,7 +8,7 @@ class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
-    list_display = ['username', 'email', 'first_name', 'last_name']
+    list_display = ['username', 'email', 'first_name', 'last_name', 'is_staff']
 
 class ParkingSpaceAdmin(admin.ModelAdmin):
     list_filter = ['status']
@@ -20,6 +20,15 @@ class ParkingSpaceAdmin(admin.ModelAdmin):
             'startTime',
             'endTime',
             'status',
+    ]
+
+    readonly_fields = [
+        'longitude',
+        'latitude',
+        'avg_rating',
+        'n_ratings',
+        'latestTime',
+        'is_active'
     ]
 
 class VehicleAdmin(admin.ModelAdmin):
@@ -46,7 +55,6 @@ class FavouriteAdmin(admin.ModelAdmin):
     list_display = [            
         'parkingSpace',
         'consumer',
-
     ]
 
 class ReviewAdmin(admin.ModelAdmin):

@@ -32,8 +32,6 @@ urlpatterns = [
     path('dj-rest-auth/password/reset/', PasswordResetView.as_view(), name='password_reset'),
     path('dj-rest-auth/password/reset/confirm/<str:uidb64>/<str:token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
 
-
-    
     # issue is to do with CSRF verification failing
     # path('admin/remove_user/', RemoveAdminView.as_view(), name='remove_admin'), # may have to do with current url being admin/
     # path('booking/', include('booking.urls')),
