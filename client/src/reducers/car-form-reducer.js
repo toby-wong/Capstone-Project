@@ -23,7 +23,7 @@ export const carFormReducer = (state, action) => {
 
   if (action.type === "REGISTRATION_NUMBER_INPUT") {
     newState.registrationNumber.value = action.value;
-    newState.registrationNumber.isValid = action.value !== "";
+    newState.registrationNumber.isValid = action.value.length === 6;
   }
 
   newState.isFormValid =

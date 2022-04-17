@@ -10,7 +10,13 @@ import { Icon, Typography } from "@mui/material";
 import * as config from "../../../../../config";
 import * as utility from "../../../../../utility";
 
-const CarSpaceInfoFavourite = ({ modalContext, setIsLoading, setError }) => {
+const CarSpaceInfoFavourite = ({
+  modalContext,
+  subModalContext,
+  setIsLoading,
+  setError,
+  carSpaceId = modalContext.carSpaceId,
+}) => {
   const authContext = useContext(AuthContext);
 
   const clickFavouriteHandler = async () => {
@@ -31,25 +37,37 @@ const CarSpaceInfoFavourite = ({ modalContext, setIsLoading, setError }) => {
         options.method = "POST";
         options.body = {
           consumer: authContext.userInfo.pk,
-          parkingSpace: modalContext.carSpaceId,
+          parkingSpace: carSpaceId,
         };
       }
 
       response = await utility.sendRequest(url, options, setIsLoading);
       if (response.status >= 300 || !response.status) throw Error;
 
-      if (!modalContext.favourite.value) {
-        const favouriteId = response.data.pk;
-        modalContext.setFavourite({
-          id: favouriteId,
-          value: !modalContext.favourite.value,
-        });
-      } else {
-        modalContext.setFavourite({
-          id: null,
-          value: !modalContext.favourite.value,
-        });
-      }
+      const prevFav = modalContext.favourite.value;
+      const favouriteId = response?.data?.pk;
+
+      modalContext.setFavourite({
+        id: prevFav ? null : favouriteId,
+        value: !prevFav,
+      });
+
+      subModalContext.openModal({
+        title: "Success",
+        messages: [
+          `The parking spot has been successfully ${
+            prevFav ? "removed from" : " added to"
+          } your favourites list.`,
+        ],
+        actions: [
+          {
+            color: "primary",
+            onClick: subModalContext.closeModal,
+            content: "OK",
+            width: "120px",
+          },
+        ],
+      });
     } catch (e) {
       setError(true);
     }

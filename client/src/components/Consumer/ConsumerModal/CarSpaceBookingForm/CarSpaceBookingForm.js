@@ -29,7 +29,6 @@ import GeneralModalActions from "../../../UI/GeneralModal/GeneralModalActions";
 import CarSpaceImageCarousel from "../../../UI/CarSpaceUI/CarSpaceInfo/CarSpaceInfoImageCarousel/CarSpaceImageCarousel";
 import CarSpaceImage from "../../../UI/CarSpaceUI/CarSpaceInfo/CarSpaceInfoImage/CarSpaceImage";
 import AuthContext from "../../../../contexts/auth-context";
-import MessageModal from "../../../UI/MessageModal/MessageModal";
 
 const CarSpaceBookingForm = () => {
   const consumerModalContext = useContext(ConsumerModalContext);
@@ -92,7 +91,7 @@ const CarSpaceBookingForm = () => {
         actions: [
           {
             color: "primary",
-            onClick: subModalContext.closeModal,
+            onClick: subModalContext.closeAllModals(consumerModalContext),
             content: "OK",
             width: "120px",
           },
@@ -149,13 +148,6 @@ const CarSpaceBookingForm = () => {
 
   return (
     <form className={classes.form} onSubmit={submitFormHandler}>
-      <MessageModal
-        open={subModalContext.isOpen}
-        onClose={subModalContext.closeModal}
-        title={subModalContext.content.title}
-        messages={subModalContext.content.messages}
-        actions={subModalContext.content.actions}
-      />
       <CarSpaceCardHeader
         title={"Book Car Space"}
         onClose={consumerModalContext.closeModal}

@@ -26,6 +26,7 @@ const CarSpaceInfo = ({
   setError,
   onClose,
   modalContext,
+  subModalContext,
   favourite = false,
 }) => {
   return (
@@ -43,6 +44,7 @@ const CarSpaceInfo = ({
               {favourite && (
                 <CarSpaceInfoFavourite
                   modalContext={modalContext}
+                  subModalContext={subModalContext}
                   setIsLoading={setIsLoading}
                   setError={setError}
                 />
