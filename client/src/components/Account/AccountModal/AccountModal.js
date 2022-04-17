@@ -28,6 +28,7 @@ const AccountModal = () => {
       />
       {accountModalContext.page === "/addCar" && <AddCarForm />}
       {accountModalContext.page === "/editCar" && <EditCarForm />}
+      {accountModalContext.page === "/favourite" && <ConsumerBookingInfo context={accountModalContext} />}
       {accountModalContext.page === "/consumerBookingInfo" && (
         <ConsumerBookingInfo context={accountModalContext} />
       )}

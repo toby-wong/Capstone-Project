@@ -16,6 +16,7 @@ import AccountDetails from "./AccountDetails/AccountDetails";
 import ProviderHistory from "./ProviderHistory/ProviderHistory";
 import MyCars from "./MyCars/MyCars";
 import ConsumerHistory from "./ConsumerHistory/ConsumerHistory";
+import Favourites from "./Favourites/Favourites";
 
 const Account = (props) => {
   const location = useLocation();
@@ -92,7 +93,7 @@ const Account = (props) => {
             <Route path="history/consumer" element={<ConsumerHistory />} />
             <Route path="history/provider" element={<ProviderHistory />} />
             <Route path="myCars" element={<MyCars />} />
-            <Route path="favourites" element={<div>Favourites</div>} />
+            <Route path="favourites" element={<Favourites />} />
           </Routes>
         </div>
       </Paper>
