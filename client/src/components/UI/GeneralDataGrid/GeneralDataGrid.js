@@ -3,7 +3,7 @@ import classes from "./GeneralDataGrid.module.css";
 import { useState } from "react";
 
 import { DataGrid } from "@mui/x-data-grid";
-import { FormHelperText, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 
 const GeneralDataGrid = ({
   rows,

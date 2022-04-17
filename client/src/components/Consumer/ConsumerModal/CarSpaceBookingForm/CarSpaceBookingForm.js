@@ -56,6 +56,31 @@ const CarSpaceBookingForm = () => {
     });
   };
 
+  const displayConfirmModal = (e) => {
+    e.preventDefault();
+
+    subModalContext.openModal({
+      title: "Confirmation",
+      messages: [
+        "You cannot cancel your booking within 7 days of start date. Do you still want to proceed?",
+      ],
+      actions: [
+        {
+          color: "primary",
+          onClick: submitFormHandler,
+          content: "OK",
+          width: "120px",
+        },
+        {
+          color: "warning",
+          onClick: subModalContext.closeModal,
+          content: "Cancel",
+          width: "120px",
+        },
+      ],
+    });
+  };
+
   const submitFormHandler = async (e) => {
     e.preventDefault();
     try {
@@ -147,7 +172,7 @@ const CarSpaceBookingForm = () => {
   }, []);
 
   return (
-    <form className={classes.form} onSubmit={submitFormHandler}>
+    <form className={classes.form} onSubmit={displayConfirmModal}>
       <CarSpaceCardHeader
         title={"Book Car Space"}
         onClose={consumerModalContext.closeModal}
@@ -287,7 +312,10 @@ const CarSpaceBookingForm = () => {
                 ) : (
                   <>
                     <Typography variant="carSpaceModalSubContent">
-                      {`Card Number : ${authContext.userInfo.card_number}`}
+                      {`Card Number : **** **** **** ${authContext.userInfo.card_number.slice(
+                        12,
+                        16
+                      )}`}
                     </Typography>
                     <Typography variant="carSpaceModalSubContent">
                       {`Expiry Date : ${authContext.userInfo.expiry_date}`}
