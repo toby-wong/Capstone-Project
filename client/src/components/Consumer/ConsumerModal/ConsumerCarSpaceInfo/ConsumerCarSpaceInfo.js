@@ -16,6 +16,8 @@ const ConsumerCarSpaceInfo = () => {
   const subModalContext = useContext(SubModalContext);
   const authContext = useContext(AuthContext);
 
+  const { streetAddress, city, state } = consumerModalContext.carSpaceInfo;
+
   const makeBookingHandler = () => {
     consumerModalContext.openPage("/book");
   };
@@ -82,7 +84,8 @@ const ConsumerCarSpaceInfo = () => {
 
   return (
     <CarSpaceInfo
-      title={"Car Space Information"}
+      // title={"Car Space Information"}
+      title={`${streetAddress}, ${city}, ${state}`}
       actions={[
         { content: "Book", color: "primary", onClick: makeBookingHandler },
       ]}
