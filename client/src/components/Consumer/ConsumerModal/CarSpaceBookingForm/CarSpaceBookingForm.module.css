@@ -48,6 +48,10 @@
   min-width: 120px;
 }
 
+.date-input:first-of-type {
+  margin-right: 30px;
+}
+
 /* Right */
 .rightSection {
   min-width: 350px;

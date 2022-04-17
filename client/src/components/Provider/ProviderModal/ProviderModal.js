@@ -9,9 +9,13 @@ import CarSpaceEditForm from "./CarSpaceEditForm/CarSpaceEditForm";
 import ProviderCarSpaceInfo from "./ProviderCarSpaceInfo/ProviderCarSpaceInfo";
 import CarSpaceReviews from "../../CarSpaceReviews/CarSpaceReviews";
 import CarSpaceBookings from "./CarSpaceBookings/CarSpaceBookings";
+import ProviderBookingInfo from "../../BookingInfo/ProviderBookingInfo/ProviderBookingInfo";
+import SubModalContext from "../../../contexts/submodal-context";
+import MessageModal from "../../UI/MessageModal/MessageModal";
 
 const ProviderModal = () => {
   const providerModalContext = useContext(ProviderModalContext);
+  const subModalContext = useContext(SubModalContext);
   const location = useLocation();
   const listStatus = location.pathname.split("/").at(-1);
 
@@ -21,15 +25,34 @@ const ProviderModal = () => {
       onClose={providerModalContext.closeModal}
       size="large"
     >
+      <MessageModal
+        open={subModalContext.isOpen}
+        onClose={subModalContext.closeModal}
+        title={subModalContext.content.title}
+        messages={subModalContext.content.messages}
+        actions={subModalContext.content.actions}
+      />
       {providerModalContext.page === "/add" && <CarSpaceRegistrationForm />}
       {providerModalContext.page === "/edit" && <CarSpaceEditForm />}
       {providerModalContext.page === "/info" && (
         <ProviderCarSpaceInfo status={listStatus} />
       )}
       {providerModalContext.page === "/reviews" && (
-        <CarSpaceReviews modalContext={providerModalContext} />
+        <CarSpaceReviews
+          modalContext={providerModalContext}
+          subModalContext={subModalContext}
+        />
       )}
       {providerModalContext.page === "/bookings" && <CarSpaceBookings />}
+      {providerModalContext.page === "/booking" && (
+        <ProviderBookingInfo
+          context={providerModalContext}
+          content={providerModalContext.bookingInfo}
+          onBack={() => {
+            providerModalContext.openPage("/bookings");
+          }}
+        />
+      )}
     </GeneralModal>
   );
 };

@@ -1,17 +1,26 @@
-import { Typography, Paper, CircularProgress } from "@mui/material";
-import { useEffect, useState } from "react";
-
 import * as config from "../../../config";
 import { sendRequest } from "../../../utility";
+
+import { useContext, useEffect, useState } from "react";
+import AccountModalContext from "../../../contexts/account-modal-context";
+
+import { Typography, Paper, CircularProgress } from "@mui/material";
+
 import GeneralDataGrid from "../../UI/GeneralDataGrid/GeneralDataGrid";
 
 const ProviderHistory = () => {
+  const accountModalContext = useContext(AccountModalContext);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({
     value: false,
     message: "",
   });
   const [history, setHistory] = useState([]);
+
+  const clickCarRowHandler = (rowData) => {
+    accountModalContext.setContent(rowData.row);
+    accountModalContext.openPage("/providerBookingInfo");
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,12 +42,17 @@ const ProviderHistory = () => {
         for (const booking of response.data) {
           fetchedHistory.push({
             id: booking.pk,
+            publishDate: booking.publishDate,
+            carSpaceId: booking.parkingSpace,
+            vehicleId: booking.vehicle,
             startTime: booking.startTime,
             endTime: booking.endTime,
             cost: booking.totalCost,
-            streetAddress: booking.streetAddress,
+            streetAddress: `${booking.streetAddress}, ${booking.city}, ${booking.state}`,
             vehicle: booking.parkingSpaceSize,
             consumer: booking.consumerName,
+            consumerEmail: booking.consumerEmail,
+            consumerPhone: booking.consumerPhone,
           });
         }
 
@@ -64,6 +78,11 @@ const ProviderHistory = () => {
             rows={history}
             columns={[
               {
+                field: "publishDate",
+                headerName: "Date",
+                width: 150,
+              },
+              {
                 field: "startTime",
                 headerName: "Start Time",
                 width: 150,
@@ -84,27 +103,24 @@ const ProviderHistory = () => {
                 flex: 1,
               },
               {
-                field: "vehicle",
-                headerName: "Vehicle Size",
-                width: 130,
-              },
-              {
                 field: "consumer",
                 headerName: "Consumer",
                 width: 150,
               },
             ]}
             rowsPerPageOptions={[5, 10]}
+            onRowClick={clickCarRowHandler}
             initialState={{
               sorting: {
                 sortModel: [
                   {
-                    field: "startTime",
+                    field: "publishDate",
                     sort: "desc",
                   },
                 ],
               },
             }}
+            helperText={"* Click a row to see the details of a booking"}
           />
         )}
         {!isLoading && error.message}

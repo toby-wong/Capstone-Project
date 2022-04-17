@@ -1,3 +1,74 @@
+import * as config from "./config";
+
+export const fetchCarInfo = async (carId, setIsLoading = () => {}) => {
+  let carInfo = null;
+  try {
+    const authToken = localStorage.getItem("parkItAuthToken");
+    const url = `${config.SERVER_URL}/api/consumer/vehicle/${carId}`;
+    const options = {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + authToken,
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await sendRequest(url, options, setIsLoading);
+    if (!response.status || response.status >= 300) throw Error;
+
+    carInfo = response.data;
+
+    return carInfo;
+  } catch (e) {
+    throw Error();
+  }
+};
+
+export const fetchCarSpaceInfo = async (
+  carSpaceId,
+  setIsLoading = () => {}
+) => {
+  let carSpaceInfo = null;
+  try {
+    const authToken = localStorage.getItem("parkItAuthToken");
+    const url = `${config.SERVER_URL}/api/provider/parking/${carSpaceId}`;
+    const options = {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + authToken,
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await sendRequest(url, options, setIsLoading);
+    if (!response.status || response.status >= 300) throw Error;
+
+    carSpaceInfo = response.data;
+    const {
+      streetAddress,
+      city,
+      state,
+      postcode,
+      startTime,
+      endTime,
+      price,
+      size,
+      images,
+    } = carSpaceInfo;
+
+    carSpaceInfo = {
+      address: `${streetAddress}, ${city}, ${state}, ${postcode}`,
+      startDateTime: startTime,
+      endDateTime: endTime,
+      price: price,
+      maxVehicleSize: size,
+      images: images,
+    };
+
+    return carSpaceInfo;
+  } catch (e) {
+    throw Error();
+  }
+};
+
 export const getDate = (dateTimeStr) => {
   const [date, time] = dateTimeStr.split(" ");
   const [day, month, year] = date.split("/");

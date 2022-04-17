@@ -7,13 +7,6 @@ const ProviderModalContext = React.createContext({
   isOpen: false,
   carSpacesRefreshStatus: false,
   bookingInfo: { images: [] },
-  // bookingInfo: {
-  //   userInfo: {
-  //     username: "",
-  //     email: "",
-  //     mobile: "",
-  //   },
-  // },
   toggleCarSpacesRefreshStatus: () => {},
   openPage: () => {},
   closeModal: () => {},
@@ -31,13 +24,6 @@ export const ProviderModalContextProvider = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [carSpacesRefreshStatus, setCarSpacesRefreshStatus] = useState(false);
   const [bookingInfo, setBookingInfo] = useState({ images: [] });
-  // const [bookingInfo, setBookingInfo] = useState({
-  //   userInfo: {
-  //     username: "",
-  //     email: "",
-  //     mobile: "",
-  //   },
-  // });
 
   const resetContextValue = () => {
     setCarSpaceInfo({ images: [], fetched: false });

@@ -47,7 +47,7 @@ const ConsumerHistory = () => {
             startTime: booking.startTime,
             endTime: booking.endTime,
             cost: booking.totalCost,
-            streetAddress: booking.streetAddress,
+            streetAddress: `${booking.streetAddress}, ${booking.city}, ${booking.state}`,
             vehicle: booking.parkingSpaceSize,
             consumer: booking.consumerName,
           });
@@ -75,6 +75,11 @@ const ConsumerHistory = () => {
             rows={history}
             columns={[
               {
+                field: "publishDate",
+                headerName: "Date",
+                width: 150,
+              },
+              {
                 field: "startTime",
                 headerName: "Start Time",
                 width: 150,
@@ -95,11 +100,6 @@ const ConsumerHistory = () => {
                 flex: 1,
               },
               {
-                field: "vehicle",
-                headerName: "Vehicle Size",
-                width: 130,
-              },
-              {
                 field: "consumer",
                 headerName: "Consumer",
                 width: 150,
@@ -111,12 +111,13 @@ const ConsumerHistory = () => {
               sorting: {
                 sortModel: [
                   {
-                    field: "startTime",
+                    field: "publishDate",
                     sort: "desc",
                   },
                 ],
               },
             }}
+            helperText={"* Click a row to see the details of a booking"}
           />
         )}
         {!isLoading && error.message}

@@ -111,6 +111,7 @@ const MyCars = () => {
             ]}
             rowsPerPageOptions={[5, 10]}
             onRowClick={clickCarRowHandler}
+            helperText={"* Click a row to edit the details of a car"}
           />
         )}
         {!isLoading && error.value && error.message}

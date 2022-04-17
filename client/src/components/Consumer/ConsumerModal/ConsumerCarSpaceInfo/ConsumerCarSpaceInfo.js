@@ -4,14 +4,16 @@ import * as config from "../../../../config";
 import * as utility from "../../../../utility";
 
 import ConsumerModalContext from "../../../../contexts/consumer-modal-context";
+import AuthContext from "../../../../contexts/auth-context";
+import SubModalContext from "../../../../contexts/submodal-context";
 
 import CarSpaceInfo from "../../../UI/CarSpaceUI/CarSpaceInfo/CarSpaceInfo";
-import AuthContext from "../../../../contexts/auth-context";
 
 const ConsumerCarSpaceInfo = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const consumerModalContext = useContext(ConsumerModalContext);
+  const subModalContext = useContext(SubModalContext);
   const authContext = useContext(AuthContext);
 
   const makeBookingHandler = () => {
@@ -90,6 +92,7 @@ const ConsumerCarSpaceInfo = () => {
       setError={setError}
       onClose={consumerModalContext.closeModal}
       modalContext={consumerModalContext}
+      subModalContext={subModalContext}
       favourite={true}
     />
   );

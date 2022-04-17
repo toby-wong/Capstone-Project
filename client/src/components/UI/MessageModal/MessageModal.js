@@ -1,4 +1,4 @@
-// import classes from "./MessageModal.module.css";
+import classes from "./MessageModal.module.css";
 
 import { Button, Typography } from "@mui/material";
 
@@ -17,7 +17,7 @@ const MessageModal = ({ open, onClose, title, messages, actions }) => {
             <Typography
               key={message}
               variant="modalContent"
-              style={{ marginBottom: "15px" }}
+              className={classes.message}
             >
               {message}
             </Typography>

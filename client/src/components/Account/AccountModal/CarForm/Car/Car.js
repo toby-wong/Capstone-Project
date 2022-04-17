@@ -98,7 +98,7 @@ const Car = ({
             <InputField
               inputClassName={classes.input}
               label="Registration Number"
-              type="number"
+              type="text"
               name="registrationNumber"
               value={registrationNumber.value}
               onChange={registrationNumber.onChange}
