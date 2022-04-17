@@ -39,7 +39,7 @@ const AccountDetailsForm = ({ details, setPage }) => {
 
     try {
       const authToken = localStorage.getItem("parkItAuthToken");
-      const url = `${config.SERVER_URL}/api/auth/user/`;
+      const url = `${config.SERVER_URL}/dj-rest-auth/user/`;
       const options = {
         method: "PATCH",
         headers: {

@@ -35,7 +35,7 @@ const AccountDetails = () => {
       if (!authToken) return;
 
       try {
-        const url = `${config.SERVER_URL}/api/auth/user/`;
+        const url = `${config.SERVER_URL}/dj-rest-auth/user/`;
         const options = {
           method: "GET",
           headers: {

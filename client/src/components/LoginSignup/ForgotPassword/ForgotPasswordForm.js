@@ -28,7 +28,7 @@ const ForgotPasswordForm = ({ onClose }) => {
   const forgotPasswordFormSubmitHandler = async (e) => {
     e.preventDefault();
 
-    const url = `${config.SERVER_URL}/api/auth/password/reset/`;
+    const url = `${config.SERVER_URL}/dj-rest-auth/password/reset/`;
     const options = {
       method: "POST",
       headers: {

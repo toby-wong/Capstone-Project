@@ -23,7 +23,7 @@ const AccountDetailsAuthForm = ({ setPage }) => {
       const authToken = localStorage.getItem("parkItAuthToken");
       if (!authToken) return;
 
-      const getUserDataUrl = `${config.SERVER_URL}/api/auth/user/`;
+      const getUserDataUrl = `${config.SERVER_URL}/dj-rest-auth/user/`;
       const getUserDataoptions = {
         method: "GET",
         headers: {
@@ -40,7 +40,7 @@ const AccountDetailsAuthForm = ({ setPage }) => {
         throw Error;
 
       // Try log in again with email and typed password
-      const loginUrl = `${config.SERVER_URL}/api/auth/login/`;
+      const loginUrl = `${config.SERVER_URL}/dj-rest-auth/login/`;
       const loginOptions = {
         method: "POST",
         headers: {
