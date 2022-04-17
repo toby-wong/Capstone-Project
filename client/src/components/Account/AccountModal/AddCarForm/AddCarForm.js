@@ -13,11 +13,6 @@ const AddCarForm = () => {
   const subModalContext = useContext(SubModalContext);
   const [isAdding, setIsAdding] = useState(false);
 
-  const closeAllHandler = () => {
-    subModalContext.closeModal();
-    accountModalContext.closeModal();
-  };
-
   const submitFormHandler = async (formData) => {
     try {
       const authToken = localStorage.getItem("parkItAuthToken");
@@ -50,11 +45,12 @@ const AddCarForm = () => {
         actions: [
           {
             color: "primary",
-            onClick: closeAllHandler,
+            onClick: subModalContext.closeAllModals(accountModalContext),
             content: "OK",
             width: "120px",
           },
         ],
+        context: accountModalContext,
       });
 
       accountModalContext.togglePageRefreshStatus();

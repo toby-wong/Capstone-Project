@@ -92,11 +92,12 @@ const CarSpaceBookingForm = () => {
         actions: [
           {
             color: "primary",
-            onClick: subModalContext.closeAllModals(consumerModalContext),
+            onClick: subModalContext.closeModal,
             content: "OK",
             width: "120px",
           },
         ],
+        context: consumerModalContext,
       });
     } catch (e) {
       subModalContext.openModal({

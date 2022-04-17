@@ -15,21 +15,29 @@ export const SubModalContextProvider = (props) => {
     messages: [],
     actions: [],
   });
+  const [externalModalContext, setExternalModalContext] = useState(null);
 
   const closeModal = () => {
     setIsOpen(false);
+
+    if (externalModalContext) externalModalContext.closeModal();
+
+    setExternalModalContext(null);
+    setContent({ title: "", messages: [], actions: [] });
   };
 
   const closeAllModals = (context) => {
     return () => {
-      closeModal(context);
+      setIsOpen(false);
       context.closeModal();
     };
   };
 
-  const openModal = ({ title, messages, actions }) => {
+  const openModal = ({ title, messages, actions, context = null }) => {
     setIsOpen(true);
     setContent({ title, messages, actions });
+
+    if (context) setExternalModalContext(context);
   };
 
   const contextValue = {
