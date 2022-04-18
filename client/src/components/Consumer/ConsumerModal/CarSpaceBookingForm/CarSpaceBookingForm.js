@@ -29,6 +29,7 @@ import GeneralModalActions from "../../../UI/GeneralModal/GeneralModalActions";
 import CarSpaceImageCarousel from "../../../UI/CarSpaceUI/CarSpaceInfo/CarSpaceInfoImageCarousel/CarSpaceImageCarousel";
 import CarSpaceImage from "../../../UI/CarSpaceUI/CarSpaceInfo/CarSpaceInfoImage/CarSpaceImage";
 import AuthContext from "../../../../contexts/auth-context";
+import { useNavigate } from "react-router-dom";
 
 const CarSpaceBookingForm = () => {
   const consumerModalContext = useContext(ConsumerModalContext);
@@ -111,7 +112,6 @@ const CarSpaceBookingForm = () => {
       };
 
       const response = await utility.sendRequest(url, options, setIsLoading);
-      console.log(response);
       if (!response.status || response.status >= 300) throw Error;
 
       subModalContext.openModal({
@@ -122,7 +122,10 @@ const CarSpaceBookingForm = () => {
         actions: [
           {
             color: "primary",
-            onClick: subModalContext.closeAllModals(consumerModalContext),
+            onClick: subModalContext.closeAllModals(
+              consumerModalContext,
+              "/consumer"
+            ),
             content: "OK",
             width: "120px",
           },

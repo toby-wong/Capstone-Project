@@ -13,7 +13,7 @@ const Home = () => {
 
   const formSubmitHandler = async (formData) => {
     authContext.setSearchInfo(formData);
-    navigate(`/consumer/anonSearch`);
+    navigate(`/consumer`);
   };
 
   return (
