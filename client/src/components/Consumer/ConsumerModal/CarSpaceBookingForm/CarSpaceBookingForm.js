@@ -29,7 +29,6 @@ import GeneralModalActions from "../../../UI/GeneralModal/GeneralModalActions";
 import CarSpaceImageCarousel from "../../../UI/CarSpaceUI/CarSpaceInfo/CarSpaceInfoImageCarousel/CarSpaceImageCarousel";
 import CarSpaceImage from "../../../UI/CarSpaceUI/CarSpaceInfo/CarSpaceInfoImage/CarSpaceImage";
 import AuthContext from "../../../../contexts/auth-context";
-import { useNavigate } from "react-router-dom";
 
 const CarSpaceBookingForm = () => {
   const consumerModalContext = useContext(ConsumerModalContext);
