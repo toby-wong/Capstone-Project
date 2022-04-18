@@ -247,15 +247,13 @@ class AddressSuggestions(APIView):
 
 class ParkingSearchList(ListAPIView):
     serializer_class = ParkingSpaceSerializer
-    queryset = ParkingSpace.objects.filter(is_active=True, status='approved')
-
-    serializer_class = ParkingSpaceSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filter_class = ParkingSearchFilter
     
     def get_queryset(self):
-        queryset = super(ParkingSearchList, self).get_queryset()
-        queryset = queryset.exclude(provider=self.request.user)
+        queryset = ParkingSpace.objects.filter(is_active=True, status='approved')
+        if self.request.user.is_authenticated:
+            queryset = queryset.exclude(provider=self.request.user)
         try:
             address = self.request.query_params.get('address')
             radius = self.request.query_params.get('radius')
@@ -273,5 +271,7 @@ class ParkingSearchList(ListAPIView):
                 elif queryset.contains(booking.parkingSpace):
                     queryset = queryset.exclude(pk=booking.parkingSpace.pk)
             return queryset
+            print(queryset)
         except:
             return queryset
+            print('ERRORSET')
