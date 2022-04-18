@@ -8,7 +8,17 @@ import ConsumerModalContext from "../../../contexts/consumer-modal-context";
 import AuthContext from "../../../contexts/auth-context";
 import SubModalContext from "../../../contexts/submodal-context";
 
-const ConsumerMapItem = ({ streetAddress, notes, size, price, id, image }) => {
+const ConsumerMapItem = ({
+  streetAddress,
+  notes,
+  size,
+  price,
+  id,
+  image,
+  longitude,
+  latitude,
+  onClick,
+}) => {
   const consumerModalContext = useContext(ConsumerModalContext);
   const authContext = useContext(AuthContext);
   const subModalContext = useContext(SubModalContext);
@@ -29,6 +39,7 @@ const ConsumerMapItem = ({ streetAddress, notes, size, price, id, image }) => {
       });
     } else {
       consumerModalContext.openPage("/info", id);
+      onClick(longitude, latitude);
     }
   };
 

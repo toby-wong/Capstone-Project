@@ -1,6 +1,7 @@
 import classes from "./ConsumerView.module.css";
 
 import { useContext, useEffect, useState } from "react";
+import { useMap } from "react-leaflet";
 import { Scrollbars } from "react-custom-scrollbars-2";
 import { MapContainer, TileLayer } from "react-leaflet";
 
@@ -17,6 +18,7 @@ import CarSpaceSearchBar from "../../UI/CarSpaceUI/CarSpaceSearchBar/CarSpaceSea
 import MessageModal from "../../UI/MessageModal/MessageModal";
 import SubModalContext from "../../../contexts/submodal-context";
 import ConsumerModalContext from "../../../contexts/consumer-modal-context";
+import LocationMarker from "../../UI/LeafletUI/LocationMarker";
 
 const ConsumerView = () => {
   const authContext = useContext(AuthContext);
@@ -26,8 +28,14 @@ const ConsumerView = () => {
   const [error, setError] = useState({ value: false, message: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [center, setCenter] = useState([-33.9139982, 151.2418546]);
-  const [zoom, setZoom] = useState(17);
+  const [zoom, setZoom] = useState(16);
   const [queryResults, setQueryResults] = useState([]);
+
+  const ChangeView = ({ center, zoom }) => {
+    const map = useMap();
+    map.setView(center, zoom);
+    return null;
+  };
 
   const searchHandler = async (formData) => {
     try {
@@ -50,7 +58,8 @@ const ConsumerView = () => {
         });
         return;
       }
-
+      setCenter([data[0].longitude, data[0].latitude]);
+      console.log([data[0].latitude, data[0].longitude]);
       setQueryResults(data);
     } catch (e) {
       setError({
@@ -58,6 +67,10 @@ const ConsumerView = () => {
         message: config.NETWORK_ERROR_MESSAGE,
       });
     }
+  };
+
+  const clickCarSpaceHandler = (longitude, latitude) => {
+    setCenter([longitude, latitude]);
   };
 
   useEffect(() => {
@@ -92,7 +105,11 @@ const ConsumerView = () => {
     };
 
     fetchData();
-  }, [authContext, setIsLoading, consumerModalContext.setSearchDate]);
+  }, [
+    authContext.searchInfo,
+    setIsLoading,
+    consumerModalContext.setSearchDate,
+  ]);
 
   return (
     <div className={classes.bodyContainer}>
@@ -158,6 +175,9 @@ const ConsumerView = () => {
                   size={item.size}
                   price={item.price}
                   image={item.images[0].image_data}
+                  longitude={item.longitude}
+                  latitude={item.latitude}
+                  onClick={clickCarSpaceHandler}
                 />
               ))}
             {!isLoading && error.value && (
@@ -175,30 +195,27 @@ const ConsumerView = () => {
           dragging={true}
           animate={true}
           easeLinearity={0.35}
-          // eventHandlers={{
-          //     click: mapItemClickHandler,
-          // }}>
         >
+          <ChangeView center={center} zoom={zoom} />
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
+          <LocationMarker />
           {isLoading && (
             <div className={classes.center_container}>
               <CircularProgress className={classes.spinner} />
             </div>
           )}
-          {!isLoading &&
-            !error.value &&
-            queryResults.map((item) => (
-              <MapPointObject
-                key={item.pk}
-                id={item.pk}
-                longitude={item.longitude}
-                latitude={item.latitude}
-                streetAddress={item.streetAddress}
-              />
-            ))}
+          {queryResults.map((item) => (
+            <MapPointObject
+              key={item.pk}
+              id={item.pk}
+              longitude={item.longitude}
+              latitude={item.latitude}
+              streetAddress={item.streetAddress}
+            />
+          ))}
           {!isLoading && error.value && (
             <div className={classes.center_container}> {error.message}</div>
           )}
