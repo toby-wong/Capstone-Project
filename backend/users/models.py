@@ -63,8 +63,8 @@ class ParkingSpace(models.Model):
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=3)
     postcode = models.CharField(max_length=4)
-    longitude = models.FloatField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
     price = models.IntegerField()
     size = models.CharField(max_length=50, choices=SIZE, default='Hatchback')
     notes = models.TextField(max_length=10000)
@@ -73,7 +73,6 @@ class ParkingSpace(models.Model):
     status = models.CharField(max_length=50, choices=STATUS, default="pending")
     avg_rating = models.DecimalField(max_digits=2, decimal_places=1, blank=True, null=True)
     n_ratings = models.IntegerField(null=True, blank=True)
-    latestTime = models.DateTimeField(null=True,  blank=True)
     is_active = models.BooleanField(default=True)
 
     def getCoords(self, address):
@@ -89,8 +88,8 @@ class ParkingSpace(models.Model):
         address = ' '.join(addressTuple)
         print(address)
         coords = self.getCoords(address)
-        self.longitude = coords[0]
-        self.latitude = coords[1]
+        self.latitude = coords[0]
+        self.longitude = coords[1]
         #super().save(*args, **kwargs)
 
     def clean(self):

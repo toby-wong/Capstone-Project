@@ -23,10 +23,10 @@ class ParkingSpaceAdmin(admin.ModelAdmin):
     ]
 
     readonly_fields = [
-        'longitude',
         'latitude',
-        'avg_rating',
+        'longitude',
         'n_ratings',
+        'avg_rating',
         'latestTime',
         'is_active'
     ]
