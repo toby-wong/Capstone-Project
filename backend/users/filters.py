@@ -4,9 +4,11 @@ from users.models import SIZE
 from users.utils import *
 
 def RadiusFilter(queryset, address='Sydney', radius=9999):
-    if radius == 9999:
+    if int(radius) == 9999:
         return queryset
     lat, lon = getCoords(address)
+    print(lat,lon)
+    print(radius)
     radius = int(radius)
     lat_min = lat - (radius * 1/111)
     lat_max = lat + (radius * 1/111)
