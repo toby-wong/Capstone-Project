@@ -3,399 +3,11 @@ info:
   title: ''
   version: 0.0.0
 paths:
-  /api/account-confirm-email/:
-    post:
-      operationId: account_confirm_email_create
-      tags:
-      - account-confirm-email
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/VerifyEmail'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/VerifyEmail'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/VerifyEmail'
-        required: true
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RestAuthDetail'
-          description: ''
-  /api/auth/login/:
-    post:
-      operationId: auth_login_create
-      description: |-
-        Check the credentials and return the REST Token
-        if the credentials are valid and authenticated.
-        Calls Django Auth login method to register User ID
-        in Django session framework
-
-        Accept the following POST parameters: username, password
-        Return the REST Framework Token Object's key.
-      tags:
-      - auth
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Login'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Login'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/Login'
-        required: true
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/JWT'
-          description: ''
-  /api/auth/logout/:
-    post:
-      operationId: auth_logout_create
-      description: |-
-        Calls Django logout method and delete the Token object
-        assigned to the current User object.
-
-        Accepts/Returns nothing.
-      tags:
-      - auth
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RestAuthDetail'
-          description: ''
-  /api/auth/password/change/:
-    post:
-      operationId: auth_password_change_create
-      description: |-
-        Calls Django Auth SetPasswordForm save method.
-
-        Accepts the following POST parameters: new_password1, new_password2
-        Returns the success/fail message.
-      tags:
-      - auth
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PasswordChange'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PasswordChange'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PasswordChange'
-        required: true
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RestAuthDetail'
-          description: ''
-  /api/auth/password/reset/:
-    post:
-      operationId: auth_password_reset_create
-      description: |-
-        Calls Django Auth PasswordResetForm save method.
-
-        Accepts the following POST parameters: email
-        Returns the success/fail message.
-      tags:
-      - auth
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PasswordReset'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PasswordReset'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PasswordReset'
-        required: true
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RestAuthDetail'
-          description: ''
-  /api/auth/password/reset/confirm/:
-    post:
-      operationId: auth_password_reset_confirm_create
-      description: |-
-        Password reset e-mail link is confirmed, therefore
-        this resets the user's password.
-
-        Accepts the following POST parameters: token, uid,
-            new_password1, new_password2
-        Returns the success/fail message.
-      tags:
-      - auth
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PasswordResetConfirm'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PasswordResetConfirm'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PasswordResetConfirm'
-        required: true
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RestAuthDetail'
-          description: ''
-  /api/auth/register/:
-    post:
-      operationId: auth_register_create
-      tags:
-      - auth
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CustomRegister'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/CustomRegister'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/CustomRegister'
-        required: true
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      - {}
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RestAuthDetail'
-          description: ''
-  /api/auth/register/verify-email/:
-    post:
-      operationId: auth_register_verify_email_create
-      tags:
-      - auth
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/VerifyEmail'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/VerifyEmail'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/VerifyEmail'
-        required: true
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RestAuthDetail'
-          description: ''
-  /api/auth/token/refresh/:
-    post:
-      operationId: auth_token_refresh_create
-      description: |-
-        Takes a refresh type JSON web token and returns an access type JSON web
-        token if the refresh token is valid.
-      tags:
-      - auth
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TokenRefresh'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/TokenRefresh'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/TokenRefresh'
-        required: true
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TokenRefresh'
-          description: ''
-  /api/auth/token/verify/:
-    post:
-      operationId: auth_token_verify_create
-      description: |-
-        Takes a token and indicates if it is valid.  This view provides no
-        information about a token's fitness for a particular use.
-      tags:
-      - auth
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TokenVerify'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/TokenVerify'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/TokenVerify'
-        required: true
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TokenVerify'
-          description: ''
-  /api/auth/user/:
-    get:
-      operationId: auth_user_retrieve
-      description: |-
-        Reads and updates UserModel fields
-        Accepts GET, PUT, PATCH methods.
-
-        Default accepted fields: username, first_name, last_name
-        Default display fields: pk, username, email, first_name, last_name
-        Read-only fields: pk, email
-
-        Returns UserModel fields.
-      tags:
-      - auth
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-          description: ''
-    put:
-      operationId: auth_user_update
-      description: |-
-        Reads and updates UserModel fields
-        Accepts GET, PUT, PATCH methods.
-
-        Default accepted fields: username, first_name, last_name
-        Default display fields: pk, username, email, first_name, last_name
-        Read-only fields: pk, email
-
-        Returns UserModel fields.
-      tags:
-      - auth
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/User'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/User'
-        required: true
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-          description: ''
-    patch:
-      operationId: auth_user_partial_update
-      description: |-
-        Reads and updates UserModel fields
-        Accepts GET, PUT, PATCH methods.
-
-        Default accepted fields: username, first_name, last_name
-        Default display fields: pk, username, email, first_name, last_name
-        Read-only fields: pk, email
-
-        Returns UserModel fields.
-      tags:
-      - auth
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchedUser'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedUser'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PatchedUser'
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-          description: ''
   /api/consumer/book:
     post:
-      operationId: consumer_book_create
+      operationId: api_consumer_book_create
       tags:
-      - consumer
+      - api
       requestBody:
         content:
           application/json:
@@ -421,7 +33,7 @@ paths:
           description: ''
   /api/consumer/book/{id}:
     get:
-      operationId: consumer_book_retrieve
+      operationId: api_consumer_book_retrieve
       parameters:
       - in: path
         name: id
@@ -429,7 +41,7 @@ paths:
           type: integer
         required: true
       tags:
-      - consumer
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -442,7 +54,7 @@ paths:
                 $ref: '#/components/schemas/Transaction'
           description: ''
     put:
-      operationId: consumer_book_update
+      operationId: api_consumer_book_update
       parameters:
       - in: path
         name: id
@@ -450,7 +62,7 @@ paths:
           type: integer
         required: true
       tags:
-      - consumer
+      - api
       requestBody:
         content:
           application/json:
@@ -475,7 +87,7 @@ paths:
                 $ref: '#/components/schemas/Transaction'
           description: ''
     patch:
-      operationId: consumer_book_partial_update
+      operationId: api_consumer_book_partial_update
       parameters:
       - in: path
         name: id
@@ -483,7 +95,7 @@ paths:
           type: integer
         required: true
       tags:
-      - consumer
+      - api
       requestBody:
         content:
           application/json:
@@ -507,7 +119,7 @@ paths:
                 $ref: '#/components/schemas/Transaction'
           description: ''
     delete:
-      operationId: consumer_book_destroy
+      operationId: api_consumer_book_destroy
       parameters:
       - in: path
         name: id
@@ -515,7 +127,7 @@ paths:
           type: integer
         required: true
       tags:
-      - consumer
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -525,9 +137,9 @@ paths:
           description: No response body
   /api/consumer/favourite:
     post:
-      operationId: consumer_favourite_create
+      operationId: api_consumer_favourite_create
       tags:
-      - consumer
+      - api
       requestBody:
         content:
           application/json:
@@ -553,7 +165,7 @@ paths:
           description: ''
   /api/consumer/favourite/{id}:
     get:
-      operationId: consumer_favourite_retrieve
+      operationId: api_consumer_favourite_retrieve
       parameters:
       - in: path
         name: id
@@ -561,7 +173,7 @@ paths:
           type: integer
         required: true
       tags:
-      - consumer
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -574,7 +186,7 @@ paths:
                 $ref: '#/components/schemas/Favourite'
           description: ''
     put:
-      operationId: consumer_favourite_update
+      operationId: api_consumer_favourite_update
       parameters:
       - in: path
         name: id
@@ -582,7 +194,7 @@ paths:
           type: integer
         required: true
       tags:
-      - consumer
+      - api
       requestBody:
         content:
           application/json:
@@ -607,7 +219,7 @@ paths:
                 $ref: '#/components/schemas/Favourite'
           description: ''
     patch:
-      operationId: consumer_favourite_partial_update
+      operationId: api_consumer_favourite_partial_update
       parameters:
       - in: path
         name: id
@@ -615,7 +227,7 @@ paths:
           type: integer
         required: true
       tags:
-      - consumer
+      - api
       requestBody:
         content:
           application/json:
@@ -639,7 +251,7 @@ paths:
                 $ref: '#/components/schemas/Favourite'
           description: ''
     delete:
-      operationId: consumer_favourite_destroy
+      operationId: api_consumer_favourite_destroy
       parameters:
       - in: path
         name: id
@@ -647,7 +259,7 @@ paths:
           type: integer
         required: true
       tags:
-      - consumer
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -657,7 +269,7 @@ paths:
           description: No response body
   /api/consumer/favourite/all:
     get:
-      operationId: consumer_favourite_all_list
+      operationId: api_consumer_favourite_all_list
       parameters:
       - name: limit
         required: false
@@ -672,7 +284,7 @@ paths:
         schema:
           type: integer
       tags:
-      - consumer
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -686,7 +298,7 @@ paths:
           description: ''
   /api/consumer/history:
     get:
-      operationId: consumer_history_list
+      operationId: api_consumer_history_list
       parameters:
       - name: limit
         required: false
@@ -701,7 +313,7 @@ paths:
         schema:
           type: integer
       tags:
-      - consumer
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -715,9 +327,9 @@ paths:
           description: ''
   /api/consumer/review:
     post:
-      operationId: consumer_review_create
+      operationId: api_consumer_review_create
       tags:
-      - consumer
+      - api
       requestBody:
         content:
           application/json:
@@ -743,7 +355,7 @@ paths:
           description: ''
   /api/consumer/review/{id}:
     get:
-      operationId: consumer_review_retrieve
+      operationId: api_consumer_review_retrieve
       parameters:
       - in: path
         name: id
@@ -751,7 +363,7 @@ paths:
           type: integer
         required: true
       tags:
-      - consumer
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -764,7 +376,7 @@ paths:
                 $ref: '#/components/schemas/Review'
           description: ''
     put:
-      operationId: consumer_review_update
+      operationId: api_consumer_review_update
       parameters:
       - in: path
         name: id
@@ -772,7 +384,7 @@ paths:
           type: integer
         required: true
       tags:
-      - consumer
+      - api
       requestBody:
         content:
           application/json:
@@ -797,7 +409,7 @@ paths:
                 $ref: '#/components/schemas/Review'
           description: ''
     patch:
-      operationId: consumer_review_partial_update
+      operationId: api_consumer_review_partial_update
       parameters:
       - in: path
         name: id
@@ -805,7 +417,7 @@ paths:
           type: integer
         required: true
       tags:
-      - consumer
+      - api
       requestBody:
         content:
           application/json:
@@ -829,7 +441,7 @@ paths:
                 $ref: '#/components/schemas/Review'
           description: ''
     delete:
-      operationId: consumer_review_destroy
+      operationId: api_consumer_review_destroy
       parameters:
       - in: path
         name: id
@@ -837,7 +449,7 @@ paths:
           type: integer
         required: true
       tags:
-      - consumer
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -847,9 +459,9 @@ paths:
           description: No response body
   /api/consumer/vehicle:
     post:
-      operationId: consumer_vehicle_create
+      operationId: api_consumer_vehicle_create
       tags:
-      - consumer
+      - api
       requestBody:
         content:
           application/json:
@@ -875,7 +487,7 @@ paths:
           description: ''
   /api/consumer/vehicle/{id}:
     get:
-      operationId: consumer_vehicle_retrieve
+      operationId: api_consumer_vehicle_retrieve
       parameters:
       - in: path
         name: id
@@ -883,7 +495,7 @@ paths:
           type: integer
         required: true
       tags:
-      - consumer
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -896,7 +508,7 @@ paths:
                 $ref: '#/components/schemas/Vehicle'
           description: ''
     put:
-      operationId: consumer_vehicle_update
+      operationId: api_consumer_vehicle_update
       parameters:
       - in: path
         name: id
@@ -904,7 +516,7 @@ paths:
           type: integer
         required: true
       tags:
-      - consumer
+      - api
       requestBody:
         content:
           application/json:
@@ -929,7 +541,7 @@ paths:
                 $ref: '#/components/schemas/Vehicle'
           description: ''
     patch:
-      operationId: consumer_vehicle_partial_update
+      operationId: api_consumer_vehicle_partial_update
       parameters:
       - in: path
         name: id
@@ -937,7 +549,7 @@ paths:
           type: integer
         required: true
       tags:
-      - consumer
+      - api
       requestBody:
         content:
           application/json:
@@ -961,7 +573,7 @@ paths:
                 $ref: '#/components/schemas/Vehicle'
           description: ''
     delete:
-      operationId: consumer_vehicle_destroy
+      operationId: api_consumer_vehicle_destroy
       parameters:
       - in: path
         name: id
@@ -969,7 +581,7 @@ paths:
           type: integer
         required: true
       tags:
-      - consumer
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -979,7 +591,7 @@ paths:
           description: No response body
   /api/consumer/vehicle/all:
     get:
-      operationId: consumer_vehicle_all_list
+      operationId: api_consumer_vehicle_all_list
       parameters:
       - name: limit
         required: false
@@ -994,7 +606,7 @@ paths:
         schema:
           type: integer
       tags:
-      - consumer
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1008,9 +620,9 @@ paths:
           description: ''
   /api/delete/user:
     delete:
-      operationId: delete_user_destroy
+      operationId: api_delete_user_destroy
       tags:
-      - delete
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1018,88 +630,9 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/password/reset/:
-    post:
-      operationId: password_reset_create
-      description: |-
-        Calls Django Auth PasswordResetForm save method.
-
-        Accepts the following POST parameters: email
-        Returns the success/fail message.
-      tags:
-      - password
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PasswordReset'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PasswordReset'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PasswordReset'
-        required: true
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RestAuthDetail'
-          description: ''
-  /api/password/reset/confirm/{uidb64}/{token}/:
-    post:
-      operationId: password_reset_confirm_create
-      description: |-
-        Password reset e-mail link is confirmed, therefore
-        this resets the user's password.
-
-        Accepts the following POST parameters: token, uid,
-            new_password1, new_password2
-        Returns the success/fail message.
-      parameters:
-      - in: path
-        name: token
-        schema:
-          type: string
-        required: true
-      - in: path
-        name: uidb64
-        schema:
-          type: string
-        required: true
-      tags:
-      - password
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PasswordResetConfirm'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PasswordResetConfirm'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PasswordResetConfirm'
-        required: true
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RestAuthDetail'
-          description: ''
   /api/provider/history:
     get:
-      operationId: provider_history_list
+      operationId: api_provider_history_list
       parameters:
       - name: limit
         required: false
@@ -1114,7 +647,7 @@ paths:
         schema:
           type: integer
       tags:
-      - provider
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1128,7 +661,7 @@ paths:
           description: ''
   /api/provider/image/{parkingID}:
     post:
-      operationId: provider_image_create
+      operationId: api_provider_image_create
       parameters:
       - in: path
         name: parkingID
@@ -1136,7 +669,7 @@ paths:
           type: integer
         required: true
       tags:
-      - provider
+      - api
       requestBody:
         content:
           application/json:
@@ -1162,7 +695,7 @@ paths:
           description: ''
   /api/provider/image/{id}:
     get:
-      operationId: provider_image_retrieve
+      operationId: api_provider_image_retrieve
       parameters:
       - in: path
         name: id
@@ -1170,7 +703,7 @@ paths:
           type: integer
         required: true
       tags:
-      - provider
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1183,7 +716,7 @@ paths:
                 $ref: '#/components/schemas/Image'
           description: ''
     put:
-      operationId: provider_image_update
+      operationId: api_provider_image_update
       parameters:
       - in: path
         name: id
@@ -1191,7 +724,7 @@ paths:
           type: integer
         required: true
       tags:
-      - provider
+      - api
       requestBody:
         content:
           application/json:
@@ -1216,7 +749,7 @@ paths:
                 $ref: '#/components/schemas/Image'
           description: ''
     patch:
-      operationId: provider_image_partial_update
+      operationId: api_provider_image_partial_update
       parameters:
       - in: path
         name: id
@@ -1224,7 +757,7 @@ paths:
           type: integer
         required: true
       tags:
-      - provider
+      - api
       requestBody:
         content:
           application/json:
@@ -1248,7 +781,7 @@ paths:
                 $ref: '#/components/schemas/Image'
           description: ''
     delete:
-      operationId: provider_image_destroy
+      operationId: api_provider_image_destroy
       parameters:
       - in: path
         name: id
@@ -1256,7 +789,7 @@ paths:
           type: integer
         required: true
       tags:
-      - provider
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1266,9 +799,9 @@ paths:
           description: No response body
   /api/provider/parking:
     post:
-      operationId: provider_parking_create
+      operationId: api_provider_parking_create
       tags:
-      - provider
+      - api
       requestBody:
         content:
           application/json:
@@ -1294,7 +827,7 @@ paths:
           description: ''
   /api/provider/parking/{id}:
     get:
-      operationId: provider_parking_retrieve
+      operationId: api_provider_parking_retrieve
       parameters:
       - in: path
         name: id
@@ -1302,7 +835,7 @@ paths:
           type: integer
         required: true
       tags:
-      - provider
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1315,7 +848,7 @@ paths:
                 $ref: '#/components/schemas/ParkingSpace'
           description: ''
     put:
-      operationId: provider_parking_update
+      operationId: api_provider_parking_update
       parameters:
       - in: path
         name: id
@@ -1323,7 +856,7 @@ paths:
           type: integer
         required: true
       tags:
-      - provider
+      - api
       requestBody:
         content:
           application/json:
@@ -1348,7 +881,7 @@ paths:
                 $ref: '#/components/schemas/ParkingSpace'
           description: ''
     patch:
-      operationId: provider_parking_partial_update
+      operationId: api_provider_parking_partial_update
       parameters:
       - in: path
         name: id
@@ -1356,7 +889,7 @@ paths:
           type: integer
         required: true
       tags:
-      - provider
+      - api
       requestBody:
         content:
           application/json:
@@ -1380,7 +913,7 @@ paths:
                 $ref: '#/components/schemas/ParkingSpace'
           description: ''
     delete:
-      operationId: provider_parking_destroy
+      operationId: api_provider_parking_destroy
       parameters:
       - in: path
         name: id
@@ -1388,7 +921,7 @@ paths:
           type: integer
         required: true
       tags:
-      - provider
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1398,7 +931,7 @@ paths:
           description: No response body
   /api/provider/parking/all:
     get:
-      operationId: provider_parking_all_list
+      operationId: api_provider_parking_all_list
       parameters:
       - name: limit
         required: false
@@ -1413,7 +946,7 @@ paths:
         schema:
           type: integer
       tags:
-      - provider
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1427,7 +960,7 @@ paths:
           description: ''
   /api/provider/parking/approved:
     get:
-      operationId: provider_parking_approved_list
+      operationId: api_provider_parking_approved_list
       parameters:
       - name: limit
         required: false
@@ -1442,7 +975,7 @@ paths:
         schema:
           type: integer
       tags:
-      - provider
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1456,7 +989,7 @@ paths:
           description: ''
   /api/provider/parking/bookings/{parkingID}:
     get:
-      operationId: provider_parking_bookings_list
+      operationId: api_provider_parking_bookings_list
       parameters:
       - name: limit
         required: false
@@ -1476,7 +1009,7 @@ paths:
           type: integer
         required: true
       tags:
-      - provider
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1490,7 +1023,7 @@ paths:
           description: ''
   /api/provider/parking/cancelled:
     get:
-      operationId: provider_parking_cancelled_list
+      operationId: api_provider_parking_cancelled_list
       parameters:
       - name: limit
         required: false
@@ -1505,7 +1038,7 @@ paths:
         schema:
           type: integer
       tags:
-      - provider
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1519,7 +1052,7 @@ paths:
           description: ''
   /api/provider/parking/images/{parkingID}:
     get:
-      operationId: provider_parking_images_list
+      operationId: api_provider_parking_images_list
       parameters:
       - name: limit
         required: false
@@ -1539,7 +1072,7 @@ paths:
           type: integer
         required: true
       tags:
-      - provider
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1553,7 +1086,7 @@ paths:
           description: ''
   /api/provider/parking/pending:
     get:
-      operationId: provider_parking_pending_list
+      operationId: api_provider_parking_pending_list
       parameters:
       - name: limit
         required: false
@@ -1568,7 +1101,7 @@ paths:
         schema:
           type: integer
       tags:
-      - provider
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1582,7 +1115,7 @@ paths:
           description: ''
   /api/provider/parking/rejected:
     get:
-      operationId: provider_parking_rejected_list
+      operationId: api_provider_parking_rejected_list
       parameters:
       - name: limit
         required: false
@@ -1597,7 +1130,7 @@ paths:
         schema:
           type: integer
       tags:
-      - provider
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1611,7 +1144,7 @@ paths:
           description: ''
   /api/provider/parking/reviews/{parkingID}:
     get:
-      operationId: provider_parking_reviews_list
+      operationId: api_provider_parking_reviews_list
       parameters:
       - name: limit
         required: false
@@ -1631,7 +1164,7 @@ paths:
           type: integer
         required: true
       tags:
-      - provider
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1645,7 +1178,7 @@ paths:
           description: ''
   /api/provider/parking/search/:
     get:
-      operationId: provider_parking_search_list
+      operationId: api_provider_parking_search_list
       parameters:
       - name: limit
         required: false
@@ -1709,7 +1242,7 @@ paths:
         explode: true
         style: form
       tags:
-      - provider
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1723,9 +1256,9 @@ paths:
           description: ''
   /api/provider/parking/search/suggestions/:
     get:
-      operationId: provider_parking_search_suggestions_retrieve
+      operationId: api_provider_parking_search_suggestions_retrieve
       tags:
-      - provider
+      - api
       security:
       - jwtHeaderAuth: []
         jwtCookieAuth: []
@@ -1733,11 +1266,242 @@ paths:
       responses:
         '200':
           description: No response body
-  /api/registration/:
+  /dj-rest-auth/account-confirm-email/:
     post:
-      operationId: registration_create
+      operationId: dj_rest_auth_account_confirm_email_create
       tags:
-      - registration
+      - dj-rest-auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /dj-rest-auth/login/:
+    post:
+      operationId: dj_rest_auth_login_create
+      description: |-
+        Check the credentials and return the REST Token
+        if the credentials are valid and authenticated.
+        Calls Django Auth login method to register User ID
+        in Django session framework
+
+        Accept the following POST parameters: username, password
+        Return the REST Framework Token Object's key.
+      tags:
+      - dj-rest-auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JWT'
+          description: ''
+  /dj-rest-auth/logout/:
+    post:
+      operationId: dj_rest_auth_logout_create
+      description: |-
+        Calls Django logout method and delete the Token object
+        assigned to the current User object.
+
+        Accepts/Returns nothing.
+      tags:
+      - dj-rest-auth
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /dj-rest-auth/password/change/:
+    post:
+      operationId: dj_rest_auth_password_change_create
+      description: |-
+        Calls Django Auth SetPasswordForm save method.
+
+        Accepts the following POST parameters: new_password1, new_password2
+        Returns the success/fail message.
+      tags:
+      - dj-rest-auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordChange'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordChange'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordChange'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /dj-rest-auth/password/reset/:
+    post:
+      operationId: dj_rest_auth_password_reset_create
+      description: |-
+        Calls Django Auth PasswordResetForm save method.
+
+        Accepts the following POST parameters: email
+        Returns the success/fail message.
+      tags:
+      - dj-rest-auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /dj-rest-auth/password/reset/confirm/:
+    post:
+      operationId: dj_rest_auth_password_reset_confirm_create
+      description: |-
+        Password reset e-mail link is confirmed, therefore
+        this resets the user's password.
+
+        Accepts the following POST parameters: token, uid,
+            new_password1, new_password2
+        Returns the success/fail message.
+      tags:
+      - dj-rest-auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /dj-rest-auth/password/reset/confirm/{uidb64}/{token}/:
+    post:
+      operationId: dj_rest_auth_password_reset_confirm_create_2
+      description: |-
+        Password reset e-mail link is confirmed, therefore
+        this resets the user's password.
+
+        Accepts the following POST parameters: token, uid,
+            new_password1, new_password2
+        Returns the success/fail message.
+      parameters:
+      - in: path
+        name: token
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uidb64
+        schema:
+          type: string
+        required: true
+      tags:
+      - dj-rest-auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /dj-rest-auth/registration/:
+    post:
+      operationId: dj_rest_auth_registration_create
+      tags:
+      - dj-rest-auth
       requestBody:
         content:
           application/json:
@@ -1761,11 +1525,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/RestAuthDetail'
           description: ''
-  /api/registration/verify-email/:
+  /dj-rest-auth/registration/verify-email/:
     post:
-      operationId: registration_verify_email_create
+      operationId: dj_rest_auth_registration_verify_email_create
       tags:
-      - registration
+      - dj-rest-auth
       requestBody:
         content:
           application/json:
@@ -1788,6 +1552,153 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /dj-rest-auth/token/refresh/:
+    post:
+      operationId: dj_rest_auth_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - dj-rest-auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /dj-rest-auth/token/verify/:
+    post:
+      operationId: dj_rest_auth_token_verify_create
+      description: |-
+        Takes a token and indicates if it is valid.  This view provides no
+        information about a token's fitness for a particular use.
+      tags:
+      - dj-rest-auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenVerify'
+          description: ''
+  /dj-rest-auth/user/:
+    get:
+      operationId: dj_rest_auth_user_retrieve
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+      - dj-rest-auth
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: dj_rest_auth_user_update
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+      - dj-rest-auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: dj_rest_auth_user_partial_update
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+      - dj-rest-auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+      security:
+      - jwtHeaderAuth: []
+        jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
           description: ''
 components:
   schemas:
@@ -2255,6 +2166,14 @@ components:
           type: string
         consumerName:
           type: string
+        consumerPhone:
+          type: string
+        consumerEmail:
+          type: string
+        publishDate:
+          type: string
+          format: date-time
+          readOnly: true
         parkingSpaceSize:
           type: string
         startTime:
@@ -2335,7 +2254,7 @@ components:
           maxLength: 100
         carRego:
           type: string
-          maxLength: 6
+          maxLength: 7
         pk:
           type: integer
           readOnly: true
@@ -2431,6 +2350,14 @@ components:
           type: string
         consumerName:
           type: string
+        consumerPhone:
+          type: string
+        consumerEmail:
+          type: string
+        publishDate:
+          type: string
+          format: date-time
+          readOnly: true
         parkingSpaceSize:
           type: string
         startTime:
@@ -2453,6 +2380,7 @@ components:
       - parkingSpace
       - pk
       - provider
+      - publishDate
       - startTime
       - totalCost
       - vehicle
@@ -2532,7 +2460,7 @@ components:
           maxLength: 100
         carRego:
           type: string
-          maxLength: 6
+          maxLength: 7
         pk:
           type: integer
           readOnly: true
