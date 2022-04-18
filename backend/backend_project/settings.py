@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-b%_51t=5bl7mlmkmsfgmzz7(khjr5$$pt!e79=9%ec$msgoyvs'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -285,6 +285,3 @@ STATIC_ROOT  = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.CustomUser'
-
-MEDIA_ROOT= os.path.join(BASE_DIR, '/users/media/')
-MEDIA_URL= "/media/"

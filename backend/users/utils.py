@@ -12,8 +12,6 @@ class AddressValidation:
         
 
     def validate(self):
-        # validation_rules = get_validation_rules(self)
-        # valid_address = normalize_address(clean_data)
         valid_address = {}
         try:
             valid_address = normalize_address(self.__dict__)
@@ -38,7 +36,6 @@ class AddressValidation:
 
 def getCoords(address):
     import requests
-    import os
 
     url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address.replace(" ", "+") + '&key=AIzaSyCwTgq7juhaZiACJFsYWm-dZgvhQRvvFw4'
     response = requests.get(url).json()

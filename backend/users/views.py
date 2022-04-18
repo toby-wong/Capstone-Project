@@ -4,13 +4,12 @@ from users.filters import RadiusFilter
 from users.filters import ParkingSearchFilter
 from users.forms import *
 from users.models import ParkingSpace, Transaction
-from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView, CreateAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import *
 import datetime as dt
-from drf_spectacular.utils import extend_schema
 from django_filters import rest_framework as filters
 from users.utils import *
 
