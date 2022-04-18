@@ -262,7 +262,6 @@ class ParkingSearchList(ListAPIView):
             radius = self.request.query_params.get('radius')
             print(getSuggestions(address))
             queryset = RadiusFilter(queryset, address, radius)
-            print(queryset)
         except:
             print("No address or radius")
             queryset = RadiusFilter(queryset) # query params does not include address and radius

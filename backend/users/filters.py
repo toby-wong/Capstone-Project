@@ -7,16 +7,14 @@ def RadiusFilter(queryset, address='Sydney', radius=9999):
     if int(radius) == 9999:
         return queryset
     lat, lon = getCoords(address)
-    print(lat,lon)
-    print(radius)
     radius = int(radius)
     lat_min = lat - (radius * 1/111)
     lat_max = lat + (radius * 1/111)
     lon_min = lon - (radius * 1/111)
     lon_max = lon + (radius * 1/111)
     return queryset.filter(
-        latitude__range=[lat_min,lat_max], 
-        longitude__range=[lon_min,lon_max])
+        longitude__range=[lat_min,lat_max], 
+        latitude__range=[lon_min,lon_max])
 
 class ParkingSearchFilter(FilterSet):
 
