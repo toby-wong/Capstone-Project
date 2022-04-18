@@ -7,8 +7,6 @@ import {
   TextField,
   Typography,
   Icon,
-  Select,
-  MenuItem,
 } from "@mui/material";
 
 import { useReducer, useState } from "react";
@@ -42,8 +40,8 @@ const CarSpaceSearchBar = ({ initialState, onSubmit }) => {
     dispatchFormState({ type: "END_TIME_INPUT", value: newDate });
   };
 
-  const radiusChangeHandler = (e) => {
-    dispatchFormState({ type: "RADIUS_INPUT", value: e.target.value });
+  const ratingChangeHandler = (e, newRating) => {
+    dispatchFormState({ type: "RATING_INPUT", value: newRating });
   };
 
   const submitHandler = (e) => {
@@ -53,10 +51,19 @@ const CarSpaceSearchBar = ({ initialState, onSubmit }) => {
       address: formState.address.value,
       startDateTime: formState.startDateTime.value,
       endDateTime: formState.endDateTime.value,
-      radius: formState.radius,
+      rating: formState.rating,
     };
 
     onSubmit(formData);
+  };
+
+  const disableRatingsHandler = () => {
+    dispatchFormState({ type: "RATING_INPUT", value: null });
+    setUseRatings(false);
+  };
+
+  const enableRatingsHandler = () => {
+    setUseRatings(true);
   };
 
   return (
@@ -115,38 +122,33 @@ const CarSpaceSearchBar = ({ initialState, onSubmit }) => {
       </div>
       <Divider orientation="vertical" variant="middle" flexItem />
       <div className={classes["input-container"]}>
-        <Typography className={`${classes["input-label"]}`}>Radius</Typography>
-        <Select
-          value={formState.radius}
-          onChange={radiusChangeHandler}
-          variant="standard"
-          label="Age"
-          inputProps={{
-            className: classes["radius-dropdown-inputProps"],
-          }}
-          MenuProps={{
-            PopoverClasses: {
-              paper: classes["radius-dropdown-menuProps"],
-            },
-          }}
-          disableUnderline
-        >
-          <MenuItem className={classes["radius-dropdown-menuItem"]} value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem className={classes["radius-dropdown-menuItem"]} value={1}>
-            1km
-          </MenuItem>
-          <MenuItem className={classes["radius-dropdown-menuItem"]} value={3}>
-            3km
-          </MenuItem>
-          <MenuItem className={classes["radius-dropdown-menuItem"]} value={5}>
-            5km
-          </MenuItem>
-          <MenuItem className={classes["radius-dropdown-menuItem"]} value={10}>
-            10km
-          </MenuItem>
-        </Select>
+        <Typography className={`${classes["input-label"]}`}>Ratings</Typography>
+        <Rating
+          className={`${classes["search-input"]} ${classes.rating}`}
+          name="simple-controlled"
+          size="small"
+          value={formState.rating}
+          onChange={ratingChangeHandler}
+          disabled={!useRatings}
+        />
+        {useRatings && (
+          <Icon
+            className={classes["disable-filter"]}
+            variant="form"
+            fontSize="medium"
+            component={DisabledByDefaultIcon}
+            onClick={disableRatingsHandler}
+          />
+        )}
+        {!useRatings && (
+          <Icon
+            className={classes["enable-filter"]}
+            variant="form"
+            fontSize="medium"
+            component={AutorenewIcon}
+            onClick={enableRatingsHandler}
+          />
+        )}
         <Button
           className={classes["search-btn"]}
           type="submit"
