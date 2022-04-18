@@ -8,6 +8,7 @@ import MessageModal from "../../UI/MessageModal/MessageModal";
 import AddCarForm from "./AddCarForm/AddCarForm";
 import EditCarForm from "./EditCarForm/EditCarForm";
 import ConsumerBookingInfo from "../../BookingInfo/ConsumerBookingInfo/ConsumerBookingInfo";
+import FavouritesModel from "../Favourites/FavouritesModal";
 import ProviderBookingInfo from "../../BookingInfo/ProviderBookingInfo/ProviderBookingInfo";
 
 const AccountModal = () => {
@@ -29,6 +30,11 @@ const AccountModal = () => {
       />
       {accountModalContext.page === "/addCar" && <AddCarForm />}
       {accountModalContext.page === "/editCar" && <EditCarForm />}
+      {accountModalContext.page === "/favourites" && (
+        <FavouritesModel
+          context={accountModalContext}
+          subModalContext={subModalContext}/>
+      )}
       {accountModalContext.page === "/providerBookingInfo" && (
         <ProviderBookingInfo
           context={accountModalContext}

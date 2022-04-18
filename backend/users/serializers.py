@@ -178,16 +178,34 @@ class FavouriteSerializer(ModelSerializer):
 
     consumer = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
     parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
+    streetAddress = serializers.CharField(source="parkingSpace.streetAddress", required=False)
+    city = serializers.CharField(source="parkingSpace.city", required=False) 
+    state = serializers.CharField(source="parkingSpace.state", required=False)
+    postcode = serializers.CharField(source="parkingSpace.postcode", required=False)
+    startTime = serializers.DateTimeField(source="parkingSpace.startTime", required=False)
+    endTime = serializers.DateTimeField(source="parkingSpace.endTime", required=False)
+    cost = serializers.IntegerField(source="parkingSpace.price", required=False)
+    notes = serializers.CharField(source="parkingSpace.notes", required=False)
+    parkingSpaceSize = serializers.CharField(source="parkingSpace.size", required=False)
 
     class Meta:
         model = Favourite
         fields = (
             'consumer',
             'parkingSpace',
-            'pk'
+            'pk',
+            'streetAddress',
+            'city',
+            'state',
+            'postcode',
+            'cost',
+            'notes',
+            'parkingSpaceSize',
+            'startTime',
+            'endTime',
         )
 
-        read_only_fields = ['pk']
+        read_only_fields = ['pk', 'streetAddress', 'city', 'state', 'postcode']
 
 class TransactionSerializer(ModelSerializer):
 
