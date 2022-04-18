@@ -1,74 +1,63 @@
 import classes from "./ConsumerView.module.css";
 
-import { Link, useLocation } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars-2";
 import { MapContainer, TileLayer } from "react-leaflet";
 
-import { sendRequest, searchCarSpace } from "../../../utility";
+import * as utility from "../../../utility";
 import * as config from "../../../config";
 
-import ConsumerModalContext from "../../../contexts/consumer-modal-context";
 import AuthContext from "../../../contexts/auth-context";
 
-import {
-  Button,
-  Tab,
-  Tabs,
-  Typography,
-  Divider,
-  CircularProgress,
-} from "@mui/material";
-
-// React Icon import
-import HistoryIcon from "@mui/icons-material/History";
-import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import { Typography, Divider, CircularProgress } from "@mui/material";
 
 import ConsumerMapItem from "./ConsumerMapItem";
 import MapPointObject from "./MapPointObject";
-import InputField from "../../UI/InputField/InputField";
+import CarSpaceSearchBar from "../../UI/CarSpaceUI/CarSpaceSearchBar/CarSpaceSearchBar";
 
-const ConsumerView = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const consumerModalContext = useContext(ConsumerModalContext);
+const ConsumerView = ({ anonymous = false }) => {
   const authContext = useContext(AuthContext);
-  const location = useLocation();
 
   const [error, setError] = useState({ value: false, message: "" });
+  const [isLoading, setIsLoading] = useState(false);
   const [consumerSpaces, setConsumerSpaces] = useState([]);
   const [center, setCenter] = useState([-33.9139982, 151.2418546]);
   const [zoom, setZoom] = useState(17);
   const [query, setQuery] = useState("");
   const [queryResults, setQueryResults] = useState([]);
 
+  const filterSearchResults = (e) => {
+    const filteredResults = consumerSpaces.filter((carSpace) =>
+      carSpace.streetAddress.includes(e.target.value)
+    );
+    setQuery(e.target.value);
+    setQueryResults(filteredResults);
+  };
+
+  const searchHandler = async (formData) => {
+    try {
+      console.log(formData);
+      const data = await utility.searchCarSpace(formData, setIsLoading);
+      filterSearchResults(data);
+      console.log(data);
+    } catch (e) {
+      setError({
+        value: true,
+        message: "No matching place found.",
+      });
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (authContext.searchInfo) {
-          const data = await searchCarSpace(
-            authContext.searchInfo,
-            setIsLoading
-          );
-          setConsumerSpaces(data);
-          authContext.setSearchInfo(null);
-          return;
-        }
+        if (!anonymous) return;
 
-        const authToken = localStorage.getItem("parkItAuthToken");
-        const url = `${config.SERVER_URL}/api/provider/parking/all`;
-        const options = {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + authToken,
-            "Content-Type": "application/json",
-          },
-        };
-        const response = await sendRequest(url, options, setIsLoading);
-        if (response.status >= 300 || !response.status) throw Error;
-
-        console.log(response.data);
-        setConsumerSpaces(response.data);
+        const data = await utility.searchCarSpace(
+          authContext.searchInfo,
+          setIsLoading
+        );
+        setConsumerSpaces(data);
       } catch (e) {
         setError({
           value: true,
@@ -78,16 +67,7 @@ const ConsumerView = () => {
     };
 
     fetchData();
-  }, [consumerModalContext.pageRefreshStatus, authContext]);
-
-  const sendSearch = (e) => {
-    var filteredResults = consumerSpaces.filter((carSpace) =>
-      carSpace.streetAddress.includes(e.target.value)
-    );
-    setQuery(e.target.value);
-    console.log(filteredResults);
-    setQueryResults(filteredResults);
-  };
+  }, [authContext, anonymous, setIsLoading]);
 
   return (
     <div className={classes.bodyContainer}>
@@ -98,64 +78,14 @@ const ConsumerView = () => {
           color="textSecondary"
           fontWeight="Bold"
         >
-          {" "}
-          Your Car Spaces
+          Car Space Search
         </Typography>
         <div className={classes.interactionSection}>
-          <InputField
-            className={classes.searchBar}
-            inputClassName={classes.input}
-            onChange={sendSearch}
-            label="Search"
-            type="text"
-            name="query"
-          />
+          <CarSpaceSearchBar onSubmit={searchHandler} />
           <Divider
             orientation="horizontal"
             className={classes.navbar_divider_listingStart}
           />
-          <Tabs
-            orientation="horizontal"
-            className={classes.tabContainer}
-            value="/hidden"
-          >
-            <Tab
-              className={classes.menu__tab}
-              component={Link}
-              to="/account/favourites"
-              value="/account/favourites"
-              label="favourite Spots"
-              icon={<FavoriteIcon className={classes["tab-icon"]} />}
-              iconPosition="start"
-            />
-            <Tab
-              className={classes.menu__tab}
-              component={Link}
-              to="/account/history/consumer"
-              value="/account/history/consumer"
-              label="Past Bookings"
-              icon={<HistoryIcon className={classes["tab-icon"]} />}
-              iconPosition="start"
-            />
-            <Tab
-              className={classes.menu__tab}
-              component={Link}
-              to="/account/myCars"
-              value="/account/myCars"
-              label="Your Cars"
-              icon={<DirectionsCarIcon className={classes["tab-icon"]} />}
-              iconPosition="start"
-            />
-            <Tab
-              className={classes.hidden}
-              component={Link}
-              to="/account/favourites"
-              value="/hidden"
-              label="favourite Spots"
-              icon={<FavoriteIcon className={classes["tab-icon"]} />}
-              iconPosition="start"
-            />
-          </Tabs>
         </div>
         <div className={classes.listingContainer}>
           <Scrollbars

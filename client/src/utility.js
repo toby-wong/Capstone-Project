@@ -31,8 +31,6 @@ export const searchCarSpace = async (searchInfo, setIsLoading) => {
     queryStrArr.push(`rating__gte=${searchInfo.rating}`);
     const queryStr = queryStrArr.join("&");
 
-    console.log(queryStr);
-
     const authToken = localStorage.getItem("parkItAuthToken");
     const url = `${config.SERVER_URL}/api/provider/parking/search/?${queryStr}`;
     const options = {
