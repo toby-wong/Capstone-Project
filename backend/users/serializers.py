@@ -257,7 +257,7 @@ class TransactionSerializer(ModelSerializer):
         if parkingSpace.status == 'cancelled':
             raise serializers.ValidationError('The parking space is no longer accepting new bookings')
         if parkingSpace.startTime > startTime or parkingSpace.endTime < endTime or parkingSpace.startTime > endTime or parkingSpace.endTime < startTime:
-             raise serializers.ValidationError('This booking does not fit within the parking space availability.')
+            raise serializers.ValidationError('This booking does not fit within the parking space availability.')
         qs = Transaction.objects.filter(parkingSpace=data['parkingSpace']).exclude(startTime__date__gt=endTime).exclude(endTime__date__lt=startTime)
         if qs.exists():
             raise serializers.ValidationError('This booking overlaps with an existing booking.')

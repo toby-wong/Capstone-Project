@@ -84,7 +84,6 @@ const ConsumerCarSpaceInfo = () => {
 
   return (
     <CarSpaceInfo
-      // title={"Car Space Information"}
       title={`${streetAddress}, ${city}, ${state}`}
       actions={[
         { content: "Book", color: "primary", onClick: makeBookingHandler },

@@ -45,8 +45,14 @@ const CarSpaceBookingForm = () => {
   const { streetAddress, city, state, postcode } =
     consumerModalContext.carSpaceInfo;
   const { price, size, images } = consumerModalContext.carSpaceInfo;
-  const paymentMethodValidity =
-    authContext.userInfo.card_number !== "" && authContext.userInfo.card_number;
+  const cardNumber = authContext.userInfo.card_number;
+  const paymentMethodValidity = cardNumber !== "" && cardNumber !== undefined;
+  console.log(
+    cardNumber,
+    cardNumber !== "",
+    !cardNumber,
+    paymentMethodValidity
+  );
 
   const vehicleChangeHandler = (e) => {
     const carName = e.target.value;
@@ -306,15 +312,10 @@ const CarSpaceBookingForm = () => {
               </CarSpaceImageCarousel>
               <ModalEntry className={classes.entry} icon={PaymentIcon}>
                 <Typography variant="carSpaceModalSubTitle">Payment</Typography>
-                {!paymentMethodValidity ? (
-                  <Typography variant="carSpaceModalSubContent">
-                    No card found. Please register a card in Account Details
-                    Page.
-                  </Typography>
-                ) : (
+                {paymentMethodValidity ? (
                   <>
                     <Typography variant="carSpaceModalSubContent">
-                      {`Card Number : **** **** **** ${authContext.userInfo.card_number.slice(
+                      {`Card Number : **** **** **** ${cardNumber.slice(
                         12,
                         16
                       )}`}
@@ -323,6 +324,11 @@ const CarSpaceBookingForm = () => {
                       {`Expiry Date : ${authContext.userInfo.expiry_date}`}
                     </Typography>
                   </>
+                ) : (
+                  <Typography variant="carSpaceModalSubContent">
+                    No card found. Please register a card in Account Details
+                    Page.
+                  </Typography>
                 )}
               </ModalEntry>
               <ModalEntry className={classes.entry} icon={SellIcon}>

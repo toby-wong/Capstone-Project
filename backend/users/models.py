@@ -72,7 +72,7 @@ class ParkingSpace(models.Model):
     endTime = models.DateTimeField()
     status = models.CharField(max_length=50, choices=STATUS, default="pending")
     avg_rating = models.DecimalField(max_digits=2, decimal_places=1, blank=True, null=True)
-    n_ratings = models.IntegerField(null=True, blank=True)
+    n_ratings = models.IntegerField(null=True, blank=True, default=0)
     latestTime = models.DateTimeField(null=True,  blank=True)
     is_active = models.BooleanField(default=True)
 
@@ -84,14 +84,13 @@ class ParkingSpace(models.Model):
         return (float(response['results'][0]['geometry']['location']['lat']), float(response['results'][0]['geometry']['location']['lng']))
 
     def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
         addressTuple = (self.streetAddress, self.city, self.state, self.postcode)
         address = ' '.join(addressTuple)
-        print(address)
         coords = self.getCoords(address)
         self.longitude = coords[0]
         self.latitude = coords[1]
-        #super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
+
 
     def clean(self):
         pk = self.pk
