@@ -7,8 +7,6 @@ import {
   TextField,
   Typography,
   Icon,
-  Select,
-  MenuItem,
 } from "@mui/material";
 
 import { useReducer, useState } from "react";
@@ -125,20 +123,32 @@ const CarSpaceSearchBar = ({ initialState, onSubmit }) => {
       <Divider orientation="vertical" variant="middle" flexItem />
       <div className={classes["input-container"]}>
         <Typography className={`${classes["input-label"]}`}>Ratings</Typography>
-        <Select
-          // labelId="demo-simple-select-standard-label"
-          // id="demo-simple-select-standard"
-          // value={age}
-          // onChange={handleChange}
-          label="Age"
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
+        <Rating
+          className={`${classes["search-input"]} ${classes.rating}`}
+          name="simple-controlled"
+          size="small"
+          value={formState.rating}
+          onChange={ratingChangeHandler}
+          disabled={!useRatings}
+        />
+        {useRatings && (
+          <Icon
+            className={classes["disable-filter"]}
+            variant="form"
+            fontSize="medium"
+            component={DisabledByDefaultIcon}
+            onClick={disableRatingsHandler}
+          />
+        )}
+        {!useRatings && (
+          <Icon
+            className={classes["enable-filter"]}
+            variant="form"
+            fontSize="medium"
+            component={AutorenewIcon}
+            onClick={enableRatingsHandler}
+          />
+        )}
         <Button
           className={classes["search-btn"]}
           type="submit"
