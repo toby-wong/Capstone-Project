@@ -43,7 +43,7 @@ const ConsumerView = () => {
     const fetchData = async () => {
       try {
         const authToken = localStorage.getItem("parkItAuthToken");
-        const url = `${config.SERVER_URL}/api/provider/parking/all`;
+        const url = `${config.SERVER_URL}/api/provider/parking/search`;
         const options = {
           method: "GET",
           headers: {
