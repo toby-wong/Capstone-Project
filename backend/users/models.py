@@ -84,14 +84,13 @@ class ParkingSpace(models.Model):
         return (float(response['results'][0]['geometry']['location']['lat']), float(response['results'][0]['geometry']['location']['lng']))
 
     def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
         addressTuple = (self.streetAddress, self.city, self.state, self.postcode)
         address = ' '.join(addressTuple)
-        print(address)
         coords = self.getCoords(address)
         self.longitude = coords[0]
         self.latitude = coords[1]
-        #super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
+
 
     def clean(self):
         pk = self.pk
