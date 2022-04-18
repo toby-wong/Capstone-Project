@@ -247,9 +247,6 @@ class AddressSuggestions(APIView):
 
 class ParkingSearchList(ListAPIView):
     serializer_class = ParkingSpaceSerializer
-    
-
-    serializer_class = ParkingSpaceSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filter_class = ParkingSearchFilter
     
@@ -274,5 +271,7 @@ class ParkingSearchList(ListAPIView):
                 elif queryset.contains(booking.parkingSpace):
                     queryset = queryset.exclude(pk=booking.parkingSpace.pk)
             return queryset
+            print(queryset)
         except:
             return queryset
+            print('ERRORSET')
