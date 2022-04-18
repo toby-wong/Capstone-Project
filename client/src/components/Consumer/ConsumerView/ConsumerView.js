@@ -92,7 +92,7 @@ const ConsumerView = () => {
     };
 
     fetchData();
-  }, [authContext, setIsLoading, consumerModalContext]);
+  }, [authContext, setIsLoading, consumerModalContext.setSearchDate]);
 
   return (
     <div className={classes.bodyContainer}>
