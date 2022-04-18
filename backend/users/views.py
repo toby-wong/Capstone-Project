@@ -266,8 +266,8 @@ class ParkingSearchList(ListAPIView):
             queryset = RadiusFilter(queryset) # query params does not include address and radius
         # acceptable address formats: 'address, city, state', 'city, state'
         try:
-            startTime = dt.datetime.strptime(self.request.query_params.get('startTime'), '%Y-%m-%d %H:%M')
-            endTime = dt.datetime.strptime(self.request.query_params.get('endTime'), '%Y-%m-%d %H:%M')
+            startTime = dt.datetime.strptime(self.request.query_params.get('startTime'), '%Y-%m-%d %H:%M:%S')
+            endTime = dt.datetime.strptime(self.request.query_params.get('endTime'), '%Y-%m-%d %H:%M:%S')
             for booking in Transaction.objects.exclude(startTime__date__gt=endTime, endTime__date__lt=startTime):
                 if booking.parkingSpace.endTime > startTime:
                     queryset = queryset.exclude(pk=booking.parkingSpace.pk)
