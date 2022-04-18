@@ -271,7 +271,5 @@ class ParkingSearchList(ListAPIView):
                 elif queryset.contains(booking.parkingSpace):
                     queryset = queryset.exclude(pk=booking.parkingSpace.pk)
             return queryset
-            print(queryset)
         except:
             return queryset
-            print('ERRORSET')
