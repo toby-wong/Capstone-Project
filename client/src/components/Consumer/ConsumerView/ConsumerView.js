@@ -43,7 +43,7 @@ const ConsumerView = () => {
     const fetchData = async () => {
       try {
         const authToken = localStorage.getItem("parkItAuthToken");
-        const url = `${config.SERVER_URL}/api/consumer/history`;
+        const url = `${config.SERVER_URL}/api/provider/parking/search`;
         const options = {
           method: "GET",
           headers: {
@@ -184,7 +184,7 @@ const ConsumerView = () => {
             {/* Else render values from query space */}
             {!isLoading &&
               !error.value &&
-              query !== "" &&
+              query != "" &&
               queryResults.map((item) => (
                 <ConsumerMapItem
                   key={item.pk}
