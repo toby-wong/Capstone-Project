@@ -265,14 +265,10 @@ class ParkingSearchList(ListAPIView):
         try:
             startTime = dt.datetime.strptime(self.request.query_params.get('startTime'), '%Y-%m-%d %H:%M:%S')
             endTime = dt.datetime.strptime(self.request.query_params.get('endTime'), '%Y-%m-%d %H:%M:%S')
-
             queryset = queryset.exclude(startTime__date__gt=startTime).exclude(endTime__date__lt=endTime)
-
-            for booking in Transaction.objects.exclude(startTime__date__gt=endTime, endTime__date__lt=startTime):
-                if booking.parkingSpace.endTime > startTime:
-                    queryset = queryset.exclude(pk=booking.parkingSpace.pk)
-                elif queryset.contains(booking.parkingSpace):
-                    queryset = queryset.exclude(pk=booking.parkingSpace.pk)
+            bookingQuerySet = Transaction.objects.exclude(startTime__date__gt=endTime).exclude(endTime__date__lt=startTime)
+            for booking in bookingQuerySet:
+                queryset = queryset.exclude(pk=booking.parkingSpace.pk)
             return queryset
         except:
             return queryset
