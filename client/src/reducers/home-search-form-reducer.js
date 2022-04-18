@@ -41,7 +41,17 @@ export const homeSearchFormReducer = (state, action) => {
   return newState;
 };
 
-export const homeSearchFormInitialState = () => {
+export const homeSearchFormInitialState = (initialState) => {
+  if (initialState) {
+    return {
+      isFormValid: true,
+      address: { value: initialState.address, isValid: true },
+      startDateTime: { value: initialState.startDateTime, isValid: true },
+      endDateTime: { value: initialState.endDateTime, isValid: true },
+      rating: initialState.rating,
+    };
+  }
+
   return {
     isFormValid: false,
     address: { value: "", isValid: false },

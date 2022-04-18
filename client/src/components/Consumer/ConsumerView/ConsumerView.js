@@ -14,36 +14,41 @@ import { Typography, Divider, CircularProgress } from "@mui/material";
 import ConsumerMapItem from "./ConsumerMapItem";
 import MapPointObject from "./MapPointObject";
 import CarSpaceSearchBar from "../../UI/CarSpaceUI/CarSpaceSearchBar/CarSpaceSearchBar";
+import MessageModal from "../../UI/MessageModal/MessageModal";
+import SubModalContext from "../../../contexts/submodal-context";
 
-const ConsumerView = ({ anonymous = false }) => {
+const ConsumerView = () => {
   const authContext = useContext(AuthContext);
+  const subModalContext = useContext(SubModalContext);
 
   const [error, setError] = useState({ value: false, message: "" });
   const [isLoading, setIsLoading] = useState(false);
-  const [consumerSpaces, setConsumerSpaces] = useState([]);
   const [center, setCenter] = useState([-33.9139982, 151.2418546]);
   const [zoom, setZoom] = useState(17);
-  const [query, setQuery] = useState("");
   const [queryResults, setQueryResults] = useState([]);
-
-  const filterSearchResults = (e) => {
-    const filteredResults = consumerSpaces.filter((carSpace) =>
-      carSpace.streetAddress.includes(e.target.value)
-    );
-    setQuery(e.target.value);
-    setQueryResults(filteredResults);
-  };
 
   const searchHandler = async (formData) => {
     try {
-      console.log(formData);
+      setError({
+        value: false,
+        message: "",
+      });
+
       const data = await utility.searchCarSpace(formData, setIsLoading);
-      filterSearchResults(data);
-      console.log(data);
+      if (data.length === 0) {
+        setQueryResults([]);
+        setError({
+          value: true,
+          message: "No matching place found.",
+        });
+        return;
+      }
+
+      setQueryResults(data);
     } catch (e) {
       setError({
         value: true,
-        message: "No matching place found.",
+        message: config.NETWORK_ERROR_MESSAGE,
       });
     }
   };
@@ -51,13 +56,21 @@ const ConsumerView = ({ anonymous = false }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!anonymous) return;
+        if (!authContext.searchInfo) return;
 
         const data = await utility.searchCarSpace(
           authContext.searchInfo,
           setIsLoading
         );
-        setConsumerSpaces(data);
+        if (data.length === 0) {
+          setError({
+            value: true,
+            message: "No matching place found.",
+          });
+          return;
+        }
+
+        setQueryResults(data);
       } catch (e) {
         setError({
           value: true,
@@ -67,10 +80,17 @@ const ConsumerView = ({ anonymous = false }) => {
     };
 
     fetchData();
-  }, [authContext, anonymous, setIsLoading]);
+  }, [authContext, setIsLoading]);
 
   return (
     <div className={classes.bodyContainer}>
+      <MessageModal
+        open={subModalContext.isOpen}
+        onClose={subModalContext.closeModal}
+        title={subModalContext.content.title}
+        messages={subModalContext.content.messages}
+        actions={subModalContext.content.actions}
+      />
       <div className={classes.menuContainer}>
         <Typography
           variant="modalTitle"
@@ -81,7 +101,10 @@ const ConsumerView = ({ anonymous = false }) => {
           Car Space Search
         </Typography>
         <div className={classes.interactionSection}>
-          <CarSpaceSearchBar onSubmit={searchHandler} />
+          <CarSpaceSearchBar
+            initialState={authContext.searchInfo}
+            onSubmit={searchHandler}
+          />
           <Divider
             orientation="horizontal"
             className={classes.navbar_divider_listingStart}
@@ -111,25 +134,9 @@ const ConsumerView = ({ anonymous = false }) => {
                 <CircularProgress className={classes.spinner} />
               </div>
             )}
-            {/* If query is empty, render all car spaces*/}
+
             {!isLoading &&
               !error.value &&
-              query === "" &&
-              consumerSpaces.map((item) => (
-                <ConsumerMapItem
-                  key={item.pk}
-                  id={item.pk}
-                  streetAddress={item.streetAddress}
-                  notes={item.notes}
-                  size={item.size}
-                  price={item.price}
-                  image={item.images[0].image_data}
-                />
-              ))}
-            {/* Else render values from query space */}
-            {!isLoading &&
-              !error.value &&
-              query != "" &&
               queryResults.map((item) => (
                 <ConsumerMapItem
                   key={item.pk}
@@ -171,8 +178,7 @@ const ConsumerView = ({ anonymous = false }) => {
           )}
           {!isLoading &&
             !error.value &&
-            consumerSpaces.length !== 0 &&
-            consumerSpaces.map((item) => (
+            queryResults.map((item) => (
               <MapPointObject
                 key={item.pk}
                 id={item.pk}
@@ -181,9 +187,6 @@ const ConsumerView = ({ anonymous = false }) => {
                 streetAddress={item.streetAddress}
               />
             ))}
-          {!isLoading && !error.value && consumerSpaces.length === 0 && (
-            <div>Testing</div>
-          )}
           {!isLoading && error.value && (
             <div className={classes.center_container}> {error.message}</div>
           )}

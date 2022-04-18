@@ -21,11 +21,11 @@ import DateTimePicker from "@mui/lab/DateTimePicker";
 import DisabledByDefaultIcon from "@mui/icons-material/DisabledByDefault";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 
-const CarSpaceSearchBar = ({ onSubmit }) => {
+const CarSpaceSearchBar = ({ initialState, onSubmit }) => {
   const [useRatings, setUseRatings] = useState(true);
   const [formState, dispatchFormState] = useReducer(
     homeSearchFormReducer,
-    homeSearchFormInitialState()
+    homeSearchFormInitialState(initialState)
   );
 
   const addressChangeHandler = (e) => {
@@ -73,7 +73,7 @@ const CarSpaceSearchBar = ({ onSubmit }) => {
         <input
           className={classes["search-input"]}
           type="text"
-          placeholder="Where do you want to go?"
+          placeholder="Street Address, Suburb"
           value={formState.address.value}
           onChange={addressChangeHandler}
         />

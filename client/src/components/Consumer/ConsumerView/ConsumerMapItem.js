@@ -5,12 +5,31 @@ import { useContext } from "react";
 import { Typography, Divider } from "@mui/material";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import ConsumerModalContext from "../../../contexts/consumer-modal-context";
+import AuthContext from "../../../contexts/auth-context";
+import SubModalContext from "../../../contexts/submodal-context";
 
 const ConsumerMapItem = ({ streetAddress, notes, size, price, id, image }) => {
   const consumerModalContext = useContext(ConsumerModalContext);
+  const authContext = useContext(AuthContext);
+  const subModalContext = useContext(SubModalContext);
 
   const mapItemClickHandler = () => {
-    consumerModalContext.openPage("/info", id);
+    if (!authContext.isLoggedIn) {
+      subModalContext.openModal({
+        title: "Unauthorized",
+        messages: ["Please log in to view the details of parking space."],
+        actions: [
+          {
+            color: "primary",
+            onClick: subModalContext.closeModal,
+            content: "OK",
+            width: "120px",
+          },
+        ],
+      });
+    } else {
+      consumerModalContext.openPage("/info", id);
+    }
   };
 
   return (
