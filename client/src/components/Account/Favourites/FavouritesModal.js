@@ -6,7 +6,7 @@ import * as config from "../../../config";
 import * as utility from "../../../utility";
 
 import {CircularProgress, Paper, Typography } from "@mui/material";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 
@@ -23,16 +23,19 @@ const FavouritesModal = ({ context, subModalContext }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { cost, carSpaceId } = context.content;
+      console.log(context.content)
+      const { cost, carSpaceId, notes} = context.content;
       try {
         setIsLoading(true);
         // Get CarSpaceInfo
         const carSpaceInfo = await utility.fetchCarSpaceInfo(carSpaceId);
+        console.log(carSpaceInfo)
 
         // Aggregate data and fetch
         const fetchedData = {
           ...carSpaceInfo,
           totalCost: cost,
+          notes: notes,
         };
         setData(fetchedData);
         setIsLoading(false);
@@ -45,6 +48,7 @@ const FavouritesModal = ({ context, subModalContext }) => {
     fetchData();
   }, [context]);
 
+  console.log(data)
   return (
     <Paper variant="bookingInfoBody">
       <CarSpaceCardHeader
@@ -74,24 +78,6 @@ const FavouritesModal = ({ context, subModalContext }) => {
                   carSpaceId={context.content.carSpaceId}
                 />
               </div>
-              <ModalEntry
-                className={classes.entry}
-                icon={AccessTimeIcon}
-                direction="row"
-              >
-                <ModalEntry>
-                  <Typography variant="carSpaceModalSubTitle">From</Typography>
-                  <Typography variant="carSpaceModalContent">
-                    {data.startDateTime}
-                  </Typography>
-                </ModalEntry>
-                <ModalEntry>
-                  <Typography variant="carSpaceModalSubTitle">Until</Typography>
-                  <Typography variant="carSpaceModalContent">
-                    {data.endDateTime}
-                  </Typography>
-                </ModalEntry>
-              </ModalEntry>
               <ModalEntry className={classes.entry} icon={AttachMoneyIcon}>
                 <Typography variant="carSpaceModalSubTitle">Price</Typography>
                 <Typography variant="carSpaceModalContent">
@@ -104,6 +90,14 @@ const FavouritesModal = ({ context, subModalContext }) => {
                 </Typography>
                 <Typography variant="carSpaceModalContent">
                   {data.maxVehicleSize}
+                </Typography>
+              </ModalEntry>
+              <ModalEntry className={classes.entry} icon={StickyNote2Icon}>
+                <Typography variant="carSpaceModalSubTitle">
+                  Notes
+                </Typography>
+                <Typography className={classes.notes} variant="carSpaceModalSubContent">
+                  {data.notes}
                 </Typography>
               </ModalEntry>
             </Paper>

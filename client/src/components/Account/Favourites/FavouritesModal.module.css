@@ -18,3 +18,7 @@
   .btn:first-of-type {
     margin-right: 50px;
   }
+
+  .notes{
+    overflow-x: hidden;
+  }

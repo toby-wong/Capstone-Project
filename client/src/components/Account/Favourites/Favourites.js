@@ -25,7 +25,7 @@ const Favourites = () => {
       id: rowData.row.id,
       value: true
     })
-    accountModalContext.openPage("/favourites", "small");
+    accountModalContext.openPage("/favourites", "medium");
   };
 
   useEffect(() => {
@@ -52,11 +52,10 @@ const Favourites = () => {
           favSpots.push({
             id: fav.pk,
             carSpaceId: fav.parkingSpace,
-            startTime: fav.startTime,
-            endTime: fav.endTime,
             cost: fav.cost,
             streetAddress: `${fav.streetAddress}, ${fav.city}, ${fav.state}`,
             vehicle: fav.parkingSpaceSize,
+            notes: fav.notes
           });
         }
         setFavSpots(favSpots);
@@ -79,16 +78,6 @@ const Favourites = () => {
             rows={favSpots}
             columns={[
               {
-                field: "startTime",
-                headerName: "Available From",
-                flex: 1,
-              },
-              {
-                field: "endTime",
-                headerName: "Available To",
-                flex: 1,
-              },
-              {
                 field: "streetAddress",
                 headerName: "Address",
                 flex: 1,
@@ -101,6 +90,11 @@ const Favourites = () => {
               {
                 field: "vehicle",
                 headerName: "Car Space Size",
+                flex: 1,
+              },
+              {
+                field: "notes",
+                headerName: "Notes",
                 flex: 1,
               },
             ]}
