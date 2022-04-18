@@ -71,8 +71,8 @@ class ParkingSpace(models.Model):
     startTime = models.DateTimeField()
     endTime = models.DateTimeField()
     status = models.CharField(max_length=50, choices=STATUS, default="pending")
-    avg_rating = models.DecimalField(max_digits=2, decimal_places=1, blank=True, null=True)
-    n_ratings = models.IntegerField(null=True, blank=True)
+    avg_rating = models.DecimalField(max_digits=2, decimal_places=1, blank=True, null=True, default=0)
+    n_ratings = models.IntegerField(null=True, blank=True, default=0)
     latestTime = models.DateTimeField(null=True,  blank=True)
     is_active = models.BooleanField(default=True)
 
