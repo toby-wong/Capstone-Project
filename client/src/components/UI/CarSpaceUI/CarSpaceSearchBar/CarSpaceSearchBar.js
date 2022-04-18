@@ -42,8 +42,8 @@ const CarSpaceSearchBar = ({ initialState, onSubmit }) => {
     dispatchFormState({ type: "END_TIME_INPUT", value: newDate });
   };
 
-  const ratingChangeHandler = (e, newRating) => {
-    dispatchFormState({ type: "RATING_INPUT", value: newRating });
+  const radiusChangeHandler = (e) => {
+    dispatchFormState({ type: "RADIUS_INPUT", value: e.target.value });
   };
 
   const submitHandler = (e) => {
@@ -53,19 +53,10 @@ const CarSpaceSearchBar = ({ initialState, onSubmit }) => {
       address: formState.address.value,
       startDateTime: formState.startDateTime.value,
       endDateTime: formState.endDateTime.value,
-      rating: formState.rating,
+      radius: formState.radius,
     };
 
     onSubmit(formData);
-  };
-
-  const disableRatingsHandler = () => {
-    dispatchFormState({ type: "RATING_INPUT", value: null });
-    setUseRatings(false);
-  };
-
-  const enableRatingsHandler = () => {
-    setUseRatings(true);
   };
 
   return (
@@ -124,20 +115,37 @@ const CarSpaceSearchBar = ({ initialState, onSubmit }) => {
       </div>
       <Divider orientation="vertical" variant="middle" flexItem />
       <div className={classes["input-container"]}>
-        <Typography className={`${classes["input-label"]}`}>Ratings</Typography>
+        <Typography className={`${classes["input-label"]}`}>Radius</Typography>
         <Select
-          // labelId="demo-simple-select-standard-label"
-          // id="demo-simple-select-standard"
-          // value={age}
-          // onChange={handleChange}
+          value={formState.radius}
+          onChange={radiusChangeHandler}
+          variant="standard"
           label="Age"
+          inputProps={{
+            className: classes["radius-dropdown-inputProps"],
+          }}
+          MenuProps={{
+            PopoverClasses: {
+              paper: classes["radius-dropdown-menuProps"],
+            },
+          }}
+          disableUnderline
         >
-          <MenuItem value="">
+          <MenuItem className={classes["radius-dropdown-menuItem"]} value="">
             <em>None</em>
           </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          <MenuItem className={classes["radius-dropdown-menuItem"]} value={1}>
+            1km
+          </MenuItem>
+          <MenuItem className={classes["radius-dropdown-menuItem"]} value={3}>
+            3km
+          </MenuItem>
+          <MenuItem className={classes["radius-dropdown-menuItem"]} value={5}>
+            5km
+          </MenuItem>
+          <MenuItem className={classes["radius-dropdown-menuItem"]} value={10}>
+            10km
+          </MenuItem>
         </Select>
         <Button
           className={classes["search-btn"]}

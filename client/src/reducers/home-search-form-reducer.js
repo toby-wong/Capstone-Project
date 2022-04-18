@@ -29,8 +29,8 @@ export const homeSearchFormReducer = (state, action) => {
     newState.address.isValid = action.value.name !== "";
   }
 
-  if (action.type === "RATING_INPUT") {
-    newState.rating = action.value;
+  if (action.type === "RADIUS_INPUT") {
+    newState.radius = action.value;
   }
 
   newState.isFormValid =
@@ -48,7 +48,7 @@ export const homeSearchFormInitialState = (initialState) => {
       address: { value: initialState.address, isValid: true },
       startDateTime: { value: initialState.startDateTime, isValid: true },
       endDateTime: { value: initialState.endDateTime, isValid: true },
-      rating: initialState.rating,
+      radius: initialState.radius,
     };
   }
 
@@ -57,6 +57,6 @@ export const homeSearchFormInitialState = (initialState) => {
     address: { value: "", isValid: false },
     startDateTime: { value: new Date(), isValid: false },
     endDateTime: { value: new Date(), isValid: false },
-    rating: 0,
+    radius: "",
   };
 };

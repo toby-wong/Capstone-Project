@@ -28,7 +28,7 @@ export const searchCarSpace = async (searchInfo, setIsLoading) => {
       `startTime=${convertDateToString(searchInfo.startDateTime)}`
     );
     queryStrArr.push(`endTime=${convertDateToString(searchInfo.endDateTime)}`);
-    if (searchInfo.rating) queryStrArr.push(`rating__gte=${searchInfo.rating}`);
+    if (searchInfo.radius) queryStrArr.push(`radius=${searchInfo.radius}`);
     const queryStr = queryStrArr.join("&");
 
     const authToken = localStorage.getItem("parkItAuthToken");
