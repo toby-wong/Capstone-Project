@@ -3,9 +3,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: black;
+  color: var(--dark);
   font-size: 2rem;
   z-index: 99;
+}
+
+.slogan {
+  margin-bottom: 70px;
+  transform: skew(0deg, -6deg);
+  font-size: 40px;
+  color: var(--light);
 }
 
 .search-container {
@@ -16,38 +23,40 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgb(189, 171, 171);
   border-radius: 30px;
   
 }
 
-.slogan {
-  margin-bottom: 70px;
-  transform: skew(0deg, -6deg);
-  font-size: 40px;
-  color: var(--light);
-}
-
-.search {
+/* Search Bar */
+.search-bar {
   display: flex;
   align-items: center;
   background-color: var(--light);
   border-radius: 32px;
 }
 
+/* Input Container */
 .input-container {
   position: relative;
   background-color: var(--light);
-  border-radius: 32px;
-  margin-right: 20px;
+  flex: 1;
+}
+
+.input-container:first-of-type {
+  border-top-left-radius: 32px;
+  border-bottom-left-radius: 32px;
 }
 
 .input-container:last-of-type {
   display: flex;
   align-items: center;
-  border-radius: 32px;
+  margin-right: 0;
+  padding-right: 20px;
+  border-top-right-radius: 32px;
+  border-bottom-right-radius: 32px;
 }
 
+/* Input */
 .input-label {
   position: absolute;
   top: 10px;
@@ -56,11 +65,7 @@
   font-size: 11px;
   font-weight: bold;
   color: var(--dark);
-}
-
-.input-label.datetime{
-  top: 2px;
-  left: 3px;
+  z-index: 2;
 }
 
 .search-input {
@@ -72,36 +77,31 @@
   background-color: var(--light);
 }
 
-.search-input.datetime {
-  color: black;
-  margin: 0;
-  padding: 15px 0 0 5px;
-  border-radius: 32px;
-}
-
 .search-input:focus {
   outline: none;
-  /* background-color: white;
-  box-shadow: 10px 0 white; */
 }
 
-.text button {
-  margin-bottom: 0;
-  padding-bottom: 0;
+.search-input.dateTimePicker {
+  color: var(--dark);
+  font-size: 13.5px;
 }
 
-.text input:-webkit-autofill {
+.dateTimePicker-calendar {
   background-color: red;
 }
 
-.input {
-  border: 0 solid green;
+.rating {
+  display: flex;
+  padding-top: 28px;
+  width: 140px;
 }
 
 .search-btn {
-  margin-left: 40px;
+  margin-left: 10px;
+  /* height: 35px; */
   height: 35px;
   min-width: 30px;
+  /* width: 35px; */
   width: 35px;
   border-radius: 50%;
 }
@@ -109,5 +109,6 @@
 .search-icon {
   margin: 0;
   padding: 0;
-  font-size: 1.5rem;
+  /* font-size: 1.5rem; */
+  font-size: 1.3rem;
 }

@@ -5,10 +5,11 @@ import { useContext, useEffect, useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars-2";
 import { MapContainer, TileLayer } from "react-leaflet";
 
-import { sendRequest } from "../../../utility";
+import { sendRequest, searchCarSpace } from "../../../utility";
 import * as config from "../../../config";
 
 import ConsumerModalContext from "../../../contexts/consumer-modal-context";
+import AuthContext from "../../../contexts/auth-context";
 
 import {
   Button,
@@ -31,6 +32,8 @@ import InputField from "../../UI/InputField/InputField";
 const ConsumerView = () => {
   const [isLoading, setIsLoading] = useState(false);
   const consumerModalContext = useContext(ConsumerModalContext);
+  const authContext = useContext(AuthContext);
+  const location = useLocation();
 
   const [error, setError] = useState({ value: false, message: "" });
   const [consumerSpaces, setConsumerSpaces] = useState([]);
@@ -42,6 +45,16 @@ const ConsumerView = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        if (authContext.searchInfo) {
+          const data = await searchCarSpace(
+            authContext.searchInfo,
+            setIsLoading
+          );
+          setConsumerSpaces(data);
+          authContext.setSearchInfo(null);
+          return;
+        }
+
         const authToken = localStorage.getItem("parkItAuthToken");
         const url = `${config.SERVER_URL}/api/provider/parking/all`;
         const options = {
@@ -65,14 +78,16 @@ const ConsumerView = () => {
     };
 
     fetchData();
-  }, [consumerModalContext.pageRefreshStatus]);
+  }, [consumerModalContext.pageRefreshStatus, authContext]);
 
   const sendSearch = (e) => {
-    var filteredResults = consumerSpaces.filter(carSpace => carSpace.streetAddress.includes(e.target.value));
+    var filteredResults = consumerSpaces.filter((carSpace) =>
+      carSpace.streetAddress.includes(e.target.value)
+    );
     setQuery(e.target.value);
     console.log(filteredResults);
     setQueryResults(filteredResults);
-  }
+  };
 
   return (
     <div className={classes.bodyContainer}>
