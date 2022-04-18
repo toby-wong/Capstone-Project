@@ -1,5 +1,5 @@
 /* Overwrite default in HTML */
-body{
+body {
     overflow: hidden;
 }
 
@@ -12,6 +12,7 @@ body{
 
 .title{
     font-size: 40px;
+    margin-left: 10px;
 }
 
 /* Main Menu Section */

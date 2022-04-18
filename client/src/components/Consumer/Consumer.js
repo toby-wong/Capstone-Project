@@ -1,10 +1,10 @@
 import classes from "./Consumer.module.css";
 
 import { ConsumerModalContextProvider } from "../../contexts/consumer-modal-context";
+import { SubModalContextProvider } from "../../contexts/submodal-context";
 
 import ConsumerView from "./ConsumerView/ConsumerView";
 import ConsumerModal from "./ConsumerModal/ConsumerModal";
-import { SubModalContextProvider } from "../../contexts/submodal-context";
 
 const Consumer = () => {
   return (
@@ -12,8 +12,8 @@ const Consumer = () => {
       <div className={classes.body}>
         <SubModalContextProvider>
           <ConsumerModal />
+          <ConsumerView />
         </SubModalContextProvider>
-        <ConsumerView />
       </div>
     </ConsumerModalContextProvider>
   );
