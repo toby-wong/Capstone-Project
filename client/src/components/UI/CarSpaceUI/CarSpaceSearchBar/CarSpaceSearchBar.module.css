@@ -57,9 +57,6 @@
   font-size: 13.5px;
 }
 
-.dateTimePicker-calendar {
-  background-color: red;
-}
 
 .rating {
   display: flex;
@@ -79,4 +76,14 @@
   margin: 0;
   padding: 0;
   font-size: 1.3rem;
+}
+
+.disable-filter {
+  color:var(--red);
+  cursor: pointer;
+}
+
+.enable-filter {
+  color: var(--green);
+  cursor:pointer;
 }

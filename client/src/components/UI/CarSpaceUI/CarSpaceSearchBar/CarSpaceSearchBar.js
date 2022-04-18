@@ -1,8 +1,15 @@
 import classes from "./CarSpaceSearchBar.module.css";
 
-import { Button, Divider, Rating, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  Divider,
+  Rating,
+  TextField,
+  Typography,
+  Icon,
+} from "@mui/material";
 
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 
 import {
   homeSearchFormInitialState,
@@ -11,8 +18,11 @@ import {
 
 import SearchIcon from "@mui/icons-material/Search";
 import DateTimePicker from "@mui/lab/DateTimePicker";
+import DisabledByDefaultIcon from "@mui/icons-material/DisabledByDefault";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 
 const CarSpaceSearchBar = ({ onSubmit }) => {
+  const [useRatings, setUseRatings] = useState(true);
   const [formState, dispatchFormState] = useReducer(
     homeSearchFormReducer,
     homeSearchFormInitialState()
@@ -45,6 +55,15 @@ const CarSpaceSearchBar = ({ onSubmit }) => {
     };
 
     onSubmit(formData);
+  };
+
+  const disableRatingsHandler = () => {
+    dispatchFormState({ type: "RATING_INPUT", value: null });
+    setUseRatings(false);
+  };
+
+  const enableRatingsHandler = () => {
+    setUseRatings(true);
   };
 
   return (
@@ -110,7 +129,26 @@ const CarSpaceSearchBar = ({ onSubmit }) => {
           size="small"
           value={formState.rating}
           onChange={ratingChangeHandler}
+          disabled={!useRatings}
         />
+        {useRatings && (
+          <Icon
+            className={classes["disable-filter"]}
+            variant="form"
+            fontSize="medium"
+            component={DisabledByDefaultIcon}
+            onClick={disableRatingsHandler}
+          />
+        )}
+        {!useRatings && (
+          <Icon
+            className={classes["enable-filter"]}
+            variant="form"
+            fontSize="medium"
+            component={AutorenewIcon}
+            onClick={enableRatingsHandler}
+          />
+        )}
         <Button
           className={classes["search-btn"]}
           type="submit"
