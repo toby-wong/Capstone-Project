@@ -1,5 +1,6 @@
 from re import M
 from django.db import models
+import requests
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 
@@ -74,8 +75,6 @@ class ParkingSpace(models.Model):
     is_active = models.BooleanField(default=True)
 
     def getCoords(self, address):
-        import requests
-        import os
         url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address.replace(" ", "+") + '&key=AIzaSyCwTgq7juhaZiACJFsYWm-dZgvhQRvvFw4'
         response = requests.get(url).json()
         return (float(response['results'][0]['geometry']['location']['lat']), float(response['results'][0]['geometry']['location']['lng']))

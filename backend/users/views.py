@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import *
 import datetime as dt
+from drf_spectacular.utils import extend_schema
 from django_filters import rest_framework as filters
 from users.utils import *
 
