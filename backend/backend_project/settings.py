@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-b%_51t=5bl7mlmkmsfgmzz7(khjr5$$pt!e79=9%ec$msgoyvs
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Specifies localhost port 3000 where the React
 # server will be running is safe to receive requests
