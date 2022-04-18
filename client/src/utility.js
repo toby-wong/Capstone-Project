@@ -1,5 +1,12 @@
 import * as config from "./config";
 
+export const getTimeDiffInHours = (late, early) => {
+  const timeDiffInMilliseconds = late.getTime() - early.getTime();
+  const timeDiffInHours = timeDiffInMilliseconds / (1000 * 60 * 60);
+
+  return timeDiffInHours;
+};
+
 export const convertDateToString = (dateObj, carSpaceInfoDate = false) => {
   let [year, month, day, hour, min] = [
     dateObj.getFullYear(),

@@ -111,6 +111,7 @@ const CarSpaceBookingForm = () => {
       };
 
       const response = await utility.sendRequest(url, options, setIsLoading);
+      console.log(response);
       if (!response.status || response.status >= 300) throw Error;
 
       subModalContext.openModal({

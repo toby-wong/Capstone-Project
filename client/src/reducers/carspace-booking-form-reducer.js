@@ -1,3 +1,5 @@
+import * as utility from "../utility";
+
 export const carSpaceBookingFormReducer = (state, action) => {
   const newState = { ...state };
 
@@ -34,7 +36,6 @@ export const carSpaceBookingFormReducer = (state, action) => {
     newState.vehicle.isValid = action.value.name !== "";
   }
 
-  console.log(newState);
   newState.isFormValid =
     newState.startDateTime.isValid &&
     newState.endDateTime.isValid &&
@@ -54,6 +55,6 @@ export const getCarSpaceBookingFormInitialState = (
     startDateTime: { value: earliest, isValid: true },
     endDateTime: { value: latest, isValid: true },
     vehicle: { value: { name: "", id: "" }, isValid: false },
-    duration: "",
+    duration: utility.getTimeDiffInHours(latest, earliest),
   };
 };
