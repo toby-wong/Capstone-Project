@@ -3,15 +3,13 @@ import classes from "./CarSpaceSearchBar.module.css";
 import {
   Button,
   Divider,
-  Rating,
   TextField,
   Typography,
-  Icon,
   Select,
   MenuItem,
 } from "@mui/material";
 
-import { useReducer, useState } from "react";
+import { useReducer } from "react";
 
 import {
   homeSearchFormInitialState,
@@ -20,11 +18,8 @@ import {
 
 import SearchIcon from "@mui/icons-material/Search";
 import DateTimePicker from "@mui/lab/DateTimePicker";
-import DisabledByDefaultIcon from "@mui/icons-material/DisabledByDefault";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
 
 const CarSpaceSearchBar = ({ initialState, onSubmit }) => {
-  const [useRatings, setUseRatings] = useState(true);
   const [formState, dispatchFormState] = useReducer(
     homeSearchFormReducer,
     homeSearchFormInitialState(initialState)

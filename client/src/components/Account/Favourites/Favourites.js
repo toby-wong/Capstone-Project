@@ -1,6 +1,6 @@
 import classes from "./Favourites.module.css";
 
-import { Typography, Paper, CircularProgress, Button } from "@mui/material";
+import { Typography, Paper, CircularProgress } from "@mui/material";
 
 import { useContext, useEffect, useState } from "react";
 
@@ -17,14 +17,14 @@ const Favourites = () => {
   });
   const [favSpots, setFavSpots] = useState([]);
   const accountModalContext = useContext(AccountModalContext);
-  
+
   const clickCarRowHandler = (rowData) => {
     console.log(rowData.row);
     accountModalContext.setContent(rowData.row);
     accountModalContext.setFavourite({
       id: rowData.row.id,
-      value: true
-    })
+      value: true,
+    });
     accountModalContext.openPage("/favourites", "medium");
   };
 
@@ -47,7 +47,7 @@ const Favourites = () => {
         if (response.status >= 300 || !response.status) throw Error;
 
         const favSpots = [];
-        console.log(response.data)
+        console.log(response.data);
         for (const fav of response.data) {
           favSpots.push({
             id: fav.pk,
@@ -55,7 +55,7 @@ const Favourites = () => {
             cost: fav.cost,
             streetAddress: `${fav.streetAddress}, ${fav.city}, ${fav.state}`,
             vehicle: fav.parkingSpaceSize,
-            notes: fav.notes
+            notes: fav.notes,
           });
         }
         setFavSpots(favSpots);
@@ -64,7 +64,10 @@ const Favourites = () => {
       }
     };
     fetchData();
-  }, [accountModalContext.pageRefreshStatus, accountModalContext.favourite.value]);
+  }, [
+    accountModalContext.pageRefreshStatus,
+    accountModalContext.favourite.value,
+  ]);
 
   return (
     <>
