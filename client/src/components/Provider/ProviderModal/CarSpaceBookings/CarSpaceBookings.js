@@ -47,7 +47,6 @@ const CarSpaceBookings = () => {
         const response = await utility.sendRequest(url, options, setIsLoading);
         if (response.status >= 300 || !response.status) throw Error;
 
-        console.log(response);
         const fecthedBookings = [];
         for (const booking of response.data) {
           fecthedBookings.push({

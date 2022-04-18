@@ -194,7 +194,6 @@ const CarSpaceEditForm = () => {
     });
   };
 
-  // TODO: Check its fucntionality with back-end again.
   const deleteCarSpaceHandler = async () => {
     try {
       closeSubModalHandler();

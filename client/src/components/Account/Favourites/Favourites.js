@@ -19,7 +19,6 @@ const Favourites = () => {
   const accountModalContext = useContext(AccountModalContext);
 
   const clickCarRowHandler = (rowData) => {
-    console.log(rowData.row);
     accountModalContext.setContent(rowData.row);
     accountModalContext.setFavourite({
       id: rowData.row.id,
@@ -47,7 +46,6 @@ const Favourites = () => {
         if (response.status >= 300 || !response.status) throw Error;
 
         const favSpots = [];
-        console.log(response.data);
         for (const fav of response.data) {
           favSpots.push({
             id: fav.pk,
