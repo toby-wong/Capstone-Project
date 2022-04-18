@@ -1,6 +1,6 @@
 import * as config from "./config";
 
-export const convertDateToString = (dateObj) => {
+export const convertDateToString = (dateObj, carSpaceInfoDate = false) => {
   let [year, month, day, hour, min] = [
     dateObj.getFullYear(),
     dateObj.getMonth(),
@@ -15,9 +15,9 @@ export const convertDateToString = (dateObj) => {
   if (hour < 10) hour = `0${hour}`;
   if (min < 10) min = `0${min}`;
 
-  const convertedString = `${year}-${month}-${day} ${hour}:${min}:00`;
+  if (carSpaceInfoDate) return `${day}/${month}/${year} ${hour}:${min}`;
 
-  return convertedString;
+  return `${year}-${month}-${day} ${hour}:${min}:00`;
 };
 
 export const searchCarSpace = async (searchInfo, setIsLoading) => {

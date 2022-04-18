@@ -16,10 +16,12 @@ import MapPointObject from "./MapPointObject";
 import CarSpaceSearchBar from "../../UI/CarSpaceUI/CarSpaceSearchBar/CarSpaceSearchBar";
 import MessageModal from "../../UI/MessageModal/MessageModal";
 import SubModalContext from "../../../contexts/submodal-context";
+import ConsumerModalContext from "../../../contexts/consumer-modal-context";
 
 const ConsumerView = () => {
   const authContext = useContext(AuthContext);
   const subModalContext = useContext(SubModalContext);
+  const consumerModalContext = useContext(ConsumerModalContext);
 
   const [error, setError] = useState({ value: false, message: "" });
   const [isLoading, setIsLoading] = useState(false);
@@ -32,6 +34,11 @@ const ConsumerView = () => {
       setError({
         value: false,
         message: "",
+      });
+
+      consumerModalContext.setSearchDate({
+        startDate: formData.startDateTime,
+        endDate: formData.endDateTime,
       });
 
       const data = await utility.searchCarSpace(formData, setIsLoading);
@@ -57,6 +64,11 @@ const ConsumerView = () => {
     const fetchData = async () => {
       try {
         if (!authContext.searchInfo) return;
+
+        consumerModalContext.setSearchDate({
+          startDate: authContext.searchInfo.startDateTime,
+          endDate: authContext.searchInfo.endDateTime,
+        });
 
         const data = await utility.searchCarSpace(
           authContext.searchInfo,

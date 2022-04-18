@@ -27,9 +27,7 @@ const ConsumerBookingInfo = ({ context, subModalContext }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(context.content)
       const { cost, publishDate, vehicleId, carSpaceId } = context.content;
-      console.log(cost, publishDate, vehicleId, carSpaceId)
       try {
         setIsLoading(true);
         // Get CarSpaceInfo

@@ -5,6 +5,7 @@ const ConsumerModalContext = React.createContext({
   favourite: { id: null, value: false },
   carSpaceId: "",
   carSpaceInfo: { images: [], fetched: false },
+  searchDate: { startDate: "", endDate: "" },
   isOpen: false,
   pageRefreshStatus: false,
   togglePageRefreshStatus: () => {},
@@ -13,6 +14,7 @@ const ConsumerModalContext = React.createContext({
   fetchCarSpaceInfo: () => {},
   setFavourite: () => {},
   backToInfo: () => {},
+  setSearchDate: () => {},
 });
 
 export const ConsumerModalContextProvider = (props) => {
@@ -25,6 +27,7 @@ export const ConsumerModalContextProvider = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [pageRefreshStatus, setPageRefreshStatus] = useState(false);
   const [favourite, setFavourite] = useState({ id: null, value: false });
+  const [searchDate, setSearchDate] = useState({ startDate: "", endDate: "" });
 
   const resetContextValue = () => {
     setCarSpaceInfo({ images: [], fetched: false });
@@ -65,12 +68,14 @@ export const ConsumerModalContextProvider = (props) => {
     carSpaceInfo,
     isOpen,
     pageRefreshStatus,
+    searchDate,
     fetchCarSpaceInfo,
     openPage,
     closeModal,
     togglePageRefreshStatus,
     setFavourite,
     backToInfo,
+    setSearchDate,
   };
 
   return (

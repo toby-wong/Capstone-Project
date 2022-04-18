@@ -72,6 +72,15 @@ const ConsumerCarSpaceInfo = () => {
           }
         }
 
+        response.data.startTime = utility.convertDateToString(
+          consumerModalContext.searchDate.startDate,
+          true
+        );
+        response.data.endTime = utility.convertDateToString(
+          consumerModalContext.searchDate.endDate,
+          true
+        );
+
         consumerModalContext.fetchCarSpaceInfo(response.data);
       } catch (e) {
         setIsLoading(false);

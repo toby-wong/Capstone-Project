@@ -1,6 +1,3 @@
-// import { getDate } from "../utility";
-
-// TODO: with earliest, latest check once search is done
 export const carSpaceBookingFormReducer = (state, action) => {
   const newState = { ...state };
 
@@ -37,6 +34,7 @@ export const carSpaceBookingFormReducer = (state, action) => {
     newState.vehicle.isValid = action.value.name !== "";
   }
 
+  console.log(newState);
   newState.isFormValid =
     newState.startDateTime.isValid &&
     newState.endDateTime.isValid &&
@@ -51,6 +49,8 @@ export const getCarSpaceBookingFormInitialState = (
 ) => {
   return {
     isFormValid: false,
+    earliest,
+    latest,
     startDateTime: { value: earliest, isValid: true },
     endDateTime: { value: latest, isValid: true },
     vehicle: { value: { name: "", id: "" }, isValid: false },
