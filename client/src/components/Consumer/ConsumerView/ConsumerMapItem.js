@@ -38,7 +38,7 @@ const ConsumerMapItem = ({
         ],
       });
     } else {
-      consumerModalContext.openPage("/info", id);
+      // consumerModalContext.openPage("/info", id);
       onClick(longitude, latitude);
     }
   };
