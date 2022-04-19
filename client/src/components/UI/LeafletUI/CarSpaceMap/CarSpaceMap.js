@@ -4,14 +4,7 @@ import { MapContainer, TileLayer, useMap } from "react-leaflet";
 
 import CarSpaceMapPointObject from "../CarSpaceMapPointObject/CarSpaceMapPointObject";
 
-const CarSpaceMap = ({
-  center,
-  zoom,
-  items,
-  children,
-  onItemClick = () => {},
-  selectedItemIdx,
-}) => {
+const CarSpaceMap = ({ center, zoom, items, children, selectedItemIdx }) => {
   const ChangeView = ({ center, zoom }) => {
     const map = useMap();
     map.setView(center, zoom);
@@ -39,11 +32,9 @@ const CarSpaceMap = ({
           return (
             <CarSpaceMapPointObject
               key={item.pk}
-              id={item.pk}
               longitude={item.longitude}
               latitude={item.latitude}
               streetAddress={item.streetAddress}
-              onClick={onItemClick}
               openPopup={openPopup}
             />
           );

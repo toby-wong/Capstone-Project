@@ -1,42 +1,47 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 import * as config from "../../../../config";
 import * as utility from "../../../../utility";
-import classes from "./AddReviewForm.module.css"
+import classes from "./AddReviewForm.module.css";
 import GeneralModalHeader from "../../../UI/GeneralModal/GeneralModalHeader";
 import GeneralModalContent from "../../../UI/GeneralModal/GeneralModalContent";
 import GeneralModalActions from "../../../UI/GeneralModal/GeneralModalActions";
-import InputContainer from "../../../UI/InputContainer/InputContainer";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
-import RateReviewIcon from '@mui/icons-material/RateReview';
+import RateReviewIcon from "@mui/icons-material/RateReview";
 import InputField from "../../../UI/InputField/InputField";
-import Rating from '@mui/material/Rating';
-import { Button, CircularProgress, Icon, Divider, Typography} from "@mui/material";
+import Rating from "@mui/material/Rating";
+import {
+  Button,
+  CircularProgress,
+  Icon,
+  Divider,
+  Typography,
+} from "@mui/material";
 
-const AddReviewForm = ({context, subModalContext}) => {
+const AddReviewForm = ({ context, subModalContext }) => {
   const [isAdding, setIsAdding] = useState(false);
 
   // Values from the form
-  const [ratings, setRatings] = useState("")
-  const [review, setReview] = useState("")
+  const [ratings, setRatings] = useState("");
+  const [review, setReview] = useState("");
 
-  const[validRatings, setValidRatings] = useState(false)
-  const[validReview, setValidReview] = useState(false)
+  const [validRatings, setValidRatings] = useState(false);
+  const [validReview, setValidReview] = useState(false);
 
-  const changeRatings = (e) =>{
+  const changeRatings = (e) => {
     const ratings = e.target.value;
     setRatings(ratings);
     setValidRatings(ratings !== "");
-  }
+  };
 
-  const changeReview = (e) =>{
+  const changeReview = (e) => {
     const review = e.target.value;
     setReview(review);
     setValidReview(review !== "");
-  }
+  };
 
   const submitFormHandler = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
       const authToken = localStorage.getItem("parkItAuthToken");
       if (!authToken) return;
@@ -51,7 +56,7 @@ const AddReviewForm = ({context, subModalContext}) => {
           parkingSpace: context.content.carSpaceId,
           consumer: context.content.consumer,
           rating: ratings,
-          comment: review
+          comment: review,
         },
       };
       const response = await utility.sendRequest(url, options, setIsAdding);
@@ -63,12 +68,10 @@ const AddReviewForm = ({context, subModalContext}) => {
         }
         throw Error(errorMsgs);
       }
-      
+
       subModalContext.openModal({
         title: "Success",
-        messages: [
-          "You have successfully made a review",
-        ],
+        messages: ["You have successfully made a review"],
         actions: [
           {
             color: "primary",
@@ -99,17 +102,20 @@ const AddReviewForm = ({context, subModalContext}) => {
 
   return (
     <form className={classes.form} onSubmit={submitFormHandler}>
-      <GeneralModalHeader
-        title="Add Review"
-        onClose={context.closeModal}
-      />
-      <Divider className={classes.titleDivider}/>
+      <GeneralModalHeader title="Add Review" onClose={context.closeModal} />
+      <Divider className={classes.titleDivider} />
       <GeneralModalContent>
         <div className={classes.inputs}>
           <div className={classes.inputContainer}>
-            <Typography component="legend" variant="carSpaceModalSubTitle">Ratings</Typography>
+            <Typography component="legend" variant="carSpaceModalSubTitle">
+              Ratings
+            </Typography>
             <div className={classes.sameRowContainer}>
-              <Icon variant="form" fontSize="large" component={StickyNote2Icon} />
+              <Icon
+                variant="form"
+                fontSize="large"
+                component={StickyNote2Icon}
+              />
               <Rating
                 name="size-medium"
                 onChange={changeRatings}
@@ -118,12 +124,10 @@ const AddReviewForm = ({context, subModalContext}) => {
             </div>
           </div>
           <div>
-          <Typography component="legend" variant="carSpaceModalSubTitle">Review</Typography>
-            <Icon
-              variant="form"
-              fontSize="large"
-              component={RateReviewIcon}
-            />
+            <Typography component="legend" variant="carSpaceModalSubTitle">
+              Review
+            </Typography>
+            <Icon variant="form" fontSize="large" component={RateReviewIcon} />
             <InputField
               inputClassName={classes.input}
               label="Review"
