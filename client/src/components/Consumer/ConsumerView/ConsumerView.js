@@ -21,6 +21,7 @@ const ConsumerView = () => {
   const authContext = useContext(AuthContext);
   const subModalContext = useContext(SubModalContext);
   const consumerModalContext = useContext(ConsumerModalContext);
+  document.title = "Consumer View"
 
   const [error, setError] = useState({ value: false, message: "" });
   const [isLoading, setIsLoading] = useState(false);
