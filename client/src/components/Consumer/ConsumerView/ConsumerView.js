@@ -51,8 +51,6 @@ const ConsumerView = () => {
         return;
       }
 
-      console.log(data);
-
       setCenter([data[0].longitude, data[0].latitude]);
       setQueryResults(data);
     } catch (e) {
@@ -65,11 +63,11 @@ const ConsumerView = () => {
 
   const clickCarSpaceHandler = (longitude, latitude, mapItemIdx) => {
     setSelectedMapItemIdx(mapItemIdx);
-    setCenter([longitude, latitude]);
-  };
 
-  const clickMapItemHandler = (carSpaceId) => {
-    setSelectedMapItemIdx(-1);
+    setTimeout(() => {
+      setCenter([longitude, latitude]);
+    }, 5000);
+
     if (!authContext.isLoggedIn) {
       subModalContext.openModal({
         title: "Unauthorized",
@@ -84,7 +82,7 @@ const ConsumerView = () => {
         ],
       });
     } else {
-      consumerModalContext.openPage("/info", carSpaceId);
+      consumerModalContext.openPage("/info", mapItemIdx);
     }
   };
 
@@ -207,7 +205,6 @@ const ConsumerView = () => {
         center={center}
         zoom={config.MAP_ZOOM}
         items={queryResults}
-        onItemClick={clickMapItemHandler}
         selectedItemIdx={selectedMapItemIdx}
       />
     </div>

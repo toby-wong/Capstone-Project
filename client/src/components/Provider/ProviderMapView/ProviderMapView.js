@@ -55,12 +55,12 @@ const ProviderMapView = ({ status }) => {
 
   const clickCarSpaceHandler = (longitude, latitude, mapItemIdx) => {
     setSelectedMapItemIdx(mapItemIdx);
-    setCenter([longitude, latitude]);
-  };
 
-  const clickMapItemHandler = (carSpaceId) => {
-    setSelectedMapItemIdx(-1);
-    providerModalContext.openPage("/info", carSpaceId);
+    setTimeout(() => {
+      setCenter([longitude, latitude]);
+    }, 5000);
+
+    providerModalContext.openPage("/info", mapItemIdx);
   };
 
   useEffect(() => {
@@ -103,8 +103,7 @@ const ProviderMapView = ({ status }) => {
           color="textSecondary"
           fontWeight="Bold"
         >
-          {" "}
-          Your Car Spaces{" "}
+          Your Car Spaces
         </Typography>
         <div className={classes.viewSelection}>
           <Tabs
@@ -235,7 +234,6 @@ const ProviderMapView = ({ status }) => {
         center={center}
         zoom={config.MAP_ZOOM}
         items={carSpaces}
-        onItemClick={clickMapItemHandler}
         selectedItemIdx={selectedMapItemIdx}
       >
         <Button

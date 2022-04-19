@@ -1,6 +1,6 @@
 import classes from "./ConsumerBookingInfo.module.css";
 
-import { useEffect, useState, useContext} from "react";
+import { useEffect, useState, useContext } from "react";
 
 import * as config from "../../../config";
 import * as utility from "../../../utility";
@@ -20,7 +20,7 @@ import CarSpaceImageCarousel from "../../UI/CarSpaceUI/CarSpaceInfo/CarSpaceInfo
 import CarSpaceImage from "../../UI/CarSpaceUI/CarSpaceInfo/CarSpaceInfoImage/CarSpaceImage";
 import CarSpaceInfoFavourite from "../../UI/CarSpaceUI/CarSpaceInfo/CarSpaceInfoFavourite/CarSpaceInfoFavourite";
 
-import AccountModalContext from "../../../contexts/account-modal-context"
+import AccountModalContext from "../../../contexts/account-modal-context";
 
 const ConsumerBookingInfo = ({ context, subModalContext }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -29,9 +29,8 @@ const ConsumerBookingInfo = ({ context, subModalContext }) => {
   const [enableReview, setEnableReview] = useState(true);
   const [enableDelete, setEnableDelete] = useState(true);
 
-
   const accountModalContext = useContext(AccountModalContext);
-  
+
   const addReviewsPage = () => {
     accountModalContext.setContent(data);
     accountModalContext.openPage("/addReview", "small");
@@ -59,11 +58,11 @@ const ConsumerBookingInfo = ({ context, subModalContext }) => {
           width: "120px",
         },
       ],
-      });
-  }
+    });
+  };
 
   const submitDeleteBooking = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
       const authToken = localStorage.getItem("parkItAuthToken");
       if (!authToken) return;
@@ -87,9 +86,7 @@ const ConsumerBookingInfo = ({ context, subModalContext }) => {
       }
       subModalContext.openModal({
         title: "Success",
-        messages: [
-          "You have removed this booking.",
-        ],
+        messages: ["You have removed this booking."],
         actions: [
           {
             color: "primary",
@@ -120,15 +117,15 @@ const ConsumerBookingInfo = ({ context, subModalContext }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(context.content)
-      const { carSpaceId, consumer, cost, publishDate, vehicleId} = context.content;
+      const { carSpaceId, consumer, cost, publishDate, vehicleId } =
+        context.content;
       try {
         setIsLoading(true);
         // Get CarSpaceInfo
         const carSpaceInfo = await utility.fetchCarSpaceInfo(carSpaceId);
         // Get CarInfo
         const carInfo = await utility.fetchCarInfo(vehicleId);
-        const { carMake, carColour, carModel, carYear, carRego} = carInfo;
+        const { carMake, carColour, carModel, carYear, carRego } = carInfo;
 
         // Aggregate data and fetch
         const fetchedData = {
@@ -143,23 +140,24 @@ const ConsumerBookingInfo = ({ context, subModalContext }) => {
 
         var currentDate = new Date();
         // Can review after booking ends
-        const bookingEndDate = utility.getDate(context.content.endTime)
-        console.log(bookingEndDate)
-        setEnableReview(currentDate.getTime() >= bookingEndDate.getTime())
-        
+        const bookingEndDate = utility.getDate(context.content.endTime);
+        setEnableReview(currentDate.getTime() >= bookingEndDate.getTime());
+
         // Check start date to enable delete bookings button
-        const bookingStartDate = utility.getDate(context.content.startTime)
-        const difference = utility.getTimeDiffInHours(bookingStartDate, currentDate)
-        const result = difference >= 168
-        console.log(result)
-        setEnableDelete(result)
+        const bookingStartDate = utility.getDate(context.content.startTime);
+        const difference = utility.getTimeDiffInHours(
+          bookingStartDate,
+          currentDate
+        );
+        const result = difference >= 168;
+
+        setEnableDelete(result);
         setIsLoading(false);
       } catch (e) {
         setError(true);
         setIsLoading(false);
       }
     };
-    console.log(data)
     fetchData();
   }, [context]);
   return (
