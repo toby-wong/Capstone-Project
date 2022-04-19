@@ -150,10 +150,9 @@ class ParkingSpace(models.Model):
 
     def getCoords(self, address):
         """Returns the parking space's longitude and latitude as tuple"""
-        import requests, os
+        import requests
 
-        GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY', 'AIzaSyCwTgq7juhaZiACJFsYWm-dZgvhQRvvFw4')
-        url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address.replace(" ", "+") + f'&key={GOOGLE_MAPS_API_KEY}'
+        url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address.replace(" ", "+") + '&key=AIzaSyCwTgq7juhaZiACJFsYWm-dZgvhQRvvFw4'
         response = requests.get(url).json()
         return (float(response['results'][0]['geometry']['location']['lat']), float(response['results'][0]['geometry']['location']['lng']))
 
