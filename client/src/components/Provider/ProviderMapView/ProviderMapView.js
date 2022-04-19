@@ -2,9 +2,7 @@ import classes from "./ProviderMapView.module.css";
 
 import { Link, useLocation } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import MapPointObject from "./MapPointObject";
 
-import { MapContainer, TileLayer } from "react-leaflet";
 import { Scrollbars } from "react-custom-scrollbars-2";
 import {
   Button,
@@ -26,8 +24,9 @@ import DoDisturbAltIcon from "@mui/icons-material/DoDisturbAlt";
 import { sendRequest } from "../../../utility";
 import * as config from "../../../config";
 
-import ProviderMapItem from "./ProviderMapItem";
 import ProviderModalContext from "../../../contexts/provider-modal-context";
+import CarSpaceMap from "../../UI/LeafletUI/CarSpaceMap/CarSpaceMap";
+import CarSpaceMapViewItem from "../../UI/CarSpaceUI/CarSpaceMapViewItem/CarSpaceMapViewItem";
 
 const ProviderMapView = ({ status }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +34,7 @@ const ProviderMapView = ({ status }) => {
   const [carSpaces, setCarSpaces] = useState([]);
   const providerModalContext = useContext(ProviderModalContext);
   const [center, setCenter] = useState([-33.9139982, 151.2418546]);
-  const [zoom, setZoom] = useState(17);
+  const [selectedMapItemIdx, setSelectedMapItemIdx] = useState(-1);
 
   const location = useLocation();
   // To show label under tabs
@@ -51,6 +50,16 @@ const ProviderMapView = ({ status }) => {
 
   const addCarSpaceHandler = () => {
     providerModalContext.openPage("/add");
+  };
+
+  const clickCarSpaceHandler = (longitude, latitude, mapItemIdx) => {
+    setSelectedMapItemIdx(mapItemIdx);
+    setCenter([longitude, latitude]);
+  };
+
+  const clickMapItemHandler = (carSpaceId) => {
+    setSelectedMapItemIdx(-1);
+    providerModalContext.openPage("/info", carSpaceId);
   };
 
   useEffect(() => {
@@ -69,8 +78,10 @@ const ProviderMapView = ({ status }) => {
         const response = await sendRequest(url, options, setIsLoading);
         if (response.status >= 300 || !response.status) throw Error;
 
-        console.log(response.data);
-        setCarSpaces(response.data);
+        const data = response.data;
+        if (data.length > 0) setCenter([data[0].longitude, data[0].latitude]);
+
+        setCarSpaces(data);
       } catch (e) {
         setError({
           value: true,
@@ -200,7 +211,7 @@ const ProviderMapView = ({ status }) => {
             {!isLoading &&
               !error.value &&
               carSpaces.map((item) => (
-                <ProviderMapItem
+                <CarSpaceMapViewItem
                   key={item.pk}
                   id={item.pk}
                   streetAddress={item.streetAddress}
@@ -208,6 +219,9 @@ const ProviderMapView = ({ status }) => {
                   size={item.size}
                   price={item.price}
                   image={item.images[0].image_data}
+                  longitude={item.longitude}
+                  latitude={item.latitude}
+                  onClick={clickCarSpaceHandler}
                 />
               ))}
             {!isLoading && error.value && (
@@ -216,43 +230,13 @@ const ProviderMapView = ({ status }) => {
           </Scrollbars>
         </div>
       </div>
-      <div className={classes.mapContainer}>
-        <MapContainer
-          className={classes.mapContainer}
-          center={center}
-          zoom={zoom}
-          scrollWheelZoom={true}
-          dragging={true}
-          animate={true}
-          easeLinearity={0.35}
-          // eventHandlers={{
-          //     click: mapItemClickHandler,
-          // }}>
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          {isLoading && (
-            <div className={classes.center_container}>
-              <CircularProgress className={classes.spinner} />
-            </div>
-          )}
-          {!isLoading &&
-            !error.value &&
-            carSpaces.map((item) => (
-              <MapPointObject
-                key={item.pk}
-                id={item.pk}
-                longitude={item.longitude}
-                latitude={item.latitude}
-                streetAddress={item.streetAddress}
-              />
-            ))}
-          {!isLoading && error.value && (
-            <div className={classes.center_container}> {error.message}</div>
-          )}
-        </MapContainer>
+      <CarSpaceMap
+        center={center}
+        zoom={config.MAP_ZOOM}
+        items={carSpaces}
+        onItemClick={clickMapItemHandler}
+        selectedItemIdx={selectedMapItemIdx}
+      >
         <Button
           className={classes.button}
           color="primary"
@@ -262,7 +246,7 @@ const ProviderMapView = ({ status }) => {
         >
           Add Car Space
         </Button>
-      </div>
+      </CarSpaceMap>
     </div>
   );
 };

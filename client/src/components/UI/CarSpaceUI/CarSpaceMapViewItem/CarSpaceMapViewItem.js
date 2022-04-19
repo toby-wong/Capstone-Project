@@ -1,16 +1,21 @@
-import classes from "./ConsumerMapItem.module.css";
-
-import { useContext } from "react";
+import classes from "./CarSpaceMapViewItem.module.css";
 
 import { Typography, Divider } from "@mui/material";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
-import ConsumerModalContext from "../../../contexts/consumer-modal-context";
 
-const ConsumerMapItem = ({ streetAddress, notes, size, price, id, image }) => {
-  const consumerModalContext = useContext(ConsumerModalContext);
-
+const CarSpaceMapViewItem = ({
+  streetAddress,
+  notes,
+  size,
+  price,
+  id,
+  image,
+  longitude,
+  latitude,
+  onClick,
+}) => {
   const mapItemClickHandler = () => {
-    consumerModalContext.openPage("/info", id);
+    onClick(longitude, latitude, id);
   };
 
   return (
@@ -47,4 +52,4 @@ const ConsumerMapItem = ({ streetAddress, notes, size, price, id, image }) => {
   );
 };
 
-export default ConsumerMapItem;
+export default CarSpaceMapViewItem;

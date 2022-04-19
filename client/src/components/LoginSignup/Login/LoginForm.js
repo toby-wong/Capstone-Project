@@ -42,7 +42,6 @@ const LoginForm = ({ onClose }) => {
       },
     };
     const loginResponse = await sendRequest(url, options, setIsLoading);
-    console.log(loginResponse);
 
     if (loginResponse.status >= 300 || !loginResponse.status) {
       return setError(true);

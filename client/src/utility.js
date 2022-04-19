@@ -1,5 +1,63 @@
 import * as config from "./config";
 
+export const getTimeDiffInHours = (late, early) => {
+  const timeDiffInMilliseconds = late.getTime() - early.getTime();
+  const timeDiffInHours = timeDiffInMilliseconds / (1000 * 60 * 60);
+
+  return timeDiffInHours;
+};
+
+export const convertDateToString = (dateObj, carSpaceInfoDate = false) => {
+  let [year, month, day, hour, min] = [
+    dateObj.getFullYear(),
+    dateObj.getMonth(),
+    dateObj.getDate(),
+    dateObj.getHours(),
+    dateObj.getMinutes(),
+  ];
+  month += 1;
+
+  if (month < 10) month = `0${month}`;
+  if (day < 10) day = `0${day}`;
+  if (hour < 10) hour = `0${hour}`;
+  if (min < 10) min = `0${min}`;
+
+  if (carSpaceInfoDate) return `${day}/${month}/${year} ${hour}:${min}`;
+
+  return `${year}-${month}-${day} ${hour}:${min}:00`;
+};
+
+export const searchCarSpace = async (searchInfo, setIsLoading) => {
+  try {
+    const queryStrArr = [];
+    queryStrArr.push(`address=${searchInfo.address}`);
+    queryStrArr.push(
+      `startTime=${convertDateToString(searchInfo.startDateTime)}`
+    );
+    queryStrArr.push(`endTime=${convertDateToString(searchInfo.endDateTime)}`);
+    if (searchInfo.radius) queryStrArr.push(`radius=${searchInfo.radius}`);
+    const queryStr = queryStrArr.join("&");
+
+    const authToken = localStorage.getItem("parkItAuthToken");
+    const url = `${config.SERVER_URL}/api/provider/parking/search/?${queryStr}`;
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    if (authToken) options.headers.Authorization = "Bearer " + authToken;
+    const response = await sendRequest(url, options, setIsLoading);
+
+    if (!response.status || response.status >= 300) throw Error();
+
+    return response.data;
+  } catch (e) {
+    throw Error();
+  }
+};
+
 export const fetchCarInfo = async (carId, setIsLoading = () => {}) => {
   let carInfo = null;
   try {

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import * as config from "../../../config";
 import * as utility from "../../../utility";
 
-import {CircularProgress, Paper, Typography } from "@mui/material";
+import { CircularProgress, Paper, Typography } from "@mui/material";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
@@ -23,7 +23,11 @@ const FavouritesModal = ({ context, subModalContext }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+<<<<<<< HEAD
       const { cost, carSpaceId, notes} = context.content;
+=======
+      const { cost, carSpaceId, notes } = context.content;
+>>>>>>> master
       try {
         setIsLoading(true);
         // Get CarSpaceInfo
@@ -48,10 +52,7 @@ const FavouritesModal = ({ context, subModalContext }) => {
 
   return (
     <Paper variant="bookingInfoBody">
-      <CarSpaceCardHeader
-        title={data.address}
-        onClose={context.closeModal}
-      />
+      <CarSpaceCardHeader title={data.address} onClose={context.closeModal} />
       {isLoading && (
         <div className={classes["center-container"]}>
           <CircularProgress style={{ color: "var(--green)" }} />
@@ -90,10 +91,11 @@ const FavouritesModal = ({ context, subModalContext }) => {
                 </Typography>
               </ModalEntry>
               <ModalEntry className={classes.entry} icon={StickyNote2Icon}>
-                <Typography variant="carSpaceModalSubTitle">
-                  Notes
-                </Typography>
-                <Typography className={classes.notes} variant="carSpaceModalSubContent">
+                <Typography variant="carSpaceModalSubTitle">Notes</Typography>
+                <Typography
+                  className={classes.notes}
+                  variant="carSpaceModalSubContent"
+                >
                   {data.notes}
                 </Typography>
               </ModalEntry>
