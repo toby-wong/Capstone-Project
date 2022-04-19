@@ -1,18 +1,25 @@
+"""Admin classes for Park It"""
+
 from django.contrib import admin
-from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 from .models import CustomUser, Transaction, Vehicle, Review, ParkingSpace, Image, Favourite
 
-class CustomUserAdmin(UserAdmin):    
+class CustomUserAdmin(UserAdmin):
+    """
+    Class for custom user model administration
+    """
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
     list_display = ['username', 'email', 'first_name', 'last_name', 'is_staff']
 
 class ParkingSpaceAdmin(admin.ModelAdmin):
+    """
+    Class for parking space model administration
+    """
     list_filter = ['status']
-    list_display = [            
+    list_display = [
         'streetAddress',
         'provider',
         'price',
@@ -32,7 +39,10 @@ class ParkingSpaceAdmin(admin.ModelAdmin):
     ]
 
 class VehicleAdmin(admin.ModelAdmin):
-    list_display = [            
+    """
+    Class for vehicle model administration
+    """
+    list_display = [
         'carDetails',
         'user',
     ]
@@ -42,7 +52,10 @@ class VehicleAdmin(admin.ModelAdmin):
         return f"{obj.carColour} {obj.carMake} {obj.carModel} ({obj.carYear})"
 
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = [            
+    """
+    Class for transaction model administration
+    """
+    list_display = [
         'parkingSpace',
         'provider',
         'consumer',
@@ -52,13 +65,19 @@ class TransactionAdmin(admin.ModelAdmin):
     ]
 
 class FavouriteAdmin(admin.ModelAdmin):
-    list_display = [            
+    """
+    Class for favourite model administration
+    """
+    list_display = [
         'parkingSpace',
         'consumer',
     ]
 
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = [            
+    """
+    Class for review model administration
+    """
+    list_display = [
         'parkingSpace',
         'consumer',
         'rating',
