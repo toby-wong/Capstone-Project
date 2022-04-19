@@ -128,26 +128,13 @@ REST_FRAMEWORK = {
 
 JAZZMIN_SETTINGS = {
     'custom_css' : 'css/theme.css',
-        # title of the window (Will default to current_admin_site.site_title if absent or None)
     "site_title": "Park It",
-
-    # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
     "site_header": "Park It",
-
-    # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
     "site_brand": "Park It",
-
-    # Logo to use for your site, must be present in static files, used for brand on top left
     "site_logo": "/img/logo.svg",
     "site_logo_classes": "",
-
-    # Relative path to a favicon for your site, will default to site_logo if absent (ideally 32x32 px)
     "site_icon": None,
-
-    # Welcome text on the login screen
     "welcome_sign": "Welcome to the Park It Admin Dashboard",
-
-    # Copyright on the footer
     "copyright": "Blue Man Group",
     "topmenu_links": [
 
