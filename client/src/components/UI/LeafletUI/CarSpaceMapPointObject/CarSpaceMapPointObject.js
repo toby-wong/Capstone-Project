@@ -1,6 +1,6 @@
 // import classes from "./CarSpaceMapPointObject.module.css";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Marker, Popup } from "react-leaflet";
 
 const CarSpaceMapPointObject = ({
@@ -11,13 +11,15 @@ const CarSpaceMapPointObject = ({
   onClick,
   openPopup = false,
 }) => {
-  const markerRef = useRef(null);
+  const markerRef = useRef();
 
   const clickMarkerHandler = () => {
     onClick(id);
   };
 
-  if (openPopup) markerRef.current.openPopup();
+  useEffect(() => {
+    if (openPopup) markerRef.current.openPopup();
+  });
 
   return (
     <Marker

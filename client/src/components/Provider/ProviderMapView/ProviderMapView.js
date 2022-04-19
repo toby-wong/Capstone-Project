@@ -34,7 +34,6 @@ const ProviderMapView = ({ status }) => {
   const [carSpaces, setCarSpaces] = useState([]);
   const providerModalContext = useContext(ProviderModalContext);
   const [center, setCenter] = useState([-33.9139982, 151.2418546]);
-  const [zoom, setZoom] = useState(17);
   const [selectedMapItemIdx, setSelectedMapItemIdx] = useState(-1);
 
   const location = useLocation();
@@ -233,7 +232,7 @@ const ProviderMapView = ({ status }) => {
       </div>
       <CarSpaceMap
         center={center}
-        zoom={zoom}
+        zoom={config.MAP_ZOOM}
         items={carSpaces}
         onItemClick={clickMapItemHandler}
         selectedItemIdx={selectedMapItemIdx}

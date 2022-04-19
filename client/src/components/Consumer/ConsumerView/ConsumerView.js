@@ -25,7 +25,6 @@ const ConsumerView = () => {
   const [error, setError] = useState({ value: false, message: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [center, setCenter] = useState([-33.9139982, 151.2418546]);
-  const [zoom, setZoom] = useState(16);
   const [queryResults, setQueryResults] = useState([]);
   const [selectedMapItemIdx, setSelectedMapItemIdx] = useState(-1);
 
@@ -50,6 +49,9 @@ const ConsumerView = () => {
         });
         return;
       }
+
+      console.log(data);
+
       setCenter([data[0].longitude, data[0].latitude]);
       setQueryResults(data);
     } catch (e) {
@@ -117,6 +119,8 @@ const ConsumerView = () => {
     };
 
     fetchData();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     authContext.searchInfo,
     setIsLoading,
@@ -200,7 +204,7 @@ const ConsumerView = () => {
       </div>
       <CarSpaceMap
         center={center}
-        zoom={zoom}
+        zoom={config.MAP_ZOOM}
         items={queryResults}
         onItemClick={clickMapItemHandler}
         selectedItemIdx={selectedMapItemIdx}
