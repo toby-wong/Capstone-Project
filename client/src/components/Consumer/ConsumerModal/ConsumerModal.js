@@ -28,7 +28,8 @@ const ConsumerModal = () => {
       {consumerModalContext.page === "/info" && <ConsumerCarSpaceInfo />}
       {consumerModalContext.page === "/book" && <CarSpaceBookingForm />}
       {consumerModalContext.page === "/reviews" && (
-        <CarSpaceReviews modalContext={consumerModalContext} />
+        <CarSpaceReviews modalContext={consumerModalContext}
+        subModalContext={subModalContext} />
       )}
     </GeneralModal>
   );

@@ -1,6 +1,6 @@
 import classes from "./ConsumerBookingInfo.module.css";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext} from "react";
 
 import * as config from "../../../config";
 import * as utility from "../../../utility";
@@ -20,33 +20,57 @@ import CarSpaceImageCarousel from "../../UI/CarSpaceUI/CarSpaceInfo/CarSpaceInfo
 import CarSpaceImage from "../../UI/CarSpaceUI/CarSpaceInfo/CarSpaceInfoImage/CarSpaceImage";
 import CarSpaceInfoFavourite from "../../UI/CarSpaceUI/CarSpaceInfo/CarSpaceInfoFavourite/CarSpaceInfoFavourite";
 
+import AccountModalContext from "../../../contexts/account-modal-context"
+
 const ConsumerBookingInfo = ({ context, subModalContext }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [data, setData] = useState({ images: [] });
+  const [enableReview, setEnableReview] = useState(true);
+  const [enableDelete, setEnableDelete] = useState(true);
+
+
+  const accountModalContext = useContext(AccountModalContext);
+  
+  const addReviewsPage = () => {
+    accountModalContext.setContent(data);
+    accountModalContext.openPage("/addReview", "small");
+  };
+
+  // const deleteBooking = () => {
+    
+  // }
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(context.content)
-      const { cost, publishDate, vehicleId, carSpaceId } = context.content;
-      console.log(cost, publishDate, vehicleId, carSpaceId)
+      const { carSpaceId, consumer, totalCost, publishDate, vehicleId} = context.content;
       try {
         setIsLoading(true);
         // Get CarSpaceInfo
         const carSpaceInfo = await utility.fetchCarSpaceInfo(carSpaceId);
-
         // Get CarInfo
         const carInfo = await utility.fetchCarInfo(vehicleId);
-        const { carMake, carColour, carModel, carYear, carRego } = carInfo;
+        const { carMake, carColour, carModel, carYear, carRego} = carInfo;
 
         // Aggregate data and fetch
         const fetchedData = {
           ...carSpaceInfo,
           vehicle: `${carMake} ${carColour} ${carModel}(${carYear}) [${carRego}]`,
           transactionDate: publishDate,
-          totalCost: cost,
+          totalCost: totalCost,
+          carSpaceId: carSpaceId,
+          consumer: consumer,
         };
         setData(fetchedData);
+
+        var currentDate = new Date();
+        // Can review after booking ends
+        const bookingStart = context.content.endTime
+        const bookingEnd = context.content.startTime
+        setEnableReview(currentDate.toLocaleString() >= bookingEnd)
+
+        // Check start date to enable delete bookings button
+        setEnableDelete(currentDate.toLocaleString() <= bookingStart)
         setIsLoading(false);
       } catch (e) {
         setError(true);
@@ -56,7 +80,6 @@ const ConsumerBookingInfo = ({ context, subModalContext }) => {
 
     fetchData();
   }, [context]);
-
   return (
     <Paper variant="bookingInfoBody">
       <CarSpaceCardHeader
@@ -83,7 +106,7 @@ const ConsumerBookingInfo = ({ context, subModalContext }) => {
                   subModalContext={subModalContext}
                   setIsLoading={setIsLoading}
                   setError={setError}
-                  carSpaceId={context.content.carSpaceId}
+                  carSpaceId={data.carSpaceId}
                 />
               </div>
               <ModalEntry className={classes.entry} icon={BusinessIcon}>
@@ -100,13 +123,13 @@ const ConsumerBookingInfo = ({ context, subModalContext }) => {
                 <ModalEntry>
                   <Typography variant="carSpaceModalSubTitle">From</Typography>
                   <Typography variant="carSpaceModalSubContent">
-                    {data.startDateTime}
+                    {context.content.startTime}
                   </Typography>
                 </ModalEntry>
                 <ModalEntry>
                   <Typography variant="carSpaceModalSubTitle">Until</Typography>
                   <Typography variant="carSpaceModalSubContent">
-                    {data.endDateTime}
+                    {context.content.endTime}
                   </Typography>
                 </ModalEntry>
               </ModalEntry>
@@ -167,6 +190,8 @@ const ConsumerBookingInfo = ({ context, subModalContext }) => {
               type="submit"
               size="large"
               className={classes.btn}
+              onClick={addReviewsPage}
+              disabled={!enableReview}
             >
               Write Review
             </Button>
@@ -175,8 +200,9 @@ const ConsumerBookingInfo = ({ context, subModalContext }) => {
               type="submit"
               size="large"
               color="warning"
-              // disabled={!formState.isFormValid}
               className={classes.btn}
+              // onClick={deleteBooking}
+              disabled={!enableDelete}
             >
               {isLoading ? (
                 <CircularProgress size="1.5rem" />

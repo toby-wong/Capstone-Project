@@ -23,13 +23,11 @@ const FavouritesModal = ({ context, subModalContext }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(context.content)
       const { cost, carSpaceId, notes} = context.content;
       try {
         setIsLoading(true);
         // Get CarSpaceInfo
         const carSpaceInfo = await utility.fetchCarSpaceInfo(carSpaceId);
-        console.log(carSpaceInfo)
 
         // Aggregate data and fetch
         const fetchedData = {
@@ -48,7 +46,6 @@ const FavouritesModal = ({ context, subModalContext }) => {
     fetchData();
   }, [context]);
 
-  console.log(data)
   return (
     <Paper variant="bookingInfoBody">
       <CarSpaceCardHeader

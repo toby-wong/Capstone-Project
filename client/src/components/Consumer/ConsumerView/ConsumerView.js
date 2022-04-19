@@ -54,7 +54,6 @@ const ConsumerView = () => {
         const response = await sendRequest(url, options, setIsLoading);
         if (response.status >= 300 || !response.status) throw Error;
 
-        console.log(response.data);
         setConsumerSpaces(response.data);
       } catch (e) {
         setError({

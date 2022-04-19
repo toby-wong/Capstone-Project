@@ -36,7 +36,6 @@ const ConsumerHistory = () => {
         };
         const response = await sendRequest(url, options, setIsLoading);
         if (response.status >= 300 || !response.status) throw Error;
-
         const fetchedHistory = [];
         for (const booking of response.data) {
           fetchedHistory.push({
@@ -46,7 +45,7 @@ const ConsumerHistory = () => {
             vehicleId: booking.vehicle,
             startTime: booking.startTime,
             endTime: booking.endTime,
-            cost: booking.totalCost,
+            totalCost: booking.totalCost,
             streetAddress: `${booking.streetAddress}, ${booking.city}, ${booking.state}`,
             vehicle: booking.parkingSpaceSize,
             consumer: booking.consumerName,

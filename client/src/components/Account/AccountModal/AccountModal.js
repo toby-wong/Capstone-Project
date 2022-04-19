@@ -6,10 +6,11 @@ import SubModalContext from "../../../contexts/submodal-context";
 import GeneralModal from "../../UI/GeneralModal/GeneralModal";
 import MessageModal from "../../UI/MessageModal/MessageModal";
 import AddCarForm from "./AddCarForm/AddCarForm";
-import EditCarForm from "./EditCarForm/EditCarForm";
+import EditCarForm from "./EditCarForm/EditCarForm"
 import ConsumerBookingInfo from "../../BookingInfo/ConsumerBookingInfo/ConsumerBookingInfo";
 import FavouritesModel from "../Favourites/FavouritesModal";
 import ProviderBookingInfo from "../../BookingInfo/ProviderBookingInfo/ProviderBookingInfo";
+import AddReviewModal from "../ConsumerHistory/AddReview/AddReviewForm"
 
 const AccountModal = () => {
   const accountModalContext = useContext(AccountModalContext);
@@ -43,6 +44,12 @@ const AccountModal = () => {
       )}
       {accountModalContext.page === "/consumerBookingInfo" && (
         <ConsumerBookingInfo
+          context={accountModalContext}
+          subModalContext={subModalContext}
+        />
+      )}
+      {accountModalContext.page === "/addReview" && (
+        <AddReviewModal
           context={accountModalContext}
           subModalContext={subModalContext}
         />
