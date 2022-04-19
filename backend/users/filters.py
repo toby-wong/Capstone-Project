@@ -4,6 +4,12 @@ from users.models import SIZE
 from users.utils import *
 
 def RadiusFilter(queryset, address='Sydney', radius=9999):
+    """
+    Creates a bounding box based on the address and radius provided and 
+    returns a queryset of all the parking spaces within the bounding box.
+
+    Returns a queryset of all parking spaces in database in 9999km radius of Sydney by default. 
+    """
     if int(radius) == 9999:
         return queryset
     lat, lon = getCoords(address)
@@ -17,6 +23,9 @@ def RadiusFilter(queryset, address='Sydney', radius=9999):
         latitude__range=[lon_min,lon_max])
 
 class ParkingSearchFilter(FilterSet):
+    """
+    Filter class to be used with ParkingSearchListView
+    """
 
     size = MultipleChoiceFilter(choices=SIZE, field_name='size', lookup_expr='iexact') # ?size=Hatchback or ?size=Hatchback&size=Sedan
     price__lte = NumberFilter(field_name='price', lookup_expr='lte') # ?price__lte=100

@@ -1,11 +1,11 @@
 from django import forms
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm 
-from .models import CustomUser, Transaction
-from i18naddress import normalize_address, get_validation_rules
+from .models import CustomUser
 
-
-#need to update this with the custom fields too
 class CustomUserCreationForm(UserCreationForm):    
+    """
+    Form used for extending the existing UserCreationForm
+    """
     class Meta:        
         model = CustomUser        
         fields = (
@@ -19,13 +19,18 @@ class CustomUserCreationForm(UserCreationForm):
             'account_name',
         )  
 
-class CustomUserChangeForm(UserChangeForm):    
+class CustomUserChangeForm(UserChangeForm):
+    """
+    Form used for extending the existing UserChangeForm
+    """
     class Meta:        
         model = CustomUser        
         fields = UserChangeForm.Meta.fields
 
 class RemoveUserForm(forms.Form):
-
+    """
+    Form used to remove a user from the system
+    """
     class Meta:
         model = CustomUser
         fields = []

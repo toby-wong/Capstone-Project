@@ -9,7 +9,14 @@ from .models import CustomUser, Favourite, ParkingSpace, Image, Transaction, Rev
 from drf_writable_nested.serializers import NestedUpdateMixin
 
 class UserSerializer(ModelSerializer):
+    """
+    Serializer for CustomUser model
+
+    Subclasses:
+        Meta: Meta class for UserSerializer
+    """
     class Meta:
+        """Extended fields for CustomUser model"""
         model = CustomUser
         fields = (
             'email',
@@ -26,10 +33,13 @@ class UserSerializer(ModelSerializer):
             'is_staff',
             'pk'
         )
-        
+
         read_only_fields = ('first_name', 'last_name', 'username', 'pk')
 
 class CustomRegisterSerializer(RegisterSerializer):
+    """
+    Custom registration serializer for CustomUser model extending the default dj_rest_auth registration serializer
+    """
 # here we define any additional fields we are adding to the dj-rest-auth RegisterSerializer
 # so we are basically extending what you need (or really what you can potentially provide) to register
 # in simple terms, it is looking for fields called "phone_number" in the JSON request and saving them into a variable

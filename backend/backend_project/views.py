@@ -6,8 +6,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
 
-# Create your views here.
-# @login_required(login_url='http://127.0.0.1:8000/')
+# Views for adding and deleting Admins 
 class AddAdminView(GenericAPIView):
     
     def add(self, request):
