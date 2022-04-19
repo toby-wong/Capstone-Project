@@ -1,3 +1,5 @@
+"""App configuration for Park It"""
+
 from django.apps import AppConfig
 
 class UsersConfig(AppConfig):

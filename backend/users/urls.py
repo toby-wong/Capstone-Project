@@ -1,12 +1,15 @@
+"""URL Patterns for Park It"""
+
 from django.urls import path
 from users.views import *
 
 urlpatterns = [
-    path('delete/user', RemoveUserView.as_view(), name='remove_user'), # redundant if we use HTTP method on /auth/user?
+    # User management
 
+    path('delete/user', RemoveUserView.as_view(), name='remove_user'),
 
     # Parking Spaces
-    
+
     path('provider/parking', CreateParkingSpace.as_view(), name='create_parking_space'),
     path('provider/parking/<int:pk>', ParkingSpaceView.as_view(), name='modify_parking_space'),
     path('provider/parking/images/<int:parkingID>', ImageList.as_view(), name='list_images'),
@@ -28,17 +31,16 @@ urlpatterns = [
     path('provider/history', ProviderBookingHistory.as_view(), name='provider_history'),
     path('consumer/history', ConsumerBookingHistory.as_view(), name='consumer_history'),
 
-    # Images 
+    # Images
 
     path('provider/image/<int:parkingID>', CreateImage.as_view(), name='create_image'),
     path('provider/image/<int:pk>', ImageView.as_view(), name='modify_image'),
-    
+
 
     # Reviews
 
     path('consumer/review', CreateReview.as_view(), name='create_review'),
     path('consumer/review/<int:pk>', ReviewView.as_view(), name='modify_review'),
- 
 
     # Favourites
 
@@ -52,7 +54,7 @@ urlpatterns = [
     path('consumer/vehicle/<int:pk>', VehicleView.as_view(), name='modify_vehicle'),
     path('consumer/vehicle/all', VehicleList.as_view(), name='list_vehicle'),
 
-    # Search 
+    # Search
 
     path('provider/parking/search/suggestions/', AddressSuggestions.as_view(), name='address_suggestions'),
     path('provider/parking/search/', ParkingSearchList.as_view(), name='search_parking_space'),

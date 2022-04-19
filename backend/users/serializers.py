@@ -1,4 +1,4 @@
-# Controls what fields are packaged together
+"""Serializer for Park It views"""
 
 from django.db import transaction
 from .utils import AddressValidation
@@ -7,6 +7,8 @@ from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField, 
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from .models import CustomUser, Favourite, ParkingSpace, Image, Transaction, Review, Vehicle
 from drf_writable_nested.serializers import NestedUpdateMixin
+
+
 
 class UserSerializer(ModelSerializer):
     """

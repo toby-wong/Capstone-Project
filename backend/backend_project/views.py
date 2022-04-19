@@ -1,4 +1,4 @@
-# "Queries" for Django database
+"""Admin queries for Park It"""
 from urllib import request
 from users.forms import *
 from users.models import CustomUser
@@ -6,9 +6,10 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
 
-# Views for adding and deleting Admins 
 class AddAdminView(GenericAPIView):
-    
+    """
+    View to add admin privileges to a user
+    """
     def add(self, request):
         admin_username = request.data.get('admin_username')
         username = request.data.get('username')
@@ -26,7 +27,9 @@ class AddAdminView(GenericAPIView):
 
 
 class RemoveAdminView(GenericAPIView):
-
+    """
+    View to remove admin privileges from a user
+    """
     def remove(self, request):
         admin_username = request.data.get('admin_username')
         username = request.data.get('username')

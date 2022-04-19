@@ -1,8 +1,10 @@
+"""Models for Park It database"""
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 
-# USER MODELS
+##  USER MODELS
 class CustomUser(AbstractUser):
     """
     Custom user model extending the AbstractUser model

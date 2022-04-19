@@ -1,3 +1,5 @@
+"""Admin classes for Park It"""
+
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .forms import CustomUserChangeForm, CustomUserCreationForm
@@ -17,7 +19,7 @@ class ParkingSpaceAdmin(admin.ModelAdmin):
     Class for parking space model administration
     """
     list_filter = ['status']
-    list_display = [            
+    list_display = [
         'streetAddress',
         'provider',
         'price',
@@ -40,7 +42,7 @@ class VehicleAdmin(admin.ModelAdmin):
     """
     Class for vehicle model administration
     """
-    list_display = [            
+    list_display = [
         'carDetails',
         'user',
     ]
@@ -50,10 +52,10 @@ class VehicleAdmin(admin.ModelAdmin):
         return f"{obj.carColour} {obj.carMake} {obj.carModel} ({obj.carYear})"
 
 class TransactionAdmin(admin.ModelAdmin):
-    """ 
+    """
     Class for transaction model administration
     """
-    list_display = [            
+    list_display = [
         'parkingSpace',
         'provider',
         'consumer',
@@ -66,7 +68,7 @@ class FavouriteAdmin(admin.ModelAdmin):
     """
     Class for favourite model administration
     """
-    list_display = [            
+    list_display = [
         'parkingSpace',
         'consumer',
     ]
@@ -75,7 +77,7 @@ class ReviewAdmin(admin.ModelAdmin):
     """
     Class for review model administration
     """
-    list_display = [            
+    list_display = [
         'parkingSpace',
         'consumer',
         'rating',
