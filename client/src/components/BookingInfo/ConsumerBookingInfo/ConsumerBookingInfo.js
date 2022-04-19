@@ -143,13 +143,16 @@ const ConsumerBookingInfo = ({ context, subModalContext }) => {
 
         var currentDate = new Date();
         // Can review after booking ends
-        const bookingEnd = context.content.endTime
-        setEnableReview(currentDate.toLocaleString() >= bookingEnd)
+        const bookingEndDate = utility.getDate(context.content.endTime)
+        console.log(bookingEndDate)
+        setEnableReview(currentDate.getTime() >= bookingEndDate.getTime())
         
         // Check start date to enable delete bookings button
-        const bookingStart = context.content.startTime
-        currentDate.setDate(currentDate.getDate() + 7)
-        setEnableDelete(currentDate.toLocaleString() <= bookingStart)
+        const bookingStartDate = utility.getDate(context.content.startTime)
+        const difference = utility.getTimeDiffInHours(bookingStartDate, currentDate)
+        const result = difference >= 168
+        console.log(result)
+        setEnableDelete(result)
         setIsLoading(false);
       } catch (e) {
         setError(true);
@@ -276,7 +279,7 @@ const ConsumerBookingInfo = ({ context, subModalContext }) => {
               size="large"
               className={classes.btn}
               onClick={addReviewsPage}
-              disabled={enableReview}
+              disabled={!enableReview}
             >
               Write Review
             </Button>
@@ -287,7 +290,7 @@ const ConsumerBookingInfo = ({ context, subModalContext }) => {
               color="warning"
               className={classes.btn}
               onClick={deleteBooking}
-              disabled={enableDelete}
+              disabled={!enableDelete}
             >
               {isLoading ? (
                 <CircularProgress size="1.5rem" />

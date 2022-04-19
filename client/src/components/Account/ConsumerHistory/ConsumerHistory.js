@@ -60,7 +60,7 @@ const ConsumerHistory = () => {
     };
 
     fetchData();
-  }, []);
+  }, [accountModalContext.pageRefreshStatus]);
 
   return (
     <>

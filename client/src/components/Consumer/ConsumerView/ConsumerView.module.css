@@ -1,6 +1,6 @@
 /* Overwrite default in HTML */
 body {
-    overflow: hidden;
+    overflow: scroll;
 }
 
 .bodyContainer{
