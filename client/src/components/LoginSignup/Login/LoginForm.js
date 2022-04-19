@@ -49,9 +49,10 @@ const LoginForm = ({ onClose }) => {
 
     const authToken = loginResponse.data.access_token;
     const admin = loginResponse.data.user.is_staff;
+    const userInfo = loginResponse.data.user;
 
     setError(false);
-    authContext.login(authToken, admin);
+    authContext.login(authToken, admin, userInfo);
 
     onClose();
   };

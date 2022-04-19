@@ -7,8 +7,9 @@ import { sendRequest } from "../../../utility";
 import AccountModalContext from "../../../contexts/account-modal-context";
 import GeneralDataGrid from "../../UI/GeneralDataGrid/GeneralDataGrid";
 
+document.title = "Consumer Bookings";
+
 const ConsumerHistory = () => {
-  document.title = "Consumer Bookings"
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({
     value: false,

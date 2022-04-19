@@ -9,8 +9,9 @@ import * as config from "../../../config";
 import GeneralDataGrid from "../../UI/GeneralDataGrid/GeneralDataGrid";
 import AccountModalContext from "../../../contexts/account-modal-context";
 
+document.title = "My Cars";
+
 const MyCars = () => {
-  document.title = "My Cars"
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({
     value: false,

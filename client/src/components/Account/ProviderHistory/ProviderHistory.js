@@ -8,8 +8,9 @@ import { Typography, Paper, CircularProgress } from "@mui/material";
 
 import GeneralDataGrid from "../../UI/GeneralDataGrid/GeneralDataGrid";
 
+document.title = "Provider History";
+
 const ProviderHistory = () => {
-  document.title = "Provider History"
   const accountModalContext = useContext(AccountModalContext);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({

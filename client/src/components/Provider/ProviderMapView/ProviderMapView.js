@@ -28,8 +28,9 @@ import ProviderModalContext from "../../../contexts/provider-modal-context";
 import CarSpaceMap from "../../UI/LeafletUI/CarSpaceMap/CarSpaceMap";
 import CarSpaceMapViewItem from "../../UI/CarSpaceUI/CarSpaceMapViewItem/CarSpaceMapViewItem";
 
+document.title = "Provider Map";
+
 const ProviderMapView = ({ status }) => {
-  document.title = "Provider Map"
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({ value: false, message: "" });
   const [carSpaces, setCarSpaces] = useState([]);

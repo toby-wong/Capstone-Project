@@ -17,12 +17,12 @@ import ConsumerModalContext from "../../../contexts/consumer-modal-context";
 import CarSpaceMap from "../../UI/LeafletUI/CarSpaceMap/CarSpaceMap";
 import CarSpaceMapViewItem from "../../UI/CarSpaceUI/CarSpaceMapViewItem/CarSpaceMapViewItem";
 
+document.title = "Consumer View";
+
 const ConsumerView = () => {
   const authContext = useContext(AuthContext);
   const subModalContext = useContext(SubModalContext);
   const consumerModalContext = useContext(ConsumerModalContext);
-  document.title = "Consumer View"
-
   const [error, setError] = useState({ value: false, message: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [center, setCenter] = useState([-33.9139982, 151.2418546]);

@@ -18,8 +18,9 @@ import MyCars from "./MyCars/MyCars";
 import ConsumerHistory from "./ConsumerHistory/ConsumerHistory";
 import Favourites from "./Favourites/Favourites";
 
+document.title = "Account Page";
+
 const Account = (props) => {
-  document.title = "Account Page"
   const location = useLocation();
   const activeTab = location.pathname.split("/").slice(2).join("/");
 

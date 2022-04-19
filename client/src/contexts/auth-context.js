@@ -60,9 +60,10 @@ export const AuthContextProvider = (props) => {
 
   const isLoggedIn = !!token;
 
-  const loginHandler = (token, admin) => {
+  const loginHandler = (token, admin, userInfo) => {
     setToken(token);
     setIsAdmin(admin);
+    setUserInfo(userInfo);
     setSearchInfo(null);
     localStorage.setItem("parkItAuthToken", token);
   };

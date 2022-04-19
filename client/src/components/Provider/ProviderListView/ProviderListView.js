@@ -25,8 +25,9 @@ import * as config from "../../../config";
 import ProviderListItem from "./ProviderListItem";
 import ProviderModalContext from "../../../contexts/provider-modal-context";
 
+document.title = "Provider List";
+
 const ProviderListView = ({ status }) => {
-  document.title = "Provider List"
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({ value: false, message: "" });

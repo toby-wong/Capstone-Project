@@ -7,11 +7,11 @@ import CarSpaceSearchBar from "../UI/CarSpaceUI/CarSpaceSearchBar/CarSpaceSearch
 
 import { Typography } from "@mui/material";
 
+document.title = "Welcome Home";
+
 const Home = () => {
   const navigate = useNavigate();
   const authContext = useContext(AuthContext);
-  document.title = "Welcome Home"
-
 
   const formSubmitHandler = async (formData) => {
     authContext.setSearchInfo(formData);

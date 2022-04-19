@@ -9,8 +9,9 @@ import ProviderListView from "./ProviderListView/ProviderListView";
 import ProviderMapView from "./ProviderMapView/ProviderMapView";
 import { SubModalContextProvider } from "../../contexts/submodal-context";
 
+document.title = "Provider View";
+
 const Provider = () => {
-  document.title = "Provider View"
   return (
     <ProviderModalContextProvider>
       <div className={classes.body}>

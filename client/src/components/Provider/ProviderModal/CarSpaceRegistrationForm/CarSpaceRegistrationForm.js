@@ -29,8 +29,9 @@ import CarSpaceCardContentLeft from "../../../UI/CarSpaceUI/CarSpaceCard/CarSpac
 import CarSpaceFormImageCarousel from "../../../UI/CarSpaceUI/CarSpaceForm/CarSpaceFormImageCarousel/CarSpaceFormImageCarousel";
 import CarSpaceCardContentRight from "../../../UI/CarSpaceUI/CarSpaceCard/CarSpaceCardContentRight";
 
+document.title = "Adding Car Space";
+
 const CarSpaceRegistrationForm = () => {
-  document.title = "Adding Car Space"
   const [isLoading, setIsLoading] = useState(false);
   const [subModal, setSubModal] = useState({
     isOpen: false,
