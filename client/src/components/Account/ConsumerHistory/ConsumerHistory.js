@@ -45,7 +45,7 @@ const ConsumerHistory = () => {
             vehicleId: booking.vehicle,
             startTime: booking.startTime,
             endTime: booking.endTime,
-            totalCost: booking.totalCost,
+            cost: booking.totalCost,
             streetAddress: `${booking.streetAddress}, ${booking.city}, ${booking.state}`,
             vehicle: booking.parkingSpaceSize,
             consumer: booking.consumerName,

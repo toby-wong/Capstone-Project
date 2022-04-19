@@ -37,13 +37,91 @@ const ConsumerBookingInfo = ({ context, subModalContext }) => {
     accountModalContext.openPage("/addReview", "small");
   };
 
-  // const deleteBooking = () => {
-    
-  // }
+  const deleteBooking = (e) => {
+    e.preventDefault();
+
+    subModalContext.openModal({
+      title: "Confirmation",
+      messages: [
+        "You are about to delete this booking. Do you still want to proceed?",
+      ],
+      actions: [
+        {
+          color: "primary",
+          onClick: submitDeleteBooking,
+          content: "OK",
+          width: "120px",
+        },
+        {
+          color: "warning",
+          onClick: subModalContext.closeAllModals(context),
+          content: "Cancel",
+          width: "120px",
+        },
+      ],
+      });
+  }
+
+  const submitDeleteBooking = async (e) => {
+    e.preventDefault()
+    try {
+      const authToken = localStorage.getItem("parkItAuthToken");
+      if (!authToken) return;
+      const url = `${config.SERVER_URL}/api/consumer/book/${context.content.id}`;
+      const options = {
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + authToken,
+          "Content-Type": "application/json",
+        },
+      };
+
+      const response = await utility.sendRequest(url, options, setIsLoading);
+      if (!response.status) throw Error(config.NETWORK_ERROR_MESSAGE);
+      if (response.status >= 300) {
+        const errorMsgs = [];
+        for (const key of Object.keys(response.data)) {
+          errorMsgs.push(` - Not a valid ${key}.`);
+        }
+        throw Error(errorMsgs);
+      }
+      subModalContext.openModal({
+        title: "Success",
+        messages: [
+          "You have removed this booking.",
+        ],
+        actions: [
+          {
+            color: "primary",
+            onClick: subModalContext.closeAllModals(context),
+            content: "OK",
+            width: "120px",
+          },
+        ],
+        context: context,
+      });
+
+      context.togglePageRefreshStatus();
+    } catch (e) {
+      subModalContext.openModal({
+        title: "Error",
+        messages: e.message.split(","),
+        actions: [
+          {
+            color: "primary",
+            onClick: subModalContext.closeModal,
+            content: "OK",
+            width: "120px",
+          },
+        ],
+      });
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
-      const { carSpaceId, consumer, totalCost, publishDate, vehicleId} = context.content;
+      console.log(context.content)
+      const { carSpaceId, consumer, cost, publishDate, vehicleId} = context.content;
       try {
         setIsLoading(true);
         // Get CarSpaceInfo
@@ -57,7 +135,7 @@ const ConsumerBookingInfo = ({ context, subModalContext }) => {
           ...carSpaceInfo,
           vehicle: `${carMake} ${carColour} ${carModel}(${carYear}) [${carRego}]`,
           transactionDate: publishDate,
-          totalCost: totalCost,
+          totalCost: cost,
           carSpaceId: carSpaceId,
           consumer: consumer,
         };
@@ -65,11 +143,12 @@ const ConsumerBookingInfo = ({ context, subModalContext }) => {
 
         var currentDate = new Date();
         // Can review after booking ends
-        const bookingStart = context.content.endTime
-        const bookingEnd = context.content.startTime
+        const bookingEnd = context.content.endTime
         setEnableReview(currentDate.toLocaleString() >= bookingEnd)
-
+        
         // Check start date to enable delete bookings button
+        const bookingStart = context.content.startTime
+        currentDate.setDate(currentDate.getDate() + 7)
         setEnableDelete(currentDate.toLocaleString() <= bookingStart)
         setIsLoading(false);
       } catch (e) {
@@ -77,7 +156,7 @@ const ConsumerBookingInfo = ({ context, subModalContext }) => {
         setIsLoading(false);
       }
     };
-
+    console.log(data)
     fetchData();
   }, [context]);
   return (
@@ -179,7 +258,7 @@ const ConsumerBookingInfo = ({ context, subModalContext }) => {
                   Total Cost
                 </Typography>
                 <Typography variant="carSpaceModalSubContent">
-                  ${data.totalCost}
+                  $ {data.totalCost}
                 </Typography>
               </ModalEntry>
             </Paper>
@@ -191,7 +270,7 @@ const ConsumerBookingInfo = ({ context, subModalContext }) => {
               size="large"
               className={classes.btn}
               onClick={addReviewsPage}
-              disabled={!enableReview}
+              disabled={enableReview}
             >
               Write Review
             </Button>
@@ -201,8 +280,8 @@ const ConsumerBookingInfo = ({ context, subModalContext }) => {
               size="large"
               color="warning"
               className={classes.btn}
-              // onClick={deleteBooking}
-              disabled={!enableDelete}
+              onClick={deleteBooking}
+              disabled={enableDelete}
             >
               {isLoading ? (
                 <CircularProgress size="1.5rem" />

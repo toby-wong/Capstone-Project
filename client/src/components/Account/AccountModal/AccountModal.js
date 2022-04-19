@@ -10,7 +10,7 @@ import EditCarForm from "./EditCarForm/EditCarForm"
 import ConsumerBookingInfo from "../../BookingInfo/ConsumerBookingInfo/ConsumerBookingInfo";
 import FavouritesModel from "../Favourites/FavouritesModal";
 import ProviderBookingInfo from "../../BookingInfo/ProviderBookingInfo/ProviderBookingInfo";
-import AddReviewModal from "../ConsumerHistory/AddReview/AddReviewForm"
+import AddReviewForm from "../ConsumerHistory/AddReview/AddReviewForm"
 
 const AccountModal = () => {
   const accountModalContext = useContext(AccountModalContext);
@@ -49,7 +49,7 @@ const AccountModal = () => {
         />
       )}
       {accountModalContext.page === "/addReview" && (
-        <AddReviewModal
+        <AddReviewForm
           context={accountModalContext}
           subModalContext={subModalContext}
         />

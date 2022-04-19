@@ -23,11 +23,7 @@ const FavouritesModal = ({ context, subModalContext }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-<<<<<<< HEAD
       const { cost, carSpaceId, notes} = context.content;
-=======
-      const { cost, carSpaceId, notes } = context.content;
->>>>>>> master
       try {
         setIsLoading(true);
         // Get CarSpaceInfo

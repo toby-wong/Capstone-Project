@@ -97,7 +97,6 @@ const ConsumerView = () => {
           endDate: authContext.searchInfo.endDateTime,
         });
 
-        setConsumerSpaces(response.data);
         const data = await utility.searchCarSpace(
           authContext.searchInfo,
           setIsLoading
