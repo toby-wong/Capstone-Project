@@ -24,9 +24,9 @@ import DoDisturbAltIcon from "@mui/icons-material/DoDisturbAlt";
 import { sendRequest } from "../../../utility";
 import * as config from "../../../config";
 
-import ProviderMapItem from "./ProviderMapItem";
 import ProviderModalContext from "../../../contexts/provider-modal-context";
 import CarSpaceMap from "../../UI/LeafletUI/CarSpaceMap/CarSpaceMap";
+import CarSpaceMapViewItem from "../../UI/CarSpaceUI/CarSpaceMapViewItem/CarSpaceMapViewItem";
 
 const ProviderMapView = ({ status }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -35,6 +35,7 @@ const ProviderMapView = ({ status }) => {
   const providerModalContext = useContext(ProviderModalContext);
   const [center, setCenter] = useState([-33.9139982, 151.2418546]);
   const [zoom, setZoom] = useState(17);
+  const [selectedMapItemIdx, setSelectedMapItemIdx] = useState(-1);
 
   const location = useLocation();
   // To show label under tabs
@@ -52,7 +53,13 @@ const ProviderMapView = ({ status }) => {
     providerModalContext.openPage("/add");
   };
 
-  const mapItemClickHandler = (carSpaceId) => {
+  const clickCarSpaceHandler = (longitude, latitude, mapItemIdx) => {
+    setSelectedMapItemIdx(mapItemIdx);
+    setCenter([longitude, latitude]);
+  };
+
+  const clickMapItemHandler = (carSpaceId) => {
+    setSelectedMapItemIdx(-1);
     providerModalContext.openPage("/info", carSpaceId);
   };
 
@@ -205,7 +212,7 @@ const ProviderMapView = ({ status }) => {
             {!isLoading &&
               !error.value &&
               carSpaces.map((item) => (
-                <ProviderMapItem
+                <CarSpaceMapViewItem
                   key={item.pk}
                   id={item.pk}
                   streetAddress={item.streetAddress}
@@ -213,6 +220,9 @@ const ProviderMapView = ({ status }) => {
                   size={item.size}
                   price={item.price}
                   image={item.images[0].image_data}
+                  longitude={item.longitude}
+                  latitude={item.latitude}
+                  onClick={clickCarSpaceHandler}
                 />
               ))}
             {!isLoading && error.value && (
@@ -222,11 +232,11 @@ const ProviderMapView = ({ status }) => {
         </div>
       </div>
       <CarSpaceMap
-        isLoading={isLoading}
         center={center}
         zoom={zoom}
         items={carSpaces}
-        onItemClick={mapItemClickHandler}
+        onItemClick={clickMapItemHandler}
+        selectedItemIdx={selectedMapItemIdx}
       >
         <Button
           className={classes.button}

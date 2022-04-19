@@ -1,16 +1,21 @@
-import classes from "./ProviderMapItem.module.css";
-
-import { useContext } from "react";
-import ProviderModalContext from "../../../contexts/provider-modal-context";
+import classes from "./CarSpaceMapViewItem.module.css";
 
 import { Typography, Divider } from "@mui/material";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 
-const ProviderMapItem = ({ streetAddress, notes, size, price, id, image }) => {
-  const providerModalContext = useContext(ProviderModalContext);
-
+const CarSpaceMapViewItem = ({
+  streetAddress,
+  notes,
+  size,
+  price,
+  id,
+  image,
+  longitude,
+  latitude,
+  onClick,
+}) => {
   const mapItemClickHandler = () => {
-    providerModalContext.openPage("/info", id);
+    onClick(longitude, latitude, id);
   };
 
   return (
@@ -47,4 +52,4 @@ const ProviderMapItem = ({ streetAddress, notes, size, price, id, image }) => {
   );
 };
 
-export default ProviderMapItem;
+export default CarSpaceMapViewItem;

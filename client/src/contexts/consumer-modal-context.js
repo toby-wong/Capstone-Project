@@ -37,11 +37,9 @@ export const ConsumerModalContextProvider = (props) => {
   };
 
   const openPage = (path, csId = null) => {
-    if (!isOpen) setIsOpen(true);
+    if (csId) setCarSpaceId(csId);
     setPage(path);
-
-    if (!csId) return;
-    setCarSpaceId(csId);
+    if (!isOpen) setIsOpen(true);
   };
 
   const closeModal = () => {

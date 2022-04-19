@@ -1,9 +1,7 @@
 import classes from "./ConsumerView.module.css";
 
 import { useContext, useEffect, useState } from "react";
-import { useMap } from "react-leaflet";
 import { Scrollbars } from "react-custom-scrollbars-2";
-import { MapContainer, TileLayer } from "react-leaflet";
 
 import * as utility from "../../../utility";
 import * as config from "../../../config";
@@ -12,12 +10,12 @@ import AuthContext from "../../../contexts/auth-context";
 
 import { Typography, Divider, CircularProgress } from "@mui/material";
 
-import ConsumerMapItem from "./ConsumerMapItem";
 import CarSpaceSearchBar from "../../UI/CarSpaceUI/CarSpaceSearchBar/CarSpaceSearchBar";
 import MessageModal from "../../UI/MessageModal/MessageModal";
 import SubModalContext from "../../../contexts/submodal-context";
 import ConsumerModalContext from "../../../contexts/consumer-modal-context";
 import CarSpaceMap from "../../UI/LeafletUI/CarSpaceMap/CarSpaceMap";
+import CarSpaceMapViewItem from "../../UI/CarSpaceUI/CarSpaceMapViewItem/CarSpaceMapViewItem";
 
 const ConsumerView = () => {
   const authContext = useContext(AuthContext);
@@ -29,6 +27,7 @@ const ConsumerView = () => {
   const [center, setCenter] = useState([-33.9139982, 151.2418546]);
   const [zoom, setZoom] = useState(16);
   const [queryResults, setQueryResults] = useState([]);
+  const [selectedMapItemIdx, setSelectedMapItemIdx] = useState(-1);
 
   const searchHandler = async (formData) => {
     try {
@@ -61,8 +60,29 @@ const ConsumerView = () => {
     }
   };
 
-  const clickCarSpaceHandler = (longitude, latitude) => {
+  const clickCarSpaceHandler = (longitude, latitude, mapItemIdx) => {
+    setSelectedMapItemIdx(mapItemIdx);
     setCenter([longitude, latitude]);
+  };
+
+  const clickMapItemHandler = (carSpaceId) => {
+    setSelectedMapItemIdx(-1);
+    if (!authContext.isLoggedIn) {
+      subModalContext.openModal({
+        title: "Unauthorized",
+        messages: ["Please log in to view the details of parking space."],
+        actions: [
+          {
+            color: "primary",
+            onClick: subModalContext.closeModal,
+            content: "OK",
+            width: "120px",
+          },
+        ],
+      });
+    } else {
+      consumerModalContext.openPage("/info", carSpaceId);
+    }
   };
 
   useEffect(() => {
@@ -159,7 +179,7 @@ const ConsumerView = () => {
             {!isLoading &&
               !error.value &&
               queryResults.map((item) => (
-                <ConsumerMapItem
+                <CarSpaceMapViewItem
                   key={item.pk}
                   id={item.pk}
                   streetAddress={item.streetAddress}
@@ -179,10 +199,11 @@ const ConsumerView = () => {
         </div>
       </div>
       <CarSpaceMap
-        isLoading={isLoading}
         center={center}
         zoom={zoom}
         items={queryResults}
+        onItemClick={clickMapItemHandler}
+        selectedItemIdx={selectedMapItemIdx}
       />
     </div>
   );
