@@ -35,10 +35,7 @@ class AddressValidation:
         return self.__dict__
 
 def getCoords(address):
-    import requests, os
-    
-    GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY', 'AIzaSyCwTgq7juhaZiACJFsYWm-dZgvhQRvvFw4')
-    url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address.replace(" ", "+") + f'&key={GOOGLE_MAPS_API_KEY}'
+    w
     response = requests.get(url).json()
     return (float(response['results'][0]['geometry']['location']['lat']), float(response['results'][0]['geometry']['location']['lng']))
 

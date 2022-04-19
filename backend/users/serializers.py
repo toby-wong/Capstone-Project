@@ -16,7 +16,7 @@ class UserSerializer(ModelSerializer):
         Meta: Meta class for UserSerializer
     """
     class Meta:
-        """Extended fields for CustomUser model"""
+        """Required additional fields for CustomUser serializer"""
         model = CustomUser
         fields = (
             'email',
@@ -39,48 +39,64 @@ class UserSerializer(ModelSerializer):
 class CustomRegisterSerializer(RegisterSerializer):
     """
     Custom registration serializer for CustomUser model extending the default dj_rest_auth registration serializer
-    """
-# here we define any additional fields we are adding to the dj-rest-auth RegisterSerializer
-# so we are basically extending what you need (or really what you can potentially provide) to register
-# in simple terms, it is looking for fields called "phone_number" in the JSON request and saving them into a variable
 
+    Additional fields:
+        phone_number (CharField: str): Phone number of user
+        first_name (CharField: str): First name of user
+        last_name (CharField: str): Last name of user
+
+    Methods:
+        save: Overrides default save method to add additional fields to user
+
+    """
     phone_number = serializers.CharField(max_length=20)
     first_name = serializers.CharField(max_length=20)
     last_name = serializers.CharField(max_length=20)
 
-    # you make it atomic so unless you get all the fields it will deny you
     @transaction.atomic
-    # essentially we are redefining the function that takes JSON -> database
     def save(self, request):
-        # user is a 'row' in the Users table, but it hasn't been added to the DB yet
-        # the row needs to be populated with info from the JSON, and the super().save populates default fields
+        """Overrides default save method to add additional fields to user"""
         user = super().save(request)
-        # now we populate our custom fields
         user.phone_number = self.data.get('phone_number')
         user.first_name = self.data.get('first_name')
         user.last_name = self.data.get('last_name')
-        # insert row into DB
         user.save()
-        # profit???
         return user
 
 class RemoveUserSerializer(ModelSerializer):
+    """
+    Custom serializer for removing a user extending the default model serializer
+
+    Subclasses:
+        Meta: Meta class for RemoveUserSerializer
+
+    Methods:
+        delete: Overrides default delete method to remove a user
+    """
     class Meta:
+        """Required fields for CustomUser serializer"""
         model = CustomUser
         fields = []
-    
+
     def delete(self, request):
+        """Overrides default delete method to remove a user"""
         username = request.data.get('username')
         user = self.Meta.model.objects.get(username=username)
         user.delete()
-        # user.is_active = False
-        # user.save()
-
 
 class ImageSerializer(ModelSerializer):
+    """
+    Custom serializer for parking space images extending the default ModelSerializer
 
+    Fields:
+        image (CharField: str): Image of parking space
+
+    Subclasses:
+        Meta: Meta class for ImageSerializer
+    """
     image_data = serializers.CharField()
     class Meta:
+        """Required fields for Image serializer"""
         model = Image
         fields = (
             'image_data',
@@ -91,16 +107,27 @@ class ImageSerializer(ModelSerializer):
 
 
 class ParkingSpaceSerializer(NestedUpdateMixin, ModelSerializer):
+    """
+    Custom serializer for parking space extending the default ModelSerializer to add images
 
+    Fields:
+        images (ListField: ImageSerializer): List of images of parking space
+        provider (PrimaryKeyRelatedField: CustomUser): Provider of parking space
+
+    Subclasses:
+        Meta: Meta class for ParkingSpaceSerializer
+
+    Methods:
+        validate: Overrides default validate method to check parking space availability
+        create: Overrides default create method to add images to parking space
+    """
 
     images = ImageSerializer(many=True)
     provider = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
 
-    #add avg rating stuff here
-
     class Meta:
+        """Required fields for ParkingSpace serializer"""
         model = ParkingSpace
-        # fields = []
         fields = (
             'provider',
             'streetAddress',
@@ -120,21 +147,17 @@ class ParkingSpaceSerializer(NestedUpdateMixin, ModelSerializer):
             'avg_rating',
             'n_ratings',
             'is_active',
-            'pk',      
+            'pk',
         )
-
-        # read_only_fields = ('provider', 'streetAddress','city', 'state', 'postcode')
 
         read_only_fields = ['pk', 'is_active', 'avg_rating', 'n_ratings', 'longitude', 'latitude', 'latestTime']
 
-
     def validate(self, data):
-        
+        """Overrides default validate method to check parking space availability"""
         method = (self.context['view'].request.method)
 
         if (method == 'POST'):
             return data
-        
         if ('startTime' not in data or 'endTime' not in data):
             return data
 
@@ -151,22 +174,35 @@ class ParkingSpaceSerializer(NestedUpdateMixin, ModelSerializer):
 
 
     def create(self, validated_data):
+        """Overrides default create method to add images to parking space"""
         imgs_data = validated_data.pop('images')
         parkingSpace = ParkingSpace.objects.create(**validated_data)
         cleanAddress = AddressValidation(validated_data)
         cleanAddress = cleanAddress.validate()
+
         if not type(cleanAddress) == dict:
             raise serializers.ValidationError(cleanAddress.errors)
         parkingSpace.save()
+
         for img_data in imgs_data:
             Image.objects.create(parkingSpace=parkingSpace, **img_data)
         return parkingSpace
 
 class VehicleSerializer(ModelSerializer):
+    """
+    Custom serializer for vehicle extending the default ModelSerializer
+
+    Fields:
+        user (PrimaryKeyRelatedField: CustomUser): Owner of vehicle
+
+    Subclasses:
+        Meta: Meta class for VehicleSerializer
+    """
 
     user = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
 
     class Meta:
+        """Required fields for Vehicle serializer"""
         model = Vehicle
         fields = (
             'user',
@@ -179,14 +215,21 @@ class VehicleSerializer(ModelSerializer):
         )
 
         read_only_fields = ['pk']
-        
 
 class FavouriteSerializer(ModelSerializer):
+    """
+    Custom serializer for favourites extending the default ModelSerializer
+
+    Fields:
+        consumer (PrimaryKeyRelatedField: CustomUser): Consumer of favourites
+        parkingSpace (PrimaryKeyRelatedField: ParkingSpace): Favourited parking space
+    """
 
     consumer = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
     parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
 
     class Meta:
+        """Required fields for Favourite serializer"""
         model = Favourite
         fields = (
             'consumer',
@@ -197,6 +240,29 @@ class FavouriteSerializer(ModelSerializer):
         read_only_fields = ['pk']
 
 class TransactionSerializer(ModelSerializer):
+    """
+    Custom serializer for transactions extending the default ModelSerializer
+
+    Fields:
+        provider (PrimaryKeyRelatedField: CustomUser): Provider of transaction
+        consumer (PrimaryKeyRelatedField: CustomUser): Consumer of transaction
+        vehicle (PrimaryKeyRelatedField: Vehicle): Vehicle of transaction
+        parkingSpace (PrimaryKeyRelatedField: ParkingSpace): Parking space of transaction
+        streetAddress (CharField: str): Street address of booked parking space
+        city (CharField: str): City of booked parking space
+        state (CharField: str): State of booked parking space
+        postcode (CharField: str): Postcode of booked parking space
+        consumerName (CharField: str): Name of consumer
+        consumerPhone (CharField: str): Phone number of consumer
+        consumerEmail (CharField: str): Email of consumer
+        parkingSpaceSize (CharField: str): Size of booked parking space
+
+    Subclasses:
+        Meta: Meta class for TransactionSerializer
+
+    Methods:
+        validate: Overrides default validate method to check parking space availability
+    """
 
     provider = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
     consumer = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
@@ -211,8 +277,8 @@ class TransactionSerializer(ModelSerializer):
     consumerEmail = serializers.CharField(source="consumer.email", required=False)
     parkingSpaceSize = serializers.CharField(source="parkingSpace.size", required=False)
 
-
     class Meta:
+        """Required fields for Transaction serializer"""
         model = Transaction
         fields = (
             'provider',
@@ -235,9 +301,9 @@ class TransactionSerializer(ModelSerializer):
         )
 
         read_only_fields = ['pk', 'streetAddress', 'city', 'state', 'postcode', 'consumerName', 'parkingSpaceSize']
-    
+
     def validate(self, data):
-        
+        """Overrides default validate method to check parking space availability"""
         startTime = data['startTime']
         endTime = data['endTime']
         if data['provider'] == data['consumer']:
@@ -254,14 +320,24 @@ class TransactionSerializer(ModelSerializer):
             raise serializers.ValidationError('This booking overlaps with an existing booking.')
         return data
 
-        
 
 class ReviewSerializer(ModelSerializer):
+    """
+    Custom serializer for reviews extending the default ModelSerializer
+
+    Fields:
+        consumer (PrimaryKeyRelatedField: CustomUser): Review author
+        parkingSpace (PrimaryKeyRelatedField: ParkingSpace): Reviewed parking space
+
+    Subclasses:
+        Meta: Meta class for ReviewSerializer
+    """
 
     consumer = SlugRelatedField(queryset=CustomUser.objects.all(), slug_field='username')
     parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
 
     class Meta:
+        """Required fields for Review serializer"""
         model = Review
         fields = (
             'parkingSpace',
