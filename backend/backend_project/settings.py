@@ -127,7 +127,6 @@ REST_FRAMEWORK = {
 }
 
 JAZZMIN_SETTINGS = {
-    'show_ui_builder': True,
     'custom_css' : 'css/theme.css',
         # title of the window (Will default to current_admin_site.site_title if absent or None)
     "site_title": "Park It",
