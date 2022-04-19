@@ -29,6 +29,7 @@ import CarSpaceMap from "../../UI/LeafletUI/CarSpaceMap/CarSpaceMap";
 import CarSpaceMapViewItem from "../../UI/CarSpaceUI/CarSpaceMapViewItem/CarSpaceMapViewItem";
 
 const ProviderMapView = ({ status }) => {
+  document.title = "Provider Map"
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({ value: false, message: "" });
   const [carSpaces, setCarSpaces] = useState([]);

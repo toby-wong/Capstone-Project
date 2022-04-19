@@ -19,6 +19,7 @@ import ConsumerHistory from "./ConsumerHistory/ConsumerHistory";
 import Favourites from "./Favourites/Favourites";
 
 const Account = (props) => {
+  document.title = "Account Page"
   const location = useLocation();
   const activeTab = location.pathname.split("/").slice(2).join("/");
 

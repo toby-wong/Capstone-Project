@@ -10,6 +10,7 @@ import GeneralDataGrid from "../../UI/GeneralDataGrid/GeneralDataGrid";
 import AccountModalContext from "../../../contexts/account-modal-context";
 
 const MyCars = () => {
+  document.title = "My Cars"
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({
     value: false,

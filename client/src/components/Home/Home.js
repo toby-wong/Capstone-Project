@@ -10,6 +10,8 @@ import { Typography } from "@mui/material";
 const Home = () => {
   const navigate = useNavigate();
   const authContext = useContext(AuthContext);
+  document.title = "Welcome Home"
+
 
   const formSubmitHandler = async (formData) => {
     authContext.setSearchInfo(formData);
