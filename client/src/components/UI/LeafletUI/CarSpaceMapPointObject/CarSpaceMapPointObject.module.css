@@ -1,0 +1,17 @@
+.details {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.details:hover {
+  color: var(--green);
+}
+
+.icon {
+  margin: 0;
+  padding: 0;
+  margin-right: 5px;
+}
