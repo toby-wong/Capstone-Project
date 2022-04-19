@@ -39,7 +39,10 @@ const CarSpaceBookingForm = () => {
   const [myCars, setMyCars] = useState({});
   const [formState, dispatchFormState] = useReducer(
     carSpaceBookingFormReducer,
-    getCarSpaceBookingFormInitialState()
+    getCarSpaceBookingFormInitialState(
+      consumerModalContext.searchDate.startDate,
+      consumerModalContext.searchDate.endDate
+    )
   );
 
   const { streetAddress, city, state, postcode } =
@@ -47,12 +50,6 @@ const CarSpaceBookingForm = () => {
   const { price, size, images } = consumerModalContext.carSpaceInfo;
   const cardNumber = authContext.userInfo.card_number;
   const paymentMethodValidity = cardNumber !== "" && cardNumber !== undefined;
-  console.log(
-    cardNumber,
-    cardNumber !== "",
-    !cardNumber,
-    paymentMethodValidity
-  );
 
   const vehicleChangeHandler = (e) => {
     const carName = e.target.value;
@@ -124,7 +121,10 @@ const CarSpaceBookingForm = () => {
         actions: [
           {
             color: "primary",
-            onClick: subModalContext.closeAllModals(consumerModalContext),
+            onClick: subModalContext.closeAllModals(
+              consumerModalContext,
+              "/consumer"
+            ),
             content: "OK",
             width: "120px",
           },
@@ -221,8 +221,8 @@ const CarSpaceBookingForm = () => {
                     />
                   )}
                   value={formState.startDateTime.value}
-                  // minDateTime={formState.earliest}
-                  // maxDateTime={formState.latest}
+                  minDateTime={formState.earliest}
+                  maxDateTime={formState.latest}
                   onChange={(newDate) => {
                     dispatchFormState({
                       type: "START_TIME_INPUT",
@@ -245,8 +245,8 @@ const CarSpaceBookingForm = () => {
                     />
                   )}
                   value={formState.endDateTime.value}
-                  // minDateTime={formState.earliest}
-                  // maxDateTime={formState.latest}
+                  minDateTime={formState.earliest}
+                  maxDateTime={formState.latest}
                   onChange={(newDate) => {
                     dispatchFormState({
                       type: "END_TIME_INPUT",
@@ -325,7 +325,7 @@ const CarSpaceBookingForm = () => {
                     </Typography>
                   </>
                 ) : (
-                  <Typography variant="carSpaceModalSubContent">
+                  <Typography variant="carSpaceModalSubContent" color="red">
                     No card found. Please register a card in Account Details
                     Page.
                   </Typography>

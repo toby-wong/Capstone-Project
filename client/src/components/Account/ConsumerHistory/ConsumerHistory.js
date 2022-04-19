@@ -36,7 +36,6 @@ const ConsumerHistory = () => {
         };
         const response = await sendRequest(url, options, setIsLoading);
         if (response.status >= 300 || !response.status) throw Error;
-
         const fetchedHistory = [];
         for (const booking of response.data) {
           fetchedHistory.push({
@@ -61,7 +60,7 @@ const ConsumerHistory = () => {
     };
 
     fetchData();
-  }, []);
+  }, [accountModalContext.pageRefreshStatus]);
 
   return (
     <>

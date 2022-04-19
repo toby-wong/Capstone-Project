@@ -134,15 +134,12 @@ const ProviderBookingInfo = ({ context, content, onBack }) => {
             </Paper>
             <Paper variant="bookingInfoContentRight">
               <CarSpaceImageCarousel className={classes["image-carousel"]}>
-                {data.images.map((imgObj, idx) => {
-                  return (
-                    <CarSpaceImage
-                      key={idx}
-                      src={`data:image/png;base64, ${imgObj.image_data}`}
-                      alt="parking-space"
-                    />
-                  );
-                })}
+                {data.images.length > 0 && (
+                  <CarSpaceImage
+                    src={`data:image/png;base64, ${data.images[0].image_data}`}
+                    alt="parking-space"
+                  />
+                )}
               </CarSpaceImageCarousel>
               <ModalEntry className={classes.entry} icon={CalendarTodayIcon}>
                 <Typography variant="carSpaceModalSubTitle">

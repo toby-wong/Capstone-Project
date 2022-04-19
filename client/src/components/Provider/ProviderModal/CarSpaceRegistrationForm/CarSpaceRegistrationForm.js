@@ -105,7 +105,7 @@ const CarSpaceRegistrationForm = () => {
       onClose: closeSubModalHandler,
       title: "Confirmation",
       content: [
-        "Once your car space is registered and approved to be available by admin, consumers can make bookings for the car space and you cannot cancel the bookings by yourself. If you agree with this, please press `OK` button and register the car space.",
+        "By clicking OK you agree to honour all bookings made within the availability period you set. You may still edit this availability later as long as it doesn't violate any existing bookings. You may also cancel the listing and prevent any new bookings, but pre-existing bookings must still be honoured",
       ],
     });
   };

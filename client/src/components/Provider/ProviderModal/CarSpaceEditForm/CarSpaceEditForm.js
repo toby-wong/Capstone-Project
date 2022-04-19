@@ -90,6 +90,14 @@ const CarSpaceEditForm = () => {
     dispatchFormState({ type: "NOTES_INPUT", value: e.target.value });
   };
 
+  // EndDateTime Handler
+  const endDateTimeChangeHandler = (newDate) => {
+    dispatchFormState({
+      type: "END_TIME_INPUT",
+      value: newDate,
+    });
+  };
+
   // Form Submission
   const formSubmitHandler = async (e) => {
     e.preventDefault();
@@ -110,8 +118,6 @@ const CarSpaceEditForm = () => {
         images: formState.images.value,
         notes: formState.notes.value,
       };
-
-      console.log(formData);
 
       const carSpaceEditUrl = `${config.SERVER_URL}/api/provider/parking/${carSpaceModalContext.carSpaceId}`;
       const carSpaceEditOptions = {
@@ -188,7 +194,6 @@ const CarSpaceEditForm = () => {
     });
   };
 
-  // TODO: Check its fucntionality with back-end again.
   const deleteCarSpaceHandler = async () => {
     try {
       closeSubModalHandler();
@@ -330,12 +335,7 @@ const CarSpaceEditForm = () => {
                         ? utility.getDate(formState.latestTime)
                         : false
                     }
-                    onChange={(newDate) => {
-                      dispatchFormState({
-                        type: "END_TIME_INPUT",
-                        value: newDate,
-                      });
-                    }}
+                    onChange={endDateTimeChangeHandler}
                     shouldDisableTime={(timeValue, clockType) => {
                       return clockType === "minutes" && timeValue % 15;
                     }}

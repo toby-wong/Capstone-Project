@@ -1,136 +1,28 @@
 import classes from "./Home.module.css";
 
-import { Button, TextField, Typography } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import DateTimePicker from "@mui/lab/DateTimePicker";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import AuthContext from "../../contexts/auth-context";
+import CarSpaceSearchBar from "../UI/CarSpaceUI/CarSpaceSearchBar/CarSpaceSearchBar";
 
-// start, end, rating
+import { Typography } from "@mui/material";
+
 const Home = () => {
+  const navigate = useNavigate();
+  const authContext = useContext(AuthContext);
+
+  const formSubmitHandler = async (formData) => {
+    authContext.setSearchInfo(formData);
+    navigate(`/consumer`);
+  };
+
   return (
     <div className={classes.body}>
       <div className={classes["search-container"]}>
         <Typography variant="brandName" className={classes.slogan}>
-          Just Park it !
+          Just Park It !
         </Typography>
-        <div className={classes.search}>
-          <div className={classes["input-container"]}>
-            <Typography className={classes["input-label"]}>Location</Typography>
-            <input
-              className={classes["search-input"]}
-              type="text"
-              placeholder="Where do you want to go?"
-            />
-          </div>
-          <div className={classes["input-container"]}>
-            <Typography
-              variant="sectionSubContent"
-              className={`${classes["input-label"]} ${classes.datetime}`}
-            >
-              From
-            </Typography>
-            <DateTimePicker
-              renderInput={(params) => {
-                console.log(params);
-                return (
-                  <TextField
-                    {...params}
-                    variant="standard"
-                    className={classes.text}
-                    inputProps={{
-                      style: {
-                        color: "black",
-                        fontSize: "13.5px",
-                        margin: 0,
-                        marginTop: "15px",
-                        marginLeft: "4px",
-                        borderRadius: "32px",
-                        WebkitBoxShadow: "0 0 0 1000px var(--light) inset",
-                      },
-                    }}
-                  />
-                );
-              }}
-              InputProps={{
-                disableUnderline: true,
-              }}
-              // value={formState.startDateTime.value}
-              minDateTime={new Date()}
-              onChange={(newDate) => {}}
-              shouldDisableTime={(timeValue, clockType) => {
-                return clockType === "minutes" && timeValue % 15;
-              }}
-              inputFormat="dd/MM/yyyy hh:mm a"
-            />
-          </div>
-          <div className={classes["input-container"]}>
-            <Typography
-              variant="sectionSubContent"
-              className={`${classes["input-label"]} ${classes.datetime}`}
-            >
-              Until
-            </Typography>
-            <DateTimePicker
-              renderInput={(params) => {
-                console.log(params);
-                return (
-                  <TextField
-                    {...params}
-                    variant="standard"
-                    className={classes.text}
-                    inputProps={{
-                      style: {
-                        color: "black",
-                        fontSize: "13.5px",
-                        margin: 0,
-                        marginTop: "15px",
-                        marginLeft: "4px",
-                        borderRadius: "32px",
-                        WebkitBoxShadow: "0 0 0 1000px var(--light) inset",
-                      },
-                    }}
-                  />
-                );
-              }}
-              InputProps={{
-                disableUnderline: true,
-              }}
-              // value={formState.startDateTime.value}
-              minDateTime={new Date()}
-              onChange={(newDate) => {}}
-              shouldDisableTime={(timeValue, clockType) => {
-                return clockType === "minutes" && timeValue % 15;
-              }}
-              inputFormat="dd/MM/yyyy hh:mm a"
-            />
-            <Button
-              className={classes["search-btn"]}
-              variant="contained"
-              size="small"
-            >
-              <SearchIcon className={classes["search-icon"]} />
-            </Button>
-          </div>
-          {/* <div className={classes["input-container"]}>
-            <Typography
-              variant="sectionSubContent"
-              className={classes["input-label"]}
-            >
-              Until
-            </Typography>
-            <input
-              className={classes["search-input"]}
-              type="text"
-              placeholder="Where do you want to go?"
-            />
-            <Button
-              className={classes["search-btn"]}
-              variant="contained"
-              size="small"
-            >
-              <SearchIcon className={classes["search-icon"]} />
-            </Button>
-          </div> */}
-        </div>
+        <CarSpaceSearchBar onSubmit={formSubmitHandler} />
       </div>
     </div>
   );

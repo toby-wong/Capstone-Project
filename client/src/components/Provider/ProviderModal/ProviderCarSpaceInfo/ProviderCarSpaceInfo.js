@@ -20,6 +20,10 @@ const ProviderCarSpaceInfo = ({ status }) => {
     providerModalContext.openPage("/bookings");
   };
 
+  const closeCarSpaceInfoHandler = () => {
+    providerModalContext.closeModal();
+  };
+
   const bookingAction = {
     content: "View Bookings",
     color: "primary",
@@ -70,7 +74,8 @@ const ProviderCarSpaceInfo = ({ status }) => {
       isLoading={isLoading}
       error={error}
       setError={setError}
-      onClose={providerModalContext.closeModal}
+      onClose={closeCarSpaceInfoHandler}
+      // onClose={providerModalContext.closeModal}
       modalContext={providerModalContext}
     />
   );

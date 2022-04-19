@@ -12,12 +12,15 @@ const AuthContext = React.createContext({
   logout: () => {},
   userInfo: null,
   setUserInfo: () => {},
+  searchInfo: {},
+  setSearchInfo: () => {},
 });
 
 export const AuthContextProvider = (props) => {
   const [token, setToken] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
+  const [searchInfo, setSearchInfo] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -60,6 +63,7 @@ export const AuthContextProvider = (props) => {
   const loginHandler = (token, admin) => {
     setToken(token);
     setIsAdmin(admin);
+    setSearchInfo(null);
     localStorage.setItem("parkItAuthToken", token);
   };
 
@@ -77,6 +81,8 @@ export const AuthContextProvider = (props) => {
     logout: logoutHandler,
     userInfo: userInfo,
     setUserInfo,
+    searchInfo,
+    setSearchInfo,
   };
 
   return (

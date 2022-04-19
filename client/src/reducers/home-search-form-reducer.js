@@ -1,6 +1,4 @@
-import * as utility from "../utility";
-
-export const carSpaceBookingFormReducer = (state, action) => {
+export const homeSearchFormReducer = (state, action) => {
   const newState = { ...state };
 
   if (action.type.includes("TIME_INPUT")) {
@@ -24,37 +22,41 @@ export const carSpaceBookingFormReducer = (state, action) => {
 
     newState.startDateTime.value.setSeconds(0, 0);
     newState.endDateTime.value.setSeconds(0, 0);
-
-    if (newState.startDateTime.isValid && newState.endDateTime.isValid) {
-      const timeDiffInHours = timeDiffInMilliseconds / (1000 * 60 * 60);
-      newState.duration = timeDiffInHours;
-    }
   }
 
-  if (action.type === "VEHICLE_INPUT") {
-    newState.vehicle.value = action.value;
-    newState.vehicle.isValid = action.value.name !== "";
+  if (action.type === "ADDRESS_INPUT") {
+    newState.address.value = action.value;
+    newState.address.isValid = action.value.name !== "";
+  }
+
+  if (action.type === "RADIUS_INPUT") {
+    newState.radius = action.value;
   }
 
   newState.isFormValid =
+    newState.address.isValid &&
     newState.startDateTime.isValid &&
-    newState.endDateTime.isValid &&
-    newState.vehicle.isValid;
+    newState.endDateTime.isValid;
 
   return newState;
 };
 
-export const getCarSpaceBookingFormInitialState = (
-  earliest = new Date(),
-  latest = new Date()
-) => {
+export const homeSearchFormInitialState = (initialState) => {
+  if (initialState) {
+    return {
+      isFormValid: true,
+      address: { value: initialState.address, isValid: true },
+      startDateTime: { value: initialState.startDateTime, isValid: true },
+      endDateTime: { value: initialState.endDateTime, isValid: true },
+      radius: initialState.radius,
+    };
+  }
+
   return {
     isFormValid: false,
-    earliest,
-    latest,
-    startDateTime: { value: earliest, isValid: true },
-    endDateTime: { value: latest, isValid: true },
-    vehicle: { value: { name: "", id: "" }, isValid: false },
-    duration: utility.getTimeDiffInHours(latest, earliest),
+    address: { value: "", isValid: false },
+    startDateTime: { value: new Date(), isValid: false },
+    endDateTime: { value: new Date(), isValid: false },
+    radius: "",
   };
 };

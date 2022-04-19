@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SubModalContext = React.createContext({
   isOpen: false,
@@ -16,6 +17,7 @@ export const SubModalContextProvider = (props) => {
     actions: [],
   });
   const [externalModalContext, setExternalModalContext] = useState(null);
+  const navigate = useNavigate();
 
   const closeModal = () => {
     setIsOpen(false);
@@ -26,10 +28,11 @@ export const SubModalContextProvider = (props) => {
     setContent({ title: "", messages: [], actions: [] });
   };
 
-  const closeAllModals = (context) => {
+  const closeAllModals = (context, redirectPath = null) => {
     return () => {
       setIsOpen(false);
       context.closeModal();
+      if (redirectPath) navigate(redirectPath);
     };
   };
 
