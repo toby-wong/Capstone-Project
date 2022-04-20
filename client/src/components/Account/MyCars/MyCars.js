@@ -9,8 +9,6 @@ import * as config from "../../../config";
 import GeneralDataGrid from "../../UI/GeneralDataGrid/GeneralDataGrid";
 import AccountModalContext from "../../../contexts/account-modal-context";
 
-document.title = "My Cars";
-
 const MyCars = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({
@@ -21,6 +19,8 @@ const MyCars = () => {
   const accountModalContext = useContext(AccountModalContext);
 
   useEffect(() => {
+    document.title = "My Cars";
+
     const fetchData = async () => {
       const authToken = localStorage.getItem("parkItAuthToken");
 

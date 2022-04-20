@@ -28,8 +28,6 @@ import ProviderModalContext from "../../../contexts/provider-modal-context";
 import CarSpaceMap from "../../UI/LeafletUI/CarSpaceMap/CarSpaceMap";
 import CarSpaceMapViewItem from "../../UI/CarSpaceUI/CarSpaceMapViewItem/CarSpaceMapViewItem";
 
-document.title = "Provider Map";
-
 const ProviderMapView = ({ status }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({ value: false, message: "" });
@@ -65,6 +63,8 @@ const ProviderMapView = ({ status }) => {
   };
 
   useEffect(() => {
+    document.title = "Provider Map";
+
     const fetchData = async () => {
       try {
         const authToken = localStorage.getItem("parkItAuthToken");

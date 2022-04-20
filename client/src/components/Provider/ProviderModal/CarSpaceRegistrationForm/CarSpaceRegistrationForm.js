@@ -1,6 +1,6 @@
 import classes from "./CarSpaceRegistrationForm.module.css";
 
-import { useContext, useReducer, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 
 import {
   carSpaceRegistrationFormReducer,
@@ -29,8 +29,6 @@ import CarSpaceCardContentLeft from "../../../UI/CarSpaceUI/CarSpaceCard/CarSpac
 import CarSpaceFormImageCarousel from "../../../UI/CarSpaceUI/CarSpaceForm/CarSpaceFormImageCarousel/CarSpaceFormImageCarousel";
 import CarSpaceCardContentRight from "../../../UI/CarSpaceUI/CarSpaceCard/CarSpaceCardContentRight";
 
-document.title = "Adding Car Space";
-
 const CarSpaceRegistrationForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [subModal, setSubModal] = useState({
@@ -46,6 +44,10 @@ const CarSpaceRegistrationForm = () => {
   );
   const authContext = useContext(AuthContext);
   const carSpaceModalContext = useContext(CarSpaceModalContext);
+
+  useEffect(() => {
+    document.title = "Adding Car Space";
+  }, []);
 
   // Image Upload Handlers
   const imageUploadHandler = async (e) => {

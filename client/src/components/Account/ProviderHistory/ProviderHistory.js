@@ -8,8 +8,6 @@ import { Typography, Paper, CircularProgress } from "@mui/material";
 
 import GeneralDataGrid from "../../UI/GeneralDataGrid/GeneralDataGrid";
 
-document.title = "Provider History";
-
 const ProviderHistory = () => {
   const accountModalContext = useContext(AccountModalContext);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +23,8 @@ const ProviderHistory = () => {
   };
 
   useEffect(() => {
+    document.title = "Provider History";
+
     const fetchData = async () => {
       const authToken = localStorage.getItem("parkItAuthToken");
       if (!authToken) return;

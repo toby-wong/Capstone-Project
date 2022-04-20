@@ -9,8 +9,6 @@ import * as config from "../../../config";
 import AccountModalContext from "../../../contexts/account-modal-context";
 import GeneralDataGrid from "../../UI/GeneralDataGrid/GeneralDataGrid";
 
-document.title = "Favourites";
-
 const Favourites = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({
@@ -30,6 +28,8 @@ const Favourites = () => {
   };
 
   useEffect(() => {
+    document.title = "Favourites";
+
     const fetchData = async () => {
       const authToken = localStorage.getItem("parkItAuthToken");
       if (!authToken) return;

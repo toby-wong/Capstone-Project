@@ -17,12 +17,15 @@ import ProviderHistory from "./ProviderHistory/ProviderHistory";
 import MyCars from "./MyCars/MyCars";
 import ConsumerHistory from "./ConsumerHistory/ConsumerHistory";
 import Favourites from "./Favourites/Favourites";
-
-document.title = "Account Page";
+import { useEffect } from "react";
 
 const Account = (props) => {
   const location = useLocation();
   const activeTab = location.pathname.split("/").slice(2).join("/");
+
+  useEffect(() => {
+    document.title = "Account Page";
+  }, []);
 
   return (
     <AccountModalContextProvider>

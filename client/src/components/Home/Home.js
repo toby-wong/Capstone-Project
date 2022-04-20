@@ -1,13 +1,11 @@
 import classes from "./Home.module.css";
 
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../contexts/auth-context";
 import CarSpaceSearchBar from "../UI/CarSpaceUI/CarSpaceSearchBar/CarSpaceSearchBar";
 
 import { Typography } from "@mui/material";
-
-document.title = "Welcome Home";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -17,6 +15,10 @@ const Home = () => {
     authContext.setSearchInfo(formData);
     navigate(`/consumer`);
   };
+
+  useEffect(() => {
+    document.title = "Home - Park it !";
+  }, []);
 
   return (
     <div className={classes.body}>

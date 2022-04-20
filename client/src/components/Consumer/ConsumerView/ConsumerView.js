@@ -17,8 +17,6 @@ import ConsumerModalContext from "../../../contexts/consumer-modal-context";
 import CarSpaceMap from "../../UI/LeafletUI/CarSpaceMap/CarSpaceMap";
 import CarSpaceMapViewItem from "../../UI/CarSpaceUI/CarSpaceMapViewItem/CarSpaceMapViewItem";
 
-document.title = "Consumer View";
-
 const ConsumerView = () => {
   const authContext = useContext(AuthContext);
   const subModalContext = useContext(SubModalContext);
@@ -87,6 +85,7 @@ const ConsumerView = () => {
   };
 
   useEffect(() => {
+    document.title = "Consumer View";
     const fetchData = async () => {
       try {
         if (!authContext.searchInfo) return;
