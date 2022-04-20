@@ -76,12 +76,3 @@ def getParkingSpace(pk):
     """Returns parking space object associated with given id"""
     parking_obj = ParkingSpace.objects.get(id=pk)
     return parking_obj
-
-def getSuggestions(address):
-    """Returns suggestions for a provided address"""
-    import requests, urllib.parse
-
-    url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(address) + '?countrycodes=au&format=json'
-    response = requests.get(url).json()
-
-    return [''.join(i["display_name"].split(',')[:3]) + ''.join(i["display_name"].split(',')[-3:-1]) for i in response]

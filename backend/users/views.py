@@ -376,23 +376,6 @@ class ReviewList(ListAPIView):
 
 # SEARCH VIEWS
 
-class AddressSuggestions(APIView):
-    """
-    View to retrieve suggestions for addresses
-
-    Request types:
-        GET
-
-    Methods:
-        get: override get method to return suggestions"""
-    def get(self, request):
-        """Returns address suggestions"""
-        suggestions = []
-        address = request.query_params.get('address', None)
-        if address is not None:
-            suggestions = getSuggestions(address)
-        return Response(suggestions)
-
 class ParkingSearchList(ListAPIView):
     """
     View to retrieve all parking spaces matching search criteria

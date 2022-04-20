@@ -55,7 +55,5 @@ urlpatterns = [
     path('consumer/vehicle/all', VehicleList.as_view(), name='list_vehicle'),
 
     # Search
-
-    path('provider/parking/search/suggestions/', AddressSuggestions.as_view(), name='address_suggestions'),
     path('provider/parking/search/', ParkingSearchList.as_view(), name='search_parking_space'),
 ]

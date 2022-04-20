@@ -6,6 +6,11 @@ paths:
   /api/consumer/book:
     post:
       operationId: api_consumer_book_create
+      description: |-
+        View to create a booking
+
+        Request types:
+            POST
       tags:
       - api
       requestBody:
@@ -34,6 +39,14 @@ paths:
   /api/consumer/book/{id}:
     get:
       operationId: api_consumer_book_retrieve
+      description: |-
+        View to retrieve, update and delete a booking
+
+        Request types:
+            GET
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -55,6 +68,14 @@ paths:
           description: ''
     put:
       operationId: api_consumer_book_update
+      description: |-
+        View to retrieve, update and delete a booking
+
+        Request types:
+            GET
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -88,6 +109,14 @@ paths:
           description: ''
     patch:
       operationId: api_consumer_book_partial_update
+      description: |-
+        View to retrieve, update and delete a booking
+
+        Request types:
+            GET
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -120,6 +149,14 @@ paths:
           description: ''
     delete:
       operationId: api_consumer_book_destroy
+      description: |-
+        View to retrieve, update and delete a booking
+
+        Request types:
+            GET
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -138,6 +175,11 @@ paths:
   /api/consumer/favourite:
     post:
       operationId: api_consumer_favourite_create
+      description: |-
+        View to favourite a parking space
+
+        Request types:
+            POST
       tags:
       - api
       requestBody:
@@ -166,6 +208,14 @@ paths:
   /api/consumer/favourite/{id}:
     get:
       operationId: api_consumer_favourite_retrieve
+      description: |-
+        View to retrieve, update and delete a favourite
+
+        Request types:
+            GET
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -187,6 +237,14 @@ paths:
           description: ''
     put:
       operationId: api_consumer_favourite_update
+      description: |-
+        View to retrieve, update and delete a favourite
+
+        Request types:
+            GET
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -220,6 +278,14 @@ paths:
           description: ''
     patch:
       operationId: api_consumer_favourite_partial_update
+      description: |-
+        View to retrieve, update and delete a favourite
+
+        Request types:
+            GET
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -252,6 +318,14 @@ paths:
           description: ''
     delete:
       operationId: api_consumer_favourite_destroy
+      description: |-
+        View to retrieve, update and delete a favourite
+
+        Request types:
+            GET
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -270,6 +344,11 @@ paths:
   /api/consumer/favourite/all:
     get:
       operationId: api_consumer_favourite_all_list
+      description: |-
+        View to retrieve all favourites from a consumer
+
+        Request types:
+            GET
       parameters:
       - name: limit
         required: false
@@ -299,6 +378,11 @@ paths:
   /api/consumer/history:
     get:
       operationId: api_consumer_history_list
+      description: |-
+        View to retrieve all bookings from a consumer
+
+        Request types:
+            GET
       parameters:
       - name: limit
         required: false
@@ -328,6 +412,11 @@ paths:
   /api/consumer/review:
     post:
       operationId: api_consumer_review_create
+      description: |-
+        View to create a review
+
+        Request types:
+            POST
       tags:
       - api
       requestBody:
@@ -356,6 +445,14 @@ paths:
   /api/consumer/review/{id}:
     get:
       operationId: api_consumer_review_retrieve
+      description: |-
+        View to retrieve, update and delete a review
+
+        Request types:
+            GET
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -377,6 +474,14 @@ paths:
           description: ''
     put:
       operationId: api_consumer_review_update
+      description: |-
+        View to retrieve, update and delete a review
+
+        Request types:
+            GET
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -410,6 +515,14 @@ paths:
           description: ''
     patch:
       operationId: api_consumer_review_partial_update
+      description: |-
+        View to retrieve, update and delete a review
+
+        Request types:
+            GET
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -442,6 +555,14 @@ paths:
           description: ''
     delete:
       operationId: api_consumer_review_destroy
+      description: |-
+        View to retrieve, update and delete a review
+
+        Request types:
+            GET
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -460,6 +581,11 @@ paths:
   /api/consumer/vehicle:
     post:
       operationId: api_consumer_vehicle_create
+      description: |-
+        View to create a vehicle
+
+        Request types:
+            POST
       tags:
       - api
       requestBody:
@@ -488,6 +614,14 @@ paths:
   /api/consumer/vehicle/{id}:
     get:
       operationId: api_consumer_vehicle_retrieve
+      description: |-
+        View to retrieve, update and delete a vehicle
+
+        Request types:
+            GET
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -509,6 +643,14 @@ paths:
           description: ''
     put:
       operationId: api_consumer_vehicle_update
+      description: |-
+        View to retrieve, update and delete a vehicle
+
+        Request types:
+            GET
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -542,6 +684,14 @@ paths:
           description: ''
     patch:
       operationId: api_consumer_vehicle_partial_update
+      description: |-
+        View to retrieve, update and delete a vehicle
+
+        Request types:
+            GET
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -574,6 +724,14 @@ paths:
           description: ''
     delete:
       operationId: api_consumer_vehicle_destroy
+      description: |-
+        View to retrieve, update and delete a vehicle
+
+        Request types:
+            GET
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -592,6 +750,14 @@ paths:
   /api/consumer/vehicle/all:
     get:
       operationId: api_consumer_vehicle_all_list
+      description: |-
+        View to retrieve all vehicles from a user
+
+        Request types:
+            GET
+            PUT
+            PATCH
+            DELETE
       parameters:
       - name: limit
         required: false
@@ -621,6 +787,7 @@ paths:
   /api/delete/user:
     delete:
       operationId: api_delete_user_destroy
+      description: Deletes user from database
       tags:
       - api
       security:
@@ -633,6 +800,11 @@ paths:
   /api/provider/history:
     get:
       operationId: api_provider_history_list
+      description: |-
+        View to retrieve all bookings from a provider
+
+        Request types:
+            GET
       parameters:
       - name: limit
         required: false
@@ -662,6 +834,11 @@ paths:
   /api/provider/image/{parkingID}:
     post:
       operationId: api_provider_image_create
+      description: |-
+        View to upload an image
+
+        Request types:
+            POST
       parameters:
       - in: path
         name: parkingID
@@ -696,6 +873,14 @@ paths:
   /api/provider/image/{id}:
     get:
       operationId: api_provider_image_retrieve
+      description: |-
+        View to retrieve, update and delete an image
+
+        Request types:
+            GET'
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -717,6 +902,14 @@ paths:
           description: ''
     put:
       operationId: api_provider_image_update
+      description: |-
+        View to retrieve, update and delete an image
+
+        Request types:
+            GET'
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -750,6 +943,14 @@ paths:
           description: ''
     patch:
       operationId: api_provider_image_partial_update
+      description: |-
+        View to retrieve, update and delete an image
+
+        Request types:
+            GET'
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -782,6 +983,14 @@ paths:
           description: ''
     delete:
       operationId: api_provider_image_destroy
+      description: |-
+        View to retrieve, update and delete an image
+
+        Request types:
+            GET'
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -800,6 +1009,11 @@ paths:
   /api/provider/parking:
     post:
       operationId: api_provider_parking_create
+      description: |-
+        View to create a parking space
+
+        Request types:
+            POST
       tags:
       - api
       requestBody:
@@ -828,6 +1042,14 @@ paths:
   /api/provider/parking/{id}:
     get:
       operationId: api_provider_parking_retrieve
+      description: |-
+        View to retrieve, update and delete a parking space
+
+        Request types:
+            GET
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -849,6 +1071,14 @@ paths:
           description: ''
     put:
       operationId: api_provider_parking_update
+      description: |-
+        View to retrieve, update and delete a parking space
+
+        Request types:
+            GET
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -882,6 +1112,14 @@ paths:
           description: ''
     patch:
       operationId: api_provider_parking_partial_update
+      description: |-
+        View to retrieve, update and delete a parking space
+
+        Request types:
+            GET
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -914,6 +1152,14 @@ paths:
           description: ''
     delete:
       operationId: api_provider_parking_destroy
+      description: |-
+        View to retrieve, update and delete a parking space
+
+        Request types:
+            GET
+            PUT
+            PATCH
+            DELETE
       parameters:
       - in: path
         name: id
@@ -932,6 +1178,11 @@ paths:
   /api/provider/parking/all:
     get:
       operationId: api_provider_parking_all_list
+      description: |-
+        View to retrieve all parking spaces owned by the user
+
+        Request types:
+            GET
       parameters:
       - name: limit
         required: false
@@ -961,6 +1212,11 @@ paths:
   /api/provider/parking/approved:
     get:
       operationId: api_provider_parking_approved_list
+      description: |-
+        View to retrieve all parking spaces owned by the user that are approved
+
+        Request types:
+            GET
       parameters:
       - name: limit
         required: false
@@ -990,6 +1246,11 @@ paths:
   /api/provider/parking/bookings/{parkingID}:
     get:
       operationId: api_provider_parking_bookings_list
+      description: |-
+        View to retrieve all bookings associated with a Parking Space
+
+        Request types:
+            GET
       parameters:
       - name: limit
         required: false
@@ -1024,6 +1285,11 @@ paths:
   /api/provider/parking/cancelled:
     get:
       operationId: api_provider_parking_cancelled_list
+      description: |-
+        View to retrieve all parking spaces owned by the user that are cancelled
+
+        Request types:
+            GET
       parameters:
       - name: limit
         required: false
@@ -1053,6 +1319,11 @@ paths:
   /api/provider/parking/images/{parkingID}:
     get:
       operationId: api_provider_parking_images_list
+      description: |-
+        View to retrieve all images associated with a Parking Space
+
+        Request types:
+            GET
       parameters:
       - name: limit
         required: false
@@ -1087,6 +1358,11 @@ paths:
   /api/provider/parking/pending:
     get:
       operationId: api_provider_parking_pending_list
+      description: |-
+        View to retrieve all parking spaces owned by the user that are pending
+
+        Request types:
+            GET
       parameters:
       - name: limit
         required: false
@@ -1116,6 +1392,11 @@ paths:
   /api/provider/parking/rejected:
     get:
       operationId: api_provider_parking_rejected_list
+      description: |-
+        View to retrieve all parking spaces owned by the user that are rejected
+
+        Request types:
+            GET
       parameters:
       - name: limit
         required: false
@@ -1145,6 +1426,11 @@ paths:
   /api/provider/parking/reviews/{parkingID}:
     get:
       operationId: api_provider_parking_reviews_list
+      description: |-
+        View to retrieve all reviews associated with a Parking Space
+
+        Request types:
+            GET
       parameters:
       - name: limit
         required: false
@@ -1179,6 +1465,11 @@ paths:
   /api/provider/parking/search/:
     get:
       operationId: api_provider_parking_search_list
+      description: |-
+        View to retrieve all parking spaces matching search criteria
+
+        Request types:
+            GET
       parameters:
       - name: limit
         required: false
@@ -1201,33 +1492,13 @@ paths:
         schema:
           type: integer
       - in: query
-        name: rating__gte_max
+        name: rating__gte
         schema:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
-          nullable: true
+          type: number
       - in: query
-        name: rating__gte_min
+        name: rating__lte
         schema:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
-          nullable: true
-      - in: query
-        name: rating__lte_max
-        schema:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
-          nullable: true
-      - in: query
-        name: rating__lte_min
-        schema:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
-          nullable: true
+          type: number
       - in: query
         name: size
         schema:
@@ -1254,18 +1525,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedParkingSpaceList'
           description: ''
-  /api/provider/parking/search/suggestions/:
-    get:
-      operationId: api_provider_parking_search_suggestions_retrieve
-      tags:
-      - api
-      security:
-      - jwtHeaderAuth: []
-        jwtCookieAuth: []
-      - {}
-      responses:
-        '200':
-          description: No response body
   /dj-rest-auth/account-confirm-email/:
     post:
       operationId: dj_rest_auth_account_confirm_email_create
@@ -1704,6 +1963,16 @@ components:
   schemas:
     CustomRegister:
       type: object
+      description: |-
+        Custom registration serializer for CustomUser model extending the default dj_rest_auth registration serializer
+
+        Additional fields:
+            phone_number (CharField: str): Phone number of user
+            first_name (CharField: str): First name of user
+            last_name (CharField: str): Last name of user
+
+        Methods:
+            save: Overrides default save method to add additional fields to user
       properties:
         username:
           type: string
@@ -1737,6 +2006,12 @@ components:
       - username
     Favourite:
       type: object
+      description: |-
+        Custom serializer for favourites extending the default ModelSerializer
+
+        Fields:
+            consumer (PrimaryKeyRelatedField: CustomUser): Consumer of favourites
+            parkingSpace (PrimaryKeyRelatedField: ParkingSpace): Favourited parking space
       properties:
         consumer:
           type: integer
@@ -1746,12 +2021,40 @@ components:
           type: integer
           readOnly: true
           title: ID
+        streetAddress:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        postcode:
+          type: string
+        cost:
+          type: integer
+        notes:
+          type: string
+        parkingSpaceSize:
+          type: string
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
       required:
       - consumer
       - parkingSpace
       - pk
     Image:
       type: object
+      description: |-
+        Custom serializer for parking space images extending the default ModelSerializer
+
+        Fields:
+            image (CharField: str): Image of parking space
+
+        Subclasses:
+            Meta: Meta class for ImageSerializer
       properties:
         image_data:
           type: string
@@ -1910,7 +2213,19 @@ components:
             $ref: '#/components/schemas/Vehicle'
     ParkingSpace:
       type: object
-      description: Adds update nested feature
+      description: |-
+        Custom serializer for parking space extending the default ModelSerializer to add images
+
+        Fields:
+            images (ListField: ImageSerializer): List of images of parking space
+            provider (PrimaryKeyRelatedField: CustomUser): Provider of parking space
+
+        Subclasses:
+            Meta: Meta class for ParkingSpaceSerializer
+
+        Methods:
+            validate: Overrides default validate method to check parking space availability
+            create: Overrides default create method to add images to parking space
       properties:
         provider:
           type: integer
@@ -2037,6 +2352,12 @@ components:
       - uid
     PatchedFavourite:
       type: object
+      description: |-
+        Custom serializer for favourites extending the default ModelSerializer
+
+        Fields:
+            consumer (PrimaryKeyRelatedField: CustomUser): Consumer of favourites
+            parkingSpace (PrimaryKeyRelatedField: ParkingSpace): Favourited parking space
       properties:
         consumer:
           type: integer
@@ -2046,8 +2367,36 @@ components:
           type: integer
           readOnly: true
           title: ID
+        streetAddress:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        postcode:
+          type: string
+        cost:
+          type: integer
+        notes:
+          type: string
+        parkingSpaceSize:
+          type: string
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
     PatchedImage:
       type: object
+      description: |-
+        Custom serializer for parking space images extending the default ModelSerializer
+
+        Fields:
+            image (CharField: str): Image of parking space
+
+        Subclasses:
+            Meta: Meta class for ImageSerializer
       properties:
         image_data:
           type: string
@@ -2057,7 +2406,19 @@ components:
           title: ID
     PatchedParkingSpace:
       type: object
-      description: Adds update nested feature
+      description: |-
+        Custom serializer for parking space extending the default ModelSerializer to add images
+
+        Fields:
+            images (ListField: ImageSerializer): List of images of parking space
+            provider (PrimaryKeyRelatedField: CustomUser): Provider of parking space
+
+        Subclasses:
+            Meta: Meta class for ParkingSpaceSerializer
+
+        Methods:
+            validate: Overrides default validate method to check parking space availability
+            create: Overrides default create method to add images to parking space
       properties:
         provider:
           type: integer
@@ -2126,6 +2487,15 @@ components:
           title: ID
     PatchedReview:
       type: object
+      description: |-
+        Custom serializer for reviews extending the default ModelSerializer
+
+        Fields:
+            consumer (PrimaryKeyRelatedField: CustomUser): Review author
+            parkingSpace (PrimaryKeyRelatedField: ParkingSpace): Reviewed parking space
+
+        Subclasses:
+            Meta: Meta class for ReviewSerializer
       properties:
         parkingSpace:
           type: integer
@@ -2147,6 +2517,28 @@ components:
           title: ID
     PatchedTransaction:
       type: object
+      description: |-
+        Custom serializer for transactions extending the default ModelSerializer
+
+        Fields:
+            provider (PrimaryKeyRelatedField: CustomUser): Provider of transaction
+            consumer (PrimaryKeyRelatedField: CustomUser): Consumer of transaction
+            vehicle (PrimaryKeyRelatedField: Vehicle): Vehicle of transaction
+            parkingSpace (PrimaryKeyRelatedField: ParkingSpace): Parking space of transaction
+            streetAddress (CharField: str): Street address of booked parking space
+            city (CharField: str): City of booked parking space
+            state (CharField: str): State of booked parking space
+            postcode (CharField: str): Postcode of booked parking space
+            consumerName (CharField: str): Name of consumer
+            consumerPhone (CharField: str): Phone number of consumer
+            consumerEmail (CharField: str): Email of consumer
+            parkingSpaceSize (CharField: str): Size of booked parking space
+
+        Subclasses:
+            Meta: Meta class for TransactionSerializer
+
+        Methods:
+            validate: Overrides default validate method to check parking space availability
       properties:
         provider:
           type: integer
@@ -2192,6 +2584,11 @@ components:
           title: ID
     PatchedUser:
       type: object
+      description: |-
+        Serializer for CustomUser model
+
+        Subclasses:
+            Meta: Meta class for UserSerializer
       properties:
         email:
           type: string
@@ -2238,6 +2635,14 @@ components:
           title: ID
     PatchedVehicle:
       type: object
+      description: |-
+        Custom serializer for vehicle extending the default ModelSerializer
+
+        Fields:
+            user (PrimaryKeyRelatedField: CustomUser): Owner of vehicle
+
+        Subclasses:
+            Meta: Meta class for VehicleSerializer
       properties:
         user:
           type: integer
@@ -2269,6 +2674,15 @@ components:
       - detail
     Review:
       type: object
+      description: |-
+        Custom serializer for reviews extending the default ModelSerializer
+
+        Fields:
+            consumer (PrimaryKeyRelatedField: CustomUser): Review author
+            parkingSpace (PrimaryKeyRelatedField: ParkingSpace): Reviewed parking space
+
+        Subclasses:
+            Meta: Meta class for ReviewSerializer
       properties:
         parkingSpace:
           type: integer
@@ -2331,6 +2745,28 @@ components:
       - token
     Transaction:
       type: object
+      description: |-
+        Custom serializer for transactions extending the default ModelSerializer
+
+        Fields:
+            provider (PrimaryKeyRelatedField: CustomUser): Provider of transaction
+            consumer (PrimaryKeyRelatedField: CustomUser): Consumer of transaction
+            vehicle (PrimaryKeyRelatedField: Vehicle): Vehicle of transaction
+            parkingSpace (PrimaryKeyRelatedField: ParkingSpace): Parking space of transaction
+            streetAddress (CharField: str): Street address of booked parking space
+            city (CharField: str): City of booked parking space
+            state (CharField: str): State of booked parking space
+            postcode (CharField: str): Postcode of booked parking space
+            consumerName (CharField: str): Name of consumer
+            consumerPhone (CharField: str): Phone number of consumer
+            consumerEmail (CharField: str): Email of consumer
+            parkingSpaceSize (CharField: str): Size of booked parking space
+
+        Subclasses:
+            Meta: Meta class for TransactionSerializer
+
+        Methods:
+            validate: Overrides default validate method to check parking space availability
       properties:
         provider:
           type: integer
@@ -2386,6 +2822,11 @@ components:
       - vehicle
     User:
       type: object
+      description: |-
+        Serializer for CustomUser model
+
+        Subclasses:
+            Meta: Meta class for UserSerializer
       properties:
         email:
           type: string
@@ -2444,6 +2885,14 @@ components:
       - username
     Vehicle:
       type: object
+      description: |-
+        Custom serializer for vehicle extending the default ModelSerializer
+
+        Fields:
+            user (PrimaryKeyRelatedField: CustomUser): Owner of vehicle
+
+        Subclasses:
+            Meta: Meta class for VehicleSerializer
       properties:
         user:
           type: integer
