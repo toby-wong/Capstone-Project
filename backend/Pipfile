@@ -14,13 +14,11 @@ djangorestframework-simplejwt = "*"
 tzdata = "*"
 django-booking = "*"
 google-i18n-address = "*"
-drf-extra-fields = "*"
 django-filter = "*"
 drf-writable-nested = "*"
-drf-flex-fields = "*"
 django-jazzmin = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.8"
+python_version = "3.7.3"
