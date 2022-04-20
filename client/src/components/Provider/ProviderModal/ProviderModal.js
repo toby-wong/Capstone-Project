@@ -17,7 +17,8 @@ const ProviderModal = () => {
   const providerModalContext = useContext(ProviderModalContext);
   const subModalContext = useContext(SubModalContext);
   const location = useLocation();
-  const listStatus = location.pathname.split("/").at(-1);
+  const pathname = location.pathname.split("/");
+  const listStatus = pathname[pathname.length - 1];
 
   return (
     <GeneralModal
