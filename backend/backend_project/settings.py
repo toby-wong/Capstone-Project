@@ -48,7 +48,7 @@ ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_UNIQUE_EMAIL = True
 
-LOGIN_URL = 'http://127.0.0.1:3000/'
+LOGIN_URL = 'http://localhost:3000/'
 
 # GMAIL SMTP
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
