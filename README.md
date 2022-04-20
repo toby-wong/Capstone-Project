@@ -24,4 +24,4 @@ Team Members
 ### Set up Frontend
 1. go to the "client" directory
 2. run `npm install` to install all the required packages to run the client server
-3. run `npm start` to sstart the server  
+3. run `npm start` to start the server  
