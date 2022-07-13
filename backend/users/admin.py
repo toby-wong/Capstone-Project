@@ -1,16 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
+
 from .forms import CustomUserChangeForm, CustomUserCreationForm
-from .models import (
-    CustomUser,
-    Transaction,
-    Vehicle,
-    Review,
-    ParkingSpace,
-    Image,
-    Favourite,
-)
+from .models import (CustomUser, Favourite, Image, ParkingSpace, Review,
+                     Transaction, Vehicle)
 
 
 class CustomUserAdmin(UserAdmin):

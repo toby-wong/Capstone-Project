@@ -1,10 +1,11 @@
+import urllib.parse
 from re import M
-from django.db import models
+
+import requests
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
+from django.db import models
 from drf_extra_fields.fields import Base64ImageField
-import requests
-import urllib.parse
 
 # USER MODELS
 
@@ -88,8 +89,9 @@ class ParkingSpace(models.Model):
     is_active = models.BooleanField(default=True)
 
     def getCoords(self, address):
-        import requests
         import os
+
+        import requests
 
         url = (
             "https://maps.googleapis.com/maps/api/geocode/json?address="

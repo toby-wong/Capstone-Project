@@ -1,4 +1,5 @@
-from django_filters import RangeFilter, NumberFilter, MultipleChoiceFilter, CharFilter
+from django_filters import (CharFilter, MultipleChoiceFilter, NumberFilter,
+                            RangeFilter)
 from django_filters.rest_framework import FilterSet
 from users.models import SIZE
 from users.utils import *
