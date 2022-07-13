@@ -1,4 +1,3 @@
-# Park It
 ## Blue Man Group (BMG) 
 
 <img src="assets/Park%20it%20Logo.png">
