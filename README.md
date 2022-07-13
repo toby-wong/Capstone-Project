@@ -7,7 +7,7 @@
 
 | Name              | Email                   | Position         |
 | --- | --- | --- |
-| Toby Wong       | toby@wong.com.au | **Scrum Master** |
+| **Toby Wong**       | **toby@wong.com.au** | **Scrum Master** |
 | Younggil Tak      | z5192259@ad.unsw.edu.au | Developer        |
 | Andrew Ang        | z5245630@ad.unsw.edu.au | Developer        |
 | Muhammad Abubakar | z5165087@ad.unsw.edu.au | Developer        |
