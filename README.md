@@ -4,6 +4,13 @@
 <img src="assets/Park%20it%20Logo.png">
 
 ## Project: Car Space Sharing
+Team Members
+| Name              | Email                   | Position         |
+|-------------------|-------------------------|------------------|
+| Tobias Wong       | toby@wong.com.au | **Scrum Master** |
+| Younggil Tak      | z5192259@ad.unsw.edu.au | Developer        |
+| Andrew Ang        | z5245630@ad.unsw.edu.au | Developer        |
+| Muhammad Abubakar | z5165087@ad.unsw.edu.au | Developer        |
 ### Demonstration
 https://www.youtube.com/watch?v=8FE7lRnpox8
 
