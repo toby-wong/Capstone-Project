@@ -1,20 +1,26 @@
 # Controls what fields are packaged together
-
 from datetime import datetime
 
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from django.db import transaction
-from django.db.models import Avg, Max
+from django.db.models import Avg
+from django.db.models import Max
 from drf_writable_nested.serializers import NestedUpdateMixin
 from pkg_resources import require
 from rest_framework import serializers
-from rest_framework.serializers import (ModelSerializer,
-                                        PrimaryKeyRelatedField,
-                                        SlugRelatedField)
+from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import PrimaryKeyRelatedField
+from rest_framework.serializers import SlugRelatedField
 
-from .models import (CustomUser, Favourite, Image, ParkingSpace, Review,
-                     Transaction, Vehicle)
-from .utils import AddressValidation, getCoords
+from .models import CustomUser
+from .models import Favourite
+from .models import Image
+from .models import ParkingSpace
+from .models import Review
+from .models import Transaction
+from .models import Vehicle
+from .utils import AddressValidation
+from .utils import getCoords
 
 
 class UserSerializer(ModelSerializer):

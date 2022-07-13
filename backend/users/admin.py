@@ -2,9 +2,15 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 
-from .forms import CustomUserChangeForm, CustomUserCreationForm
-from .models import (CustomUser, Favourite, Image, ParkingSpace, Review,
-                     Transaction, Vehicle)
+from .forms import CustomUserChangeForm
+from .forms import CustomUserCreationForm
+from .models import CustomUser
+from .models import Favourite
+from .models import Image
+from .models import ParkingSpace
+from .models import Review
+from .models import Transaction
+from .models import Vehicle
 
 
 class CustomUserAdmin(UserAdmin):
