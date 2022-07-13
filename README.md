@@ -6,6 +6,12 @@
 ## Project: Car Space Sharing
 Team Members
 
+<style>
+.tablelines table, .tablelines td, .tablelines th {
+        border: 1px solid black;
+        }
+</style>
+
 | Name              | Email                   | Position         |
 |-------------------|-------------------------|------------------|
 | Toby Wong       | toby@wong.com.au | **Scrum Master** |
