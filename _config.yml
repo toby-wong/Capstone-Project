@@ -1,3 +1,4 @@
-theme: jekyll-theme-cayman
+# theme: jekyll-theme-cayman
+remote_theme: amitmerchant1990/reverie
 title: Park It
 description: Blue Man Group's Capstone Project | Completed for UNSW COMP3900 in T1 2022
