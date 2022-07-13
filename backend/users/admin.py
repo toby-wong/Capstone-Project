@@ -4,15 +4,17 @@ from django.contrib.auth.admin import UserAdmin
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 from .models import CustomUser, Transaction, Vehicle, Review, ParkingSpace, Image, Favourite
 
-class CustomUserAdmin(UserAdmin):    
+
+class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
     list_display = ['username', 'email', 'first_name', 'last_name', 'is_staff']
 
+
 class ParkingSpaceAdmin(admin.ModelAdmin):
     list_filter = ['status']
-    list_display = [            
+    list_display = [
         'streetAddress',
         'provider',
         'price',
@@ -31,8 +33,9 @@ class ParkingSpaceAdmin(admin.ModelAdmin):
         'is_active'
     ]
 
+
 class VehicleAdmin(admin.ModelAdmin):
-    list_display = [            
+    list_display = [
         'carDetails',
         'user',
     ]
@@ -41,8 +44,9 @@ class VehicleAdmin(admin.ModelAdmin):
     def carDetails(self, obj):
         return f"{obj.carColour} {obj.carMake} {obj.carModel} ({obj.carYear})"
 
+
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = [            
+    list_display = [
         'parkingSpace',
         'provider',
         'consumer',
@@ -51,19 +55,22 @@ class TransactionAdmin(admin.ModelAdmin):
         'totalCost'
     ]
 
+
 class FavouriteAdmin(admin.ModelAdmin):
-    list_display = [            
+    list_display = [
         'parkingSpace',
         'consumer',
     ]
 
+
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = [            
+    list_display = [
         'parkingSpace',
         'consumer',
         'rating',
         'publishDate'
     ]
+
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Transaction, TransactionAdmin)

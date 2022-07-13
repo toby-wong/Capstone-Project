@@ -11,6 +11,7 @@ from .models import CustomUser, Favourite, ParkingSpace, Image, Transaction, Rev
 from drf_writable_nested.serializers import NestedUpdateMixin
 from datetime import datetime
 
+
 class UserSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
@@ -29,13 +30,14 @@ class UserSerializer(ModelSerializer):
             'is_staff',
             'pk'
         )
-        
+
         read_only_fields = ('first_name', 'last_name', 'username', 'pk')
 
+
 class CustomRegisterSerializer(RegisterSerializer):
-# here we define any additional fields we are adding to the dj-rest-auth RegisterSerializer
-# so we are basically extending what you need (or really what you can potentially provide) to register
-# in simple terms, it is looking for fields called "phone_number" in the JSON request and saving them into a variable
+    # here we define any additional fields we are adding to the dj-rest-auth RegisterSerializer
+    # so we are basically extending what you need (or really what you can potentially provide) to register
+    # in simple terms, it is looking for fields called "phone_number" in the JSON request and saving them into a variable
 
     phone_number = serializers.CharField(max_length=20)
     first_name = serializers.CharField(max_length=20)
@@ -57,11 +59,12 @@ class CustomRegisterSerializer(RegisterSerializer):
         # profit???
         return user
 
+
 class RemoveUserSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
         fields = []
-    
+
     def delete(self, request):
         username = request.data.get('username')
         user = self.Meta.model.objects.get(username=username)
@@ -73,6 +76,7 @@ class RemoveUserSerializer(ModelSerializer):
 class ImageSerializer(ModelSerializer):
 
     image_data = serializers.CharField()
+
     class Meta:
         model = Image
         fields = (
@@ -85,11 +89,10 @@ class ImageSerializer(ModelSerializer):
 
 class ParkingSpaceSerializer(NestedUpdateMixin, ModelSerializer):
 
-
     images = ImageSerializer(many=True)
     provider = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
 
-    #add avg rating stuff here
+    # add avg rating stuff here
 
     class Meta:
         model = ParkingSpace
@@ -113,21 +116,21 @@ class ParkingSpaceSerializer(NestedUpdateMixin, ModelSerializer):
             'avg_rating',
             'n_ratings',
             'is_active',
-            'pk',      
+            'pk',
         )
 
-        read_only_fields = ('provider', 'streetAddress','city', 'state', 'postcode')
+        read_only_fields = ('provider', 'streetAddress',
+                            'city', 'state', 'postcode')
 
         # read_only_fields = ['pk', 'is_active', 'avg_rating', 'n_ratings', 'longitude', 'latitude', 'latestTime']
 
-
     def validate(self, data):
-        
+
         method = (self.context['view'].request.method)
 
         if (method == 'POST'):
             return data
-        
+
         if ('startTime' not in data or 'endTime' not in data):
             return data
 
@@ -136,12 +139,14 @@ class ParkingSpaceSerializer(NestedUpdateMixin, ModelSerializer):
         endTime = data['endTime']
 
         if startTime > endTime:
-            raise serializers.ValidationError('Parking space start time must be before the parking space end time')
-        qs = Transaction.objects.filter(parkingSpace=pk).exclude(startTime__date__gte=startTime).exclude(endTime__date__lte=endTime)
+            raise serializers.ValidationError(
+                'Parking space start time must be before the parking space end time')
+        qs = Transaction.objects.filter(parkingSpace=pk).exclude(
+            startTime__date__gte=startTime).exclude(endTime__date__lte=endTime)
         if qs.exists():
-            raise serializers.ValidationError('This availability would violate existing bookings.')
+            raise serializers.ValidationError(
+                'This availability would violate existing bookings.')
         return data
-
 
     def create(self, validated_data):
         imgs_data = validated_data.pop('images')
@@ -154,6 +159,7 @@ class ParkingSpaceSerializer(NestedUpdateMixin, ModelSerializer):
         for img_data in imgs_data:
             Image.objects.create(parkingSpace=parkingSpace, **img_data)
         return parkingSpace
+
 
 class VehicleSerializer(ModelSerializer):
 
@@ -172,7 +178,7 @@ class VehicleSerializer(ModelSerializer):
         )
 
         read_only_fields = ['pk']
-        
+
 
 class FavouriteSerializer(ModelSerializer):
 
@@ -189,21 +195,27 @@ class FavouriteSerializer(ModelSerializer):
 
         read_only_fields = ['pk']
 
+
 class TransactionSerializer(ModelSerializer):
 
     provider = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
     consumer = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
     vehicle = PrimaryKeyRelatedField(queryset=Vehicle.objects.all())
     parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
-    streetAddress = serializers.CharField(source="parkingSpace.streetAddress", required=False)
-    city = serializers.CharField(source="parkingSpace.city", required=False) 
+    streetAddress = serializers.CharField(
+        source="parkingSpace.streetAddress", required=False)
+    city = serializers.CharField(source="parkingSpace.city", required=False)
     state = serializers.CharField(source="parkingSpace.state", required=False)
-    postcode = serializers.CharField(source="parkingSpace.postcode", required=False)
-    consumerName = serializers.CharField(source="consumer.username", required=False)
-    consumerPhone = serializers.CharField(source="consumer.phone_number", required=False)
-    consumerEmail = serializers.CharField(source="consumer.email", required=False)
-    parkingSpaceSize = serializers.CharField(source="parkingSpace.size", required=False)
-
+    postcode = serializers.CharField(
+        source="parkingSpace.postcode", required=False)
+    consumerName = serializers.CharField(
+        source="consumer.username", required=False)
+    consumerPhone = serializers.CharField(
+        source="consumer.phone_number", required=False)
+    consumerEmail = serializers.CharField(
+        source="consumer.email", required=False)
+    parkingSpaceSize = serializers.CharField(
+        source="parkingSpace.size", required=False)
 
     class Meta:
         model = Transaction
@@ -227,31 +239,38 @@ class TransactionSerializer(ModelSerializer):
             'pk'
         )
 
-        read_only_fields = ['pk', 'streetAddress', 'city', 'state', 'postcode', 'consumerName', 'parkingSpaceSize']
-    
+        read_only_fields = ['pk', 'streetAddress', 'city',
+                            'state', 'postcode', 'consumerName', 'parkingSpaceSize']
+
     def validate(self, data):
-        
+
         startTime = data['startTime']
         endTime = data['endTime']
         if data['provider'] == data['consumer']:
             raise serializers.ValidationError('Cannot book own parking space')
         if startTime > endTime:
-            raise serializers.ValidationError('Booking start time must be before booking end time')
-        parkingSpace = ParkingSpace.objects.filter(pk=data['parkingSpace'].pk).first()
+            raise serializers.ValidationError(
+                'Booking start time must be before booking end time')
+        parkingSpace = ParkingSpace.objects.filter(
+            pk=data['parkingSpace'].pk).first()
         if parkingSpace.status == 'cancelled':
-            raise serializers.ValidationError('The parking space is no longer accepting new bookings')
+            raise serializers.ValidationError(
+                'The parking space is no longer accepting new bookings')
         if parkingSpace.startTime > startTime or parkingSpace.endTime < endTime or parkingSpace.startTime > endTime or parkingSpace.endTime < startTime:
-             raise serializers.ValidationError('This booking does not fit within the parking space availability.')
-        qs = Transaction.objects.filter(parkingSpace=data['parkingSpace']).exclude(startTime__date__gt=endTime).exclude(endTime__date__lt=startTime)
+            raise serializers.ValidationError(
+                'This booking does not fit within the parking space availability.')
+        qs = Transaction.objects.filter(parkingSpace=data['parkingSpace']).exclude(
+            startTime__date__gt=endTime).exclude(endTime__date__lt=startTime)
         if qs.exists():
-            raise serializers.ValidationError('This booking overlaps with an existing booking.')
+            raise serializers.ValidationError(
+                'This booking overlaps with an existing booking.')
         return data
 
-        
 
 class ReviewSerializer(ModelSerializer):
 
-    consumer = SlugRelatedField(queryset=CustomUser.objects.all(), slug_field='username')
+    consumer = SlugRelatedField(
+        queryset=CustomUser.objects.all(), slug_field='username')
     parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
 
     class Meta:
