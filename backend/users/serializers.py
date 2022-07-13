@@ -24,6 +24,7 @@ from .utils import getCoords
 
 
 class UserSerializer(ModelSerializer):
+
     class Meta:
         model = CustomUser
         fields = (
@@ -72,6 +73,7 @@ class CustomRegisterSerializer(RegisterSerializer):
 
 
 class RemoveUserSerializer(ModelSerializer):
+
     class Meta:
         model = CustomUser
         fields = []
@@ -127,7 +129,8 @@ class ParkingSpaceSerializer(NestedUpdateMixin, ModelSerializer):
             "pk",
         )
 
-        read_only_fields = ("provider", "streetAddress", "city", "state", "postcode")
+        read_only_fields = ("provider", "streetAddress", "city", "state",
+                            "postcode")
 
         # read_only_fields = ['pk', 'is_active', 'avg_rating', 'n_ratings', 'longitude', 'latitude', 'latestTime']
 
@@ -149,15 +152,12 @@ class ParkingSpaceSerializer(NestedUpdateMixin, ModelSerializer):
             raise serializers.ValidationError(
                 "Parking space start time must be before the parking space end time"
             )
-        qs = (
-            Transaction.objects.filter(parkingSpace=pk)
-            .exclude(startTime__date__gte=startTime)
-            .exclude(endTime__date__lte=endTime)
-        )
+        qs = (Transaction.objects.filter(parkingSpace=pk).exclude(
+            startTime__date__gte=startTime).exclude(
+                endTime__date__lte=endTime))
         if qs.exists():
             raise serializers.ValidationError(
-                "This availability would violate existing bookings."
-            )
+                "This availability would violate existing bookings.")
         return data
 
     def create(self, validated_data):
@@ -210,18 +210,20 @@ class TransactionSerializer(ModelSerializer):
     consumer = PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
     vehicle = PrimaryKeyRelatedField(queryset=Vehicle.objects.all())
     parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
-    streetAddress = serializers.CharField(
-        source="parkingSpace.streetAddress", required=False
-    )
+    streetAddress = serializers.CharField(source="parkingSpace.streetAddress",
+                                          required=False)
     city = serializers.CharField(source="parkingSpace.city", required=False)
     state = serializers.CharField(source="parkingSpace.state", required=False)
-    postcode = serializers.CharField(source="parkingSpace.postcode", required=False)
-    consumerName = serializers.CharField(source="consumer.username", required=False)
-    consumerPhone = serializers.CharField(
-        source="consumer.phone_number", required=False
-    )
-    consumerEmail = serializers.CharField(source="consumer.email", required=False)
-    parkingSpaceSize = serializers.CharField(source="parkingSpace.size", required=False)
+    postcode = serializers.CharField(source="parkingSpace.postcode",
+                                     required=False)
+    consumerName = serializers.CharField(source="consumer.username",
+                                         required=False)
+    consumerPhone = serializers.CharField(source="consumer.phone_number",
+                                          required=False)
+    consumerEmail = serializers.CharField(source="consumer.email",
+                                          required=False)
+    parkingSpaceSize = serializers.CharField(source="parkingSpace.size",
+                                             required=False)
 
     class Meta:
         model = Transaction
@@ -263,43 +265,38 @@ class TransactionSerializer(ModelSerializer):
             raise serializers.ValidationError("Cannot book own parking space")
         if startTime > endTime:
             raise serializers.ValidationError(
-                "Booking start time must be before booking end time"
-            )
-        parkingSpace = ParkingSpace.objects.filter(pk=data["parkingSpace"].pk).first()
+                "Booking start time must be before booking end time")
+        parkingSpace = ParkingSpace.objects.filter(
+            pk=data["parkingSpace"].pk).first()
         if parkingSpace.status == "cancelled":
             raise serializers.ValidationError(
-                "The parking space is no longer accepting new bookings"
-            )
-        if (
-            parkingSpace.startTime > startTime
-            or parkingSpace.endTime < endTime
-            or parkingSpace.startTime > endTime
-            or parkingSpace.endTime < startTime
-        ):
+                "The parking space is no longer accepting new bookings")
+        if (parkingSpace.startTime > startTime
+                or parkingSpace.endTime < endTime
+                or parkingSpace.startTime > endTime
+                or parkingSpace.endTime < startTime):
             raise serializers.ValidationError(
                 "This booking does not fit within the parking space availability."
             )
-        qs = (
-            Transaction.objects.filter(parkingSpace=data["parkingSpace"])
-            .exclude(startTime__date__gt=endTime)
-            .exclude(endTime__date__lt=startTime)
-        )
+        qs = (Transaction.objects.filter(
+            parkingSpace=data["parkingSpace"]).exclude(
+                startTime__date__gt=endTime).exclude(
+                    endTime__date__lt=startTime))
         if qs.exists():
             raise serializers.ValidationError(
-                "This booking overlaps with an existing booking."
-            )
+                "This booking overlaps with an existing booking.")
         return data
 
 
 class ReviewSerializer(ModelSerializer):
 
-    consumer = SlugRelatedField(
-        queryset=CustomUser.objects.all(), slug_field="username"
-    )
+    consumer = SlugRelatedField(queryset=CustomUser.objects.all(),
+                                slug_field="username")
     parkingSpace = PrimaryKeyRelatedField(queryset=ParkingSpace.objects.all())
 
     class Meta:
         model = Review
-        fields = ("parkingSpace", "consumer", "rating", "comment", "publishDate", "pk")
+        fields = ("parkingSpace", "consumer", "rating", "comment",
+                  "publishDate", "pk")
 
         read_only_fields = ["pk"]
